@@ -1,0 +1,21 @@
+:root {
+  --primary: #b98b5f;
+  --dark: #241a13;
+  --cream: #f7f1ea;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  color: #1f1f1f;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.site-container {
+  width: min(1320px, calc(100% - 32px));
+  margin: 0 auto;
+}

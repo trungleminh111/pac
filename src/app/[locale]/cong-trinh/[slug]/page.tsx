@@ -7,7 +7,8 @@ export default function WorkDetailPage() {
     <div className="page-wrapper">
       <Header />
 
-      <PageHeader title="CÔNG TRÌNH" />
+      <PageHeader title=""   bgImage = "/assets/images/backgrounds/PACSTONE-CONGTRINH-header.png"/>
+
 
       <section className="work-details section-space">
         <div className="container">

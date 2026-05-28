@@ -5,7 +5,7 @@ type PageHeaderProps = {
 
 export function PageHeader({
   title,
-  bgImage = "/assets/images/backgrounds/bg-heading.png",
+  bgImage,
 }: PageHeaderProps) {
   return (
     <section className="page-header">

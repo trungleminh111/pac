@@ -181,7 +181,7 @@ a {
   justify-content: center;
   gap: 24px;
   width: 50%;
-  min-width: 205px;
+  min-width: max-content;
   height: 56px;
   padding: 0 26px;
   color: #ffffff;

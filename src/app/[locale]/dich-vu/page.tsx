@@ -52,7 +52,7 @@ export default async function ServicesPage({
     <div className="page-wrapper">
       <Header />
 
-      <PageHeader title="DỊCH VỤ" />
+     <PageHeader title=""   bgImage = "/assets/images/backgrounds/PACSTONE-DICHVU-header.png"/>
 
       <section className="services-page section-space">
         <div className="container">

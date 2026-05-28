@@ -9,7 +9,7 @@ export default function AboutPage() {
     return (
         <div className="page-wrapper">
             <Header />
-            <PageHeader title="GIỚI THIỆU" />
+            <PageHeader title=""  bgImage = "/assets/images/backgrounds/PACSTONE-GioiThieu-header.png"/>
             <About />
             <section className="about-one section-space" id="about">
                 <div className="container">
@@ -18,12 +18,12 @@ export default function AboutPage() {
                             <div className="about-one__image-grid">
                                 <div className="about-one__image">
                                     <img
-                                        src="/assets/images/about/about-1-3.jpg"
+                                        src="/assets/images/about/P.A.C-about3.png"
                                         alt="about"
                                         className="about-one__image__one"
                                     />
                                     <img
-                                        src="/assets/images/about/about-1-2.jpg"
+                                        src="/assets/images/about/P.A.C-about1.png"
                                         alt="about"
                                         className="about-one__image__two"
                                     />
@@ -31,7 +31,7 @@ export default function AboutPage() {
 
                                 <div className="about-one__image">
                                     <img
-                                        src="/assets/images/about/about-1-1.jpg"
+                                        src="/assets/images/about/P.A.C-about2.png"
                                         alt="about"
                                         className="about-one__image__three"
                                     />
@@ -42,19 +42,19 @@ export default function AboutPage() {
                                         className="about-one__circle-text__bg"
                                         style={{
                                             backgroundImage:
-                                                "url('/assets/images/resources/about-award-bg.jpg')",
+                                                "url('/assets/images/resources/PACSTONE-circle.png')",
                                         }}
                                     />
                                     <img
-                                        src="/assets/images/resources/about-award-symbol.png"
+                                        src="/assets/images/resources/Circle.png"
                                         alt="award"
                                         className="about-one__circle-text__image"
                                     />
-                                    <div className="about-one__curved-circle curved-circle">
+                                    {/* <div className="about-one__curved-circle curved-circle">
                                         <div className="about-one__curved-circle__item curved-circle__item">
-
+jịi
                                         </div>
-                                    </div>
+                                    </div> */}
                                 </div>
                             </div>
                         </div>
@@ -134,7 +134,7 @@ export default function AboutPage() {
                     </div>
                 </div>
 
-                <div className="about-one__shapes">
+                {/* <div className="about-one__shapes">
                     <img
                         src="/assets/images/shapes/about-shape-1-1.jpg"
                         alt="about-shape"
@@ -145,7 +145,7 @@ export default function AboutPage() {
                         alt="about-shape"
                         className="about-one__shape about-one__shape--two"
                     />
-                </div>
+                </div> */}
             </section>
 
             <Footer />

@@ -34,8 +34,8 @@ export default async function NewsDetailPage({
   return (
     <div className="page-wrapper">
       <Header />
+      <PageHeader title=""   bgImage = "/assets/images/backgrounds/PACSTONE-TINTUCSUKIEN-header.png"/>
 
-      <PageHeader title="TIN TỨC" />
 
       <section className="blog-page blog-page--sidebar section-space">
         <div className="container">

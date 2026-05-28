@@ -7,7 +7,8 @@ export default function ContactPage() {
     <div className="page-wrapper">
       <Header />
 
-      <PageHeader title="LIÊN HỆ" />
+         <PageHeader title=""   bgImage = "/assets/images/backgrounds/PACSTONE-LIENHE-header.png"/>
+
 
       <section className="contact-one section-space">
         <div
@@ -149,13 +150,14 @@ export default function ContactPage() {
       <section className="contact-map">
         <div className="container-fluid">
           <div className="google-map google-map__contact">
-            <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3918.7132667039778!2d106.60633147480583!3d10.833241089319026!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752b39af9e5153%3A0x4ac6e9eee614a19a!2zMzI0IFBoYW4gVsSDbiBI4bubbiwgVMOibiBUaOG7m2kgTmjhuqV0LCBRdeG6rW4gMTIsIEjhu5MgQ2jDrSBNaW5oIDcwMDAwLCBWaeG7h3QgTmFt!5e0!3m2!1svi!2s!4v1718622236816!5m2!1svi!2s"
+            {/* <iframe
+              src="https://www.google.com/maps/d/edit?mid=1OxB97mvj7vH_G3AYETY6GQ_TvRiiSQg&usp=sharing"
               className="map__contact"
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
             />
-          </div>
+             */}
+<iframe src="https://www.google.com/maps/d/embed?mid=1OxB97mvj7vH_G3AYETY6GQ_TvRiiSQg&ehbc=2E312F&noprof=1" width="640" height="480"></iframe>          </div>
         </div>
       </section>
 

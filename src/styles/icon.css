@@ -139,3 +139,35 @@
   height: 30px;
   width: auto;
 }
+
+.slider-arrow-bottom {
+  position: absolute;
+  bottom: 15px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 24px;
+  cursor: pointer;
+  z-index: 10;
+  transition: all 0.3s ease;
+  gap: 5vw;
+}
+.slider-arrow-bottom div{
+  display: flex;
+}
+.slider-arrow-bottom div:hover {
+
+  color: red;
+}
+.header-icon-right{
+  display: flex;
+  gap:20px;
+}
+.header-icon-right a svg{
+   width: 30px;
+  height: auto;
+ 
+}

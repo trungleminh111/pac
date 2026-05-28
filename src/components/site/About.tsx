@@ -5,7 +5,8 @@ export function About() {
       <div
         className="about-two__bg"
         style={{
-          backgroundImage: "url('/assets/images/backgrounds/bg-about.png')",
+          backgroundImage: "url('/assets/images/backgrounds/8.png')",
+          opacity: 0.2
         }}
       />
 

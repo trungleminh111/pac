@@ -1,3 +1,5 @@
+import { GrPrevious } from "react-icons/gr";
+import { GrNext } from "react-icons/gr";
 const slides = ["3.jpg"];
 
 export function Hero() {
@@ -40,6 +42,15 @@ export function Hero() {
           </div>
 
         ))}
+        <div className="slider-arrow-bottom">
+          <div>
+            <GrPrevious /><GrPrevious />
+          </div>
+          <span>|</span>
+          <div>
+            <GrNext /><GrNext />
+          </div>
+        </div>
       </div>
     </section>
   );

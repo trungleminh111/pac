@@ -1,0 +1,13 @@
+.about-one__circle-text__image {
+  animation: rotateSymbol 10s linear infinite;
+}
+
+@keyframes rotateSymbol {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}

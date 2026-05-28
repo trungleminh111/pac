@@ -44,7 +44,8 @@ export default async function ProductsPage({
     <div className="page-wrapper">
       <Header />
 
-      <PageHeader title="SẢN PHẨM" />
+        <PageHeader title=""   bgImage = "/assets/images/backgrounds/PACSTONE-SANPHAM-header.png"/>
+
 
       <section className="product-page product-page--left section-space-bottom">
         <div className="container">

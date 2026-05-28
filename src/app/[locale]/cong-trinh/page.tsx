@@ -42,7 +42,8 @@ export default async function WorksPage({
     <div className="page-wrapper">
       <Header />
 
-      <PageHeader title="CÔNG TRÌNH" />
+    <PageHeader title=""   bgImage = "/assets/images/backgrounds/PACSTONE-CONGTRINH-header.png"/>
+
 
       <section className="work-page work-page--grid section-space-bottom">
         <div className="container-fluid">

@@ -70,36 +70,36 @@ export function Header() {
                   </li>
 
                   <li>
-                    <a href="/gioi-thieu">GIỚI THIỆU</a>
+                    <a href="/vi/gioi-thieu">GIỚI THIỆU</a>
                   </li>
 
                   <li className="dropdown">
-                    <a href="/dich-vu">DỊCH VỤ</a>
+                    <a href="/vi/dich-vu">DỊCH VỤ</a>
                     <ul>
-                      <li><a href="/dich-vu">Thi công đá ốp mặt tiền</a></li>
-                      <li><a href="/dich-vu">Thi công đá ốp cột</a></li>
-                      <li><a href="/dich-vu">Thi công đá ốp cầu thang</a></li>
-                      <li><a href="/dich-vu">Thi công đá ốp bếp</a></li>
-                      <li><a href="/dich-vu">Thi công tranh đá</a></li>
-                      <li><a href="/dich-vu">Thiết kế hoa văn đá</a></li>
+                      <li><a href="/vi/dich-vu">Thi công đá ốp mặt tiền</a></li>
+                      <li><a href="/vi/dich-vu">Thi công đá ốp cột</a></li>
+                      <li><a href="/vi/dich-vu">Thi công đá ốp cầu thang</a></li>
+                      <li><a href="/vi/dich-vu">Thi công đá ốp bếp</a></li>
+                      <li><a href="/vi/dich-vu">Thi công tranh đá</a></li>
+                      <li><a href="/vi/dich-vu">Thiết kế hoa văn đá</a></li>
                     </ul>
                   </li>
 
                   <li className="dropdown">
-                    <a href="/san-pham">SẢN PHẨM</a>
+                    <a href="/vi/san-pham">SẢN PHẨM</a>
                     <ul>
-                      <li><a href="/san-pham">Đá hoa cương - Granite</a></li>
-                      <li><a href="/san-pham">Đá cẩm thạch - Marble</a></li>
-                      <li><a href="/san-pham">Đá Onyx</a></li>
-                      <li><a href="/san-pham">Đá Limestone</a></li>
-                      <li><a href="/san-pham">Đá Quartzite</a></li>
-                      <li><a href="/san-pham">Tranh đá</a></li>
-                      <li><a href="/san-pham">Hoa văn đá</a></li>
+                      <li><a href="/vi/san-pham">Đá hoa cương - Granite</a></li>
+                      <li><a href="/vi/san-pham">Đá cẩm thạch - Marble</a></li>
+                      <li><a href="/vi/san-pham">Đá Onyx</a></li>
+                      <li><a href="/vi/san-pham">Đá Limestone</a></li>
+                      <li><a href="/vi/san-pham">Đá Quartzite</a></li>
+                      <li><a href="/vi/san-pham">Tranh đá</a></li>
+                      <li><a href="/vi/san-pham">Hoa văn đá</a></li>
                     </ul>
                   </li>
 
                   <li className="dropdown">
-                    <a href="/cong-trinh">CÔNG TRÌNH</a>
+                    <a href="/vi/cong-trinh">CÔNG TRÌNH</a>
                     <ul>
                       <li><a href="/cong-trinh">Villa - Penhouse</a></li>
                       <li><a href="/cong-trinh">Khách sạn - trung tâm thương mại</a></li>
@@ -111,16 +111,16 @@ export function Header() {
                   </li>
 
                   <li className="dropdown">
-                    <a href="/tin-tuc">TIN TỨC</a>
+                    <a href="/vi/tin-tuc">TIN TỨC</a>
                     <ul>
-                      <li><a href="/tin-tuc">Tin nội bộ</a></li>
-                      <li><a href="/tin-tuc">Xu hướng thiết kế</a></li>
-                      <li><a href="/tin-tuc">Thị trường ngành đá tự nhiên</a></li>
+                      <li><a href="/vi/tin-tuc">Tin nội bộ</a></li>
+                      <li><a href="/vi/tin-tuc">Xu hướng thiết kế</a></li>
+                      <li><a href="/vi/tin-tuc">Thị trường ngành đá tự nhiên</a></li>
                     </ul>
                   </li>
 
                   <li>
-                    <a href="/lien-he">LIÊN HỆ</a>
+                    <a href="/vi/lien-he">LIÊN HỆ</a>
                   </li>
                 </ul>
               </nav>

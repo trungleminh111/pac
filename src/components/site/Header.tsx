@@ -29,18 +29,23 @@ export function Header() {
             </ul>
             <div className="topbar-one__right">
               <div className="topbar-one__social">
-                <a href="https://facebook.com">
-                  <i className="icon-facebook" />
-                  <span className="sr-only">Facebook</span>
+               
+                <a href="/">
+                  <img
+                    src="/assets/images/language/VI.png"
+                    alt="VietNam"
+                    className="icon-language"
+                  />
                 </a>
-                <a href="https://twitter.com">
-                  <i className="icon-twitter" />
-                  <span className="sr-only">Zalo</span>
+                <span>|</span>
+                <a href="/">
+                  <img
+                    src="/assets/images/language/EN.svg"
+                    alt="Eng"
+                    className="icon-language"
+                  />
                 </a>
-                <a href="https://youtube.com">
-                  <i className="icon-youtube" />
-                  <span className="sr-only">Youtube</span>
-                </a>
+              
               </div>
             </div>
           </div>
@@ -50,8 +55,7 @@ export function Header() {
       <header className="main-header main-header--two sticky-header sticky-header--normal">
         <div className="container-fluid">
           <div className="main-header__inner">
-            <div className="main-header__left">
-              <div className="main-header__logo">
+             <div className="main-header__logo">
                 <a href="/">
                   <img
                     src="/assets/images/logo-PACSTONE.webp"
@@ -60,6 +64,8 @@ export function Header() {
                   />
                 </a>
               </div>
+            <div className="main-header__left">
+             
 
               <nav className="main-header__nav main-menu">
                 <ul className="main-menu__list">
@@ -76,12 +82,13 @@ export function Header() {
                   <li className="dropdown">
                     <a href="/vi/dich-vu">DỊCH VỤ</a>
                     <ul>
-                      <li><a href="/vi/dich-vu">Thi công đá ốp mặt tiền</a></li>
-                      <li><a href="/vi/dich-vu">Thi công đá ốp cột</a></li>
-                      <li><a href="/vi/dich-vu">Thi công đá ốp cầu thang</a></li>
-                      <li><a href="/vi/dich-vu">Thi công đá ốp bếp</a></li>
-                      <li><a href="/vi/dich-vu">Thi công tranh đá</a></li>
-                      <li><a href="/vi/dich-vu">Thiết kế hoa văn đá</a></li>
+                      <li><a href="/vi/dich-vu">Thi Công Đá Ốp Mặt Tiền</a></li>
+                      <li><a href="/vi/dich-vu">Thi Công Đá Ốp Cột</a></li>
+                      <li><a href="/vi/dich-vu">Thi Công Đá Ốp Cầu Thang</a></li>
+                      <li><a href="/vi/dich-vu">Thiết Kế Thi Công Đá Ốp Sàn Thang Máy</a></li>
+                      <li><a href="/vi/dich-vu">Thi Công Đá Ốp Bếp</a></li>
+                      <li><a href="/vi/dich-vu">Thi Công Tranh Đá</a></li>
+                      <li><a href="/vi/dich-vu">Thiết Kế Và Thi Công Hoa Văn Đá</a></li>
                     </ul>
                   </li>
 

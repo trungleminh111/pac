@@ -1,25 +1,28 @@
 import { FaPaperPlane, FaPhoneAlt, FaMapMarkerAlt } from "react-icons/fa";
+import { FaFacebookF, FaYoutube } from "react-icons/fa";
+import { SiZalo } from "react-icons/si";
 export function Footer() {
   return (
     <footer className="main-footer">
       <div
         className="main-footer__bg"
         style={{
-          backgroundImage: "url('/assets/images/shapes/footer-bg-1-1.png')",
+          backgroundImage: "url('/assets/images/shapes/Footer-PACSTONE.png')",
         }}
       />
+
 
       <div className="main-footer__top">
         <div className="container">
           <div className="row">
-            <div className="col-xl-3 col-lg-6">
+            <div className="col-xl-3 col-xl-2 col-md-2 col-lg-3">
               <div className="footer-widget footer-widget--about">
                 <a href="/" className="footer-widget__logo">
 
                   <img
                     src="/assets/images/logo-PACSTONE.webp"
                     alt="Logo P.A.C STONE"
-                    width={250}
+                    width={210}
                   />
                 </a>
 
@@ -33,7 +36,7 @@ export function Footer() {
               </div>
             </div>
 
-            <div className="col-xl-2 col-lg-2 col-md-3 col-sm-6">
+            <div className="col-xl-2 col-lg-2 col-md-2 col-sm-6">
               <div className="footer-widget footer-widget--links footer-widget--links-one">
                 <div className="footer-widget__top">
                   <h2 className="footer-widget__title">Truy cập</h2>
@@ -49,7 +52,7 @@ export function Footer() {
               </div>
             </div>
 
-            <div className="col-xl-4 col-lg-4 col-md-4 col-sm-6">
+            <div className="col-xl-4 col-lg-3 col-md-3 col-sm-6">
               <div className="footer-widget footer-widget--links footer-widget--links-two">
                 <div className="footer-widget__top">
                   <h2 className="footer-widget__title">Dịch vụ</h2>
@@ -69,47 +72,49 @@ export function Footer() {
             <div className="col-xl-3 col-lg-4 col-md-6">
               <div className="footer-widget footer-widget--contact">
                 <div className="footer-widget__top">
-                  <h2 className="footer-widget__title">Liên hệ</h2>
+                  <h2 className="footer-widget__title footer-widget__title_info">Liên hệ</h2>
+                </div>
+                <div className="footer-gap-bottom">
+                  <ul className="list-unstyled footer-widget__links footer-widget__info ">
+                    <li>
+
+                      <FaMapMarkerAlt className="icon-location-2" />
+                      <a href="https://www.google.com/maps" className="font-weight-800">
+                        Trụ sở chính: 114C Hoàng Hoa Thám, Phường Bảy Hiền, TP. HCM
+                      </a>
+                    </li>
+                    <li>
+                      <FaMapMarkerAlt className="icon-location-2" />
+                      <a href="https://www.google.com/maps" className="font-weight-800">
+                        Nhà máy sản xuất: 324 Phan Văn Hớn,
+                        Phường Đông Hưng Thuận, TPHCM
+                      </a>
+                    </li>
+                    <li>
+                      <FaPaperPlane className="icon-location-2" />
+                      <a href="mailto:pacstone.cskh@gmail.com">pacstone.cskh@gmail.com</a>
+                    </li>
+                    <li>
+                      <FaPhoneAlt className="icon-location-2" />
+                      <a href="tel:0962757475">0962.757.475</a>
+                    </li>
+                  </ul>
+                  <div className="main-footer__social floens-social">
+                    <a href="https://facebook.com" aria-label="Facebook">
+                      <FaFacebookF />
+                    </a>
+
+                    <a href="https://zalo.me" aria-label="Zalo">
+                      <SiZalo />
+                    </a>
+
+                    <a href="https://youtube.com" aria-label="Youtube">
+                      <FaYoutube />
+                    </a>
+                  </div>
                 </div>
 
-                <ul className="list-unstyled footer-widget__links">
-                  <li>
-          
-                    <FaMapMarkerAlt className="icon-location-2" />
-                    <a href="https://www.google.com/maps" className="font-weight-800">
-                      Trụ sở chính: 114C Hoàng Hoa Thám, Phường Bảy Hiền, TP. HCM
-                    </a>
-                  </li>
-                  <li>
-                    <FaMapMarkerAlt className="icon-location-2" />
-                    <a href="https://www.google.com/maps" className="font-weight-600">
-                      Nhà máy sản xuất: 324 Phan Văn Hớn,
-                      Phường Đông Hưng Thuận, TPHCM
-                    </a>
-                  </li>
-                  <li>
-                      <FaPaperPlane className="icon-location-2"/>
-                    <a href="mailto:pacstone.cskh@gmail.com">pacstone.cskh@gmail.com</a>
-                  </li>
-                  <li>
-                       <FaPhoneAlt className="icon-location-2"/>
-                    <a href="tel:0962757475">0962.757.475</a>
-                  </li>
-                </ul>
-                <div className="main-footer__social floens-social">
-                  <a href="https://facebook.com">
-                    <i className="icon-facebook" />
-                    <span className="sr-only">Facebook</span>
-                  </a>
-                  <a href="https://twitter.com">
-                    <i className="icon-twitter" />
-                    <span className="sr-only">Twitter</span>
-                  </a>
-                  <a href="https://youtube.com">
-                    <i className="icon-youtube" />
-                    <span className="sr-only">Youtube</span>
-                  </a>
-                </div>
+
               </div>
             </div>
           </div>

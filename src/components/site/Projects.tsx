@@ -13,7 +13,7 @@ export function Projects() {
   return (
     <section className="projects-one">
       <div className="projects-one__container">
-        <div className="projects-one__left">
+        <div className="projects-one__left projects-one__col projects-one__col--left">
           <Swiper
             modules={[Navigation, Autoplay]}
             loop
@@ -37,6 +37,15 @@ export function Projects() {
               </SwiperSlide>
             ))}
           </Swiper>
+          <div className="projects-one__nav d-flex d-md-none ">
+            <button type="button" className="project-prev">
+              <span>←</span>
+            </button>
+
+            <button type="button" className="project-next">
+              <span>→</span>
+            </button>
+          </div>
         </div>
 
         <div className="projects-one__content">
@@ -48,15 +57,19 @@ export function Projects() {
           </div>
 
           <p className="projects-one__text">
-            Chúng tôi tự hào mang đến cho khách hàng những dự án ốp đá hoa cương
-            không chỉ đẹp về mặt thẩm mỹ mà còn vững chắc về mặt kỹ thuật. Với
-            hơn 20 năm kinh nghiệm trong ngành, chúng tôi đã thực hiện thành công
-            hàng loạt các dự án từ những căn hộ cao cấp đến các trung tâm thương
-            mại lớn.
+            Chúng tôi tự hào mang đến cho khách hàng những dự án
+            ốp đá hoa cương không chỉ đẹp về mặt thẩm mỹ mà còn
+            vững chắc về mặt kỹ thuật. Với hơn 20 năm kinh nghiệm
+            trong ngành, chúng tôi đã thực hiện thành công hàng
+            loạt các dự án từ những căn hộ cao cấp đến các trung
+            tâm thương mại lớn, mỗi dự án đều phản ánh sự tận tâm
+            và chuyên môn cao của đội ngũ thợ lành nghề của chúng tôi.
+
+
           </p>
 
           <div className="projects-one__bottom">
-            <div className="projects-one__nav">
+            <div className="projects-one__nav d-none d-md-flex">
               <button type="button" className="project-prev">
                 <span>←</span>
               </button>
@@ -66,7 +79,7 @@ export function Projects() {
               </button>
             </div>
 
-            <a href="/cong-trinh" className="floens-btn floens-btn--border">
+            <a href="/cong-trinh" className="project-btn floens-btn floens-btn--border">
               <span>Xem tất cả</span>
               <i>→</i>
             </a>

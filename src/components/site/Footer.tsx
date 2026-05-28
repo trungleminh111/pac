@@ -1,3 +1,4 @@
+import { FaPaperPlane, FaPhoneAlt, FaMapMarkerAlt } from "react-icons/fa";
 export function Footer() {
   return (
     <footer className="main-footer">
@@ -14,18 +15,20 @@ export function Footer() {
             <div className="col-xl-3 col-lg-6">
               <div className="footer-widget footer-widget--about">
                 <a href="/" className="footer-widget__logo">
+
                   <img
-                    src="/assets/images/logo-light.png"
+                    src="/assets/images/logo-PACSTONE.webp"
+                    alt="Logo P.A.C STONE"
                     width={250}
-                    alt="Logo Phúc Nam"
                   />
                 </a>
 
                 <p className="footer-widget__about-text">
-                  Công ty Cổ phần Đá quốc tế Phúc Nam là một trong những nhà
-                  cung cấp hàng đầu tại Việt Nam về các sản phẩm và giải pháp
-                  ốp lát đá cao cấp được nhập khẩu từ các quốc gia có nền công
-                  nghiệp đá phát triển như Italy, Tây Ban Nha, và Brazil.
+                  © Bản quyền 2026 thuộc về
+                  <br></br>
+                  CÔNG TY TNHH THƯƠNG MẠI DỊCH VỤ XÂY DỰNG
+                  <br></br>
+                  P.A.C STONE
                 </p>
               </div>
             </div>
@@ -33,10 +36,8 @@ export function Footer() {
             <div className="col-xl-2 col-lg-2 col-md-3 col-sm-6">
               <div className="footer-widget footer-widget--links footer-widget--links-one">
                 <div className="footer-widget__top">
-                  <div className="footer-widget__title-box" />
                   <h2 className="footer-widget__title">Truy cập</h2>
                 </div>
-
                 <ul className="list-unstyled footer-widget__links">
                   <li><a href="/gioi-thieu">Giới thiệu</a></li>
                   <li><a href="/dich-vu">Dịch vụ</a></li>
@@ -51,17 +52,16 @@ export function Footer() {
             <div className="col-xl-4 col-lg-4 col-md-4 col-sm-6">
               <div className="footer-widget footer-widget--links footer-widget--links-two">
                 <div className="footer-widget__top">
-                  <div className="footer-widget__title-box" />
                   <h2 className="footer-widget__title">Dịch vụ</h2>
                 </div>
-
                 <ul className="list-unstyled footer-widget__links">
-                  <li><a href="/dich-vu">Thi công đá ốp mặt tiền</a></li>
-                  <li><a href="/dich-vu">Thi công đá ốp cột</a></li>
-                  <li><a href="/dich-vu">Thi công đá ốp cầu thang</a></li>
-                  <li><a href="/dich-vu">Thi công đá ốp bếp</a></li>
-                  <li><a href="/dich-vu">Thi công tranh đá</a></li>
-                  <li><a href="/dich-vu">Thiết kế hoa văn đá</a></li>
+                  <li><a href="/dich-vu">Thi Công Đá Ốp Mặt Tiền</a></li>
+                  <li><a href="/dich-vu">Thi Công Đá Ốp Cột</a></li>
+                  <li><a href="/dich-vu">Thi Công Đá Ốp Cầu Thang </a></li>
+                  <li><a href="/dich-vu">Thiết Kế Thi Công Đá Ốp Sàn Thang Máy</a></li>
+                  <li><a href="/dich-vu">Thi Công Đá Ốp Bếp</a></li>
+                  <li><a href="/dich-vu">Thi Công Tranh Đá</a></li>
+                  <li><a href="/dich-vu">Thiết Kế Và Thi Công Hoa Văn Đá</a></li>
                 </ul>
               </div>
             </div>
@@ -69,38 +69,33 @@ export function Footer() {
             <div className="col-xl-3 col-lg-4 col-md-6">
               <div className="footer-widget footer-widget--contact">
                 <div className="footer-widget__top">
-                  <div className="footer-widget__title-box" />
                   <h2 className="footer-widget__title">Liên hệ</h2>
                 </div>
 
-                <ul className="list-unstyled footer-widget__info">
+                <ul className="list-unstyled footer-widget__links">
                   <li>
-                    <span className="icon-location-2" />
-                    <a href="https://www.google.com/maps">
-                      324-326 Phan Văn Hớn, Phường Tân Thới Nhất, Quận 12,
-                      TPHCM
+          
+                    <FaMapMarkerAlt className="icon-location-2" />
+                    <a href="https://www.google.com/maps" className="font-weight-800">
+                      Trụ sở chính: 114C Hoàng Hoa Thám, Phường Bảy Hiền, TP. HCM
                     </a>
                   </li>
                   <li>
-                    <span className="icon-paper-plane" />
-                    <a href="mailto:hotro@phucnam.com">hotro@phucnam.com</a>
+                    <FaMapMarkerAlt className="icon-location-2" />
+                    <a href="https://www.google.com/maps" className="font-weight-600">
+                      Nhà máy sản xuất: 324 Phan Văn Hớn,
+                      Phường Đông Hưng Thuận, TPHCM
+                    </a>
                   </li>
                   <li>
-                    <span className="icon-phone-call" />
-                    <a href="tel:+84909888899">0909.8888.99</a>
+                      <FaPaperPlane className="icon-location-2"/>
+                    <a href="mailto:pacstone.cskh@gmail.com">pacstone.cskh@gmail.com</a>
+                  </li>
+                  <li>
+                       <FaPhoneAlt className="icon-location-2"/>
+                    <a href="tel:0962757475">0962.757.475</a>
                   </li>
                 </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="main-footer__bottom">
-        <div className="container">
-          <div className="main-footer__bottom__inner">
-            <div className="row gutter-y-30 align-items-center">
-              <div className="col-md-5">
                 <div className="main-footer__social floens-social">
                   <a href="https://facebook.com">
                     <i className="icon-facebook" />
@@ -114,14 +109,6 @@ export function Footer() {
                     <i className="icon-youtube" />
                     <span className="sr-only">Youtube</span>
                   </a>
-                </div>
-              </div>
-
-              <div className="col-md-7">
-                <div className="main-footer__bottom__copyright">
-                  <p className="main-footer__copyright">
-                    © Bản quyền 2026 thuộc về Công ty cổ phần đá quốc tế Phúc Nam.
-                  </p>
                 </div>
               </div>
             </div>

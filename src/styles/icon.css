@@ -107,3 +107,32 @@
   gap: 4px;
   color: #FFCC00;
 }
+
+.product__item__link {
+  width: 150px !important;
+  height: 54px;
+  padding: 0 18px !important;
+
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 24px;
+}
+
+.product__item__link span {
+  line-height: 1;
+}
+
+.product-cart-icon {
+  width: 16px;
+  height: 16px;
+}
+/* location */
+.icon-location-2 {
+  color: #cd3527;
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+

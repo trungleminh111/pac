@@ -5169,10 +5169,10 @@ body.megamenu-popup-active .mobile-nav__content {
 }
 
 .footer-widget__about-text {
-  color: var(--floens-text-gray, #9a8b82);
-  padding-right: 5px;
-  margin-bottom: 31px;
-  text-align: justify;
+  color: white;
+ 
+  text-align: center;
+  font-weight: normal;
 }
 
 @media (max-width: 1199px) {
@@ -5316,9 +5316,9 @@ body.megamenu-popup-active .mobile-nav__content {
   }
 }
 
-.footer-widget--contact {
+/* .footer-widget--contact {
   padding-left: 56px;
-}
+} */
 
 @media (max-width: 1199px) {
   .footer-widget--contact {
@@ -5351,9 +5351,11 @@ body.megamenu-popup-active .mobile-nav__content {
 }
 
 .footer-widget__links li a {
-  color: inherit;
+  color: white;
   background: linear-gradient(to right, currentcolor 0%, currentcolor 100%) 0px 95%/0px 1px no-repeat;
   transition: all 500ms ease;
+  font-weight: lighter;
+    font-family: var(--floens-font5, "Roboto", sans-serif);
 }
 
 .footer-widget__links li a:hover {
@@ -5364,10 +5366,10 @@ body.megamenu-popup-active .mobile-nav__content {
   color: var(--floens-base, #c7844f);
 }
 
-.footer-widget__info {
+/* .footer-widget__info {
   margin: 0;
   padding-top: 16px;
-}
+} */
 
 .footer-widget__info li {
   display: flex;
@@ -5385,7 +5387,9 @@ body.megamenu-popup-active .mobile-nav__content {
 .footer-widget__info li:nth-child(1) {
   display: block;
 }
-
+.font-weight-600{
+  font-weight: bolder;
+}
 .footer-widget__info li:nth-child(1) a {
   line-height: 1.866;
   text-transform: capitalize;
@@ -5398,9 +5402,10 @@ body.megamenu-popup-active .mobile-nav__content {
 }
 
 .footer-widget__info li a {
-  color: inherit;
+  color: white;
   background: linear-gradient(to right, currentcolor 0%, currentcolor 100%) 0px 95%/0px 1px no-repeat;
   transition: all 500ms ease;
+    font-family: var(--floens-font5, "Roboto", sans-serif);
 }
 
 .footer-widget__info li a:hover {
@@ -10261,10 +10266,7 @@ body.megamenu-popup-active .mobile-nav__content {
   margin-right: 15px;
 }
 
-.sidebar-one__info__list li span.icon-location-2 {
-  position: relative;
-  top: 4px;
-}
+
 
 .sidebar-one__info__list li address {
   color: inherit;
@@ -11629,18 +11631,6 @@ li:hover .sidebar__comments__icon::after {
   margin-bottom: 24px;
 }
 
-.product__item__link {
-  padding-right: 74px;
-}
-
-.product__item__link i {
-  right: 26px;
-  font-size: 16px;
-}
-
-.product__item__link i::after {
-  left: -17px;
-}
 
 .product-home {
   padding-top: 115px;

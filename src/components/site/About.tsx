@@ -102,7 +102,7 @@ export function About() {
               <div className="about-two__list">
 
                 <div className="about-two__button">
-                  <a href="/gioi-thieu" className="floens-btn">
+                  <a href="/vi/gioi-thieu" className="floens-btn">
                     <span>Xem thêm</span>
                     <i className="icon-right-arrow" >→</i>
                   </a>

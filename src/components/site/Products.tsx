@@ -48,11 +48,10 @@ export function Products() {
                   <div className="product__item__price">{price}</div>
                   <div>
 
-                  <a href="/lien-he" className="floens-btn product__item__link">
-                    <span>Liên hệ</span>
-                    <FaCartShopping />
-                    <i className="icon-cart" />
-                  </a>
+                    <a href="/lien-he" className="floens-btn product__item__link">
+                      <span>Liên hệ</span>
+                      <FaCartShopping className="product-cart-icon" />
+                    </a>
                   </div>
                 </div>
               </div>

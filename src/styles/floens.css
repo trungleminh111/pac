@@ -11591,6 +11591,7 @@ li:hover .sidebar__comments__icon::after {
   margin: 0;
   margin-bottom: 9px;
   letter-spacing: 1px;
+  color: #CD3527;
 }
 
 @media (max-width: 1199px) {
@@ -11622,7 +11623,7 @@ li:hover .sidebar__comments__icon::after {
   justify-content: center;
   align-items: center;
   font-size: 18px;
-  color: var(--floens-text, #7a736a);
+  color: #000000;
   line-height: normal;
   font-weight: 700;
   margin-bottom: 24px;

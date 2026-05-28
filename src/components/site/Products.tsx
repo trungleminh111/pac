@@ -1,3 +1,5 @@
+import { FaStar } from "react-icons/fa6";
+import { FaCartShopping } from "react-icons/fa6";
 const products = [
   ["Marble xanh", "10,500,000", "product-1-1.jpg"],
   ["Marble vàng", "8,000,000", "product-1-2.jpg"],
@@ -32,11 +34,11 @@ export function Products() {
 
                 <div className="product__item__content">
                   <div className="floens-ratings product__item__ratings">
-                    <span className="icon-star" />
-                    <span className="icon-star" />
-                    <span className="icon-star" />
-                    <span className="icon-star" />
-                    <span className="icon-star" />
+                    <div className="rating-stars">
+                      {Array.from({ length: 5 }).map((_, index) => (
+                        <FaStar key={index} />
+                      ))}
+                    </div>
                   </div>
 
                   <h4 className="product__item__title">
@@ -44,11 +46,14 @@ export function Products() {
                   </h4>
 
                   <div className="product__item__price">{price}</div>
+                  <div>
 
                   <a href="/lien-he" className="floens-btn product__item__link">
                     <span>Liên hệ</span>
+                    <FaCartShopping />
                     <i className="icon-cart" />
                   </a>
+                  </div>
                 </div>
               </div>
             </div>

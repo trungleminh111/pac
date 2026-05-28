@@ -100,3 +100,10 @@
   align-items: center;
   gap: 10px;
 }
+
+/* icon star */
+.rating-stars {
+  display: flex;
+  gap: 4px;
+  color: #FFCC00;
+}

@@ -1,3 +1,6 @@
+import { FaFacebookF, FaYoutube } from "react-icons/fa";
+import { SiZalo } from "react-icons/si";
+import { FaPaperPlane, FaPhoneAlt, FaMapMarkerAlt } from "react-icons/fa";
 export function Header() {
   return (
     <>
@@ -6,23 +9,24 @@ export function Header() {
           <div className="topbar-one__inner">
             <ul className="list-unstyled topbar-one__info">
               <li className="topbar-one__info__item">
-                <span className="icon-paper-plane" />
-                <a href="mailto:hotro@phucnam.com">hotro@phucnam.com</a>
+                <FaPaperPlane />
+                <a href="mailto:Pacstone.cskh@gmail.com">Pacstone.cskh@gmail.com</a>
               </li>
 
               <li className="topbar-one__info__item">
-                <span className="icon-phone-call" />
-                <a href="tel:+84909888999">0909.8888.99</a>
+                <FaPhoneAlt />
+                <a href="tel:0962757475">0962.757.475</a>
               </li>
 
-              <li className="topbar-one__info__item">
-                <span className="icon-location-2" />
-                <address>
-                  324-326 Phan Văn Hớn, Phường Tân Thới Nhất, Quận 12, TPHCM
-                </address>
+              <li className="topbar-one__info__item topbar-one__info__item--address">
+                <FaMapMarkerAlt />
+                <a href="https://maps.app.goo.gl/nRP811R1RdDnjdrc7"
+                  target="_blank"
+                  rel="noopener noreferrer">
+                  114 C Hoàng Hoa Thám, Phường Bảy Hiền, TP. HCM
+                </a>
               </li>
             </ul>
-
             <div className="topbar-one__right">
               <div className="topbar-one__social">
                 <a href="https://facebook.com">
@@ -31,7 +35,7 @@ export function Header() {
                 </a>
                 <a href="https://twitter.com">
                   <i className="icon-twitter" />
-                  <span className="sr-only">Twitter</span>
+                  <span className="sr-only">Zalo</span>
                 </a>
                 <a href="https://youtube.com">
                   <i className="icon-youtube" />
@@ -50,9 +54,9 @@ export function Header() {
               <div className="main-header__logo">
                 <a href="/">
                   <img
-                    src="/assets/images/logo-dark.png"
-                    alt="Logo Phúc Nam"
-                    width={250}
+                    src="/assets/images/logo-PACSTONE.webp"
+                    alt="Logo P.A.C STONE"
+                    className="site-logo"
                   />
                 </a>
               </div>

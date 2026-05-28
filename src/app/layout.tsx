@@ -3,6 +3,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./globals.css";
 import "@/styles/site.css";
 import "@/styles/floens.css";
+import "@/styles/icon.css";
 
 export const metadata: Metadata = {
   title: "Công ty cổ phần đá quốc tế Phúc Nam",

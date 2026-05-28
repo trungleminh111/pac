@@ -1,4 +1,4 @@
-const slides = ["slider1.png", "slider2.jpg", "slider3.jpg"];
+const slides = ["3.jpg"];
 
 export function Hero() {
   return (
@@ -13,32 +13,32 @@ export function Hero() {
               }}
             />
 
+
             <div className="main-slider-two__wrapper container">
-              <div className="main-slider-two__left">
-                <div className="main-slider-two__content">
-                  <p className="main-slider-two__tagline">
-                    Chào mừng đến với <br />
-                    <strong style={{ fontSize: 20 }}>
-                      Công ty cổ phần đá quốc tế Phúc Nam
-                    </strong>
+                <div className="hero-content">
+                  <p className="hero-subtitle">
+                    Chào mừng đến với
                   </p>
 
-                  <h2 className="main-slider-two__title">
-                    Nhà cung cấp giải pháp thiết kế,
-                    <br />
-                    thi công đá ốp lát cao cấp
-                    <br />
-                    hàng đầu Việt Nam
-                  </h2>
+                  <h1 className="hero-title">
+                    P.A.C STONE
+                  </h1>
 
-                  <a href="/gioi-thieu" className="main-slider-two__btn floens-btn">
-                    <span>Tìm hiểu thêm</span>
-                    <i className="icon-right-arrow" />
-                  </a>
+                  <h2 className="hero-desc">
+                    Đẳng cấp Công Trình Việt
+                  </h2>
+                  
                 </div>
+                <div className="conteiner-btn">
+                 <a href="/gioi-thieu" className="hero-btn">
+                    <span>Tìm hiểu thêm</span>
+                    <i className="icon-right-arrow" >→</i>
+                  </a>
+                  </div>
+                
               </div>
             </div>
-          </div>
+        
         ))}
       </div>
     </section>

@@ -1,3 +1,4 @@
+import { FiCheckSquare } from "react-icons/fi";
 export function About() {
   return (
     <section className="about-two section-space">
@@ -14,7 +15,7 @@ export function About() {
             <div className="about-two__image">
               <div className="about-two__image__inner">
                 <img
-                  src="/assets/images/about/about-2-3.jpg"
+                  src="/assets/images/about/about.png"
                   alt="about"
                   className="about-two__image__one"
                 />
@@ -33,7 +34,7 @@ export function About() {
                       className="experience__year"
                       style={{
                         backgroundImage:
-                          "url('/assets/images/shapes/reliable-shape-1-1.png')",
+                          "url('/assets/images/backgound/6.png')",
                       }}
                     >
                       25
@@ -52,7 +53,7 @@ export function About() {
               <div className="sec-title sec-title--border">
                 <h6 className="sec-title__tagline">Giới thiệu</h6>
                 <h3 className="sec-title__title">
-                  CÔNG TY CỔ PHẦN ĐÁ QUỐC TẾ PHÚC NAM
+                  công ty tnhh thương mại dịch vụ xây dựng p.a.c stone
                 </h3>
               </div>
 
@@ -62,47 +63,50 @@ export function About() {
                 </h5>
 
                 <p className="about-two__text">
-                  Công ty Cổ phần Đá quốc tế Phúc Nam là một trong những nhà
-                  cung cấp hàng đầu tại Việt Nam về các sản phẩm và giải pháp
-                  ốp lát đá cao cấp được nhập khẩu từ các quốc gia có nền công
-                  nghiệp đá phát triển như Italy, Tây Ban Nha, và Brazil.
+                  P.A.C STONE là một trong những nhà cung cấp hàng đầu
+                  Việt Nam về các sản phẩm và giải pháp ốp lát đá cao cấp
+                  được nhập khẩu từ các quốc gia có nền công nghiệp đá phát
+                  triển như Italy, Tây Ban Nha, Brazil, và Ấn Độ.
                   <br />
                   <br />
-                  Đặc biệt, với đội ngũ thiết kế và thi công chuyên nghiệp,
-                  Phúc Nam cam kết mang đến sự hoàn hảo và sang trọng cho mọi
-                  không gian sống.
+                  Đặc biệt với đội ngũ thiết kế và thi công chuyên nghiệp.
+                  P.A.C Stone cam kết mang đến sự hoàn hảo và sang trọng
+                  cho mọi không gian sống, đáp ứng mọi nhu cầu của khách
+                  hàng.
                 </p>
               </div>
 
               <div className="about-two__list">
                 <div className="about-two__list__left">
                   <div className="about-two__list__item">
-                    <span className="icon-tick" />
+                    <FiCheckSquare className="about-check-icon" />
                     Chất lượng vượt trội
                   </div>
                   <div className="about-two__list__item">
-                    <span className="icon-tick" />
+                    <FiCheckSquare className="about-check-icon" />
                     Thiết kế độc đáo
                   </div>
                 </div>
 
                 <div className="about-two__list__right">
                   <div className="about-two__list__item">
-                    <span className="icon-tick" />
+                    <FiCheckSquare className="about-check-icon" />
                     Thi công chuyên nghiệp
                   </div>
                   <div className="about-two__list__item">
-                    <span className="icon-tick" />
+                    <FiCheckSquare className="about-check-icon" />
                     Bảo hành tận tâm
                   </div>
                 </div>
               </div>
+              <div className="about-two__list">
 
-              <div className="about-two__button">
-                <a href="/gioi-thieu" className="floens-btn">
-                  <span>Xem thêm</span>
-                  <i className="icon-right-arrow" />
-                </a>
+                <div className="about-two__button">
+                  <a href="/gioi-thieu" className="floens-btn">
+                    <span>Xem thêm</span>
+                    <i className="icon-right-arrow" >→</i>
+                  </a>
+                </div>
               </div>
             </div>
           </div>

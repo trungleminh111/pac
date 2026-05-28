@@ -1,10 +1,56 @@
-const services = [
-  ["Thi công đá ốp mặt tiền", "service1.jpg", "icon-tile"],
-  ["Thi công đá ốp cột", "service2.jpg", "icon-parquet"],
-  ["Thi công đá ốp cầu thang", "service3.jpg", "icon-tiles"],
-  ["Thi công đá ốp bếp", "service4.jpg", "icon-carpet"],
-  ["Thi công tranh đá", "service5.jpg", "icon-wood-board"],
-  ["Thiết kế hoa văn đá", "service6.jpg", "icon-stones"],
+"use client";
+
+import { Autoplay } from "swiper/modules";
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
+
+import type { IconType } from "react-icons";
+
+import { FaBuilding, FaImage, FaUtensils } from "react-icons/fa6";
+import { MdStairs, MdDesignServices, MdViewColumn } from "react-icons/md";
+
+type ServiceItem = {
+  title: string;
+  image: string;
+  Icon: IconType;
+};
+
+const services: ServiceItem[] = [
+  {
+    title: "Thi Công Đá Ốp Mặt Tiền",
+    image: "service1.jpg",
+    Icon: FaBuilding,
+  },
+  {
+    title: "Thi Công Đá Ốp Cột",
+    image: "service2.jpg",
+    Icon: MdViewColumn,
+  },
+  {
+    title: "Thi Công Đá Ốp Cầu Thang ",
+    image: "service3.jpg",
+    Icon: MdStairs,
+  },
+  {
+    title: "Thiết kế thi công đá ốp sàn thang máy",
+    image: "service3.jpg",
+    Icon: MdStairs,
+  },
+  {
+    title: "Thi Công Đá Ốp Bếp",
+    image: "service4.jpg",
+    Icon: FaUtensils,
+  },
+  {
+    title: "Thi Công Tranh Đá",
+    image: "service1.jpg",
+    Icon: FaImage,
+  },
+  {
+    title: "Thiết Kế Và Thi Công Hoa Văn Đá",
+    image: "service2.jpg",
+    Icon: MdDesignServices,
+  },
 ];
 
 export function Services() {
@@ -26,36 +72,55 @@ export function Services() {
       </div>
 
       <div className="container-fluid">
-        <div className="row gutter-y-30">
-          {services.map(([title, image, icon]) => (
-            <div className="col-xl-4 col-lg-4 col-md-6" key={title}>
+        <Swiper
+          modules={[Autoplay]}
+          loop
+          speed={700}
+          autoplay={{
+            delay: 5000,
+            disableOnInteraction: false,
+          }}
+          slidesPerView={3}
+          spaceBetween={30}
+          breakpoints={{
+            0: { slidesPerView: 1 },
+            768: { slidesPerView: 2 },
+            1200: { slidesPerView: 3 },
+          }}
+          className="services-two__carousel"
+        >
+          {services.map(({ title, image, Icon }) => (
+            <SwiperSlide key={title}>
               <div className="service-card-two">
                 <div
                   className="service-card-two__bg"
-                  style={{
-                    backgroundImage:
-                      "url('/assets/images/services/service-bg-2-1.png')",
-                  }}
+                
                 />
+
                 <div className="service-card-two__image">
                   <img src={`/assets/images/services/${image}`} alt={title} />
                 </div>
+
                 <div className="service-card-two__content">
                   <h3 className="service-card-two__title">
                     <a href="/dich-vu">{title}</a>
                   </h3>
+
                   <div className="service-card-two__bottom">
                     <a href="/dich-vu" className="service-card-two__link floens-btn">
                       <span>Xem chi tiết</span>
-                      <i className="icon-right-arrow" />
+                      <i>→</i>
                     </a>
-                    <span className={`service-card-two__icon ${icon}`} />
+
+                    <span className="service-card-two__icon">
+                      <Icon />
+                    </span>
                   </div>
                 </div>
               </div>
-            </div>
+            </SwiperSlide>
           ))}
-        </div>
+        </Swiper>
       </div>
     </section>
   );

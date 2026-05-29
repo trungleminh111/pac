@@ -1,7 +1,7 @@
 import { Header } from "@/components/site/Header";
 import { Footer } from "@/components/site/Footer";
 import { PageHeader } from "@/components/site/PageHeader";
-
+import "@/styles/dichvu.css";
 const services = [
   {
     title: "Thi công đá ốp mặt tiền",
@@ -88,7 +88,7 @@ export default async function ServicesPage({
                         className="service-card-two__link floens-btn"
                       >
                         <span>Xem chi tiết</span>
-                        <i className="icon-right-arrow" />
+                       <i className="icon-right-arrow" >→</i>
                       </a>
 
                       <span

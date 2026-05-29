@@ -7,18 +7,19 @@ const filters = [
   "Villa - Penhouse",
   "Khách sạn - Trung tâm thương mại",
   "Chung cư - Nhà phố",
-  "Mẫu ốp đá cầu thang đẹp",
-  "Mẫu ốp đá bếp đẹp",
-  "Mẫu ốp nhà vệ sinh đẹp",
+  "Mẫu BẾP ốp đá đẹp",
+  "Mẫu cầu thang ốp đá đẹp",
+  "Mẫu nhà vệ sinh ốp đá đẹp",
+  "Mẫu sàn thang máy ốp đá đẹp"
 ];
 
 const works = [
-  ["Modern Tiles fitting", "Tile Care", "work-1-1.jpg"],
-  ["Indoor Court", "Tile Care", "work-1-2.jpg"],
-  ["Awesome Outdoor Project", "Tile Care", "work-1-3.jpg"],
-  ["Industrial Flooring", "Tile Care", "work-1-4.jpg"],
-  ["Eco-Friendly-Flooring", "Tile Care", "work-1-5.jpg"],
-  ["Laminate Flooring", "Tile Care", "work-1-6.jpg"],
+  ["Modern Tiles fitting", "Tile Care", "project-13.png"],
+  ["Indoor Court", "Tile Care", "project-12.png"],
+  ["Awesome Outdoor Project", "Tile Care", "project-9.png"],
+  ["Industrial Flooring", "Tile Care", "project-5.png"],
+  ["Eco-Friendly-Flooring", "Tile Care", "project-3.png"],
+  ["Laminate Flooring", "Tile Care", "project-11.png"],
 ];
 
 function toSlug(text: string) {
@@ -42,68 +43,80 @@ export default async function WorksPage({
     <div className="page-wrapper">
       <Header />
 
-    <PageHeader title=""   bgImage = "/assets/images/backgrounds/PACSTONE-CONGTRINH-header.png"/>
+      <PageHeader title="" bgImage="/assets/images/backgrounds/PACSTONE-CONGTRINH-header.png" />
 
 
       <section className="work-page work-page--grid section-space-bottom">
-        <div className="container-fluid">
-          <div className="text-center">
-            <ul className="list-unstyled post-filter gallery-one__filter__list">
-              {filters.map((filter, index) => (
-                <li key={filter} className={index === 0 ? "active" : ""}>
-                  <span>{filter}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
+  <div className="container">
+    
+    {/* KHỐI BỘ LỌC DANH MỤC: Bỏ các thẻ container bọc lồng dư thừa */}
+    <div className="row mb-4">
+      <div className="col-12">
+        <ul className="gallery-filter-grid">
+          {filters.map((filter, index) => (
+            <li
+              key={filter}
+              className={`filter-grid-item ${index === 0 ? "active" : ""}`}
+            >
+              <span className="filter-grid-text">{filter}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
 
-        <div className="container">
-          <div className="row gutter-y-30">
-            {works.map(([title, tagline, image]) => (
-              <div className="col-lg-4 col-md-6" key={title}>
-                <div className="work-card">
-                  <div className="work-card__image">
-                    <img
-                      src={`/assets/images/works/${image}`}
-                      alt={title}
-                    />
-                  </div>
+    {/* KHỐI DANH SÁCH SẢN PHẨM / CÔNG TRÌNH */}
+    <div className="row gutter-y-30">
+      {works.map(([title, tagline, image]) => (
+        <div className="col-lg-4 col-md-6 col-12" key={title}>
+          <div className="work-card h-100">
+            
+            {/* Ảnh bọc ngoài ép chiều cao cố định chống móp méo */}
+            <div className="work-card__image">
+              <img
+                src={`/assets/images/works/${image}`}
+                alt={title}
+              />
+            </div>
 
-                  <div className="work-card__content-show">
-                    <div className="work-card__content-inner">
-                      <h3 className="work-card__tagline">{tagline}</h3>
-                      <h3 className="work-card__title">
-                        <a href={`/${locale}/cong-trinh/${toSlug(title)}`}>
-                          {title}
-                        </a>
-                      </h3>
-                    </div>
-                  </div>
-
-                  <div className="work-card__content-hover">
-                    <div className="work-card__content-inner">
-                      <h3 className="work-card__tagline">{tagline}</h3>
-                      <h3 className="work-card__title">
-                        <a href={`/${locale}/cong-trinh/${toSlug(title)}`}>
-                          {title}
-                        </a>
-                      </h3>
-                    </div>
-
-                    <a
-                      href={`/${locale}/cong-trinh/${toSlug(title)}`}
-                      className="work-card__link floens-btn"
-                    >
-                      <span className="icon-right-arrow" />
-                    </a>
-                  </div>
-                </div>
+            {/* Nội dung trạng thái bình thường */}
+            <div className="work-card__content-show">
+              <div className="work-card__content-inner">
+                <h3 className="work-card__tagline">{tagline}</h3>
+                <h3 className="work-card__title">
+                  <a href={`/${locale}/cong-trinh/${toSlug(title)}`}>
+                    {title}
+                  </a>
+                </h3>
               </div>
-            ))}
+            </div>
+
+            {/* Nội dung trạng thái khi di chuột vào (Hover) */}
+            <div className="work-card__content-hover">
+              <div className="work-card__content-inner">
+                <h3 className="work-card__tagline">{tagline}</h3>
+                <h3 className="work-card__title">
+                  <a href={`/${locale}/cong-trinh/${toSlug(title)}`}>
+                    {title}
+                  </a>
+                </h3>
+              </div>
+
+              <a
+                href={`/${locale}/cong-trinh/${toSlug(title)}`}
+                className="work-card__link floens-btn"
+              >
+                <span className="icon-right-arrow" />
+              </a>
+            </div>
+
           </div>
         </div>
-      </section>
+      ))}
+    </div>
+
+  </div>
+</section>
 
       <Footer />
     </div>

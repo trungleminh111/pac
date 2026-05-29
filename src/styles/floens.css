@@ -1318,19 +1318,19 @@ p {
 
 @media (max-width: 767px) {
   .sec-title__title {
-    font-size: 40px;
+    font-size: 25px;
   }
 }
 
 @media (max-width: 575px) {
   .sec-title__title {
-    font-size: 35px;
+    font-size: 25px;
   }
 }
 
 @media (max-width: 425px) {
   .sec-title__title {
-    font-size: 33px;
+    font-size: 20px;
   }
 }
 
@@ -6839,8 +6839,15 @@ body.megamenu-popup-active .mobile-nav__content {
   position: relative;
   width: calc(100% - 30px);
   display: grid;
-  grid-template-columns: calc(50% - 30px) calc(50% + 30px);
+  grid-template-columns: calc(50% - 15px) calc(50% + 15px); 
   gap: 30px;
+  align-items: start; 
+}
+.about-one__image {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; 
+  height: 100%; /* Đảm bảo cột nhận đủ 100% chiều cao từ Grid cha */
 }
 
 @media (max-width: 991px) {
@@ -6855,12 +6862,6 @@ body.megamenu-popup-active .mobile-nav__content {
   }
 }
 
-@media (max-width: 575px) {
-  .about-one__image-grid {
-    width: calc(100% - 40px);
-    gap: 20px;
-  }
-}
 
 @media (max-width: 425px) {
   .about-one__image-grid {
@@ -7162,7 +7163,7 @@ body.megamenu-popup-active .mobile-nav__content {
 
 .about-two {
   position: relative;
-  background-color: var(--floens-white2, #f2eeea);
+  /* background-color: var(--floens-white2, #f2eeea); */
 }
 
 .about-two__bg {
@@ -7766,7 +7767,6 @@ body.megamenu-popup-active .mobile-nav__content {
 
 .contact-one__form {
   position: relative;
-  margin-left: 30px;
   padding: 40px;
   background-color: var(--floens-white, #ffffff);
   z-index: 11;
@@ -11003,10 +11003,6 @@ li:hover .sidebar__comments__icon::after {
   left: -1px;
 }
 
-.product__categories {
-  padding-top: 32px;
-}
-
 .product__categories__title {
   margin-bottom: 13px;
 }
@@ -11050,7 +11046,6 @@ li:hover .sidebar__comments__icon::after {
   display: flex;
   align-items: center;
   padding-left: 15px;
-  padding-right: 15px;
   content: attr(data-text);
   position: absolute;
   top: 0;
@@ -11313,10 +11308,10 @@ li:hover .sidebar__comments__icon::after {
 
 
 .product-home {
-  padding-top: 115px;
+  padding-top: 100px;
   padding-bottom: 120px;
   position: relative;
-  background-color: var(--floens-black2, #2b1e16);
+  background: rgba(63, 51, 44, 0.47);
 }
 
 @media (max-width: 767px) {
@@ -11454,8 +11449,7 @@ li:hover .sidebar__comments__icon::after {
 
 .product-details__gallery-thumb {
   display: flex;
-  align-items: center;
-  justify-content: center;
+
   margin-top: 30px;
 }
 
@@ -11477,7 +11471,7 @@ li:hover .sidebar__comments__icon::after {
 
 .product-details__content {
   position: relative;
-  margin-top: 24px;
+  /* margin-top: 24px; */
 }
 
 @media (max-width: 1199px) {
@@ -11508,14 +11502,12 @@ li:hover .sidebar__comments__icon::after {
 }
 
 .product-details__price {
-  padding: 5px 10.5px;
   font-family: var(--floens-font3, "Quicksand", sans-serif);
   font-size: 24px;
   line-height: normal;
   text-transform: capitalize;
-  background-color: var(--floens-base, #c7844f);
   text-transform: capitalize;
-  color: var(--floens-white, #ffffff);
+  color: var(--floens-base,#CD3527);
   margin: 0;
 }
 
@@ -11548,8 +11540,6 @@ li:hover .sidebar__comments__icon::after {
 }
 
 .product-details__excerpt {
-  margin-top: 21.5px;
-  padding-bottom: 20px;
   border-bottom: 1px solid var(--floens-border-color, #ded8d3);
 }
 
@@ -11567,7 +11557,6 @@ li:hover .sidebar__comments__icon::after {
 }
 
 .product-details__color {
-  margin: 30px 0;
   display: flex;
   align-items: center;
   flex-wrap: wrap;
@@ -11632,9 +11621,7 @@ li:hover .sidebar__comments__icon::after {
   display: flex;
   align-items: center;
   gap: 24px 36px;
-  padding-bottom: 29px;
-  border-bottom: 1px solid var(--floens-border-color, #ded8d3);
-  margin-bottom: 30px;
+
 }
 
 .product-details__size__box {
@@ -11677,7 +11664,6 @@ li:hover .sidebar__comments__icon::after {
   align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
-  gap: 30px 20px;
 }
 
 .product-details__quantity {
@@ -11759,7 +11745,7 @@ li:hover .sidebar__comments__icon::after {
   padding-top: 60px;
   padding-bottom: 51px;
   margin-top: 60px;
-  background-color: var(--floens-white2, #f2eeea);
+  background-color: #F2EEEA;
 }
 
 .product-details__description {
@@ -15252,58 +15238,7 @@ li:hover .sidebar__comments__icon::after {
   color: var(--floens-white, #ffffff);
 }
 
-.service-card-two__bottom {
-  display: flex;
-  align-items: center;
-  gap: 40px 10px;
-  flex-wrap: wrap;
-  justify-content: space-between;
-}
 
-.service-card-two__link {
-  color: var(--floens-base, #c7844f);
-  top: 13px;
-  padding: 0 70px 0 0;
-  background-color: transparent;
-  margin-left: -149px;
-  transition: all 500ms ease;
-}
-
-.service-card-two__link:hover {
-  color: var(--floens-white, #ffffff);
-}
-
-@media (max-width: 575px) {
-  .service-card-two__link {
-    font-size: 13px;
-    margin-left: -134px;
-  }
-}
-
-.service-card-two__link::before,
-.service-card-two__link::after {
-  display: none;
-}
-
-.service-card-two__link i {
-  color: var(--floens-base, #c7844f);
-}
-
-.service-card-two__link i::after {
-  background-color: RGBA(var(--floens-white2-rgb, 242, 238, 234), 0.2);
-}
-
-.service-card-two__link:hover i {
-  color: var(--floens-white, #ffffff);
-}
-
-.service-card-two__link:hover i::after {
-  background-color: RGBA(var(--floens-white2-rgb, 242, 238, 234), 0.7);
-}
-
-.service-card-two:hover .service-card-two__link {
-  margin-left: 0;
-}
 
 .service-card-two__icon {
   font-size: 50px;
@@ -16175,7 +16110,7 @@ li:hover .sidebar__comments__icon::after {
   padding-top: 5vw;
   padding-bottom: 5vw;
   position: relative;
-  background-color: var(--floens-white2, #f2eeea);
+  /* background-color: var(--floens-white2, #f2eeea); */
   overflow: hidden;
 }
 
@@ -16920,11 +16855,16 @@ li:hover .sidebar__comments__icon::after {
   display: block;
   position: relative;
   overflow: hidden;
+  aspect-ratio: 4/6; 
+  width: 100%;
 }
 
 .work-card__image img {
   width: 100%;
+  height: 100%; 
   display: block;
+  object-fit: cover; 
+  object-position: center; 
 }
 
 .work-card__content-show,
@@ -18124,13 +18064,13 @@ body.boxed-wrapper .main-slider .sec-title__title {
 
 @media (max-width: 1199px) {
   body.boxed-wrapper .main-slider .sec-title__title {
-    font-size: 45px;
+    font-size: 30px;
   }
 }
 
 @media (max-width: 575px) {
   body.boxed-wrapper .main-slider .sec-title__title {
-    font-size: 40px;
+    font-size: 30px;
   }
 }
 

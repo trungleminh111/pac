@@ -1,16 +1,33 @@
 import { Header } from "@/components/site/Header";
 import { Footer } from "@/components/site/Footer";
 import { PageHeader } from "@/components/site/PageHeader";
-
+import { FaStar } from "react-icons/fa6";
+import { FaCartShopping } from "react-icons/fa6";
+import Link from "next/link"; // Đã thêm để tránh bug router action
+import "@/styles/sanpham.css";
+import { FaFacebookF } from "react-icons/fa";
+import { FaYoutube } from "react-icons/fa";
+const products = [
+  ["Marble xanh", "10,500,000", "product-1-1.jpg"],
+  ["Marble vàng", "8,000,000", "product-1-2.jpg"],
+  ["Marble trắng", "4,000,000", "product-1-3.jpg"],
+  ["Marble đen", "5,000,000", "product-1-6.jpg"],
+];
 const product = {
-  name: "Marble Xanh MPN001",
+  name: "Marble Xanh MPAC001",
   price: "10,500,000",
   origin: "Ấn Độ",
-  size: "Khổ lớn, Khổ nhỏ (Độ dày 2cm)",
+  specs: [
+    { label: "Chủng loại", value: "đá Marble tự nhiên" },
+    { label: "Kích thước", value: "Khổ lớn (theo yêu cầu của khách hàng)" },
+    { label: "Độ dày", value: "2cm" },
+    { label: "Khối lượng riêng", value: "2,71 g/m3" },
+    { label: "Độ cứng", value: "4Mohs" },
+  ],
   images: [
     "product-1-1.jpg",
-    "product-d-1-1.jpg",
-    "product-d-1-2.jpg",
+    "product-1-1.jpg",
+    "product-1-2.jpg",
   ],
 };
 
@@ -25,14 +42,16 @@ export default async function ProductDetailPage({
     <div className="page-wrapper">
       <Header />
 
-              <PageHeader title=""   bgImage = "/assets/images/backgrounds/PACSTONE-SANPHAM-header.png"/>
-
+      <PageHeader title="" bgImage="/assets/images/backgrounds/PACSTONE-SANPHAM-header.png" />
 
       <section className="product-details section-space">
         <div className="container">
-          <div className="row gutter-y-50">
+          {/* align-items-stretch giúp cột nội dung bên phải có chiều cao bằng khít cột ảnh bên trái */}
+          <div className="row gutter-y-50 align-items-stretch">
+
+            {/* KHỐI ẢNH BÊN TRÁI */}
             <div className="col-lg-6 col-xl-6">
-              <div className="product-details__img">
+              <div className="product-details__img h-100">
                 <div className="swiper product-details__gallery-top">
                   <div className="swiper-wrapper">
                     <div className="swiper-slide">
@@ -46,11 +65,11 @@ export default async function ProductDetailPage({
                 </div>
 
                 <div className="swiper product-details__gallery-thumb">
-                  <div className="swiper-wrapper">
-                    {product.images.map((image) => (
+                  <div className="swiper-wrapper d-flex gap-2">
+                    {product.images.map((image, idx) => (
                       <div
                         className="product-details__gallery-thumb-slide swiper-slide"
-                        key={image}
+                        key={`${image}-${idx}`}
                       >
                         <img
                           src={`/assets/images/products/${image}`}
@@ -64,83 +83,82 @@ export default async function ProductDetailPage({
               </div>
             </div>
 
+            {/* KHỐI THÔNG TIN BÊN PHẢI */}
             <div className="col-lg-6 col-xl-6">
-              <div className="product-details__content">
+              {/* Thêm style flex d-flex để quản lý vị trí nội dung bên trong */}
+              <div className="product-details__content h-100 d-flex flex-column">
+
                 <div className="product-details__top">
                   <div className="product-details__top__left">
                     <h3 className="product-details__name">{product.name}</h3>
-                    <h4 className="product-details__price">{product.price}</h4>
                   </div>
-
-                  <a
-                    href="https://www.youtube.com/watch?v=h9MbznbxlLc"
-                    className="product-details__video video-button video-popup"
-                  >
-                    <span className="icon-play" />
-                    <i className="video-button__ripple" />
-                  </a>
                 </div>
 
                 <div className="product-details__review">
                   <div className="floens-ratings">
-                    <span className="icon-star" />
-                    <span className="icon-star" />
-                    <span className="icon-star" />
-                    <span className="icon-star" />
-                    <span className="icon-star" />
+                    <div className="rating-stars">
+                      {Array.from({ length: 5 }).map((_, index) => (
+                        <FaStar key={index} />
+                      ))}
+                    </div>
                   </div>
                 </div>
 
-                <div className="product-details__excerpt">
-                  <p className="product-details__excerpt__text1">
-                    Đá Marble Xanh Dương có nguồn gốc từ Brazil, đá có màu xanh
-                    lá cây kết hợp cùng khoáng sản màu vàng ánh kim phù hợp cho
-                    các hạng mục nội ngoại thất cao cấp như khách sạn, trung tâm
-                    hội nghị lớn.
-                  </p>
-                </div>
+                <div className="detail-product-title d-flex gap-3 flex-column">
 
-                <div className="product-details__color">
-                  <h3 className="product-details__content__title">Xuất xứ</h3>
-                  <div className="product-details__color__box">
-                    {product.origin}
+                  <div className="product-details__meta-item">
+                    <span className="fw-bold text-dark">Xuất Xứ:</span>
+                    <span className="ms-2 text-secondary">{product.origin}</span>
+                  </div>
+
+                  <div className="product-details__specs mt-2">
+                    <h5 className="fw-bold text-dark mb-2" style={{ fontSize: "16px" }}>Thông Số Kỹ Thuật</h5>
+                    <ul className="list-unstyled d-flex flex-column gap-1 ps-0">
+                      {product.specs.map((spec, index) => (
+                        <li key={index} className="product-details__spec-line">
+                          <span className="text-dark" style={{ fontWeight: 500 }}>{spec.label}:</span>
+                          <span className="ms-2 text-secondary">{spec.value}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                  <div className="product-details__excerpt mt-2">
+                    <h5 className="fw-bold text-dark mb-2" style={{ fontSize: "16px" }}>Ứng Dụng</h5>
+                    {/* nội dung ứng dụng */}
                   </div>
                 </div>
-
-                <div className="product-details__size">
-                  <h3 className="product-details__content__title">Kích thước</h3>
-                  <div className="product-details__size__box">{product.size}</div>
-                </div>
-
-                <div className="product-details__info">
-                  <a
-                    href={`/${locale}/lien-he`}
-                    className="product-details__btn-cart floens-btn"
-                  >
-                    <span>Liên hệ</span>
-                    <i className="icon-cart" />
-                  </a>
+                <div className="product-details__info mt-auto pt-4">
+                  <h4 className="product-details__price">{product.price}</h4>
+                  <div>
+                    <Link href={`/${locale}/lien-he`} className="floens-btn product__item__link">
+                      <span>Liên hệ</span>
+                      <FaCartShopping className="product-cart-icon" />
+                    </Link>
+                  </div>
 
                   <div className="product-details__socials">
                     <h3 className="product-details__socials__title">Chia sẻ:</h3>
                     <div className="details-social">
-                      <a href="https://facebook.com">
-                        <i className="icon-facebook" />
-                      </a>
-                      <a href="https://twitter.com">
-                        <i className="icon-twitter" />
-                      </a>
-                      <a href="https://linkedin.com">
-                        <i className="icon-linkedin" />
-                      </a>
-                      <a href="https://youtube.com">
-                        <i className="icon-youtube" />
-                      </a>
+                      <Link href="https://facebook.com" target="_blank">
+                        <i className="icon-facebook" >
+                          <FaFacebookF /></i>
+                      </Link>
+                      <Link href="https://zalo.com" target="_blank">
+                        <img
+                          src="/assets/images/Icon_of_Zalo.svg.webp"
+                        />
+                      </Link>
+                      <Link href="https://youtube.com" target="_blank">
+                        <i className="icon-youtube">
+                          <FaYoutube /></i>
+                      </Link>
                     </div>
                   </div>
                 </div>
+
               </div>
             </div>
+
           </div>
         </div>
 
@@ -148,56 +166,46 @@ export default async function ProductDetailPage({
           <div className="container">
             <div className="product-details__description">
               <h3 className="product-details__description__title">
-                MÔ TẢ SẢN PHẨM
+                SẢN PHẨM TƯƠNG TỰ
               </h3>
+            </div>
+            <div className="product-details__description">
 
-              <div className="product-details__text__box">
-                <h3 className="product-details__description__title">
-                  1. Khu vực khai thác
-                </h3>
-                <p className="product-details__description__text">
-                  Đá Marble Màu xanh MPN001 là dòng đá tự nhiên được khai thác
-                  tại Udaipur, Rajasthan, India.
-                </p>
+              <div className="row gutter-y-30">
+                {products.map(([name, price, image]) => (
+                  <div className="col-xl-3 col-lg-3 col-md-6" key={name}>
+                    <div className="product__item">
+                      <div className="product__item__image">
+                        <a href="/san-pham">
+                          <img src={`/assets/images/products/${image}`} alt={name} />
+                        </a>
+                      </div>
 
-                <h3 className="product-details__description__title">
-                  2. Phân tích tổng thể
-                </h3>
-                <p className="product-details__description__text">
-                  <strong>- Tên gọi khác:</strong> Wave Onyx Marble, Green Onyx
-                  Marble.
-                  <br />
-                  <strong>- Mô tả chung:</strong> đá Marble Xanh MPN001 là dòng
-                  đá marble có màu sắc xanh ngọc xen lẫn các dải màu xanh đậm,
-                  cam hoặc trắng ấn tượng.
-                  <br />
-                  <strong>- Đặc điểm:</strong> mẫu đá có khả năng xuyên sáng,
-                  phù hợp làm điểm nhấn trong không gian nội thất cao cấp.
-                </p>
+                      <div className="product__item__content">
+                        <div className="floens-ratings product__item__ratings">
+                          <div className="rating-stars">
+                            {Array.from({ length: 5 }).map((_, index) => (
+                              <FaStar key={index} />
+                            ))}
+                          </div>
+                        </div>
 
-                <h3 className="product-details__description__title">
-                  3. Thông số kĩ thuật
-                </h3>
-                <p className="product-details__description__text">
-                  - Chủng loại: đá Marble tự nhiên
-                  <br />
-                  - Độ cứng: 4Mohs
-                  <br />
-                  - Khối lượng riêng: 2,71 g/m3
-                  <br />
-                  - Hấp thụ nước: 0.10%
-                  <br />
-                  - Độ dày: 2cm
-                </p>
+                        <h4 className="product__item__title">
+                          <a href="/san-pham">{name}</a>
+                        </h4>
 
-                <h3 className="product-details__description__title">
-                  4. Ứng dụng
-                </h3>
-                <p className="product-details__description__text">
-                  Đá Marble Xanh MPN001 thích hợp cho các hạng mục như vách ốp
-                  tường trang trí, quầy bar, bàn lễ tân, vách thang máy và vách
-                  tivi cao cấp.
-                </p>
+                        <div className="product__item__price">{price}</div>
+                        <div>
+
+                          <a href="/lien-he" className="floens-btn product__item__link">
+                            <span>Liên hệ</span>
+                            <FaCartShopping className="product-cart-icon" />
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
           </div>

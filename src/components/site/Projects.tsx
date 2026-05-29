@@ -37,13 +37,15 @@ export function Projects() {
               </SwiperSlide>
             ))}
           </Swiper>
-          <div className="projects-one__nav d-flex d-md-none ">
-            <button type="button" className="project-prev">
-              <span>←</span>
+          <div className="navigation-wrapper justify-content-center d-flex d-md-non ">
+            <button className="nav-btn-pair prev">
+              <span className="circle-base"></span>
+              <span className="arrow-line"></span>
             </button>
 
-            <button type="button" className="project-next">
-              <span>→</span>
+            <button className="nav-btn-pair next">
+              <span className="circle-base"></span>
+              <span className="arrow-line"></span>
             </button>
           </div>
         </div>
@@ -69,16 +71,18 @@ export function Projects() {
           </p>
 
           <div className="projects-one__bottom">
-            <div className="projects-one__nav d-none d-md-flex">
-              <button type="button" className="project-prev">
-                <span>←</span>
+
+            <div className="navigation-wrapper d-none d-md-flex">
+              <button className="nav-btn-pair prev">
+                <span className="circle-base"></span>
+                <span className="arrow-line"></span>
               </button>
 
-              <button type="button" className="project-next">
-                <span>→</span>
+              <button className="nav-btn-pair next">
+                <span className="circle-base"></span>
+                <span className="arrow-line"></span>
               </button>
             </div>
-
             <a href="/cong-trinh" className="project-btn floens-btn floens-btn--border">
               <span>Xem tất cả</span>
               <i>→</i>

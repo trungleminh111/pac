@@ -1,0 +1,109 @@
+/* Phục vụ căn đều hai bên giữa các ô mẫu đá */
+.product__categories .list-unstyled {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between; /* Đẩy các nút dạt đều khít lề trái phải */
+  gap: 14px 10px; /* 14px khoảng cách hàng trên hàng dưới, 10px hàng ngang */
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  height: 100%;
+}
+
+.product__categories .list-unstyled li {
+  flex: 1 1 auto;
+  max-width: max-content;
+}
+
+.product__categories .list-unstyled li a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 28px; /* Tăng không gian bấm và diện tích nút chữ */
+  background-color: #f7f5f3;
+  border: 1px solid #e1dad5;
+  color: #000000;
+  font-weight: 500;
+  border-radius: 4px;
+  white-space: nowrap;
+  transition: all 300ms ease;
+}
+
+/* Khi màn hình nhỏ (Mobile) */
+@media (max-width: 767px) {
+  .product__categories .list-unstyled {
+    flex-direction: column;
+    gap: 12px !important;
+  }
+  .product__categories .list-unstyled li {
+    max-width: 100% !important;
+    width: 100%;
+  }
+  .product__categories .list-unstyled li a {
+    display: flex;
+    width: 100%;
+    padding: 14px 20px;
+  }
+}
+
+.product-details__info{
+    padding: 20px px;
+}
+
+/* Đảm bảo khung chứa bên phải tận dụng toàn bộ chiều cao của hàng */
+.product-details__content {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+/* Ép phần thông tin giá & nút liên hệ nhảy xuống đáy */
+.product-details__info.mt-auto {
+  margin-top: auto !important; /* Tự động tính toán không gian trống để đẩy phần tử xuống cuối */
+}
+
+/* Reset layout khi xem trên thiết bị di động (Mobile) */
+@media (max-width: 991px) {
+  .product-details__content {
+    height: auto;
+  }
+  .product-details__info.mt-auto {
+    margin-top: 30px !important; /* Trên điện thoại thì tạo khoảng cách an toàn chứ không ép đáy */
+  }
+}
+.details-social a img {
+    width: 30px;
+}
+.details-social a svg{
+    height: 30px;
+    width: auto;
+}
+.details-social .icon-facebook{
+    color: #1877F2;
+}
+
+.details-social .icon-youtube{
+    color: #FF0000;
+}
+
+.product__item {
+  /* Các thuộc tính nền và viền cơ bản dựa trên ảnh mẫu */
+
+
+  border-radius: 2px;
+  display: inline-block;
+  text-decoration: none;
+  color: #000000;
+  font-weight: 500;
+  transition: all 0.2s ease-in-out;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+}
+
+.product__item:hover {
+  background-color: #fffcf9;
+  box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.2);
+  transform: translateY(1px);
+}
+.section-space{
+    padding-bottom: 0PX;
+}

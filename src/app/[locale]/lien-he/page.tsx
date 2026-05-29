@@ -1,13 +1,13 @@
 import { Header } from "@/components/site/Header";
 import { Footer } from "@/components/site/Footer";
 import { PageHeader } from "@/components/site/PageHeader";
-
+import Image from "next/image";
 export default function ContactPage() {
   return (
     <div className="page-wrapper">
       <Header />
 
-         <PageHeader title=""   bgImage = "/assets/images/backgrounds/PACSTONE-LIENHE-header.png"/>
+      <PageHeader title="" bgImage="/assets/images/backgrounds/PACSTONE-LIENHE-header.png" />
 
 
       <section className="contact-one section-space">
@@ -38,104 +38,90 @@ export default function ContactPage() {
                   tư vấn miễn phí từ đội ngũ chuyên gia hàng đầu.
                 </p>
 
-                <div className="contact-one__info">
+
+                <form className="contact-one__form contact-form-validated form-one">
                   <div
-                    className="contact-one__info__bg"
+                    className="contact-one__form__bg"
                     style={{
                       backgroundImage:
-                        "url('/assets/images/shapes/contact-info-bg.png')",
+                        "url('/assets/images/shapes/contact-info-form-bg.png')",
                     }}
                   />
 
-                  <div className="contact-one__info__content">
-                    <div className="contact-one__info__item">
-                      <div className="contact-one__info__item__inner">
-                        <div className="contact-one__info__icon">
-                          <span className="icon-phone-call" />
-                        </div>
-                        <p className="contact-one__info__text">
-                          <a href="tel:+84909888899">0909.8888.99</a>
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="contact-one__info__item">
-                      <div className="contact-one__info__item__inner">
-                        <div className="contact-one__info__icon">
-                          <span className="icon-paper-plane" />
-                        </div>
-                        <p className="contact-one__info__text">
-                          <a href="mailto:hotro@phucnam.com">
-                            hotro@phucnam.com
-                          </a>
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="contact-one__info__item">
-                      <div className="contact-one__info__item__inner">
-                        <div className="contact-one__info__icon">
-                          <span className="icon-location" />
-                        </div>
-                        <address className="contact-one__info__text">
-                          <a href="https://www.google.com/maps">
-                            324-326 Phan Văn Hớn, P.Tân Thới Nhất, Q.12, TPHCM
-                          </a>
-                        </address>
-                      </div>
-                    </div>
+                  <div className="contact-one__form__top">
+                    <h2 className="contact-one__form__title">
+                      Gửi tin nhắn cho chúng tôi
+                    </h2>
                   </div>
 
-                  <img
-                    src="/assets/images/shapes/contact-shape-1-1.png"
-                    alt="contact"
-                    className="contact-one__info__image"
-                  />
-                </div>
+                  <div className="form-one__group form-one__group--grid">
+                    <div className="form-one__control form-one__control--input form-one__control--full">
+                      <input type="text" name="name" placeholder="Họ và tên" />
+                    </div>
+
+                    <div className="form-one__control form-one__control--full">
+                      <input type="email" name="email" placeholder="Email" />
+                    </div>
+
+                    <div className="form-one__control form-one__control--full">
+                      <input type="text" name="phone" placeholder="Điện thoại" />
+                    </div>
+
+                    <div className="form-one__control form-one__control--mesgae form-one__control--full">
+                      <textarea name="message" placeholder="Nội dung" />
+                    </div>
+
+                    <div className="form-one__control form-one__control--full">
+                      <button type="submit" className="floens-btn">
+                        <span>Gửi nội dung</span>
+                        <i className="icon-right-arrow" />
+                      </button>
+                    </div>
+                  </div>
+                </form>
+
               </div>
             </div>
 
+
             <div className="col-lg-6">
-              <form className="contact-one__form contact-form-validated form-one">
-                <div
-                  className="contact-one__form__bg"
-                  style={{
-                    backgroundImage:
-                      "url('/assets/images/shapes/contact-info-form-bg.png')",
-                  }}
+              {/* Thẻ bọc ngoài đơn giản, không cố định aspectRatio để chiều cao tự bung theo ảnh */}
+              <div className="doc-card-item">
+                <Image
+                  src="/assets/images/lienhe/ShowroomPAC.png"
+                  alt="Hồ sơ năng lực P.A.C Stone"
+                  width={1448}
+                  height={1086}
+                  sizes="(max-width: 991px) 100vw, 50vw"
+                  className="doc-thumb-img"
                 />
+              </div>
+              <div className="doc-a4-grid">
 
-                <div className="contact-one__form__top">
-                  <h2 className="contact-one__form__title">
-                    Gửi tin nhắn cho chúng tôi
-                  </h2>
+                {/* Ảnh A4 thứ nhất */}
+                <div className="doc-a4-item">
+                  <Image
+                    src="/assets/images/lienhe/Ho_So_Nang_Luc_PAC_STONE.png"
+                    alt="Hồ sơ năng lực P.A.C Stone"
+                    width={210}
+                    height={297}
+                    sizes="(max-width: 991px) 50vw, 25vw"
+                    className="doc-a4-img"
+                  />
+                </div>
+                <div className="doc-a4-item">
+                  <Image
+                    src="/assets/images/lienhe/Giay_phep_PAC_STONE.png"
+                    alt="Giấy phép kinh doanh"
+                    width={210}
+                    height={297}
+                    sizes="(max-width: 991px) 50vw, 25vw"
+                    className="doc-a4-img"
+                  />
                 </div>
 
-                <div className="form-one__group form-one__group--grid">
-                  <div className="form-one__control form-one__control--input form-one__control--full">
-                    <input type="text" name="name" placeholder="Họ và tên" />
-                  </div>
+              </div>
 
-                  <div className="form-one__control form-one__control--full">
-                    <input type="email" name="email" placeholder="Email" />
-                  </div>
-
-                  <div className="form-one__control form-one__control--full">
-                    <input type="text" name="phone" placeholder="Điện thoại" />
-                  </div>
-
-                  <div className="form-one__control form-one__control--mesgae form-one__control--full">
-                    <textarea name="message" placeholder="Nội dung" />
-                  </div>
-
-                  <div className="form-one__control form-one__control--full">
-                    <button type="submit" className="floens-btn">
-                      <span>Gửi nội dung</span>
-                      <i className="icon-right-arrow" />
-                    </button>
-                  </div>
-                </div>
-              </form>
             </div>
           </div>
         </div>
@@ -157,7 +143,7 @@ export default function ContactPage() {
               referrerPolicy="no-referrer-when-downgrade"
             />
              */}
-<iframe src="https://www.google.com/maps/d/embed?mid=1OxB97mvj7vH_G3AYETY6GQ_TvRiiSQg&ehbc=2E312F&noprof=1" width="640" height="480"></iframe>          </div>
+<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3918.711720994874!2d106.60632847588039!3d10.833359189318921!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752bcbcc04a65b%3A0x167f4583efb11f20!2zMzI0IMSQLiBQaGFuIFbEg24gSOG7m24sIMSQw7RuZyBIxrBuZyBUaHXhuq1uLCBI4buTIENow60gTWluaCAxMDAwMCwgVmnhu4d0IE5hbQ!5e0!3m2!1svi!2s!4v1780051691033!5m2!1svi!2s" width="600" height="450"></iframe>          </div>
         </div>
       </section>
 

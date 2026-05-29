@@ -18,6 +18,7 @@ export function News() {
                   <br />& sự kiện nổi bật
                 </h3>
               </div>
+
             </div>
 
             <div className="col-lg-4">

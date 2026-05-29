@@ -28,9 +28,9 @@ export function Footer() {
 
                 <p className="footer-widget__about-text">
                   © Bản quyền 2026 thuộc về
-                  <br></br>
+                 {"\n"}
                   CÔNG TY TNHH THƯƠNG MẠI DỊCH VỤ XÂY DỰNG
-                  <br></br>
+                  {"\n"}
                   P.A.C STONE
                 </p>
               </div>

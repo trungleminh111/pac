@@ -7,10 +7,10 @@ import { PageHeader } from "@/components/site/PageHeader";
 
 export default function AboutPage() {
     return (
-        <div className="page-wrapper">
+        <div className="page-wrapper page-gioithieu">
             <Header />
             <PageHeader title=""  bgImage = "/assets/images/backgrounds/PACSTONE-GioiThieu-header.png"/>
-            <About />
+            <About backgroundImage="/assets/images/backgrounds/8.png" />
             <section className="about-one section-space" id="about">
                 <div className="container">
                     <div className="row gutter-y-60">

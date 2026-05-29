@@ -7,11 +7,11 @@ import "@/styles/floens.css";
 import "@/styles/icon.css";
 import "@/styles/gioithieu.css";
 import "@/styles/footer.css";
-
+import ScrollTopProgress from "@/components/site/ScrollTopProgress";
 
 
 export const metadata: Metadata = {
-  title: "Công ty cổ phần đá quốc tế Phúc Nam",
+  title: "P.A.C STONE",
   description: "Nhà cung cấp giải pháp thiết kế, thi công đá ốp lát cao cấp",
 };
 
@@ -22,7 +22,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="vi">
-      <body>{children}</body>
+      <body>{children}
+
+       <ScrollTopProgress />
+      </body>
     </html>
   );
 }

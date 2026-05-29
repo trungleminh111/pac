@@ -4,16 +4,19 @@
   --cream: #f7f1ea;
   --hero-red: #cd3527;
   --hero-white: #ffffff;
-  --color-brown: #8b5a42; 
+  --color-brown: #8b5a42;
   --color-white: #ffffff;
 }
+
 .section-bg {
   background-image: url("/assets/images/background/b2.webp");
   background-repeat: no-repeat;
   background-position: center top;
   background-size: cover;
 }
+
 @media (max-width: 767px) {
+
   .footer-widget--links,
   .footer-widget--services {
     display: none;
@@ -30,11 +33,13 @@
   height: auto;
   display: block;
 }
+
 @media (max-width: 575px) {
   .site-logo {
     width: 95px;
   }
 }
+
 body {
   margin: 0;
   font-family: Arial, sans-serif;
@@ -62,6 +67,7 @@ a {
   width: min(1320px, calc(100% - 32px));
   margin-inline: auto;
 }
+
 /*  */
 .home-shared-bg {
   background-image: url("/assets/images/backgrounds/Middle_1440x2300.png");
@@ -69,6 +75,7 @@ a {
   background-position: top center;
   background-size: cover;
 }
+
 @media (max-width: 768px) {
   .home-shared-bg {
     background-image: url("/assets/images/backgrounds/Middle_768x3140.png");
@@ -80,13 +87,15 @@ a {
     background-image: url("/assets/images/backgrounds/Middle_390x1660.png");
   }
 }
+
 /* icon language */
-.icon-language{
+.icon-language {
   width: 40px;
   height: auto;
 
 }
-.topbar-one__social span{
+
+.topbar-one__social span {
   padding: 0 10px;
 }
 
@@ -389,7 +398,7 @@ a {
 }
 
 /* project */
-.projects-one__bottom{
+.projects-one__bottom {
   display: flex;
   justify-content: space-between;
 }
@@ -426,13 +435,14 @@ a {
 }
 
 @media (max-width: 991px) {
-    .projects-one__content {
-       text-align: justify;
-      padding: 5vw 5vw;
-    }
-    .projects-one__content {
+  .projects-one__content {
+    text-align: justify;
+    padding: 5vw 5vw;
+  }
+
+  .projects-one__content {
     width: 100vw !important;
-    }
+  }
 }
 
 @media (max-width: 990px) {
@@ -460,7 +470,7 @@ a {
     width: 100%;
     display: flex;
     justify-content: center;
-  
+
   }
 
   .project-btn {
@@ -472,7 +482,7 @@ a {
 .navigation-buttons {
   display: flex;
   gap: 20px;
-  background-color: #f3eee9; 
+  background-color: #f3eee9;
 }
 
 
@@ -481,7 +491,7 @@ a {
   border: none;
   padding: 0;
   cursor: pointer;
-  width: 60px;  
+  width: 60px;
   height: 60px;
 }
 
@@ -493,15 +503,15 @@ a {
 
 .navigation-wrapper {
   display: flex;
-  gap: 20px; 
+  gap: 20px;
 
 }
 
 
 .nav-btn-pair {
   position: relative;
-  width: 90px; 
-  height: 45px; 
+  width: 90px;
+  height: 45px;
   background: none;
   border: none;
   cursor: pointer;
@@ -526,7 +536,7 @@ a {
   height: 2px;
   background-color: var(--color-brown);
   transition: background-color 0.3s ease;
-  z-index: 2; 
+  z-index: 2;
 }
 
 .arrow-line::after {
@@ -541,36 +551,42 @@ a {
 
 
 .prev .circle-base {
-  left: 0; 
+  left: 0;
 }
+
 .prev .arrow-line {
-  left: 20px; 
-  width: 40px; 
+  left: 20px;
+  width: 40px;
 }
+
 .prev .arrow-line::after {
   left: 0;
   top: 50%;
-  transform: translateY(-50%) rotate(-135deg);}
+  transform: translateY(-50%) rotate(-135deg);
+}
 
 
 .next {
-  justify-content: flex-end; 
+  justify-content: flex-end;
 }
+
 .next .circle-base {
-  right: 0; 
+  right: 0;
 }
+
 .next .arrow-line {
-  right: 20px; 
+  right: 20px;
   width: 40px;
 }
+
 .next .arrow-line::after {
   right: 0;
   top: 50%;
-  transform: translateY(-50%) rotate(45deg); 
+  transform: translateY(-50%) rotate(45deg);
 }
 
 .nav-btn-pair:hover .circle-base {
-  background-color: var(--color-brown); 
+  background-color: var(--color-brown);
 }
 
 .nav-btn-pair:hover .arrow-line {
@@ -578,7 +594,7 @@ a {
 }
 
 .nav-btn-pair:hover .arrow-line::after {
-  border-color: var(--color-white); 
+  border-color: var(--color-white);
 }
 
 /* ===================================================
@@ -587,7 +603,8 @@ a {
 .about-one__image-grid {
   position: relative;
   width: calc(100% - 30px);
-  margin: 0 auto; /* Căn giữa toàn bộ hệ thống grid ảnh */
+  margin: 0 auto;
+  /* Căn giữa toàn bộ hệ thống grid ảnh */
   display: grid;
   grid-template-columns: calc(50% - 15px) calc(50% + 15px);
   gap: 30px;
@@ -597,7 +614,8 @@ a {
 .about-one__image:first-child {
   display: flex;
   flex-direction: column;
-  gap: 30px; /* Khóa khoảng cách giữa ảnh 1 và ảnh 2 cố định */
+  gap: 30px;
+  /* Khóa khoảng cách giữa ảnh 1 và ảnh 2 cố định */
 }
 
 .about-one__image:last-child {
@@ -624,15 +642,17 @@ a {
     /* Tăng độ rộng lên tối đa, chỉ chừa lại 15px mỗi bên viền (tổng cộng 30px) */
     width: calc(100% - 30px) !important;
     margin: 0 auto;
-    
+
     /* Chuyển sang 1 cột duy nhất để ảnh hiển thị to, rõ ràng */
-    grid-template-columns: 1fr !important; 
-    gap: 20px !important; /* Thu hẹp khoảng cách giữa các khối trên mobile */
+    grid-template-columns: 1fr !important;
+    gap: 20px !important;
+    /* Thu hẹp khoảng cách giữa các khối trên mobile */
   }
 
   /* Cột 1 (Chứa ảnh 1 và ảnh 2) */
   .about-one__image:first-child {
-    gap: 20px !important; /* Thu hẹp gap dọc giữa ảnh 1 và ảnh 2 */
+    gap: 20px !important;
+    /* Thu hẹp gap dọc giữa ảnh 1 và ảnh 2 */
   }
 
   /* Trả lại auto height cho các hình ảnh trên mobile để không bị bóp méo tỉ lệ dọc */
@@ -640,21 +660,25 @@ a {
   .about-one__image__two,
   .about-one__image__three {
     width: 100% !important;
-    height: auto !important; 
-    object-fit: contain !important; /* Đảm bảo cấu trúc ảnh hiển thị nguyên vẹn */
+    height: auto !important;
+    object-fit: contain !important;
+    /* Đảm bảo cấu trúc ảnh hiển thị nguyên vẹn */
   }
 
   .about-one__image:last-child {
-    height: auto !important; /* Cột bên phải xả chiều cao tự động theo ảnh */
+    height: auto !important;
+    /* Cột bên phải xả chiều cao tự động theo ảnh */
   }
 }
 
 /* Tùy chỉnh thêm cho các thiết bị siêu nhỏ (Màn hình dưới 425px) nếu muốn đẩy sát nữa */
 @media (max-width: 425px) {
   .about-one__image-grid {
-    width: calc(100% - 20px) !important; /* Chừa viền siêu nhỏ 10px mỗi bên */
+    width: calc(100% - 20px) !important;
+    /* Chừa viền siêu nhỏ 10px mỗi bên */
     gap: 15px !important;
   }
+
   .about-one__image:first-child {
     gap: 15px !important;
   }
@@ -686,10 +710,11 @@ a {
   justify-content: center;
   text-align: center;
   padding: 12px 10px;
-  min-height: 52px; /* Đảm bảo các nút cùng hàng luôn cao bằng nhau */
+  min-height: 52px;
+  /* Đảm bảo các nút cùng hàng luôn cao bằng nhau */
   cursor: pointer;
   transition: all 0.2s ease-in-out;
-  
+
   /* Đổ bóng cấu hình chuẩn Figma từ thiết kế của bạn */
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
 }
@@ -715,7 +740,7 @@ a {
 .work-card {
   display: flex;
   flex-direction: column;
-  height: 100%; 
+  height: 100%;
   position: relative;
   overflow: hidden;
 }
@@ -726,14 +751,14 @@ a {
   position: relative;
   overflow: hidden;
   width: 100%;
-  aspect-ratio: 4 / 3; 
+  aspect-ratio: 4 / 3;
 }
 
 .work-card__image img {
   width: 100%;
   height: 100%;
   display: block;
-  object-fit: cover; 
+  object-fit: cover;
   object-position: center;
 }
 
@@ -743,7 +768,7 @@ a {
     grid-template-columns: repeat(3, 1fr);
     gap: 10px;
   }
-  
+
   .gallery-filter-grid .filter-grid-text {
     font-size: 11px;
   }
@@ -755,7 +780,7 @@ a {
     grid-template-columns: repeat(2, 1fr);
     gap: 8px;
   }
-  
+
   .gallery-filter-grid .filter-grid-item {
     min-height: 48px;
     padding: 8px 6px;
@@ -767,7 +792,8 @@ a {
 
 .office-banner-holder img,
 .doc-card-item img {
-  object-fit: cover !important; /* Giữ ảnh không móp méo khi Next.js kéo giãn */
+  object-fit: cover !important;
+  /* Giữ ảnh không móp méo khi Next.js kéo giãn */
   object-position: center !important;
   width: 100% !important;
   height: 100% !important;
@@ -798,8 +824,8 @@ a {
 
 .doc-a4-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr); 
-  gap: 20px;                           
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
   width: 100%;
 }
 
@@ -808,8 +834,8 @@ a {
   width: 100%;
   overflow: hidden;
   background-color: #ffffff;
-  border: 1px solid #ebdcd0;             
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.04); 
+  border: 1px solid #ebdcd0;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.04);
 }
 
 
@@ -817,11 +843,156 @@ a {
   width: 100% !important;
   height: auto !important;
   display: block;
-  object-fit: contain;    }            
+  object-fit: contain;
+}
 
 
 @media (max-width: 575px) {
   .doc-a4-grid {
     gap: 12px;
+  }
+}
+
+/* liên hệ */
+.download-box {
+  position: relative;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  cursor: pointer;
+  background: #f3f3f3;
+}
+
+/* lớp màu chạy */
+.download-box::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+
+  background: linear-gradient(
+    90deg,
+    #ef3b3a 0%,
+    #ef3b3a 50%,
+    #c91d28 100%
+  );
+
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.45s ease;
+  z-index: 0;
+}
+
+.download-box:hover::before {
+  transform: scaleX(1);
+}
+
+.download-btn,
+.download-content {
+  position: relative;
+  z-index: 2;
+}
+
+/* button */
+.download-btn {
+  width: 48px;
+  height: 48px;
+  border: none;
+  background: #ef3b3a;
+  color: #fff;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  transition: 0.3s;
+}
+
+/* text */
+.download-content {
+ width: 100%;
+  height: 48px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 24px;
+  font-weight: 700;
+  color: #111;
+  transition: 0.3s;
+}
+
+/* text đổi trắng khi hover */
+.download-box:hover .download-content {
+  color: #fff;
+}
+
+.contact-right {
+  display: flex;
+  flex-direction: column;
+  gap: 20px; /* khoảng cách giữa các div */
+}
+
+/* ve dau trang */
+.scroll-progress-btn {
+  position: fixed;
+  right: 30px;
+  bottom: 40px;
+  z-index: 999;
+
+  background: transparent;
+  border: none;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+
+  cursor: pointer;
+}
+
+/* line */
+.scroll-progress-line {
+  width: 4px;
+  height: 70px;
+  background: #111;
+  position: relative;
+  overflow: hidden;
+}
+
+/* đỏ fill */
+.scroll-progress-fill {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+
+  width: 100%;
+  height: 0%;
+
+  background: #ef3b3a;
+
+  transition: height 0.15s linear;
+}
+
+/* text dọc */
+.scroll-progress-btn span {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+
+  font-size: 14px;
+  font-weight: 700;
+  color: #ef3b3a;
+
+  letter-spacing: 1px;
+}
+
+/* mobile */
+@media (max-width: 768px) {
+  .scroll-progress-btn {
+    right: 15px;
+    bottom: 20px;
+  }
+
+  .scroll-progress-line {
+    height: 55px;
   }
 }

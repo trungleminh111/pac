@@ -7626,9 +7626,7 @@ body.megamenu-popup-active .mobile-nav__content {
   z-index: 1;
 }
 
-.contact-one__content {
-  margin-top: 21px;
-}
+
 
 @media (max-width: 991px) {
   .contact-one__content {

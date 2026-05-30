@@ -7,7 +7,6 @@ import { Products } from "@/components/site/Products";
 import { Projects } from "@/components/site/Projects";
 import { News } from "@/components/site/News";
 import { Footer } from "@/components/site/Footer";
-import { Footer2 } from "@/components/site/Footer2";
 
 export default function HomePage() {
   return (
@@ -23,7 +22,7 @@ export default function HomePage() {
           <Projects />
         </div>
         <News />
-        <Footer2 />
+        <Footer />
       </div>
     </>
   );

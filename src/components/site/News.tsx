@@ -1,7 +1,7 @@
 const posts = [
   ["Có nên dùng đá hoa cương để ốp lát mặt tiền?", "blog-1-1.jpg", "25/05", "2024"],
   ["Nội thất phòng bếp đẹp sử dụng đá Marble", "blog-1-2.jpg", "22/05", "2024"],
-  ["Các mẫu hoa văn đá hoa cương đẹp", "blog-1-3.jpg", "08/05", "2024"],
+  ["Các mẫu hoa văn đá hoa cương u hoa văn đá hoa cương đẹp", "blog-1-3.jpg", "08/05", "2024"],
 ];
 
 export function News() {
@@ -38,7 +38,9 @@ export function News() {
               <div className="blog-card blog-card--two">
                 <div className="blog-card__content">
                   <h3 className="blog-card__title">
-                    <a href="/tin-tuc">{title}</a>
+                    <a href="/tin-tuc" title={title}>
+                      {title}
+                    </a>
                   </h3>
                 </div>
 

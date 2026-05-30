@@ -597,92 +597,7 @@ a {
   border-color: var(--color-white);
 }
 
-/* ===================================================
-   CẤU HÌNH GRID TRÊN DESKTOP (MÀN HÌNH LỚN)
-   =================================================== */
-.about-one__image-grid {
-  position: relative;
-  width: calc(100% - 30px);
-  margin: 0 auto;
-  /* Căn giữa toàn bộ hệ thống grid ảnh */
-  display: grid;
-  grid-template-columns: calc(50% - 15px) calc(50% + 15px);
-  gap: 30px;
-  align-items: start;
-}
 
-.about-one__image:first-child {
-  display: flex;
-  flex-direction: column;
-  gap: 30px;
-  /* Khóa khoảng cách giữa ảnh 1 và ảnh 2 cố định */
-}
-
-.about-one__image:last-child {
-  height: 100%;
-  display: flex;
-}
-
-.about-one__image img {
-  width: 100%;
-  display: block;
-}
-
-.about-one__image__three {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-/* ===================================================
-   CẤU HÌNH ĐẶC BIỆT CHO MOBILE (GẦN FULL MÀN HÌNH)
-   =================================================== */
-@media (max-width: 767px) {
-  .about-one__image-grid {
-    /* Tăng độ rộng lên tối đa, chỉ chừa lại 15px mỗi bên viền (tổng cộng 30px) */
-    width: calc(100% - 30px) !important;
-    margin: 0 auto;
-
-    /* Chuyển sang 1 cột duy nhất để ảnh hiển thị to, rõ ràng */
-    grid-template-columns: 1fr !important;
-    gap: 20px !important;
-    /* Thu hẹp khoảng cách giữa các khối trên mobile */
-  }
-
-  /* Cột 1 (Chứa ảnh 1 và ảnh 2) */
-  .about-one__image:first-child {
-    gap: 20px !important;
-    /* Thu hẹp gap dọc giữa ảnh 1 và ảnh 2 */
-  }
-
-  /* Trả lại auto height cho các hình ảnh trên mobile để không bị bóp méo tỉ lệ dọc */
-  .about-one__image__one,
-  .about-one__image__two,
-  .about-one__image__three {
-    width: 100% !important;
-    height: auto !important;
-    object-fit: contain !important;
-    /* Đảm bảo cấu trúc ảnh hiển thị nguyên vẹn */
-  }
-
-  .about-one__image:last-child {
-    height: auto !important;
-    /* Cột bên phải xả chiều cao tự động theo ảnh */
-  }
-}
-
-/* Tùy chỉnh thêm cho các thiết bị siêu nhỏ (Màn hình dưới 425px) nếu muốn đẩy sát nữa */
-@media (max-width: 425px) {
-  .about-one__image-grid {
-    width: calc(100% - 20px) !important;
-    /* Chừa viền siêu nhỏ 10px mỗi bên */
-    gap: 15px !important;
-  }
-
-  .about-one__image:first-child {
-    gap: 15px !important;
-  }
-}
 
 
 
@@ -788,38 +703,7 @@ a {
 }
 
 
-/* Bổ sung vào file lienhe.css cũ của bạn */
 
-.office-banner-holder img,
-.doc-card-item img {
-  object-fit: cover !important;
-  /* Giữ ảnh không móp méo khi Next.js kéo giãn */
-  object-position: center !important;
-  width: 100% !important;
-  height: 100% !important;
-}
-
-.doc-card-item {
-  position: relative;
-  width: 100%;
-  border: 1px solid #ebdcd0;
-  border-radius: 4px;
-  overflow: hidden;
-  background-color: #ffffff;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.03);
-}
-
-.doc-card-item {
-  width: 100%;
-  display: block;
-}
-
-.doc-thumb-img {
-  width: 100% !important;
-  height: auto !important;
-  display: block;
-  object-fit: cover;
-}
 
 
 .doc-a4-grid {
@@ -853,84 +737,7 @@ a {
   }
 }
 
-/* liên hệ */
-.download-box {
-  position: relative;
-  display: flex;
-  align-items: center;
-  overflow: hidden;
-  cursor: pointer;
-  background: #f3f3f3;
-}
 
-/* lớp màu chạy */
-.download-box::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-
-  background: linear-gradient(
-    90deg,
-    #ef3b3a 0%,
-    #ef3b3a 50%,
-    #c91d28 100%
-  );
-
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform 0.45s ease;
-  z-index: 0;
-}
-
-.download-box:hover::before {
-  transform: scaleX(1);
-}
-
-.download-btn,
-.download-content {
-  position: relative;
-  z-index: 2;
-}
-
-/* button */
-.download-btn {
-  width: 48px;
-  height: 48px;
-  border: none;
-  background: #ef3b3a;
-  color: #fff;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  transition: 0.3s;
-}
-
-/* text */
-.download-content {
- width: 100%;
-  height: 48px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0 24px;
-  font-weight: 700;
-  color: #111;
-  transition: 0.3s;
-}
-
-/* text đổi trắng khi hover */
-.download-box:hover .download-content {
-  color: #fff;
-}
-
-.contact-right {
-  display: flex;
-  flex-direction: column;
-  gap: 20px; /* khoảng cách giữa các div */
-}
 
 /* ve dau trang */
 .scroll-progress-btn {
@@ -995,4 +802,26 @@ a {
   .scroll-progress-line {
     height: 55px;
   }
+}
+
+/* sự kiện */
+.blog-card__content {
+  text-align: justify;
+}
+
+.blog-card__title a {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  line-height: 1.4;
+  min-height: calc(1.4em * 2);
+
+  text-align: justify;
+}
+
+.google-map__contact .i4ewOd-pzNkMb-haAclf {
+   display: none !important;
 }

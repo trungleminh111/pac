@@ -832,14 +832,14 @@ p {
   height: 50px;
   font-size: 14px;
     color:#F4CB74;
-  border: 1px solid var(--floens-border-color, #ded8d3);
+  border: 0.2px solid #F4CB74;
   transition: all 400ms ease;
 }
 
 .floens-social a:hover {
     color:#F4CB74;
   background-color: var(--floens-base, #c7844f);
-  border-color: var(--floens-base, #c7844f);
+  border-color: 0.5px solid #F4CB74;
 }
 
 .details-social {
@@ -7765,7 +7765,7 @@ body.megamenu-popup-active .mobile-nav__content {
 
 .contact-one__form {
   position: relative;
-  padding: 40px;
+  padding: 50px 40px;
   background-color: var(--floens-white, #ffffff);
   z-index: 11;
 }

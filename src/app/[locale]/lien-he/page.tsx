@@ -3,6 +3,7 @@ import { Footer } from "@/components/site/Footer";
 import { PageHeader } from "@/components/site/PageHeader";
 import Image from "next/image";
 import { FaDownload } from "react-icons/fa";
+import "@/styles/lienhe.css";
 export default function ContactPage() {
   return (
     <div className="page-wrapper">
@@ -21,7 +22,7 @@ export default function ContactPage() {
 
         <div className="container">
           <div className="row gutter-y-40">
-            <div className="col-lg-6">
+            <div className="col-lg-6 col-md-12 ">
               <div className="contact-one__content">
                 <div className="sec-title sec-title--border">
                   <h6 className="sec-title__tagline">liên hệ</h6>
@@ -75,7 +76,7 @@ export default function ContactPage() {
                     <div className="form-one__control form-one__control--full">
                       <button type="submit" className="floens-btn">
                         <span>Gửi nội dung</span>
-                        <i className="icon-right-arrow" />
+                           <i className="icon-right-arrow" >→</i>
                       </button>
                     </div>
                   </div>
@@ -85,7 +86,7 @@ export default function ContactPage() {
             </div>
 
 
-            <div className="contact-right col-lg-6">
+            <div className="contact-right col-lg-6  col-md-12 d-flex flex-column">
               {/* Thẻ bọc ngoài đơn giản, không cố định aspectRatio để chiều cao tự bung theo ảnh */}
               <div className="doc-card-item">
                 <Image
@@ -151,7 +152,10 @@ export default function ContactPage() {
               referrerPolicy="no-referrer-when-downgrade"
             />
              */}
-            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3918.711720994874!2d106.60632847588039!3d10.833359189318921!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752bcbcc04a65b%3A0x167f4583efb11f20!2zMzI0IMSQLiBQaGFuIFbEg24gSOG7m24sIMSQw7RuZyBIxrBuZyBUaHXhuq1uLCBI4buTIENow60gTWluaCAxMDAwMCwgVmnhu4d0IE5hbQ!5e0!3m2!1svi!2s!4v1780051691033!5m2!1svi!2s" width="600" height="450"></iframe>          </div>
+<iframe src="https://www.google.com/maps/d/u/0/embed?mid=1OxB97mvj7vH_G3AYETY6GQ_TvRiiSQg&ehbc=2E312F&noprof=1" width="640" height="480"></iframe>            
+         
+             </div>
+        
         </div>
       </section>
 

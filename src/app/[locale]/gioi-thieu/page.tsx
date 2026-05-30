@@ -13,7 +13,7 @@ export default function AboutPage() {
             <About backgroundImage="/assets/images/backgrounds/8.png" />
             <section className="about-one section-space" id="about">
                 <div className="container">
-                    <div className="row gutter-y-60">
+                    <div className="row">
                         <div className="col-lg-6">
                             <div className="about-one__image-grid">
                                 <div className="about-one__image">

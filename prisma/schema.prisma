@@ -263,6 +263,7 @@ model ProjectTranslation {
   slug           String
   excerpt        String?
   content        Json?
+  structuredData Json?
   seoTitle       String?
   seoDescription String?
   createdAt      DateTime @default(now())

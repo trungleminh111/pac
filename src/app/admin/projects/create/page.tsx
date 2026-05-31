@@ -7,6 +7,14 @@ export type ProjectCreateState = {
   message: string;
 };
 
+function parseJson(value: FormDataEntryValue | null) {
+  try {
+    return JSON.parse(String(value || "{}"));
+  } catch {
+    return {};
+  }
+}
+
 async function createProject(
   _prevState: ProjectCreateState,
   formData: FormData
@@ -21,35 +29,26 @@ async function createProject(
 
   const clientName = String(formData.get("clientName") || "").trim();
   const projectType = String(formData.get("projectType") || "").trim();
-  const budget = String(formData.get("budget") || "").trim();
   const startedAt = String(formData.get("startedAt") || "");
   const completedAt = String(formData.get("completedAt") || "");
 
   const title = String(formData.get("title") || "").trim();
   const slug = String(formData.get("slug") || "").trim();
   const excerpt = String(formData.get("excerpt") || "");
-  const content = String(formData.get("content") || "");
   const seoTitle = String(formData.get("seoTitle") || "");
   const seoDescription = String(formData.get("seoDescription") || "");
+  const structuredData = parseJson(formData.get("structuredData"));
 
   if (!title || !slug) {
     return { ok: false, message: "Vui lòng nhập tên công trình và slug." };
   }
 
   const existed = await prisma.projectTranslation.findUnique({
-    where: {
-      locale_slug: {
-        locale,
-        slug,
-      },
-    },
+    where: { locale_slug: { locale, slug } },
   });
 
   if (existed) {
-    return {
-      ok: false,
-      message: "Slug đã tồn tại trong ngôn ngữ này. Vui lòng đổi slug khác.",
-    };
+    return { ok: false, message: "Slug đã tồn tại trong ngôn ngữ này." };
   }
 
   try {
@@ -60,20 +59,20 @@ async function createProject(
         gallery: null,
         clientName: clientName || null,
         projectType: projectType || null,
-        budget: budget || null,
+        budget: null,
         startedAt: startedAt ? new Date(startedAt) : null,
         completedAt: completedAt ? new Date(completedAt) : null,
         categoryId: categoryId || null,
         allowIndex,
         publishedAt: status === "PUBLISHED" ? new Date() : null,
-
         translations: {
           create: {
             locale,
             title,
             slug,
             excerpt: excerpt || null,
-            content: { html: content },
+            content: null,
+            structuredData,
             seoTitle: seoTitle || null,
             seoDescription: seoDescription || null,
           },
@@ -87,7 +86,7 @@ async function createProject(
       error instanceof Prisma.PrismaClientKnownRequestError &&
       error.code === "P2002"
     ) {
-      return { ok: false, message: "Slug đã tồn tại. Vui lòng đổi slug khác." };
+      return { ok: false, message: "Slug đã tồn tại." };
     }
 
     return { ok: false, message: "Có lỗi xảy ra khi tạo công trình." };

@@ -71,7 +71,7 @@ async function createProject(
             title,
             slug,
             excerpt: excerpt || null,
-            content: null,
+            content: { html: "" },
             structuredData,
             seoTitle: seoTitle || null,
             seoDescription: seoDescription || null,

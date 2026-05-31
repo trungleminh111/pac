@@ -1,0 +1,25 @@
+.client-carousel__one--swiper {
+  width: 100%;
+  overflow: hidden;
+}
+
+.client-carousel__one--swiper .swiper-wrapper {
+  align-items: center;
+}
+
+.client-carousel__one--swiper .swiper-slide {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.client-carousel__one__item {
+  width: 100%;
+  text-align: center;
+}
+
+.client-carousel__one__item img {
+  max-width: 100%;
+  height: auto;
+  display: inline-block;
+}

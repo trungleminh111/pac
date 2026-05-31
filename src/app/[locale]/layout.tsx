@@ -1,14 +1,19 @@
 import type { Metadata } from "next";
 
 import "bootstrap/dist/css/bootstrap.min.css";
+import "owl.carousel/dist/assets/owl.carousel.css";
+
 import "./globals.css";
 import "@/styles/site.css";
+import "@/styles/header.css";
+import "@/styles/ClientCarousel.css";
+import "@/styles/services.css";
 import "@/styles/floens.css";
 import "@/styles/icon.css";
 import "@/styles/gioithieu.css";
 import "@/styles/footer.css";
-import ScrollTopProgress from "@/components/site/ScrollTopProgress";
 
+import ScrollTopProgress from "@/components/site/ScrollTopProgress";
 
 export const metadata: Metadata = {
   title: "P.A.C STONE",
@@ -22,9 +27,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="vi">
-      <body>{children}
-
-       <ScrollTopProgress />
+      <body>
+        {children}
+        <ScrollTopProgress />
       </body>
     </html>
   );

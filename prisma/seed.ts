@@ -12,7 +12,7 @@ const prisma = new PrismaClient({
 });
 
 async function main() {
-  const email = "admin@phucnam.vn";
+  const email = "admin@admin.com";
   const password = "admin123456";
 
   const hashedPassword = await bcrypt.hash(password, 10);

@@ -1,0 +1,40 @@
+.mobile-nav__container .main-menu__list li a:hover,
+.mobile-nav__container .main-menu__list li.current > a,
+.mobile-nav__container .main-menu__list li.active > a {
+  color: var(--floens-base, #ec3137);
+}
+
+.mobile-nav__container .main-menu__list li ul li a:hover {
+  color: var(--floens-base, #ec3137);
+}
+
+.mobile-nav__container .main-menu__list li.dropdown > a > button {
+  color: #fff;
+  background-color: var(--floens-base, #ec3137);
+}
+.mobile-nav__contact li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.mobile-nav__contact-icon {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  color: var(--floens-base, #ec3137);
+}
+
+.mobile-nav__contact li a {
+  font-size: 18px;
+  line-height: 1.4;
+}
+
+.mobile-nav__social.floens-social {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}

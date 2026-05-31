@@ -2,7 +2,9 @@
 
 import { Navigation, Autoplay } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
+
 import "swiper/css";
+import "swiper/css/navigation";
 
 const projects = [
   ["project-1-1.jpg", "project-1-2.jpg"],
@@ -37,13 +39,15 @@ export function Projects() {
               </SwiperSlide>
             ))}
           </Swiper>
-          <div className="navigation-wrapper justify-content-center d-flex d-md-non ">
-            <button className="nav-btn-pair prev">
+
+          {/* Mobile only */}
+          <div className="navigation-wrapper justify-content-center d-flex d-md-none">
+            <button className="nav-btn-pair prev project-prev" type="button">
               <span className="circle-base"></span>
               <span className="arrow-line"></span>
             </button>
 
-            <button className="nav-btn-pair next">
+            <button className="nav-btn-pair next project-next" type="button">
               <span className="circle-base"></span>
               <span className="arrow-line"></span>
             </button>
@@ -59,31 +63,32 @@ export function Projects() {
           </div>
 
           <p className="projects-one__text">
-            Chúng tôi tự hào mang đến cho khách hàng những dự án
-            ốp đá hoa cương không chỉ đẹp về mặt thẩm mỹ mà còn
-            vững chắc về mặt kỹ thuật. Với hơn 20 năm kinh nghiệm
-            trong ngành, chúng tôi đã thực hiện thành công hàng
-            loạt các dự án từ những căn hộ cao cấp đến các trung
-            tâm thương mại lớn, mỗi dự án đều phản ánh sự tận tâm
-            và chuyên môn cao của đội ngũ thợ lành nghề của chúng tôi.
-
-
+            Chúng tôi tự hào mang đến cho khách hàng những dự án ốp đá hoa cương
+            không chỉ đẹp về mặt thẩm mỹ mà còn vững chắc về mặt kỹ thuật. Với
+            hơn 20 năm kinh nghiệm trong ngành, chúng tôi đã thực hiện thành
+            công hàng loạt các dự án từ những căn hộ cao cấp đến các trung tâm
+            thương mại lớn, mỗi dự án đều phản ánh sự tận tâm và chuyên môn cao
+            của đội ngũ thợ lành nghề của chúng tôi.
           </p>
 
           <div className="projects-one__bottom">
-
+            {/* Desktop only */}
             <div className="navigation-wrapper d-none d-md-flex">
-              <button className="nav-btn-pair prev">
+              <button className="nav-btn-pair prev project-prev" type="button">
                 <span className="circle-base"></span>
                 <span className="arrow-line"></span>
               </button>
 
-              <button className="nav-btn-pair next">
+              <button className="nav-btn-pair next project-next" type="button">
                 <span className="circle-base"></span>
                 <span className="arrow-line"></span>
               </button>
             </div>
-            <a href="/cong-trinh" className="project-btn floens-btn floens-btn--border">
+
+            <a
+              href="/cong-trinh"
+              className="project-btn floens-btn floens-btn--border"
+            >
               <span>Xem tất cả</span>
               <i>→</i>
             </a>

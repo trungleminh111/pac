@@ -1,8 +1,7 @@
 "use client";
 
-import { Autoplay } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
-
+import { Autoplay } from "swiper/modules";
 import "swiper/css";
 
 const colors = [
@@ -16,39 +15,39 @@ const colors = [
 
 export function ClientCarousel() {
   return (
-    <div className="client-carousel client-carousel--two">
-      <div className="container">
-        <Swiper
-          modules={[Autoplay]}
-          loop={true}
-           speed={700}
-          autoplay={{
-            delay: 5000,
-            disableOnInteraction: false,
-          }}
-          slidesPerView={5}
-          spaceBetween={40}
-          breakpoints={{
-            0: { slidesPerView: 2 },
-            576: { slidesPerView: 3 },
-            768: { slidesPerView: 4 },
-            1200: { slidesPerView: 5 },
-          }}
-        >
-          {colors.map((image) => (
-            <SwiperSlide key={image}>
-              <div className="client-carousel__one__item">
-                <a href="/san-pham">
-                  <img
-                    src={`/assets/images/resources/${image}`}
-                    alt="marble color"
-                  />
-                </a>
-              </div>
-            </SwiperSlide>
-          ))}
-        </Swiper>
-      </div>
+    <div
+      className="client-carousel client-carousel--two"
+      style={{ width: "100%", maxWidth: "100%" }}
+    >
+      <Swiper
+        className="client-carousel__one--swiper"
+        modules={[Autoplay]}
+        spaceBetween={65}
+        slidesPerView={5}
+        loop={true}
+        autoplay={{ delay: 6000, disableOnInteraction: false }}
+        speed={700}
+        breakpoints={{
+          0:    { slidesPerView: 2, spaceBetween: 30 },
+          500:  { slidesPerView: 3, spaceBetween: 40 },
+          768:  { slidesPerView: 4, spaceBetween: 50 },
+          992:  { slidesPerView: 5, spaceBetween: 70 },
+          1200: { slidesPerView: 5, spaceBetween: 50 },
+        }}
+      >
+        {colors.map((image) => (
+          <SwiperSlide key={image}>
+            <div className="client-carousel__one__item">
+              <a href="/san-pham/color-1">
+                <img
+                  src={`/assets/images/resources/${image}`}
+                  alt="marble color"
+                />
+              </a>
+            </div>
+          </SwiperSlide>
+        ))}
+      </Swiper>
     </div>
   );
 }

@@ -18236,3 +18236,7 @@ body.boxed-wrapper .projects-one__shape {
 }
 
 /*# sourceMappingURL=floens.css.map */
+.map-label,
+.map-label * {
+  font-family: var(--font5) !important;
+}

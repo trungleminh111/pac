@@ -1,16 +1,42 @@
 import { Header } from "@/components/site/Header";
 import { Footer } from "@/components/site/Footer";
 import { PageHeader } from "@/components/site/PageHeader";
+import LocationMap from "@/components/site/Map";
 import Image from "next/image";
 import { FaDownload } from "react-icons/fa";
 import "@/styles/lienhe.css";
+import { BiSolidPhoneCall } from "react-icons/bi";
 export default function ContactPage() {
   return (
     <div className="page-wrapper">
       <Header />
 
-      <PageHeader title="" bgImage="/assets/images/backgrounds/PACSTONE-LIENHE-header.png" />
+      <PageHeader
+        title=""
+        bgImage="/assets/images/backgrounds/PACSTONE-LIENHE-header.png"
+      >
+        <div className="contact-call">
+          <div className="contact-call__bubble">
+            Đừng ngại, hãy gọi cho chúng tôi!
+          </div>
 
+          <a
+            href="https://zalo.me/0962757475"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="contact-call__icon"
+          >
+           <BiSolidPhoneCall />
+          </a>
+
+          <div className="contact-call__content">
+            <div className="contact-call__label">CALL US</div>
+            <a href="tel:0962757475" className="contact-call__phone">
+              0962.757.475
+            </a>
+          </div>
+        </div>
+      </PageHeader>
 
       <section className="contact-one section-space">
         <div
@@ -30,6 +56,7 @@ export default function ContactPage() {
                     Chúng Tôi Luôn Sẵn Sàng Lắng Nghe Bạn!
                   </h3>
                 </div>
+
 
                 <p className="contact-one__text">
                   <strong>
@@ -76,7 +103,7 @@ export default function ContactPage() {
                     <div className="form-one__control form-one__control--full">
                       <button type="submit" className="floens-btn">
                         <span>Gửi nội dung</span>
-                           <i className="icon-right-arrow" >→</i>
+                        <i className="icon-right-arrow" >→</i>
                       </button>
                     </div>
                   </div>
@@ -152,10 +179,10 @@ export default function ContactPage() {
               referrerPolicy="no-referrer-when-downgrade"
             />
              */}
-<iframe src="https://www.google.com/maps/d/u/0/embed?mid=1OxB97mvj7vH_G3AYETY6GQ_TvRiiSQg&ehbc=2E312F&noprof=1" width="640" height="480"></iframe>            
-         
-             </div>
-        
+            {/* <iframe src="https://www.google.com/maps/d/u/0/embed?mid=1OxB97mvj7vH_G3AYETY6GQ_TvRiiSQg&ehbc=2E312F&noprof=1" width="640" height="480"></iframe>             */}
+
+          </div>
+          <LocationMap />
         </div>
       </section>
 

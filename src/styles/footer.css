@@ -111,7 +111,18 @@
   padding-top: 35px;
 }
 }
+@media (min-width: 1200px) {
+.main-footer__top{
+  max-width: 1300px;
+}
 
+.footer-height{
+  height: 320px;
+}
+.floens-social{
+  padding-top: 5px;
+}
+}
 
 .footer-widget__info li {
   display: flex;
@@ -130,6 +141,7 @@
 }
 .footer-widget__title_info{
   padding-left:24px;
+  padding-bottom: 5px;
 }
 
 .main-footer__top li a, .footer-widget__about-text{

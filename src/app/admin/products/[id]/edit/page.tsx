@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import ProductEditForm from "./product-form";
 
+
 export type ProductEditState = {
   ok: boolean;
   message: string;
@@ -77,7 +78,7 @@ async function updateProduct(
         sku: sku || null,
         price: priceRaw ? new Prisma.Decimal(priceRaw) : null,
         thumbnail: thumbnail || gallery[0] || null,
-        gallery,
+        gallery: [],
         origin: origin || null,
         size: size || null,
         material: material || null,

@@ -70,7 +70,7 @@ async function createProduct(
         sku: sku || null,
         price: priceRaw ? new Prisma.Decimal(priceRaw) : null,
         thumbnail: thumbnail || gallery[0] || null,
-        gallery,
+       gallery: [],
         origin: origin || null,
         size: size || null,
         material: material || null,

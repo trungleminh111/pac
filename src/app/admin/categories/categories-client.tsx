@@ -12,7 +12,7 @@ import { useRouter } from "next/navigation";
 import { FolderTree, Pencil, Plus, Search, Trash2 } from "lucide-react";
 import type { CategoryState } from "./page";
 
-type CategoryType = "POST" | "PRODUCT" | "SERVICE" | "PROJECT";
+type CategoryType = "POST" | "PAGE" | "PRODUCT" | "SERVICE" | "PROJECT";
 
 type Category = {
   id: string;

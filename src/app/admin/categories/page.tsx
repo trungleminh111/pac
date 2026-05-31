@@ -10,12 +10,12 @@ export type CategoryState = {
   nonce: number;
 };
 
-type CategoryType = "POST" | "PRODUCT" | "SERVICE" | "PROJECT";
+type CategoryType = "POST" | "PAGE" | "PRODUCT" | "SERVICE" | "PROJECT";
 
 function getType(value: FormDataEntryValue | null): CategoryType {
   const type = String(value || "POST");
 
-  if (["POST", "PRODUCT", "SERVICE", "PROJECT"].includes(type)) {
+  if (["POST", "PAGE", "PRODUCT", "SERVICE", "PROJECT"].includes(type)) {
     return type as CategoryType;
   }
 

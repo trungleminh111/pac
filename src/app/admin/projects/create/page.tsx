@@ -56,7 +56,7 @@ async function createProject(
       data: {
         status: status as "DRAFT" | "PUBLISHED" | "ARCHIVED",
         thumbnail: thumbnail || null,
-        gallery: null,
+        gallery: [],
         clientName: clientName || null,
         projectType: projectType || null,
         budget: null,

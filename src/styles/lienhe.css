@@ -9,13 +9,16 @@
 .contact-right {
   min-width: 0;
 }
-.contact-one__content  {
-    padding: 0px 20px;
+
+.contact-one__content {
+  padding: 0px 20px;
 }
+
 .contact-right {
-    padding: 0px 40px;
-    gap: 11px
+  padding: 0px 40px;
+  gap: 11px
 }
+
 .contact-one__content,
 .contact-right {
   height: 100%;
@@ -43,7 +46,7 @@
   min-height: 0;
 }
 
-.contact-img-list > div {
+.contact-img-list>div {
   min-height: 0;
   overflow: hidden;
 }
@@ -134,6 +137,7 @@
     padding: 0 8px;
   }
 }
+
 @media (max-width: 767px) {
   .page-header .contact-call {
     left: 12px;
@@ -142,6 +146,7 @@
     transform-origin: left bottom;
   }
 }
+
 /* Bổ sung vào file lienhe.css cũ của bạn */
 
 .office-banner-holder img,
@@ -167,7 +172,8 @@
   display: block;
 }
 
-.contact-one__form, .doc-a4-item {
+.contact-one__form,
+.doc-a4-item {
   background: #ffffff;
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.25);
 }
@@ -319,6 +325,7 @@
 
 /* Animation */
 @keyframes callPulse {
+
   0%,
   100% {
     transform: scale(1) rotate(0deg);
@@ -334,6 +341,7 @@
 }
 
 @keyframes bubbleShow {
+
   0%,
   70% {
     opacity: 1;
@@ -368,4 +376,50 @@
     top: -72px;
     max-width: 260px;
   }
+}
+
+.form-one__control--mesgae {
+  position: relative;
+}
+
+.form-one__control--mesgae textarea {
+  width: 100%;
+  min-height: 150px;
+  border: 1px solid #d9d4d0;
+  background: #f5f3f1;
+  resize: none;
+  padding: 16px;
+  font-size: 14px;
+  color: #666;
+  outline: none;
+
+  /* chừa chỗ cho upload phía dưới */
+  padding-bottom: 50px;
+}
+
+.button-upload {
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  bottom: 10px;
+}
+
+.button-upload button {
+  width: 100%;
+  background: transparent;
+  border: none;
+  padding: 0;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  color: #7d7d7d;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.button-upload svg {
+  color: #ff3b30;
+  font-size: 18px;
 }

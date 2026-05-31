@@ -6,6 +6,7 @@ import Image from "next/image";
 import { FaDownload } from "react-icons/fa";
 import "@/styles/lienhe.css";
 import { BiSolidPhoneCall } from "react-icons/bi";
+import { FaUpload } from "react-icons/fa";
 export default function ContactPage() {
   return (
     <div className="page-wrapper">
@@ -26,7 +27,7 @@ export default function ContactPage() {
             rel="noopener noreferrer"
             className="contact-call__icon"
           >
-           <BiSolidPhoneCall />
+            <BiSolidPhoneCall />
           </a>
 
           <div className="contact-call__content">
@@ -98,8 +99,11 @@ export default function ContactPage() {
 
                     <div className="form-one__control form-one__control--mesgae form-one__control--full">
                       <textarea name="message" placeholder="Nội dung" />
-                    </div>
+                      <div className="button-upload">
 
+                        <button>File thiết kế của bạn (Nếu có) <FaUpload /></button>
+                      </div>
+                    </div>
                     <div className="form-one__control form-one__control--full">
                       <button type="submit" className="floens-btn">
                         <span>Gửi nội dung</span>

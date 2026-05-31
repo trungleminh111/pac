@@ -13,7 +13,7 @@ export function Footer() {
             />
             <div className="main-footer__top">
                 <div className="row align-items-start">
-                    <div className="col-lg-3 col-md-3 col-10">
+                    <div className="col-lg-3 col-md-3 col-10 pe-0">
                         <div className="footer-widget footer-widget--about">
                             <a href="/" className="footer-widget__logo">
 
@@ -28,7 +28,7 @@ export function Footer() {
                                 © Bản quyền 2026 thuộc về
                                 <br />
 
-                                <span className="nowrap">
+                                <span className="nowrap company-name">
                                     CÔNG TY TNHH THƯƠNG MẠI DỊCH VỤ XÂY DỰNG
                                 </span>
 
@@ -70,7 +70,7 @@ export function Footer() {
                             </ul>
                         </div>
                     </div>
-                    <div className="col-lg-3 col-md-3 col-10 ">
+                    <div className="col-lg-3 col-md-3 col-10 pe-0 mr-contact-0">
                         <div className="footer-widget footer-widget--contact">
                             <div className="">
                                 <h4 className="footer-widget__title footer-widget__title_info">Liên hệ</h4>
@@ -81,13 +81,15 @@ export function Footer() {
 
                                             <FaMapMarkerAlt className="icon-location-2" />
                                             <a href="https://www.google.com/maps" className="font-weight-800">
-                                                Trụ sở chính: 114C Hoàng Hoa Thám, Phường Bảy Hiền, TP. HCM
+                                                <b>Trụ sở chính:
+                                                    </b> 114C Hoàng Hoa Thám, Phường Bảy Hiền, TP. HCM
                                             </a>
                                         </li>
                                         <li>
                                             <FaMapMarkerAlt className="icon-location-2" />
                                             <a href="https://www.google.com/maps" className="font-weight-800">
-                                                Nhà máy sản xuất: 324 Phan Văn Hớn,
+                                               <b>Nhà máy sản xuất:
+                                                </b>  324 Phan Văn Hớn,
                                                 Phường Đông Hưng Thuận, TP.HCM
                                             </a>
                                         </li>
@@ -95,7 +97,7 @@ export function Footer() {
                                             <FaPaperPlane className="icon-location-2" />
                                             <a href="mailto:pacstone.cskh@gmail.com">pacstone.cskh@gmail.com</a>
                                         </li>
-                                        <li>
+                                        <li className="phone-bottom">
                                             <FaPhoneAlt className="icon-location-2" />
                                             <a href="tel:0962757475">0962.757.475</a>
                                         </li>

@@ -1,0 +1,137 @@
+.services-navigation {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.services-nav-btn {
+  border: 0;
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
+}
+
+.services-nav-btn .circle-base {
+  border-color: #000;
+}
+
+.services-nav-btn .arrow-line,
+.services-nav-btn .arrow-line::before,
+.services-nav-btn .arrow-line::after,
+.services-nav-btn:hover .arrow-line,
+.services-nav-btn:hover .arrow-line::before,
+.services-nav-btn:hover .arrow-line::after {
+  background-color: #000;
+  border-color: #000;
+}
+
+.service-card-two__bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.service-detail-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 18px;
+  color: #e23b2e;
+  font-weight: 700;
+  text-transform: uppercase;
+  background: transparent;
+  padding: 0;
+}
+
+.service-detail-link span,
+.service-detail-link i,
+.service-detail-link:hover span,
+.service-detail-link:hover i {
+  color: #e23b2e;
+}
+
+.service-detail-link i {
+  font-size: 18px;
+  transition: transform 0.3s ease;
+}
+
+.service-detail-link:hover i {
+  transform: translateX(6px);
+}
+
+.service-card-two__icon {
+  margin-left: auto;
+}
+
+.services-slider-nav {
+  display: flex;
+  gap: 14px;
+}
+
+.services-arrow {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 1px solid #2b1e16;
+  background: #fff;
+  color: #2b1e16;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.services-arrow svg {
+  width: 22px;
+  height: 22px;
+}
+
+.services-arrow:hover {
+  background: #2b1e16;
+  color: #fff;
+}
+
+.service-card-two__bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.service-detail-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 18px;
+  color: #e23b2e;
+  font-weight: 700;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+
+.service-detail-link span {
+  color: #e23b2e;
+}
+
+.service-detail-arrow {
+  width: 22px;
+  height: 22px;
+  color: #e23b2e;
+  transition: transform 0.3s ease;
+}
+
+.service-detail-link:hover .service-detail-arrow {
+  transform: translateX(6px);
+}
+.services-two .services-slider-nav {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.service-detail-arrow {
+  width: 22px;
+  height: 22px;
+  color: currentColor;
+  transition: transform 0.3s ease;
+}
+
+.service-detail-link:hover .service-detail-arrow {
+  transform: translateX(6px);
+}

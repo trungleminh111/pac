@@ -40,7 +40,8 @@ async function handleUploadFile(
     };
   }
 
-  const originalBuffer = Buffer.from(await file.arrayBuffer());
+  const arrayBuffer = await file.arrayBuffer();
+  const originalBuffer = Buffer.from(arrayBuffer) as Buffer<ArrayBuffer>;
 
   const hash = crypto
     .createHash("sha256")
@@ -63,20 +64,20 @@ async function handleUploadFile(
 
   const baseName = cleanFileName(file.name) || "image";
 
-  let uploadBuffer = originalBuffer;
+  let uploadBuffer: Buffer<ArrayBuffer> = originalBuffer;
   let contentType = file.type;
   let filename = file.name;
   let ext = file.name.split(".").pop() || "file";
 
   if (file.type !== "image/gif" && file.type !== "image/svg+xml") {
-    uploadBuffer = await sharp(originalBuffer)
+    uploadBuffer = (await sharp(originalBuffer)
       .rotate()
       .resize({
         width: 1920,
         withoutEnlargement: true,
       })
       .webp({ quality: 82 })
-      .toBuffer();
+      .toBuffer()) as Buffer<ArrayBuffer>;
 
     contentType = "image/webp";
     filename = `${baseName}.webp`;

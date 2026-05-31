@@ -57,6 +57,9 @@ export default function ProductForm({
   const [title, setTitle] = useState("");
   const [slug, setSlug] = useState("");
   const [priceDisplay, setPriceDisplay] = useState("");
+  const [status, setStatus] = useState<"DRAFT" | "PUBLISHED" | "ARCHIVED">(
+    "DRAFT"
+  );
 
   useEffect(() => {
     if (state.ok) {
@@ -94,6 +97,8 @@ export default function ProductForm({
           {state.message}
         </div>
       )}
+
+      <input type="hidden" name="status" value={status} />
 
       <div className="grid gap-6 xl:grid-cols-[1fr_340px]">
         <div className="space-y-5">
@@ -220,8 +225,12 @@ export default function ProductForm({
 
             <div className="space-y-4 p-5">
               <select
-                name="status"
-                defaultValue="DRAFT"
+                value={status}
+                onChange={(e) =>
+                  setStatus(
+                    e.target.value as "DRAFT" | "PUBLISHED" | "ARCHIVED"
+                  )
+                }
                 className="w-full rounded-xl border px-4 py-3 text-sm"
               >
                 <option value="DRAFT">Bản nháp</option>
@@ -242,9 +251,8 @@ export default function ProductForm({
               <div className="flex gap-2">
                 <button
                   type="submit"
-                  name="status"
-                  value="DRAFT"
                   disabled={pending}
+                  onClick={() => setStatus("DRAFT")}
                   className="flex flex-1 items-center justify-center gap-2 rounded-xl border px-4 py-3 text-sm font-semibold disabled:opacity-60"
                 >
                   <Save className="h-4 w-4" />
@@ -253,9 +261,8 @@ export default function ProductForm({
 
                 <button
                   type="submit"
-                  name="status"
-                  value="PUBLISHED"
                   disabled={pending}
+                  onClick={() => setStatus("PUBLISHED")}
                   className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-[#2271b1] px-4 py-3 text-sm font-semibold text-white disabled:opacity-60"
                 >
                   <Eye className="h-4 w-4" />
@@ -301,7 +308,11 @@ export default function ProductForm({
 
             <div className="space-y-4 p-5">
               <MediaGalleryPicker value={gallery} onChange={setGallery} />
-              <input type="hidden" name="gallery" value={JSON.stringify(gallery)} />
+              <input
+                type="hidden"
+                name="gallery"
+                value={JSON.stringify(gallery)}
+              />
             </div>
           </div>
         </aside>

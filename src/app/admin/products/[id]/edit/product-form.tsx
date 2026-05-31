@@ -25,7 +25,7 @@ type Product = {
   sku: string | null;
   price: string | null;
   thumbnail: string | null;
-  gallery: string[];
+  gallery: unknown;
   origin: string | null;
   size: string | null;
   material: string | null;
@@ -46,6 +46,11 @@ function getHtml(content: any) {
   if (!content) return "";
   if (typeof content === "string") return content;
   return content.html || "";
+}
+
+function getStringGallery(value: unknown): string[] {
+  if (!Array.isArray(value)) return [];
+  return value.filter((item): item is string => typeof item === "string");
 }
 
 function toSlug(value: string) {
@@ -99,7 +104,9 @@ export default function ProductEditForm({
 
   const [content, setContent] = useState(getHtml(translation?.content));
   const [thumbnail, setThumbnail] = useState(product.thumbnail || "");
-  const [gallery, setGallery] = useState<string[]>(product.gallery || []);
+  const [gallery, setGallery] = useState<string[]>(
+    getStringGallery(product.gallery)
+  );
   const [title, setTitle] = useState(translation?.title || "");
   const [slug, setSlug] = useState(translation?.slug || "");
   const [priceDisplay, setPriceDisplay] = useState(
@@ -354,7 +361,11 @@ export default function ProductEditForm({
 
             <div className="space-y-4 p-5">
               <MediaGalleryPicker value={gallery} onChange={setGallery} />
-              <input type="hidden" name="gallery" value={JSON.stringify(gallery)} />
+              <input
+                type="hidden"
+                name="gallery"
+                value={JSON.stringify(gallery)}
+              />
             </div>
           </div>
         </aside>

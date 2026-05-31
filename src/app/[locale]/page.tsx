@@ -16,9 +16,11 @@ export default function HomePage() {
         <Hero />
         <ClientCarousel />
         <Services />
-        <About />
-        <Products />
-        <Projects />
+        <div className="home-shared-bg">
+          <About />
+          <Products />
+          <Projects />
+        </div>
         <News />
         <Footer />
       </div>

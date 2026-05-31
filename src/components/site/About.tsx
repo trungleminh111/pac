@@ -1,12 +1,23 @@
 import { FiCheckSquare } from "react-icons/fi";
-export function About() {
+type AboutProps = {
+  backgroundImage?: string;
+};
+
+export function About({ backgroundImage }: AboutProps) {
   return (
     <section className="about-two section-space">
       <div
         className="about-two__bg"
-        style={{
-          backgroundImage: "url('/assets/images/backgrounds/bg-about.png')",
-        }}
+        // style={{
+        //   backgroundImage: "url('/assets/images/backgrounds/8.png')",
+        //   opacity: 0.2
+        // }}
+         style={
+        backgroundImage
+          ? { backgroundImage: `url(${backgroundImage})` }
+          : undefined
+      }
+        
       />
 
       <div className="container">
@@ -102,7 +113,7 @@ export function About() {
               <div className="about-two__list">
 
                 <div className="about-two__button">
-                  <a href="/gioi-thieu" className="floens-btn">
+                  <a href="/vi/gioi-thieu" className="floens-btn">
                     <span>Xem thêm</span>
                     <i className="icon-right-arrow" >→</i>
                   </a>

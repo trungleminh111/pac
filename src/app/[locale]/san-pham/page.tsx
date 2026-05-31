@@ -1,6 +1,11 @@
 import { Header } from "@/components/site/Header";
 import { Footer } from "@/components/site/Footer";
 import { PageHeader } from "@/components/site/PageHeader";
+import { FaStar } from "react-icons/fa6";
+import { FaCartShopping } from "react-icons/fa6";
+import { GrPrevious } from "react-icons/gr";
+import { GrNext } from "react-icons/gr";
+import "@/styles/sanpham.css";
 
 const colors = [
   "marble-color-1.png",
@@ -12,13 +17,11 @@ const colors = [
 ];
 
 const categories = [
-  "Đá Hoa Cương - Granite",
-  "Đá Cẩm Thạch - Marble",
-  "Đá Onyx",
-  "Đá Limestone",
-  "Đá Quartzite",
-  "Tranh Đá",
-  "Hoa Văn Đá",
+  "Mẫu Đá",
+  "Tranh Đá - Hoa văn Đá",
+  "Vật Tư Phụ - Phụ Gia",
+  "Thiết Bị - Dụng Cụ Ngành Đá",
+  "Khuyến Mãi - Thanh Lý"
 ];
 
 const products = [
@@ -44,64 +47,61 @@ export default async function ProductsPage({
     <div className="page-wrapper">
       <Header />
 
-      <PageHeader title="SẢN PHẨM" />
+      <PageHeader title="" bgImage="/assets/images/backgrounds/PACSTONE-SANPHAM-header.png" />
 
       <section className="product-page product-page--left section-space-bottom">
         <div className="container">
-          <div className="row gutter-y-60">
-            <div className="col-xl-3 col-lg-4">
-              <aside className="product__sidebar">
-                <div className="product__search-box product__sidebar__item">
-                  <form action="#" className="product__search">
-                    <input type="text" placeholder="Tìm sản phẩm" />
-                    <button type="submit" aria-label="search submit">
-                      <span className="icon-search" />
-                    </button>
-                  </form>
-                </div>
-
-                <div className="product__price-ranger product__sidebar__item">
-                  <h3 className="product__sidebar__title">Màu sắc</h3>
-
-                  <div className="product-details__color__box">
-                    {colors.map((color) => (
-                      <button
-                        type="button"
-                        className="product-details__color__btn"
-                        key={color}
-                      >
-                        <img
-                          src={`/assets/images/resources/${color}`}
-                          alt="color"
-                          width="40"
-                        />
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="product__categories product__sidebar__item">
-                  <h3 className="product__sidebar__title product__categories__title">
-                    Danh mục
-                  </h3>
-
-                  <ul className="list-unstyled">
-                    {categories.map((category) => (
-                      <li key={category}>
-                        <a href={`/${locale}/san-pham`} data-text={category}>
-                          <span>{category}</span>
-                        </a>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </aside>
+          
+          {/* ===================================================
+              HÀNG 1: KHU VỰC BỘ LỌC (TÌM KIẾM & CATEGORIES)
+             =================================================== */}
+          {/* Thêm align-items-stretch giúp ép hai cột có chiều cao (height) bằng khít nhau */}
+          <div className="row align-items-stretch gy-4 mb-5">
+            
+            {/* Cột tìm kiếm bên trái */}
+            <div className="col-xl-4 col-md-5 col-12">
+              {/* Thêm class h-100 để ô phình to lấp đầy chiều cao bằng với cụm categories */}
+              <div className="product__search-box product__sidebar__item h-100" style={{ margin: 0, display: 'flex' }}>
+                <form action="#" className="product__search w-100" style={{ display: 'flex', position: 'relative' }}>
+                  <input 
+                    type="text" 
+                    placeholder="Tìm sản phẩm" 
+                    style={{ width: '100%', height: '100%', minHeight: '50px' }}
+                  />
+                  <button type="submit" aria-label="search submit" style={{ position: 'absolute', right: '15px', top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none' }}>
+                    <span className="icon-search" />
+                  </button>
+                </form>
+              </div>
             </div>
 
-            <div className="col-xl-9 col-lg-8">
+            {/* Cột categories bên phải */}
+            <div className="col-xl-8 col-md-7 col-12">
+              <div className="product__categories" style={{ margin: 0, height: '100%' }}>
+                <ul className="list-unstyled">
+                  {categories.map((category) => (
+                    <li key={category}>
+                      <a href={`/${locale}/san-pham`} data-text={category}>
+                        <span>{category}</span>
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+
+          </div>
+
+          <hr className="mb-5" style={{ borderTop: '1px solid #e1dad5', opacity: 0.5 }} />
+
+          {/* ===================================================
+              HÀNG 2: DANH SÁCH SẢN PHẨM Ở DƯỚI
+             =================================================== */}
+          <div className="row">
+            <div className="col-xl-12 col-lg-12">
               <div className="row gutter-y-30">
                 {products.map(([name, price, image]) => (
-                  <div className="col-xl-4 col-lg-6 col-md-6" key={name}>
+                  <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12" key={name}>
                     <div className="product__item">
                       <div className="product__item__image">
                         <img
@@ -112,11 +112,11 @@ export default async function ProductsPage({
 
                       <div className="product__item__content">
                         <div className="floens-ratings product__item__ratings">
-                          <span className="icon-star" />
-                          <span className="icon-star" />
-                          <span className="icon-star" />
-                          <span className="icon-star" />
-                          <span className="icon-star" />
+                          <div className="rating-stars">
+                            {Array.from({ length: 5 }).map((_, index) => (
+                              <FaStar key={index} />
+                            ))}
+                          </div>
                         </div>
 
                         <h4 className="product__item__title">
@@ -132,18 +132,20 @@ export default async function ProductsPage({
                           className="floens-btn product__item__link"
                         >
                           <span>Liên hệ</span>
-                          <i className="icon-cart" />
+                          <FaCartShopping className="product-cart-icon" />
                         </a>
                       </div>
                     </div>
                   </div>
                 ))}
 
-                <div className="col-12">
-                  <ul className="post-pagination">
+                {/* Phân trang bài viết */}
+                <div className="col-12 mt-5">
+                  <ul className="post-pagination justify-content-center">
                     <li>
                       <a href="#">
                         <span className="icon-arrow-left" />
+                        <GrPrevious />
                       </a>
                     </li>
                     <li className="active">
@@ -158,6 +160,7 @@ export default async function ProductsPage({
                     <li>
                       <a href="#">
                         <span className="icon-arrow-right" />
+                        <GrNext />
                       </a>
                     </li>
                   </ul>
@@ -165,6 +168,7 @@ export default async function ProductsPage({
               </div>
             </div>
           </div>
+
         </div>
       </section>
 

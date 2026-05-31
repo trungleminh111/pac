@@ -1,25 +1,54 @@
 import { Header } from "@/components/site/Header";
 import { Footer } from "@/components/site/Footer";
 import { PageHeader } from "@/components/site/PageHeader";
-
+import LocationMap from "@/components/site/Map";
+import Image from "next/image";
+import { FaDownload } from "react-icons/fa";
+import "@/styles/lienhe.css";
+import { BiSolidPhoneCall } from "react-icons/bi";
 export default function ContactPage() {
   return (
     <div className="page-wrapper">
       <Header />
 
-      <PageHeader title="LIÊN HỆ" />
+      <PageHeader
+        title=""
+        bgImage="/assets/images/backgrounds/PACSTONE-LIENHE-header.png"
+      >
+        <div className="contact-call">
+          <div className="contact-call__bubble">
+            Đừng ngại, hãy gọi cho chúng tôi!
+          </div>
+
+          <a
+            href="https://zalo.me/0962757475"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="contact-call__icon"
+          >
+           <BiSolidPhoneCall />
+          </a>
+
+          <div className="contact-call__content">
+            <div className="contact-call__label">CALL US</div>
+            <a href="tel:0962757475" className="contact-call__phone">
+              0962.757.475
+            </a>
+          </div>
+        </div>
+      </PageHeader>
 
       <section className="contact-one section-space">
         <div
           className="contact-one__bg"
           style={{
-            backgroundImage: "url('/assets/images/backgrounds/contact-bg-1.png')",
+            backgroundImage: "url('/assets/images/backgrounds/8.png')", opacity: 0.2,
           }}
         />
 
         <div className="container">
           <div className="row gutter-y-40">
-            <div className="col-lg-6">
+            <div className="col-lg-6 col-md-12 ">
               <div className="contact-one__content">
                 <div className="sec-title sec-title--border">
                   <h6 className="sec-title__tagline">liên hệ</h6>
@@ -27,6 +56,7 @@ export default function ContactPage() {
                     Chúng Tôi Luôn Sẵn Sàng Lắng Nghe Bạn!
                   </h3>
                 </div>
+
 
                 <p className="contact-one__text">
                   <strong>
@@ -37,104 +67,97 @@ export default function ContactPage() {
                   tư vấn miễn phí từ đội ngũ chuyên gia hàng đầu.
                 </p>
 
-                <div className="contact-one__info">
+
+                <form className="contact-one__form contact-form-validated form-one">
                   <div
-                    className="contact-one__info__bg"
+                    className="contact-one__form__bg"
                     style={{
                       backgroundImage:
-                        "url('/assets/images/shapes/contact-info-bg.png')",
+                        "url('/assets/images/shapes/contact-info-form-bg.png')",
                     }}
                   />
 
-                  <div className="contact-one__info__content">
-                    <div className="contact-one__info__item">
-                      <div className="contact-one__info__item__inner">
-                        <div className="contact-one__info__icon">
-                          <span className="icon-phone-call" />
-                        </div>
-                        <p className="contact-one__info__text">
-                          <a href="tel:+84909888899">0909.8888.99</a>
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="contact-one__info__item">
-                      <div className="contact-one__info__item__inner">
-                        <div className="contact-one__info__icon">
-                          <span className="icon-paper-plane" />
-                        </div>
-                        <p className="contact-one__info__text">
-                          <a href="mailto:hotro@phucnam.com">
-                            hotro@phucnam.com
-                          </a>
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="contact-one__info__item">
-                      <div className="contact-one__info__item__inner">
-                        <div className="contact-one__info__icon">
-                          <span className="icon-location" />
-                        </div>
-                        <address className="contact-one__info__text">
-                          <a href="https://www.google.com/maps">
-                            324-326 Phan Văn Hớn, P.Tân Thới Nhất, Q.12, TPHCM
-                          </a>
-                        </address>
-                      </div>
-                    </div>
+                  <div className="contact-one__form__top">
+                    <h2 className="contact-one__form__title">
+                      Gửi tin nhắn cho chúng tôi
+                    </h2>
                   </div>
 
-                  <img
-                    src="/assets/images/shapes/contact-shape-1-1.png"
-                    alt="contact"
-                    className="contact-one__info__image"
-                  />
-                </div>
+                  <div className="form-one__group form-one__group--grid">
+                    <div className="form-one__control form-one__control--input form-one__control--full">
+                      <input type="text" name="name" placeholder="Họ và tên" />
+                    </div>
+
+                    <div className="form-one__control form-one__control--full">
+                      <input type="email" name="email" placeholder="Email" />
+                    </div>
+
+                    <div className="form-one__control form-one__control--full">
+                      <input type="text" name="phone" placeholder="Điện thoại" />
+                    </div>
+
+                    <div className="form-one__control form-one__control--mesgae form-one__control--full">
+                      <textarea name="message" placeholder="Nội dung" />
+                    </div>
+
+                    <div className="form-one__control form-one__control--full">
+                      <button type="submit" className="floens-btn">
+                        <span>Gửi nội dung</span>
+                        <i className="icon-right-arrow" >→</i>
+                      </button>
+                    </div>
+                  </div>
+                </form>
+
               </div>
             </div>
 
-            <div className="col-lg-6">
-              <form className="contact-one__form contact-form-validated form-one">
-                <div
-                  className="contact-one__form__bg"
-                  style={{
-                    backgroundImage:
-                      "url('/assets/images/shapes/contact-info-form-bg.png')",
-                  }}
+
+            <div className="contact-right col-lg-6  col-md-12 d-flex flex-column">
+              {/* Thẻ bọc ngoài đơn giản, không cố định aspectRatio để chiều cao tự bung theo ảnh */}
+              <div className="doc-card-item">
+                <Image
+                  src="/assets/images/lienhe/ShowroomPAC.png"
+                  alt="Hồ sơ năng lực P.A.C Stone"
+                  width={1448}
+                  height={1086}
+                  sizes="(max-width: 991px) 100vw, 50vw"
+                  className="doc-thumb-img"
                 />
+              </div>
+              <div className="doc-a4-grid">
 
-                <div className="contact-one__form__top">
-                  <h2 className="contact-one__form__title">
-                    Gửi tin nhắn cho chúng tôi
-                  </h2>
+                {/* Ảnh A4 thứ nhất */}
+                <div className="doc-a4-item">
+                  <Image
+                    src="/assets/images/lienhe/Ho_So_Nang_Luc_PAC_STONE.png"
+                    alt="Hồ sơ năng lực P.A.C Stone"
+                    width={210}
+                    height={297}
+                    sizes="(max-width: 800px) 50vw, 25vw"
+                    className="doc-a4-img"
+                  />
+                </div>
+                <div className="doc-a4-item">
+                  <Image
+                    src="/assets/images/lienhe/Giay_phep_PAC_STONE.png"
+                    alt="Giấy phép kinh doanh"
+                    width={210}
+                    height={297}
+                    sizes="(max-width: 800px) 50vw, 25vw"
+                    className="doc-a4-img"
+                  />
                 </div>
 
-                <div className="form-one__group form-one__group--grid">
-                  <div className="form-one__control form-one__control--input form-one__control--full">
-                    <input type="text" name="name" placeholder="Họ và tên" />
-                  </div>
-
-                  <div className="form-one__control form-one__control--full">
-                    <input type="email" name="email" placeholder="Email" />
-                  </div>
-
-                  <div className="form-one__control form-one__control--full">
-                    <input type="text" name="phone" placeholder="Điện thoại" />
-                  </div>
-
-                  <div className="form-one__control form-one__control--mesgae form-one__control--full">
-                    <textarea name="message" placeholder="Nội dung" />
-                  </div>
-
-                  <div className="form-one__control form-one__control--full">
-                    <button type="submit" className="floens-btn">
-                      <span>Gửi nội dung</span>
-                      <i className="icon-right-arrow" />
-                    </button>
-                  </div>
+              </div>
+              <div className="download-box ">
+                <button className="download-btn">
+                  <FaDownload />
+                </button>
+                <div className="download-content">
+                  Tải Hồ Sơ Năng Lực P.A.C STONE
                 </div>
-              </form>
+              </div>
             </div>
           </div>
         </div>
@@ -149,13 +172,17 @@ export default function ContactPage() {
       <section className="contact-map">
         <div className="container-fluid">
           <div className="google-map google-map__contact">
-            <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3918.7132667039778!2d106.60633147480583!3d10.833241089319026!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752b39af9e5153%3A0x4ac6e9eee614a19a!2zMzI0IFBoYW4gVsSDbiBI4bubbiwgVMOibiBUaOG7m2kgTmjhuqV0LCBRdeG6rW4gMTIsIEjhu5MgQ2jDrSBNaW5oIDcwMDAwLCBWaeG7h3QgTmFt!5e0!3m2!1svi!2s!4v1718622236816!5m2!1svi!2s"
+            {/* <iframe
+              src="https://www.google.com/maps/d/edit?mid=1OxB97mvj7vH_G3AYETY6GQ_TvRiiSQg&usp=sharing"
               className="map__contact"
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
             />
+             */}
+            {/* <iframe src="https://www.google.com/maps/d/u/0/embed?mid=1OxB97mvj7vH_G3AYETY6GQ_TvRiiSQg&ehbc=2E312F&noprof=1" width="640" height="480"></iframe>             */}
+
           </div>
+          <LocationMap />
         </div>
       </section>
 

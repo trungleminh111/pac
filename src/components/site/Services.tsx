@@ -94,7 +94,9 @@ export function Services() {
               <div className="service-card-two">
                 <div
                   className="service-card-two__bg"
-                
+                  style={{
+                    backgroundImage: "url('/assets/images/services/service-bg-2-1.png')",
+                  }}
                 />
 
                 <div className="service-card-two__image">

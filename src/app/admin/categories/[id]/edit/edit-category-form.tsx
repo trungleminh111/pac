@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { Save } from "lucide-react";
 import type { EditCategoryState } from "./page";
 
-type CategoryType = "POST" | "PRODUCT" | "SERVICE" | "PROJECT";
+type CategoryType = "POST" | "PAGE" | "PRODUCT" | "SERVICE" | "PROJECT";
 
 type Category = {
   id: string;
@@ -18,6 +18,7 @@ type Category = {
 
 const typeOptions: { label: string; value: CategoryType }[] = [
   { label: "Bài viết", value: "POST" },
+  { label: "Trang", value: "PAGE" },
   { label: "Sản phẩm", value: "PRODUCT" },
   { label: "Dịch vụ", value: "SERVICE" },
   { label: "Công trình", value: "PROJECT" },

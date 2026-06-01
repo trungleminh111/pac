@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 
-import "bootstrap/dist/css/bootstrap.min.css";
-import "owl.carousel/dist/assets/owl.carousel.css";
+
 
 import "./globals.css";
 import "@/styles/site.css";

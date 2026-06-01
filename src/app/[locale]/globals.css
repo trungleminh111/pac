@@ -127,6 +127,18 @@
   html {
     @apply font-sans;
   }
+
+  /* Fix: Tailwind preflight có thể reset pointer-events, đảm bảo các element tương tác luôn clickable */
+  button,
+  a,
+  [role="button"],
+  input,
+  select,
+  textarea,
+  label {
+    pointer-events: auto;
+    cursor: pointer;
+  }
 }
 
 

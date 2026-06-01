@@ -1,5 +1,10 @@
 "use client";
-import { use, useState, useEffect } from "react";
+import { use, useState } from "react";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Autoplay, Navigation } from "swiper/modules";
+
+import "swiper/css";
+import "swiper/css/navigation";
 import { Header } from "@/components/site/Header";
 import { Footer } from "@/components/site/Footer";
 import { PageHeader } from "@/components/site/PageHeader";
@@ -63,30 +68,7 @@ export default function ProductDetailPage({
   const { locale, slug } = use(params);
 
   const [activeImage, setActiveImage] = useState(product.images[0]);
-const [currentWork, setCurrentWork] = useState(0);
 
-const nextWork = () => {
-  setCurrentWork((prev) => (prev + 1) % works.length);
-};
-
-const prevWork = () => {
-  setCurrentWork((prev) =>
-    prev === 0 ? works.length - 1 : prev - 1
-  );
-};
-
-useEffect(() => {
-  const timer = setInterval(() => {
-    setCurrentWork((prev) => (prev + 1) % works.length);
-  }, 3000);
-
-  return () => clearInterval(timer);
-}, []);
-
-const visibleWorks = Array.from(
-  { length: 3 },
-  (_, i) => works[(currentWork + i) % works.length]
-);
   return (
     <div className="page-wrapper">
       <Header />
@@ -267,75 +249,67 @@ const visibleWorks = Array.from(
         <div className="container pt-5 pb-5">
           <h3>ỨNG DỤNG THỰC TẾ</h3>
           <p className="h5">Một số công trình tiêu biểu đã thi công</p>
-          <div className="works-slider">
-  <button
-    className="works-slider__btn works-slider__btn--prev"
-    onClick={prevWork}
-  >
-    ❮
-  </button>
+          <Swiper
+            modules={[Autoplay, Navigation]}
+            slidesPerView={3}
+            spaceBetween={30}
+            loop={true}
+            navigation={true}
+            autoplay={{
+              delay: 3000,
+              disableOnInteraction: false,
+            }}
+            breakpoints={{
+              0: {
+                slidesPerView: 1,
+              },
+              768: {
+                slidesPerView: 2,
+              },
+              1200: {
+                slidesPerView: 3,
+              },
+            }}
+          >
+            {works.map(([title, tagline, image]) => (
+              <SwiperSlide key={title}>
+                <div className="work-card h-100">
+                  <div className="work-card__image">
+                    <img src={`/assets/images/works/${image}`} alt={title} />
+                  </div>
 
-  <div className="works-slider__track">
-    {visibleWorks.map(([title, tagline, image]) => (
-      <div key={title} className="works-slider__item">
-        <div className="work-card h-100">
-          <div className="work-card__image">
-            <img
-              src={`/assets/images/works/${image}`}
-              alt={title}
-            />
-          </div>
+                  <div className="work-card__content-show">
+                    <div className="work-card__content-inner">
+                      <h3 className="work-card__tagline">{tagline}</h3>
+                      <h3 className="work-card__title">
+                        <a href={`/${locale}/cong-trinh/${toSlug(title)}`}>
+                          {title}
+                        </a>
+                      </h3>
+                    </div>
+                  </div>
 
-          <div className="work-card__content-show">
-            <div className="work-card__content-inner">
-              <h3 className="work-card__tagline">
-                {tagline}
-              </h3>
+                  <div className="work-card__content-hover">
+                    <div className="work-card__content-inner">
+                      <h3 className="work-card__tagline">{tagline}</h3>
+                      <h3 className="work-card__title">
+                        <a href={`/${locale}/cong-trinh/${toSlug(title)}`}>
+                          {title}
+                        </a>
+                      </h3>
+                    </div>
 
-              <h3 className="work-card__title">
-                <a
-                  href={`/${locale}/cong-trinh/${toSlug(title)}`}
-                >
-                  {title}
-                </a>
-              </h3>
-            </div>
-          </div>
-
-          <div className="work-card__content-hover">
-            <div className="work-card__content-inner">
-              <h3 className="work-card__tagline">
-                {tagline}
-              </h3>
-
-              <h3 className="work-card__title">
-                <a
-                  href={`/${locale}/cong-trinh/${toSlug(title)}`}
-                >
-                  {title}
-                </a>
-              </h3>
-            </div>
-
-            <a
-              href={`/${locale}/cong-trinh/${toSlug(title)}`}
-              className="work-card__link floens-btn"
-            >
-              <LuArrowRight />
-            </a>
-          </div>
-        </div>
-      </div>
-    ))}
-  </div>
-
-  <button
-    className="works-slider__btn works-slider__btn--next"
-    onClick={nextWork}
-  >
-    ❯
-  </button>
-</div>
+                    <a
+                      href={`/${locale}/cong-trinh/${toSlug(title)}`}
+                      className="work-card__link floens-btn"
+                    >
+                      <LuArrowRight />
+                    </a>
+                  </div>
+                </div>
+              </SwiperSlide>
+            ))}
+          </Swiper>
         </div>
 
 

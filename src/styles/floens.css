@@ -1379,7 +1379,7 @@ p {
 
 @media (max-width: 425px) {
   .sec-title__title {
-    font-size: 35px;
+    font-size: 25px;
     text-align: justify;
   }
 
@@ -5406,13 +5406,13 @@ body.megamenu-popup-active .mobile-nav__content {
 
 @media (max-width: 1199px) {
   .main-slider .sec-title__title {
-    font-size: 45px;
+    font-size: 40px;
   }
 }
 
 @media (max-width: 575px) {
   .main-slider .sec-title__title {
-    font-size: 40px;
+    font-size: 20px;
   }
 }
 

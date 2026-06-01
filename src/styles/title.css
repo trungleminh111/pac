@@ -1,5 +1,8 @@
 @media (max-width: 425px){
  .sec-title__tagline {
-    top: -27px !important
+    top: -26px !important
+  }
+  .product-home .sec-title__title{
+    text-align: center;
   }
 }

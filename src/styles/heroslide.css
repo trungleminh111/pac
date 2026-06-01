@@ -25,9 +25,9 @@
     }
 
     .hero-content {
-        width: 45%;
+        width: 40%;
         margin: 0;
-        padding: 5px 12px;
+        padding: 5px 8px;
 
         display: inline-flex;
         flex-direction: column;
@@ -96,5 +96,8 @@
         bottom: 10px;
         left: 50%;
         transform: translateX(-50%);
+    }
+    .hero-slider .conteiner-btn{
+        width: auto;
     }
 }

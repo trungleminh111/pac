@@ -8,32 +8,23 @@ export default function ScrollTopProgress() {
 
   useEffect(() => {
     const handleScroll = () => {
-      const scrollTop =
-        window.scrollY || document.documentElement.scrollTop || document.body.scrollTop || 0;
+      const scrollTop = window.scrollY;
 
-      const scrollHeight = Math.max(
-        document.documentElement.scrollHeight,
-        document.body.scrollHeight
-      );
+      const docHeight =
+        document.documentElement.scrollHeight -
+        document.documentElement.clientHeight;
 
-      const clientHeight = window.innerHeight;
+      const percent = (scrollTop / docHeight) * 100;
 
-      const docHeight = scrollHeight - clientHeight;
+      setScrollPercent(percent);
 
-      const percent = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
-
-      setScrollPercent(Math.min(100, Math.max(0, percent)));
       setShow(scrollTop > 50);
     };
 
-    handleScroll();
-
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    window.addEventListener("resize", handleScroll);
+    window.addEventListener("scroll", handleScroll);
 
     return () => {
       window.removeEventListener("scroll", handleScroll);
-      window.removeEventListener("resize", handleScroll);
     };
   }, []);
 
@@ -47,11 +38,13 @@ export default function ScrollTopProgress() {
   if (!show) return null;
 
   return (
-    <button type="button" className="scroll-progress-btn" onClick={scrollToTop}>
+    <button className="scroll-progress-btn" onClick={scrollToTop}>
       <div className="scroll-progress-line">
         <div
           className="scroll-progress-fill"
-          style={{ height: `${scrollPercent}%` }}
+          style={{
+            height: `${scrollPercent}%`,
+          }}
         />
       </div>
 

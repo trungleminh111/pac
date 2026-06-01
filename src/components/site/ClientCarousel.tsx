@@ -20,18 +20,25 @@ export function ClientCarousel() {
       style={{ width: "100%", maxWidth: "100%" }}
     >
       <Swiper
-        className="client-carousel__one--swiper"
         modules={[Autoplay]}
-        spaceBetween={65}
         slidesPerView={5}
-        loop={true}
-        autoplay={{ delay: 6000, disableOnInteraction: false }}
+        loop
         speed={700}
+        spaceBetween={65}
+        autoplay={{
+          delay: 6000,
+          disableOnInteraction: false,
+        }}
+        touchStartPreventDefault={false}
+        simulateTouch={true}
+        allowTouchMove={true}
+        edgeSwipeDetection="prevent"
+        edgeSwipeThreshold={30}
         breakpoints={{
-          0:    { slidesPerView: 2, spaceBetween: 30 },
-          500:  { slidesPerView: 3, spaceBetween: 40 },
-          768:  { slidesPerView: 4, spaceBetween: 50 },
-          992:  { slidesPerView: 5, spaceBetween: 70 },
+          0: { slidesPerView: 2, spaceBetween: 30 },
+          500: { slidesPerView: 3, spaceBetween: 40 },
+          768: { slidesPerView: 4, spaceBetween: 50 },
+          992: { slidesPerView: 5, spaceBetween: 70 },
           1200: { slidesPerView: 5, spaceBetween: 50 },
         }}
       >

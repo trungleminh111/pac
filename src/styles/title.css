@@ -1,0 +1,5 @@
+@media (max-width: 425px){
+ .sec-title__tagline {
+    top: -27px !important
+  }
+}

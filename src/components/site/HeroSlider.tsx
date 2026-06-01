@@ -1,5 +1,6 @@
 import { GrPrevious } from "react-icons/gr";
 import { GrNext } from "react-icons/gr";
+import "@/styles/heroslide.css";
 const slides = ["3.jpg"];
 
 export function Hero() {

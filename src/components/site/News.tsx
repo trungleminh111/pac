@@ -6,10 +6,10 @@ const posts = [
 
 export function News() {
   return (
-    <section className="blog-one blog-one--home-two section-space-two">
+    <section className="blog-one blog-one--home-two section-space-two pt-sm-3  pt-md-3  pt-lg-5   pt-xl-5   pb-xxl-3 pb-sm-3  pb-md-3  pb-lg-5   pb-xl-5   pb-xxl-3  ">
       <div className="container">
         <div className="blog-one__top">
-          <div className="row gutter-y-50 align-items-center">
+          <div className="row pb-5 align-items-center">
             <div className="col-lg-8">
               <div className="sec-title">
                 <h6 className="sec-title__tagline">Tin tức</h6>

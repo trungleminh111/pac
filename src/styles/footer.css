@@ -47,7 +47,7 @@
   margin-left: auto;
   margin-right: auto;
 
-  padding-top: 40px;
+  padding-top: 50px;
   padding-bottom: 40px;
 }
 
@@ -223,7 +223,7 @@
 
   .main-footer__top {
     max-width: 1300px;
-    padding-top: 30px;
+    padding-top: 40px;
     padding-bottom: 30px;
   }
 
@@ -271,7 +271,7 @@
 
 @media (min-width: 1200px) and (max-width: 1299px) {
   .footer-widget--about {
-     gap: 26px;
+    gap: 26px;
   }
 
   .floens-social {
@@ -287,10 +287,12 @@
     max-width: 100vw;
     padding-left: 15px;
   }
+
   .footer-widget--about {
-   
+
     gap: 6px;
-    height: 90%;}
+    height: 90%;
+  }
 
   .main-footer__top .padding-left-2 {
     padding-left: 6.3vw !important;
@@ -341,12 +343,13 @@
     height: 100%;
     display: flex;
 
-}}
+  }
+}
 
 @media (min-width: 1200px) and (max-width: 1220px) {
-    .footer-widget--about {
-        gap: 18px;
-    }
+  .footer-widget--about {
+    gap: 18px;
+  }
 }
 
 
@@ -355,8 +358,9 @@
     max-width: 100%;
     padding-left: 25px;
   }
+
   .footer-widget--about {
-   
+
     gap: 10px;
     height: 10%;
     padding-left: 15px;
@@ -411,67 +415,74 @@
     height: 100%;
     display: flex;
 
-}
-.footer-widget__title{
-  font-size: 15px;
-}
+  }
+
+  .footer-widget__title {
+    font-size: 15px;
+  }
 
 }
-.main-footer{
-li a {
-  position: relative;
-  text-decoration: none;
-  color: inherit;
+
+.main-footer {
+  li a {
+    position: relative;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  li a::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -2px;
+    width: 0;
+    height: 1px;
+    background: red;
+    transition: width 0.3s ease;
+  }
+
+  li a:hover {
+    color: red;
+  }
+
+  li a:hover::after {
+    width: 100%;
+  }
+
+  .footer-address a {
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .footer-address a:hover {
+    color: #ff0000;
+    text-decoration-line: underline;
+    text-decoration-color: #ff0000;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+  }
 }
 
-li a::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: -2px;
-  width: 0;
-  height: 1px;
-  background: red;
-  transition: width 0.3s ease;
-}
-
-li a:hover {
-  color: red;
-}
-
-li a:hover::after {
-  width: 100%;
-}
-.footer-address a {
-  text-decoration: none;
-  color: inherit;
-}
-
-.footer-address a:hover {
-  color: #ff0000;
-  text-decoration-line: underline;
-  text-decoration-color: #ff0000;
-  text-decoration-thickness: 1px;
-  text-underline-offset: 3px;
-}
-}
 @media (max-width: 575px) {
-  .footer-widget--contact{
+  .footer-widget--contact {
     padding-top: 15px;
   }
+
   .main-footer__top {
-  padding: 0;
-  margin: 20px 5px;
-  display: flex;
+    padding: 0;
+    margin: 20px 0px;
+    display: flex;
     justify-content: center;
     width: 100%;
-}
+  }
+
   .floens-social {
     justify-content: space-evenly;
     align-items: center;
     display: flex;
-}
- .footer-widget--about {
+  }
+
+  .footer-widget--about {
     text-align: center;
     align-items: center;
   }
@@ -483,20 +494,24 @@ li a:hover::after {
     margin: 0;
     text-align: center;
   }
+  .col-logo{
+    padding: 0px;
+    margin: 0;
+  }
 
   /* .footer-widget__about-text .nowrap {
     white-space: normal !important;
 
   } */
-    .footer-widget--about {
-        text-align: center;
-        flex-direction: column;
-        align-items: center;
-        gap: 15px;
-        display: flex;
-        justify-content: flex-start;
-    }
-  
+  .footer-widget--about {
+    text-align: center;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    display: flex;
+    justify-content: flex-start;
+  }
+
 
   .footer-widget__logo {
     display: flex;
@@ -509,7 +524,7 @@ li a:hover::after {
     height: auto;
   }
 
-  .mr-contact-0{
+  .mr-contact-0 {
     padding: 0;
   }
 
@@ -523,9 +538,19 @@ li a:hover::after {
 @media (min-width: 1366px) {
 
   .footer-widget--about {
-        gap: 20px;
-    }
-        .floens-social {
-        padding-top: 12px;
-    }
+    gap: 20px;
+  }
+
+  .floens-social {
+    padding-top: 12px;
+  }
+}
+
+@media (max-width: 600px) {
+  .floens-social {
+    justify-content: space-evenly;
+    align-items: center;
+    display: flex;
+  }
+
 }

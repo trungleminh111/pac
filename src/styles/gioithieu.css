@@ -1,6 +1,7 @@
 .page-gioithieu .about-two__bg {
   opacity: 0.2;
 }
+
 .about-one__image-grid {
   --gap: 30px;
   --circle-size: 165px;
@@ -57,7 +58,7 @@
 }
 
 .about-one__circle-text__image {
- position: absolute;
+  position: absolute;
   inset: 25px;
   z-index: 2;
 
@@ -78,6 +79,24 @@
   }
 }
 
+@media (min-width: 768px) and (max-width: 1023px) {
+  .about-two__image {
+    display: flex;
+    justify-content: center;
+  }
+
+  .about-two__image {
+    margin-left: 0px;
+  }
+
+  .about-two__image__inner {
+    width: 60vw;
+
+  }
+
+
+}
+
 @media (max-width: 767px) {
   .about-one__image-grid {
     grid-template-columns: 1fr;
@@ -92,15 +111,16 @@
   .about-one__image img {
     height: auto;
   }
+
   .about-one__circle-text {
-  position: absolute;
-  width: 165px;
-  height: 165px;
-  left: 40%;
-  top: 40%;
-  transform: translate(-50%, -50%);
-  z-index: 10;
-}
+    position: absolute;
+    width: 165px;
+    height: 165px;
+    left: 40%;
+    top: 40%;
+    transform: translate(-50%, -50%);
+    z-index: 10;
+  }
 
 
 
@@ -143,19 +163,40 @@
     width: calc(100% - 24px);
     height: calc(100% - 24px);
   }
+
+  .about-two__list {
+    justify-content: flex-start;
+  }
 }
 
 @media (max-width: 375px) {
-  .about-one__circle-text__bg{
+  @media (max-width: 575px) {
+    .experience__year {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      line-height: 1;
+    }
+
+    .experience__year span {
+      display: block;
+      margin-top: 6px;
+      font-size: 18px !important;
+    }
+  }
+
+  .about-one__circle-text__bg {
     width: 90px;
     height: 90px;
   }
-  .about-one__circle-text__image{
+
+  .about-one__circle-text__image {
     width: calc(100% - 65%);
-        height: calc(100% - 65%);
-        inset: 16px;
+    height: calc(100% - 65%);
+    inset: 16px;
   }
- 
+
 
   .about-one__image:first-child {
     grid-template-rows: auto;
@@ -165,14 +206,58 @@
   .about-one__image img {
     height: auto;
   }
+
   .about-one__circle-text {
-  position: absolute;
-  width: 165px;
-  height: 165px;
-  left: 59%;
-  top: 51%;
-  transform: translate(-50%, -50%);
-  z-index: 10;
-}
+    position: absolute;
+    width: 165px;
+    height: 165px;
+    left: 59%;
+    top: 51%;
+    transform: translate(-50%, -50%);
+    z-index: 10;
+  }
+
+  .about-two__list {
+    justify-content: flex-start;
+  }
 }
 
+.page-gioithieu .about-two__button {
+  display: none;
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .page-gioithieu .about-two {
+    padding-top: 50px;
+  }
+
+  .about-one .row {
+    display: flex;
+    justify-content: center;
+  }
+
+  .about-one .sec-title--border {
+    padding-top: 30px;
+  }
+
+  .about-one__content .sec-title__tagline {
+    top: -24px
+  }
+}
+
+.experience__year {
+  background-image:
+    repeating-linear-gradient(120deg,
+      rgba(255, 255, 255, 0.12) 0px,
+      rgba(255, 255, 255, 0.12) 2px,
+      transparent 2px,
+      transparent 8px),
+    url("/assets/images/backgound/6.png");
+  background-size: auto, cover;
+}
+
+@media (max-width: 425px){
+  .about-one .sec-title{
+    padding-top: 30px;}
+    
+}

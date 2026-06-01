@@ -5,7 +5,7 @@ type AboutProps = {
 
 export function About({ backgroundImage }: AboutProps) {
   return (
-    <section className="about-two section-space">
+    <section className="about-two section-space  pt-lg-5   pt-xl-5   pb-xxl-3 pb-sm-3  pb-md-3  pb-lg-5   pb-xl-5   pb-xxl-3">
       <div
         className="about-two__bg"
         // style={{
@@ -23,7 +23,7 @@ export function About({ backgroundImage }: AboutProps) {
       <div className="container">
         <div className="row gutter-y-60">
           <div className="col-lg-6">
-            <div className="about-two__image">
+            <div className="about-two__image ">
               <div className="about-two__image__inner">
                 <img
                   src="/assets/images/about/about.png"
@@ -43,10 +43,7 @@ export function About({ backgroundImage }: AboutProps) {
                   <div className="experience__inner">
                     <h3
                       className="experience__year"
-                      style={{
-                        backgroundImage:
-                          "url('/assets/images/backgound/6.png')",
-                      }}
+                    
                     >
                       25
                       <br />

@@ -14,7 +14,7 @@ export default function AboutPage() {
             <section className="about-one section-space" id="about">
                 <div className="container">
                     <div className="row">
-                        <div className="col-lg-6">
+                        <div className="col-lg-6 col-sm-8 col-12">
                             <div className="about-one__image-grid">
                                 <div className="about-one__image">
                                     <img
@@ -59,7 +59,7 @@ jịi
                             </div>
                         </div>
 
-                        <div className="col-lg-6">
+                        <div className="col-lg-6 col-sm-12 col-12">
                             <div className="about-one__content">
                                 <div className="sec-title sec-title--border">
                                     <h6 className="sec-title__tagline">Lý do</h6>
@@ -69,7 +69,7 @@ jịi
                                 </div>
 
                                 <div className="row about-one__inner-row gutter-y-40">
-                                    <div className="col-xl-6">
+                                    <div className="col-lg-6 col-sm-12 col-12">
                                         <div className="about-one__service about-one__service--one">
                                             <div className="about-one__service__content">
                                                 <h4 className="about-one__service__title">
@@ -84,7 +84,7 @@ jịi
                                         </div>
                                     </div>
 
-                                    <div className="col-xl-6">
+                                    <div className="col-lg-6 col-sm-12 col-12">
                                         <div className="about-one__service about-one__service--two">
                                             <div className="about-one__service__content">
                                                 <h4 className="about-one__service__title">
@@ -101,7 +101,7 @@ jịi
                                 </div>
 
                                 <div className="row about-one__inner-row gutter-y-40 mt-10">
-                                    <div className="col-xl-6">
+                                    <div className="col-lg-6 col-sm-12 col-12">
                                         <div className="about-one__service about-one__service--one">
                                             <div className="about-one__service__content">
                                                 <h4 className="about-one__service__title">
@@ -115,7 +115,7 @@ jịi
                                         </div>
                                     </div>
 
-                                    <div className="col-xl-6">
+                                    <div className="col-lg-6 col-sm-12 col-12">
                                         <div className="about-one__service about-one__service--two">
                                             <div className="about-one__service__content">
                                                 <h4 className="about-one__service__title">

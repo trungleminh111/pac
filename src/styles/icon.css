@@ -108,8 +108,6 @@
   display: inline-flex !important;
   align-items: center;
   justify-content: space-between;
-
-  gap: 24px;
 }
 
 .product__item__link span {

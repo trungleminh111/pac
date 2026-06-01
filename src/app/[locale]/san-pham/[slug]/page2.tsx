@@ -1,10 +1,3 @@
-"use client";
-import { use, useState } from "react";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Autoplay, Navigation } from "swiper/modules";
-
-import "swiper/css";
-import "swiper/css/navigation";
 import { Header } from "@/components/site/Header";
 import { Footer } from "@/components/site/Footer";
 import { PageHeader } from "@/components/site/PageHeader";
@@ -14,12 +7,11 @@ import Link from "next/link"; // Đã thêm để tránh bug router action
 import "@/styles/sanpham.css";
 import { FaFacebookF } from "react-icons/fa";
 import { FaYoutube } from "react-icons/fa";
-import { LuArrowRight } from "react-icons/lu";
 const products = [
-  ["Marble xanh", "10,500,000", "product-1-1.jpg", "Thiết kế hoa văn dạng tròn, phù hợp với đại sảnh, sảnh tròn, trung tâm"],
-  ["Marble vàng", "8,000,000", "product-1-2.jpg", "Thiết kế hoa văn dạng vuông, cân đối, ohuf hợp nhiều không gian"],
-  ["Marble trắng", "4,000,000", "product-1-3.jpg", "Thiết kế hoa văn dạng chữ nhật, trang trí thảm sàn, phòng khách, hành lang"],
-  ["Marble đen", "5,000,000", "product-1-6.jpg", "Thiết kế theo phong cách của riêng bạn"],
+  ["Marble xanh", "10,500,000", "product-1-1.jpg"],
+  ["Marble vàng", "8,000,000", "product-1-2.jpg"],
+  ["Marble trắng", "4,000,000", "product-1-3.jpg"],
+  ["Marble đen", "5,000,000", "product-1-6.jpg"],
 ];
 const product = {
   name: "Marble Xanh MPAC001",
@@ -33,13 +25,11 @@ const product = {
     { label: "Độ cứng", value: "4Mohs" },
   ],
   images: [
-    "circle2.png",
-    "circle5.png",
-    "circle6.png",
-    "circle7.png",
+    "product-1-1.jpg",
+    "product-1-1.jpg",
+    "product-1-2.jpg",
   ],
 };
-
 const works = [
   ["Modern Tiles fitting", "Tile Care", "project-13.png"],
   ["Indoor Court", "Tile Care", "project-12.png"],
@@ -50,7 +40,6 @@ const works = [
 ];
 
 function toSlug(text: string) {
-  
   return text
     .toLowerCase()
     .normalize("NFD")
@@ -60,14 +49,12 @@ function toSlug(text: string) {
     .replace(/^-|-$/g, "");
 }
 
-export default function ProductDetailPage({
+export default async function ProductDetailPage({
   params,
 }: {
   params: Promise<{ locale: string; slug: string }>;
 }) {
-  const { locale, slug } = use(params);
-
-  const [activeImage, setActiveImage] = useState(product.images[0]);
+  const { locale } = await params;
 
   return (
     <div className="page-wrapper">
@@ -78,7 +65,7 @@ export default function ProductDetailPage({
       <section className="product-details section-space">
         <div className="container">
           {/* align-items-stretch giúp cột nội dung bên phải có chiều cao bằng khít cột ảnh bên trái */}
-          <div className="row gutter-y-50 align-items-stretch circle-product">
+          <div className="row gutter-y-50 align-items-stretch">
 
             {/* KHỐI ẢNH BÊN TRÁI */}
             <div className="col-lg-6 col-xl-6">
@@ -87,7 +74,7 @@ export default function ProductDetailPage({
                   <div className="swiper-wrapper">
                     <div className="swiper-slide">
                       <img
-                        src={`/assets/images/products/${activeImage}`}
+                        src={`/assets/images/products/${product.images[0]}`}
                         alt={product.name}
                         className="product-details__gallery-top__img"
                       />
@@ -99,10 +86,8 @@ export default function ProductDetailPage({
                   <div className="swiper-wrapper d-flex gap-2">
                     {product.images.map((image, idx) => (
                       <div
-                        className={`product-details__gallery-thumb-slide swiper-slide ${activeImage === image ? "active" : ""
-                          }`}
+                        className="product-details__gallery-thumb-slide swiper-slide"
                         key={`${image}-${idx}`}
-                        onClick={() => setActiveImage(image)}
                       >
                         <img
                           src={`/assets/images/products/${image}`}
@@ -199,21 +184,18 @@ export default function ProductDetailPage({
           <div className="container">
             <div className="product-details__description">
               <h3 className="product-details__description__title">
-                CÁC DÒNG SẢN PHẨM CHÍNH
+                SẢN PHẨM TƯƠNG TỰ
               </h3>
             </div>
             <div className="product-details__description">
 
               <div className="row gutter-y-30">
-                {products.map(([name, price, image, description]) => (
+                {products.map(([name, price, image]) => (
                   <div className="col-xl-3 col-lg-3 col-md-6" key={name}>
                     <div className="product__item">
                       <div className="product__item__image">
                         <a href="/san-pham">
                           <img src={`/assets/images/products/${image}`} alt={name} />
-                          <div className="product-image-overlay">
-                            <p>{description}</p>
-                          </div>
                         </a>
                       </div>
 
@@ -246,73 +228,6 @@ export default function ProductDetailPage({
             </div>
           </div>
         </div>
-        <div className="container pt-5 pb-5">
-          <h3>ỨNG DỤNG THỰC TẾ</h3>
-          <p className="h5">Một số công trình tiêu biểu đã thi công</p>
-          <Swiper
-            modules={[Autoplay, Navigation]}
-            slidesPerView={3}
-            spaceBetween={30}
-            loop={true}
-            navigation={true}
-            autoplay={{
-              delay: 3000,
-              disableOnInteraction: false,
-            }}
-            breakpoints={{
-              0: {
-                slidesPerView: 1,
-              },
-              768: {
-                slidesPerView: 2,
-              },
-              1200: {
-                slidesPerView: 3,
-              },
-            }}
-          >
-            {works.map(([title, tagline, image]) => (
-              <SwiperSlide key={title}>
-                <div className="work-card h-100">
-                  <div className="work-card__image">
-                    <img src={`/assets/images/works/${image}`} alt={title} />
-                  </div>
-
-                  <div className="work-card__content-show">
-                    <div className="work-card__content-inner">
-                      <h3 className="work-card__tagline">{tagline}</h3>
-                      <h3 className="work-card__title">
-                        <a href={`/${locale}/cong-trinh/${toSlug(title)}`}>
-                          {title}
-                        </a>
-                      </h3>
-                    </div>
-                  </div>
-
-                  <div className="work-card__content-hover">
-                    <div className="work-card__content-inner">
-                      <h3 className="work-card__tagline">{tagline}</h3>
-                      <h3 className="work-card__title">
-                        <a href={`/${locale}/cong-trinh/${toSlug(title)}`}>
-                          {title}
-                        </a>
-                      </h3>
-                    </div>
-
-                    <a
-                      href={`/${locale}/cong-trinh/${toSlug(title)}`}
-                      className="work-card__link floens-btn"
-                    >
-                      <LuArrowRight />
-                    </a>
-                  </div>
-                </div>
-              </SwiperSlide>
-            ))}
-          </Swiper>
-        </div>
-
-
       </section>
 
       <Footer />

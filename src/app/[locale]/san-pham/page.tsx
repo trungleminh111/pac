@@ -6,7 +6,6 @@ import { FaCartShopping } from "react-icons/fa6";
 import { GrPrevious } from "react-icons/gr";
 import { GrNext } from "react-icons/gr";
 import "@/styles/sanpham.css";
-
 const colors = [
   "marble-color-1.png",
   "marble-color-2.png",
@@ -36,6 +35,7 @@ const products = [
   ["Marble Đỏ MPN009", "2,000,000", "product-1-9.jpg"],
 ];
 
+
 export default async function ProductsPage({
   params,
 }: {
@@ -50,22 +50,23 @@ export default async function ProductsPage({
       <PageHeader title="" bgImage="/assets/images/backgrounds/PACSTONE-SANPHAM-header.png" />
 
       <section className="product-page product-page--left section-space-bottom">
+
         <div className="container">
-          
+         
           {/* ===================================================
               HÀNG 1: KHU VỰC BỘ LỌC (TÌM KIẾM & CATEGORIES)
              =================================================== */}
           {/* Thêm align-items-stretch giúp ép hai cột có chiều cao (height) bằng khít nhau */}
           <div className="row align-items-stretch gy-4 mb-5">
-            
+
             {/* Cột tìm kiếm bên trái */}
             <div className="col-xl-4 col-md-5 col-12">
               {/* Thêm class h-100 để ô phình to lấp đầy chiều cao bằng với cụm categories */}
               <div className="product__search-box product__sidebar__item h-100" style={{ margin: 0, display: 'flex' }}>
                 <form action="#" className="product__search w-100" style={{ display: 'flex', position: 'relative' }}>
-                  <input 
-                    type="text" 
-                    placeholder="Tìm sản phẩm" 
+                  <input
+                    type="text"
+                    placeholder="Tìm sản phẩm"
                     style={{ width: '100%', height: '100%', minHeight: '50px' }}
                   />
                   <button type="submit" aria-label="search submit" style={{ position: 'absolute', right: '15px', top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none' }}>

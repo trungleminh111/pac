@@ -31,7 +31,7 @@
   justify-content: space-between;
 }
 
-.service-detail-link {
+.service-detail-link, .service-detail-arrow {
   display: inline-flex;
   align-items: center;
   gap: 18px;
@@ -43,9 +43,9 @@
 }
 
 .service-detail-link span,
-.service-detail-link i,
+.service-detail-link .service-detail-arrow,
 .service-detail-link:hover span,
-.service-detail-link:hover i {
+.service-detail-link:hover .service-detail-arrow{
   color: #e23b2e;
 }
 
@@ -88,6 +88,7 @@
 .services-arrow:hover {
   background: #2b1e16;
   color: #fff;
+  
 }
 
 .service-card-two__bottom {
@@ -100,14 +101,14 @@
   display: inline-flex;
   align-items: center;
   gap: 18px;
-  color: #e23b2e;
+  color: #fff;
   font-weight: 700;
   text-transform: uppercase;
   text-decoration: none;
 }
 
 .service-detail-link span {
-  color: #e23b2e;
+  color: #fff;
 }
 
 .service-detail-arrow {
@@ -183,3 +184,15 @@
 .service-card-two__title a:hover {
   background-size: 100% 1px;
 }
+
+@media (max-width: 991px) {
+  .service-detail-link {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  .service-detail-link span, .service-detail-arrow {
+  color: #000000;
+}
+
+}
+

@@ -185,7 +185,7 @@
     }
 
     .experience__year span {
-      display: block;
+      display: block !important;
       margin-top: 6px;
       font-size: 18px !important;
     }
@@ -264,4 +264,18 @@
     padding-top: 30px;
   }
 
+}
+
+@media (max-width: 575px) {
+
+   .experience__year span {
+      display: block !important;
+      margin-top: 6px;
+      font-size: 18px !important;
+    }
+    @media (max-width: 575px) {
+    .section-space {
+    padding-bottom: 40px;
+    }
+    }
 }

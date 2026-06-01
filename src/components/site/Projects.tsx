@@ -13,7 +13,7 @@ const projects = [
 
 export function Projects() {
   return (
-    <section className="projects-one  pt-sm-3  pt-md-3  pt-lg-5   pt-xl-5   pb-xxl-3 pb-sm-3  pb-md-3  pb-lg-5   pb-xl-5   pb-xxl-3  ">
+    <section className="projects-one ">
       <div className="projects-one__container">
         <div className="projects-one__left projects-one__col projects-one__col--left">
           <Swiper

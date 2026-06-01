@@ -42,7 +42,7 @@ export function Services() {
   const nextRef = useRef<HTMLButtonElement | null>(null);
 
   return (
-    <section className="services-two section-space-two  pt-sm-3  pt-md-3  pt-lg-5   pt-xl-5   pb-xxl-3 pb-sm-3  pb-md-3  pb-lg-5   pb-xl-5   pb-xxl-3">
+    <section className="services-two section-space-two  pt-5 ">
       <div className="container">
         <div className="services-two__top">
           <div className="row gutter-y-50 align-items-center">

@@ -16170,8 +16170,8 @@ li:hover .sidebar__comments__icon::after {
 # Projects
 --------------------------------------------------------------*/
 .projects-one {
-  /* padding-top: 5vw;
-  padding-bottom: 5vw; */
+  padding-top: 60px;
+  padding-bottom: 60px;
   position: relative;
   /* background-color: var(--floens-white2, #f2eeea); */
   overflow: hidden;

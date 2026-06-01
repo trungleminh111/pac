@@ -6,7 +6,7 @@ const posts = [
 
 export function News() {
   return (
-    <section className="blog-one blog-one--home-two section-space-two pt-sm-3  pt-md-3  pt-lg-5   pt-xl-5   pb-xxl-3 pb-sm-3  pb-md-3  pb-lg-5   pb-xl-5   pb-xxl-3  ">
+    <section className="blog-one blog-one--home-two section-space-two pt-sm-3  pt-md-5  pt-lg-5   pt-xl-5   pb-xxl-5 pb-sm-3  pb-md-5  pb-lg-5   pb-xl-5   pb-xxl-5  ">
       <div className="container">
         <div className="blog-one__top">
           <div className="row pb-5 align-items-center">

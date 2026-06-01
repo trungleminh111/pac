@@ -9,7 +9,7 @@ const products = [
 
 export function Products() {
   return (
-    <section className="product-home  pt-sm-3  pt-md-3  pt-lg-5   pt-xl-5   pb-xxl-3 pb-sm-3  pb-md-3  pb-lg-5   pb-xl-5   pb-xxl-3">
+    <section className="product-home ">
       <div
         className="product-home__bg"
         style={{
@@ -48,8 +48,9 @@ export function Products() {
                   <div className="product__item__price">{price}</div>
                   <div>
 
-                    <a href="/lien-he" className="floens-btn product__item__link">
+                    <a href="/lien-he" className="floens-btn product__item__link ">
                       <span>Liên hệ</span>
+                      <span>|</span>
                       <FaCartShopping className="product-cart-icon" />
                     </a>
                   </div>

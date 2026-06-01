@@ -830,4 +830,46 @@ a {
 
  /* hero */
 
- 
+ .scroll-progress-btn {
+  position: fixed;
+  right: 8px;
+  bottom: calc(24px + env(safe-area-inset-bottom));
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.scroll-progress-line {
+  width: 3px;
+  height: 70px;
+  background: #222;
+  position: relative;
+  overflow: hidden;
+}
+
+.scroll-progress-fill {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  background: #ef3b3a;
+}
+
+.scroll-progress-btn span {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  color: #ef3b3a;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+@media (max-width: 767px) {
+  .scroll-progress-btn {
+    display: none;
+  }
+}

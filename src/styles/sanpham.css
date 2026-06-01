@@ -270,3 +270,12 @@
   display: block;
 }
 
+.work-card__content-show,
+.work-card__content-hover {
+  pointer-events: none;
+}
+
+.work-card__link,
+.work-card__title a {
+  pointer-events: auto;
+}

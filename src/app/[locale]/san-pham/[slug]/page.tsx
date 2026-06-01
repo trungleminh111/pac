@@ -50,7 +50,7 @@ const works = [
 ];
 
 function toSlug(text: string) {
-  
+
   return text
     .toLowerCase()
     .normalize("NFD")
@@ -250,11 +250,14 @@ export default function ProductDetailPage({
           <h3>ỨNG DỤNG THỰC TẾ</h3>
           <p className="h5">Một số công trình tiêu biểu đã thi công</p>
           <Swiper
-            modules={[Autoplay, Navigation]}
+            modules={[Navigation, Autoplay]}
+            observer={true}
+            observeParents={true}
+            navigation
             slidesPerView={3}
             spaceBetween={30}
             loop={true}
-            navigation={true}
+            edgeSwipeDetection = {false}
             autoplay={{
               delay: 3000,
               disableOnInteraction: false,

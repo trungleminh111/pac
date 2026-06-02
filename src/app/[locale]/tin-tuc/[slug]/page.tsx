@@ -328,7 +328,7 @@ export default function NewsDetailPage({
                           src="/assets/images/Icon_of_Zalo.svg.webp"
                         />
                       </a>
-                 
+
                       <a href="https://youtube.com">
                         <i className="icon-youtube">
                           <FaYoutube /></i>

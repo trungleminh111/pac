@@ -38,12 +38,16 @@ const product = {
     "circle6.png",
     "circle7.png",
   ],
+  applications: [
+    "- Đá Marble Xanh MPN001 thích hợp cho các hạng mục như vách ốp tường trang trí, vách dựng của quầy bar, bàn lễ tân,… Không sử dụng cho hạng mục ngoại thất hay bếp vì tính chất, đặc điểm không thích hợp.",
+    "- Đây là dòng đá được ưa chuộng nhiều năm gần đây, đặc biệt trong hạng mục vách trang trí cầu thang, thang máy hay vách ti vi. Đặc biệt khi kết hợp cùng hệ thống đèn chiếu sáng chúng sẽ tạo điểm nhấn cho toàn bộ không gian."
+  ]
 };
 
 const works = [
   ["Modern Tiles fitting", "Tile Care", "project-13.png"],
   ["Indoor Court", "Tile Care", "project-12.png"],
-  ["Awesome Outdoor Project", "Tile Care", "project-9.png"],
+  ["Awesome Outdoor Project", "Tile Care", "project-9.jpg"],
   ["Industrial Flooring", "Tile Care", "project-5.png"],
   ["Eco-Friendly-Flooring", "Tile Care", "project-3.png"],
   ["Laminate Flooring", "Tile Care", "project-11.png"],
@@ -68,7 +72,17 @@ export default function ProductDetailPage({
   const { locale, slug } = use(params);
 
   const [activeImage, setActiveImage] = useState(product.images[0]);
+  const [showMoreApp, setShowMoreApp] = useState(false);
 
+  const applicationText = product.applications.join("\n");
+  const maxLength = 300;
+
+  const isLongApp = applicationText.length > maxLength;
+
+  const displayApplication =
+    isLongApp && !showMoreApp
+      ? applicationText.slice(0, maxLength) + "..."
+      : applicationText;
   return (
     <div className="page-wrapper">
       <Header />
@@ -137,16 +151,16 @@ export default function ProductDetailPage({
                   </div>
                 </div>
 
-                <div className="detail-product-title d-flex gap-3 flex-column">
+                <div className="detail-product-title d-flex gap-2 flex-column">
 
                   <div className="product-details__meta-item">
                     <span className="fw-bold text-dark">Xuất Xứ:</span>
                     <span className="ms-2 text-secondary">{product.origin}</span>
                   </div>
 
-                  <div className="product-details__specs mt-2">
-                    <h5 className="fw-bold text-dark mb-2" style={{ fontSize: "16px" }}>Thông Số Kỹ Thuật</h5>
-                    <ul className="list-unstyled d-flex flex-column gap-1 ps-0">
+                  <div className="product-details__specs">
+                    <h5 className="fw-bold text-dark mb-0 " style={{ fontSize: "16px" }}>Thông Số Kỹ Thuật</h5>
+                    <ul className="list-unstyled d-flex flex-column  ps-0">
                       {product.specs.map((spec, index) => (
                         <li key={index} className="product-details__spec-line">
                           <span className="text-dark" style={{ fontWeight: 500 }}>{spec.label}:</span>
@@ -156,11 +170,26 @@ export default function ProductDetailPage({
                     </ul>
                   </div>
                   <div className="product-details__excerpt mt-2">
-                    <h5 className="fw-bold text-dark mb-2" style={{ fontSize: "16px" }}>Ứng Dụng</h5>
-                    {/* nội dung ứng dụng */}
+                    <h5 className="fw-bold text-dark mb-2" style={{ fontSize: "16px" }}>
+                      Ứng Dụng
+                    </h5>
+
+                    <p className="product-application-text">
+                      {displayApplication}
+                    </p>
+
+                    {isLongApp && (
+                      <button
+                        type="button"
+                        className="product-read-more"
+                        onClick={() => setShowMoreApp(!showMoreApp)}
+                      >
+                        {showMoreApp ? "Thu gọn" : "Xem thêm"}
+                      </button>
+                    )}
                   </div>
                 </div>
-                <div className="product-details__info mt-auto pt-4">
+                <div className="product-details__info pt-2">
                   <h4 className="product-details__price">{product.price}</h4>
                   <div>
                     <Link href={`/${locale}/lien-he`} className="floens-btn product__item__link">
@@ -257,7 +286,7 @@ export default function ProductDetailPage({
             slidesPerView={3}
             spaceBetween={30}
             loop={true}
-            edgeSwipeDetection = {false}
+            edgeSwipeDetection={false}
             autoplay={{
               delay: 3000,
               disableOnInteraction: false,

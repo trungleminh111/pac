@@ -138,14 +138,6 @@
   }
 }
 
-@media (max-width: 767px) {
-  .page-header .contact-call {
-    left: 12px;
-    bottom: 2px;
-    transform: scale(0.55);
-    transform-origin: left bottom;
-  }
-}
 
 /* Bổ sung vào file lienhe.css cũ của bạn */
 
@@ -199,8 +191,8 @@
 /* Contact call in PageHeader */
 .page-header .contact-call {
   position: absolute;
-  left: 90px;
-  padding-top: 8vh;
+  padding-top: 70px;
+  left: 30px;
   display: flex;
   align-items: center;
   isolation: isolate;
@@ -243,18 +235,12 @@
 .contact-call__icon {
   position: relative;
   z-index: 5;
-
   width: 110px;
   height: 110px;
-  min-width: 110px;
-  aspect-ratio: 1 / 1;
-  border-radius: 50%;
-
   background: #ff2d25;
   color: #fff;
   border: 8px solid #ff2d25;
   box-shadow: inset 0 0 0 3px #fff;
-
   display: flex;
   align-items: center;
   justify-content: center;
@@ -359,7 +345,7 @@
 @media (max-width: 1024px) {
   .page-header .contact-call {
     left: 30px;
-    padding-top: 8vh;
+    padding-top: 10vh;
     transform: scale(0.45);
   }
 }
@@ -399,9 +385,22 @@
 
 .button-upload {
   position: absolute;
-  left: 12px;
-  right: 12px;
+  padding: 16px;
   bottom: 10px;
+  width: 100%;
+  bottom: 0;
+  
+}
+
+.button-upload::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-color: #cd3527;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.35s ease;
+  z-index: 0;
 }
 
 .button-upload button {
@@ -418,8 +417,428 @@
   font-size: 14px;
   cursor: pointer;
 }
+.button-upload:hover::before {
+  transform: scaleX(1);
+}
+
+.button-upload button {
+  position: relative;
+  z-index: 1;
+}
+
+.button-upload:hover button,
+.button-upload:hover button svg {
+  color: #f3f3f3;
+}
 
 .button-upload svg {
   color: #ff3b30;
   font-size: 18px;
+}
+
+/* ========================================================
+   LAYOUT LIÊN HỆ CHÍNH
+   ======================================================== */
+.contact-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  align-items: stretch;
+}
+
+.contact-left,
+.contact-right {
+  min-width: 0;
+}
+
+.contact-right {
+  padding: 0 40px;
+  gap: 11px;
+}
+
+.contact-one__content,
+.contact-right {
+  height: 100%;
+}
+
+.contact-one__content {
+  padding: 0 20px;
+}
+
+/* Khối Form và Thẻ tài liệu */
+.contact-one__form,
+.doc-a4-item,
+.doc-card-item {
+  background: #ffffff;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.25);
+}
+
+.doc-card-item {
+  position: relative;
+  width: 100%;
+  border: 1px solid #ebdcd0;
+  overflow: hidden;
+  display: block;
+}
+
+/* Quản lý ảnh mượt mà */
+.contact-img-main,
+.office-banner-holder,
+.doc-card-item {
+  min-height: 0;
+  overflow: hidden;
+}
+
+.contact-img-main img,
+.office-banner-holder img,
+.doc-card-item img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  object-position: center !important;
+  display: block;
+}
+
+/* Lưới danh sách ảnh nhỏ dưới */
+.contact-img-list {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  min-height: 0;
+}
+
+.contact-img-list > div {
+  min-height: 0;
+  overflow: hidden;
+}
+
+.contact-img-list img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* ========================================================
+   KHỐI NÚT DOWNLOAD TÀI LIỆU
+   ======================================================== */
+.download-box {
+  position: relative;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  cursor: pointer;
+  background: #f3f3f3;
+  min-height: 0;
+}
+
+.download-box::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, #ef3b3a 0%, #ef3b3a 50%, #c91d28 100%);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.45s ease;
+  z-index: 0;
+}
+
+.download-box:hover::before {
+  transform: scaleX(1);
+}
+
+.download-btn,
+.download-content {
+  position: relative;
+  z-index: 2;
+}
+
+.download-btn {
+  width: 48px;
+  height: 48px;
+  border: none;
+  background: #ef3b3a;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.download-content {
+  flex: 1;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 24px;
+  font-weight: 700;
+  color: #111;
+  transition: 0.3s;
+}
+
+.download-box:hover .download-content {
+  color: #fff;
+}
+
+/* ========================================================
+   TEXTAREA VÀ NÚT UPLOAD FILE TRONG FORM
+   ======================================================== */
+.form-one__control--mesgae {
+  position: relative;
+}
+
+.form-one__control--mesgae textarea {
+  width: 100%;
+  min-height: 150px;
+  border: 1px solid #d9d4d0;
+  background: #f5f3f1;
+  resize: none;
+  padding: 16px 16px 50px 16px; /* Chừa khoảng trống bên dưới cho nút upload */
+  font-size: 14px;
+  color: #666;
+  outline: none;
+}
+
+.button-upload {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  padding: 16px;
+  box-sizing: border-box;
+}
+
+.button-upload::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-color: #cd3527;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.35s ease;
+  z-index: 0;
+}
+
+.button-upload:hover::before {
+  transform: scaleX(1);
+}
+
+.button-upload button {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  background: transparent;
+  border: none;
+  padding: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #7d7d7d;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.button-upload:hover button,
+.button-upload:hover button svg {
+  color: #f3f3f3;
+}
+
+.button-upload svg {
+  color: #ff3b30;
+  font-size: 18px;
+}
+
+/* ========================================================
+   CỤM ĐỘNG: CONTACT CALL TRONG PAGE HEADER (ĐÃ TỐI ƯU SẠCH)
+   ======================================================== */
+.page-header .contact-call-wrapper {
+  position: absolute;
+  left: 30px;
+  bottom: 30px; /* Định vị góc trái màn hình banner */
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 15px;
+  font-family: sans-serif;
+  z-index: 99;
+}
+
+/* 1. Thông báo bóng bóng: Hiện 7 giây - Ẩn 3 giây */
+.contact-call__subtitle {
+  background-color: #fcf9f6;
+  color: #000000;
+  border: 1px solid #dcd1c4;
+  border-radius: 12px;
+  padding: 12px 20px;
+  font-size: 14px;
+  font-weight: bold;
+  line-height: 1.4;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  max-width: 250px;
+  animation: toggleNotice 10s infinite ease-in-out;
+}
+
+@keyframes toggleNotice {
+  0%, 70% {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+  75%, 95% {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+  }
+  100% {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+}
+
+/* 2. Nút Gọi tròn đỏ: Giữ tâm lắc nhẹ kết hợp thu phóng */
+.contact-call {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.contact-call__icon {
+  width: 70px;
+  height: 70px;
+  background-color: #ff2a2a; 
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 3; 
+  box-shadow: 0 0 0 4px #fff, 0 0 0 8px #ff2a2a; 
+  color: #fff;
+  font-size: 30px;
+  text-decoration: none;
+  transform-origin: center;
+  animation: slowPulseShake 3.5s infinite ease-in-out;
+}
+
+@keyframes slowPulseShake {
+  0%, 100% { transform: scale(1); }
+  20% { transform: scale(1.08) rotate(-5deg); }
+  40% { transform: scale(1.05) rotate(5deg); }
+  60% { transform: scale(1.05) rotate(-3deg); }
+  80% { transform: scale(1) rotate(0deg); }
+}
+
+/* 3. Khối màu Đen + Đỏ bên phải (Đồng bộ góc chéo xiên 18 độ) */
+.contact-call__content {
+  margin-left: -35px; 
+  width: 270px; /* Định hình kích thước chuẩn cố định */
+  background: linear-gradient(to bottom, #000000 50%, #ff2a2a 50%); 
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  box-sizing: border-box;
+
+  /* Giả lập Skew 18 độ thẳng tắp không đứt gãy từ trên xuống dưới */
+  clip-path: polygon(15px 0%, 100% 0%, calc(100% - 22px) 100%, 0% 100%);
+  
+  /* Mặt nạ đục khuyết vòng tròn bên trái */
+  -webkit-mask: radial-gradient(75px at -10px center, transparent 98%, black 100%);
+          mask: radial-gradient(75px at -10px center, transparent 98%, black 100%);
+}
+
+/* Text nội dung đứng thẳng bên trong */
+.contact-call__label {
+  color: #fff;
+  font-size: 24px;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: 2px;
+  text-align: center;
+  padding: 14px 20px 12px 50px; /* Padding left rộng chừa chỗ khuyết tròn */
+  box-sizing: border-box;
+}
+
+.contact-call__phone {
+  color: #fff;
+  font-weight: 800;
+  font-size: 22px;
+  letter-spacing: 1px;
+  padding: 10px 20px 14px 50px;
+  display: block;
+  text-decoration: none;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+/* ========================================================
+   RESPONSIVE CHO THIẾT BỊ DI ĐỘNG (MOBILE & TABLET)
+   ======================================================== */
+@media (max-width: 1024px) {
+  .page-header .contact-call-wrapper {
+    left: 20px;
+    bottom: 20px;
+  }
+}
+
+@media (max-width: 767px) {
+  .contact-layout {
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  .contact-right {
+    gap: 12px;
+    padding: 0 10px;
+  }
+
+  .contact-img-list {
+    gap: 12px;
+  }
+
+  .download-content {
+    font-size: 12px;
+    padding: 0 8px;
+  }
+
+  /* Thu nhỏ cụm nút gọi cho vừa phone */
+  .page-header .contact-call-wrapper {
+    left: 15px;
+    bottom: 15px;
+    gap: 10px;
+  }
+
+  .contact-call__subtitle {
+    padding: 8px 14px;
+    font-size: 11px;      
+    max-width: 190px;     
+    border-radius: 8px;
+  }
+
+  .contact-call__icon {
+    width: 50px;          
+    height: 50px;
+    font-size: 22px;      
+    box-shadow: 0 0 0 3px #fff, 0 0 0 6px #ff2a2a; 
+  }
+
+  .contact-call__content {
+    margin-left: -25px;   
+    width: 200px; /* Thu nhỏ chiều rộng tổng thể khối chữ */
+    clip-path: polygon(10px 0%, 100% 0%, calc(100% - 15px) 100%, 0% 100%);
+    -webkit-mask: radial-gradient(55px at -10px center, transparent 98%, black 100%);
+            mask: radial-gradient(55px at -10px center, transparent 98%, black 100%);
+  }
+
+  .contact-call__label {
+    font-size: 15px;      
+    padding: 8px 10px 6px 35px;
+    letter-spacing: 1px;
+  }
+
+  .contact-call__phone {
+    font-size: 15px;      
+    padding: 6px 10px 8px 35px;
+  }
 }

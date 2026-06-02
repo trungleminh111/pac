@@ -554,3 +554,21 @@
   }
 
 }
+
+
+.footer-widget__info li a {
+  color: inherit;
+  text-decoration-line: underline;
+  text-decoration-color: transparent;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 4px;
+
+}
+
+.footer-widget__info li a:hover {
+  color: red;
+  text-decoration-color: red;
+}
+.footer-widget__info li a::after {
+  display: none !important;
+}

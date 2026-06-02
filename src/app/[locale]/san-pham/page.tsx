@@ -9,6 +9,7 @@ import { FaCartShopping } from "react-icons/fa6";
 import { GrPrevious } from "react-icons/gr";
 import { GrNext } from "react-icons/gr";
 import "@/styles/sanpham.css";
+import { BsSearch } from "react-icons/bs";
 const colors = [
   "marble-color-1.png",
   "marble-color-2.png",
@@ -36,7 +37,7 @@ const products = [
   ["Marble Hồng MPAC007", "5,000,000", "product-1-7.jpg", "Khuyến Mãi - Thanh Lý"],
   ["Marble Xanh MPAC008", "3,000,000", "product-1-8.jpg", "Mẫu Đá"],
   ["Marble Đỏ MPAC009", "2,000,000", "product-1-9.jpg", "Mẫu Đá"],
-    ["Marble Đỏ MPAC0010", "2,000,000", "product-1-10.jpg", "Mẫu Đá"],
+  ["Marble Đỏ MPAC0010", "2,000,000", "product-1-10.jpg", "Mẫu Đá"],
 ];
 
 export default function ProductsPage({
@@ -46,15 +47,15 @@ export default function ProductsPage({
 }) {
   const { locale } = use(params);
 
-  const [activeCategory, setActiveCategory] = useState("Tất cả");
+  const [activeCategory, setActiveCategory] = useState(categories[0]);
+
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 8;
-  const allCategories = ["Tất cả", ...categories];
+  const allCategories = [...categories];
 
-  const filteredProducts =
-    activeCategory === "Tất cả"
-      ? products
-      : products.filter((product) => product[3] === activeCategory);
+  const filteredProducts = products.filter(
+    ([, , , category]) => category === activeCategory
+  );
 
   const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
 
@@ -79,7 +80,7 @@ export default function ProductsPage({
           <div className="row align-items-stretch gy-4 mb-5">
 
             {/* Cột tìm kiếm bên trái */}
-            <div className="col-xl-4 col-md-5 col-12">
+            <div className="col-xl-4 col-md-12 col-12">
               {/* Thêm class h-100 để ô phình to lấp đầy chiều cao bằng với cụm categories */}
               <div className="product__search-box product__sidebar__item h-100" style={{ margin: 0, display: 'flex' }}>
                 <form action="#" className="product__search w-100" style={{ display: 'flex', position: 'relative' }}>
@@ -89,29 +90,26 @@ export default function ProductsPage({
                     style={{ width: '100%', height: '100%', minHeight: '50px' }}
                   />
                   <button type="submit" aria-label="search submit" style={{ position: 'absolute', right: '15px', top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none' }}>
-                    <span className="icon-search" />
+                    <span className="icon-search"><BsSearch /></span>
                   </button>
                 </form>
               </div>
             </div>
 
             {/* Cột categories bên phải */}
-            <div className="col-xl-8 col-md-7 col-12">
+            <div className="col-xl-8 col-md-12 col-12">
               <div className="product__categories" style={{ margin: 0, height: '100%' }}>
                 <ul className="list-unstyled">
                   {allCategories.map((category) => (
                     <li
                       key={category}
                       className={activeCategory === category ? "active" : ""}
+                      onClick={() => {
+                        setActiveCategory(category);
+                        setCurrentPage(1);
+                      }}
                     >
-                      <button
-                        type="button"
-                        onClick={() => {
-                          setActiveCategory(category);
-                          setCurrentPage(1);
-                        }}
-                        data-text={category}
-                      >
+                      <button type="button" data-text={category}>
                         <span>{category}</span>
                       </button>
                     </li>
@@ -137,7 +135,7 @@ export default function ProductsPage({
                         <img
                           src={`/assets/images/products/${image}`}
                           alt={name}
-                           style={{ height: '180px' }}
+                          style={{ height: '180px' }}
                         />
                       </div>
 

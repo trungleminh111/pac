@@ -33,7 +33,7 @@ const product = {
 const works = [
   ["Modern Tiles fitting", "Tile Care", "project-13.png"],
   ["Indoor Court", "Tile Care", "project-12.png"],
-  ["Awesome Outdoor Project", "Tile Care", "project-9.png"],
+  ["Awesome Outdoor Project", "Tile Care", "project-9.jpg"],
   ["Industrial Flooring", "Tile Care", "project-5.png"],
   ["Eco-Friendly-Flooring", "Tile Care", "project-3.png"],
   ["Laminate Flooring", "Tile Care", "project-11.png"],

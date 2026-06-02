@@ -19,7 +19,7 @@ const filters = [
 const works = [
   ["Modern Tiles fitting", "Tile Care", "project-13.png", "Villa - Penhouse"],
   ["Indoor Court", "Tile Care", "project-12.png", "Khách sạn - Trung tâm thương mại"],
-  ["Awesome Outdoor Project", "Tile Care", "project-9.png", "Chung cư - Nhà phố"],
+  ["Awesome Outdoor Project", "Tile Care", "project-9.jpg", "Chung cư - Nhà phố"],
   ["Industrial Flooring", "Tile Care", "project-5.png", "Mẫu BẾP ốp đá đẹp"],
   ["Eco-Friendly-Flooring", "Tile Care", "project-3.png", "Mẫu cầu thang ốp đá đẹp"],
   ["Laminate Flooring", "Tile Care", "project-11.png", "Mẫu nhà vệ sinh ốp đá đẹp"],

@@ -7,6 +7,7 @@ import { FaDownload } from "react-icons/fa";
 import "@/styles/lienhe.css";
 import { BiSolidPhoneCall } from "react-icons/bi";
 import { FaUpload } from "react-icons/fa";
+import { FaPhoneAlt } from "react-icons/fa";
 export default function ContactPage() {
   return (
     <div className="page-wrapper">
@@ -16,26 +17,30 @@ export default function ContactPage() {
         title=""
         bgImage="/assets/images/backgrounds/PACSTONE-LIENHE-header.png"
       >
-        <div className="contact-call">
-          <div className="contact-call__bubble">
+        {/* Khung bao bọc tổng thể theo chiều dọc */}
+        <div className="contact-call-wrapper">
+
+          {/* Phần Sub-title phía trên */}
+          <div className="contact-call__subtitle">
             Đừng ngại, hãy gọi cho chúng tôi!
           </div>
 
-          <a
-            href="https://zalo.me/0962757475"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="contact-call__icon"
-          >
-            <BiSolidPhoneCall />
-          </a>
-
-          <div className="contact-call__content">
-            <div className="contact-call__label">CALL US</div>
-            <a href="tel:0962757475" className="contact-call__phone">
-              0962.757.475
+          {/* Phần nút gọi phía dưới (Giữ nguyên cấu trúc cũ) */}
+          <div className="contact-call">
+            {/* Nút tròn call */}
+            <a href="https://zalo.me/0962757475" target="_blank" rel="noopener noreferrer" className="contact-call__icon">
+              <BiSolidPhoneCall />
             </a>
+
+            {/* Khối nội dung bên phải */}
+            <div className="contact-call__content">
+              <div className="contact-call__label">CALL US</div>
+              <a href="tel:0962757475" className="contact-call__phone">
+                0962.757.475
+              </a>
+            </div>
           </div>
+
         </div>
       </PageHeader>
 
@@ -59,7 +64,7 @@ export default function ContactPage() {
                 </div>
 
 
-                <p className="contact-one__text">
+                <p className="contact-one__text text-justify">
                   <strong>
                     Bạn đang tìm kiếm đơn vị thi công, thiết kế đá hoa cương?
                   </strong>
@@ -107,7 +112,7 @@ export default function ContactPage() {
                     <div className="form-one__control form-one__control--full">
                       <button type="submit" className="floens-btn">
                         <span>Gửi nội dung</span>
-                        <i className="icon-right-arrow" >→</i>
+                        <i className="icon-right-arrow sm-none" >→</i>
                       </button>
                     </div>
                   </div>

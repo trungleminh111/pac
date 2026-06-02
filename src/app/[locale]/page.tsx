@@ -11,7 +11,7 @@ import { Footer } from "@/components/site/Footer";
 export default function HomePage() {
   return (
     <>
-      <div className="page-wrapper">
+     
         <Header />
         <Hero />
         <ClientCarousel />
@@ -23,7 +23,7 @@ export default function HomePage() {
         </div>
         <News />
         <Footer />
-      </div>
+      
     </>
   );
 }

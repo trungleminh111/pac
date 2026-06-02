@@ -38,3 +38,36 @@
   align-items: center;
   gap: 10px;
 }
+
+.mobile-nav__btn {
+  appearance: none;
+  -webkit-appearance: none;
+  border: 0;
+  background: transparent;
+  position: relative;
+  z-index: 99999;
+  pointer-events: auto;
+  cursor: pointer;
+  touch-action: none;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-user-select: none;
+  user-select: none;
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+  width: 44px;
+  min-height: 44px;
+  padding: 10px;
+}
+.mobile-nav__wrapper {
+  position: fixed;
+  inset: 0;
+  z-index: 999999;
+  pointer-events: none;
+}
+
+.mobile-nav__wrapper.expanded {
+  pointer-events: auto;
+}

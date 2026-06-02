@@ -152,9 +152,8 @@ export function Header() {
                   {menuItems.map((item, index) => (
                     <li
                       key={item.label}
-                      className={`${index === 0 ? "active" : ""} ${
-                        item.children ? "dropdown" : ""
-                      }`}
+                      className={`${index === 0 ? "active" : ""} ${item.children ? "dropdown" : ""
+                        }`}
                     >
                       <a href={item.href} className={index === 0 ? "current" : ""}>
                         {item.label}
@@ -176,14 +175,16 @@ export function Header() {
             </div>
 
             <div className="main-header__right">
-              <div
+              <button
+                type="button"
                 className="mobile-nav__btn mobile-nav__toggler"
                 onClick={() => setMobileOpen(true)}
+                aria-label="Open mobile menu"
               >
                 <span />
                 <span />
                 <span />
-              </div>
+              </button>
 
               <div className="header-icon-right">
                 <a
@@ -206,7 +207,16 @@ export function Header() {
               <button
                 type="button"
                 className="main-header__sidebar-btn sidebar-btn__toggler"
-                onClick={() => setSidebarOpen(true)}
+                onClick={() => {
+                  alert("DEBUG: sidebar button tapped");
+                  console.log("DEBUG: sidebar open click");
+                  setSidebarOpen(true);
+                }}
+                onTouchEnd={(e) => {
+                  e.preventDefault();
+                  console.log("DEBUG: sidebar touchend");
+                  setSidebarOpen(true);
+                }}
                 aria-label="Open sidebar"
               >
                 <span className="main-header__sidebar-btn__box" />
@@ -249,8 +259,8 @@ export function Header() {
 
                 return (
                   <li key={item.label} className={item.children ? "dropdown" : ""}>
-                    <a href={item.href}>
-                      {item.label}
+                    <div className="mobile-nav__item-row">
+                      <a href={item.href}>{item.label}</a>
 
                       {item.children && (
                         <button
@@ -266,7 +276,7 @@ export function Header() {
                           <FaAngleDown />
                         </button>
                       )}
-                    </a>
+                    </div>
 
                     {item.children && (
                       <ul style={{ display: isOpen ? "block" : "none" }}>

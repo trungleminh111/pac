@@ -10265,63 +10265,6 @@ body.megamenu-popup-active .mobile-nav__content {
   background-size: 100% 1px;
 }
 
-.sidebar__categories {
-  margin-top: -12px;
-  margin-bottom: -12px;
-}
-
-.sidebar__categories li:not(:last-child) {
-  margin-bottom: 6px;
-}
-
-.sidebar__categories li a {
-  position: relative;
-  font-size: 16px;
-  color: var(--floens-black2, #2b1e16);
-  text-transform: capitalize;
-  font-weight: 500;
-  line-height: 1;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  transition: all 500ms ease;
-  padding: 12px 0;
-  z-index: 1;
-}
-
-.sidebar__categories li a::after {
-  position: absolute;
-  content: "";
-  width: 0;
-  height: 100%;
-  top: 0;
-  right: 0;
-  z-index: -1;
-  background-color: var(--floens-base, #c7844f);
-  transition: all 500ms ease;
-}
-
-.sidebar__categories li a span {
-  color: var(--floens-text, #7a736a);
-  font-weight: 400;
-  transition: all 500ms ease;
-}
-
-.sidebar__categories li a:hover {
-  padding: 12px 12px;
-  color: var(--floens-white, #ffffff);
-  text-shadow: 0 0 1px currentColor;
-}
-
-.sidebar__categories li a:hover::after {
-  left: 0;
-  width: 100%;
-}
-
-.sidebar__categories li a:hover span {
-  color: var(--floens-white, #ffffff);
-}
-
 .sidebar__tags {
   display: flex;
   align-items: center;

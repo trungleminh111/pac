@@ -1,48 +1,37 @@
+"use client";
+
+import { use, useMemo, useState } from "react";
 import { Header } from "@/components/site/Header";
 import { Footer } from "@/components/site/Footer";
 import { PageHeader } from "@/components/site/PageHeader";
+import { LuChevronLeft, LuChevronRight } from "react-icons/lu";
 
-const categories = [
-  ["Tin nội bộ", 9],
-  ["Xu hướng thiết kế", 12],
-  ["Thị trường ngành đá tự nhiên", 10],
-];
 
 const latestPosts = [
-  ["45+ Mẫu đá ốp cầu thang đẹp 2023", "15/06/2024", "lp-1-1.jpg"],
-  ["5 mẹo cải tạo nhà bếp hợp xu hướng", "12/06/2024", "lp-1-2.jpg"],
-  ["Kinh Nghiệm Chọn Đá Mặt Bếp Đẹp - Rẻ - Bền", "10/06/2024", "lp-1-3.jpg"],
+  ["45+ Mẫu đá ốp cầu thang đẹp 2023", "15/06/2024", "blog-1-1.jpg"],
+  ["5 mẹo cải tạo nhà bếp hợp xu hướng", "12/06/2024", "blog-1-2.jpg"],
+  ["Kinh Nghiệm Chọn Đá Mặt Bếp Đẹp - Rẻ - Bền", "10/06/2024", "blog-1-3.jpg"],
 ];
 
 const posts = [
-  [
-    "Có nên chọn đá hoa cương ốp mặt tiền không?",
-    "Đá hoa cương ốp mặt tiền đang là lựa chọn hàng đầu của nhiều gia chủ. Dùng đá hoa cương ốp mặt tiền nhằm mang lại sự sang trọng cũng như độ bền cho các công trình.",
-    "25/05",
-    "2024",
-    "blog-1-1.jpg",
-  ],
-  [
-    "Nội Thất Phòng Bếp Đẹp Sử Dụng Đá Marble",
-    "Thiết kế nội thất nhà bếp với đá marble mang đến vẻ đẹp sang trọng, tinh tế với những đường vân đá tự nhiên.",
-    "22/05",
-    "2024",
-    "blog-1-2.jpg",
-  ],
-  [
-    "Các Mẫu Hoa Văn Đá Hoa Cương Đẹp",
-    "Đá hoa văn đề cao vẻ đẹp, đường vân sáng và họa tiết tinh xảo mang đến sự sang trọng đẳng cấp.",
-    "08/05",
-    "2024",
-    "blog-1-3.jpg",
-  ],
-  [
-    "Mệnh Kim Chọn Tranh Đá Màu Gì Để Phát Tài, May Mắn?",
-    "Mệnh Kim tượng trưng cho kim loại, phù hợp với những gam màu và chất liệu đá mang ý nghĩa phong thủy tốt.",
-    "09/04",
-    "2024",
-    "blog-1-4.jpg",
-  ],
+  {
+    title: "Có nên chọn đá hoa cương ốp mặt tiền không?",
+    summary: "Đá hoa cương ốp mặt tiền đang là lựa chọn hàng đầu...",
+    day: "25/05",
+    year: "2024",
+    image: "blog-1-1.jpg",
+    category: "Thị trường ngành đá tự nhiên",
+    tags: ["Đá marble", "Thị trường đá"],
+  },
+  {
+    title: "Nội Thất Phòng Bếp Đẹp Sử Dụng Đá Marble",
+    summary: "Thiết kế nội thất nhà bếp với đá marble mang đến vẻ đẹp sang trọng...",
+    day: "22/05",
+    year: "2024",
+    image: "blog-1-2.jpg",
+    category: "Xu hướng thiết kế",
+    tags: ["Đá marble"],
+  },
 ];
 
 function toSlug(text: string) {
@@ -55,18 +44,54 @@ function toSlug(text: string) {
     .replace(/^-|-$/g, "");
 }
 
-export default async function NewsPage({
+export default function NewsPage({
   params,
 }: {
   params: Promise<{ locale: string }>;
 }) {
-  const { locale } = await params;
+  const { locale } = use(params);
+  const [keyword, setKeyword] = useState("");
+  const [activeCategory, setActiveCategory] = useState("Tất cả");
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 4;
 
+  const categories = [
+    "Tất cả",
+    ...Array.from(new Set(posts.map((post) => post.category))),
+  ];
+
+  const categoryCounts: Record<string, number> = {};
+
+  categories.forEach((category) => {
+    categoryCounts[category] =
+      category === "Tất cả"
+        ? posts.length
+        : posts.filter((post) => post.category === category).length;
+  });
+  const filteredPosts = useMemo(() => {
+    return posts.filter((post) => {
+      const matchCategory =
+        activeCategory === "Tất cả" || post.category === activeCategory;
+
+      const matchKeyword =
+        post.title.toLowerCase().includes(keyword.toLowerCase()) ||
+        post.summary.toLowerCase().includes(keyword.toLowerCase());
+
+      return matchCategory && matchKeyword;
+    });
+  }, [activeCategory, keyword]);
+
+  const totalPages = Math.ceil(filteredPosts.length / itemsPerPage);
+
+  const paginatedPosts = filteredPosts.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
   return (
     <div className="page-wrapper">
       <Header />
 
-      <PageHeader title=""   bgImage = "/assets/images/backgrounds/PACSTONE-TINTUCSUKIEN-header.png"/>
+      <PageHeader title="" bgImage="/assets/images/backgrounds/PACSTONE-TINTUCSUKIEN-header.png" />
 
 
       <section className="blog-page blog-page--sidebar section-space">
@@ -80,20 +105,37 @@ export default async function NewsPage({
                       Tìm kiếm
                     </h4>
                     <form action="#" className="sidebar__search">
-                      <input type="text" placeholder="Từ khóa" />
+                      <input
+                        type="text"
+                        placeholder="Từ khóa"
+                        value={keyword}
+                        onChange={(e) => {
+                          setKeyword(e.target.value);
+                          setCurrentPage(1);
+                        }}
+                      />
                       <button type="submit" aria-label="search submit">
                         <span className="icon-search" />
                       </button>
                     </form>
                   </div>
 
-                  <div className="sidebar__categories-wrapper sidebar__single">
+                  <div className="sidebar__categories-wrapper sidebar__single ">
                     <h4 className="sidebar__title">Danh mục</h4>
-                    <ul className="sidebar__categories list-unstyled">
-                      {categories.map(([name, count]) => (
-                        <li key={name}>
-                          <a href={`/${locale}/tin-tuc`}>
-                            {name} <span>({count})</span>
+                    <ul className="sidebar__categories list-unstyled ">
+                      {categories.map((name) => (
+                        <li key={name} className={activeCategory === name ? "active" : ""}>
+                          <a
+                            onClick={() => {
+                              setActiveCategory(name);
+                              setCurrentPage(1);
+                            }}
+                          >
+
+                            <span>{name}</span>
+                            <span className="sidebar__count">
+                              ({categoryCounts[name]})
+                            </span>
                           </a>
                         </li>
                       ))}
@@ -148,36 +190,36 @@ export default async function NewsPage({
 
             <div className="col-lg-8">
               <div className="row gutter-y-30">
-                {[...posts, ...posts].map(([title, summary, day, year, image], index) => (
-                  <div className="col-xl-6 col-lg-12 col-md-6" key={`${title}-${index}`}>
+                {paginatedPosts.map((post) => (
+                  <div className="col-xl-6 col-lg-12 col-md-6" key={post.title}>
                     <div className="blog-card">
                       <div className="blog-card__image">
                         <img
-                          src={`/assets/images/blog/${image}`}
-                          alt={title}
+                          src={`/assets/images/blog/${post.image}`}
+                          alt={post.title}
                         />
                         <a
-                          href={`/${locale}/tin-tuc/${toSlug(title)}`}
+                          href={`/${locale}/tin-tuc/${toSlug(post.title)}`}
                           className="blog-card__image__link"
                         >
-                          <span className="sr-only">{title}</span>
+                          <span className="sr-only">{post.title}</span>
                         </a>
                       </div>
 
                       <div className="blog-card__date">
-                        <span className="blog-card__date__day">{day}</span>
-                        <span className="blog-card__date__month">{year}</span>
+                        <span className="blog-card__date__day">{post.day}</span>
+                        <span className="blog-card__date__month">{post.year}</span>
                       </div>
 
                       <div className="blog-card__content">
                         <h3 className="blog-card__title">
-                          <a href={`/${locale}/tin-tuc/${toSlug(title)}`}>
-                            {title}
+                          <a href={`/${locale}/tin-tuc/${toSlug(post.title)}`}>
+                            {post.title}
                           </a>
                         </h3>
 
                         <p className="blog-card__text blog-card__summary">
-                          {summary}
+                          {post.summary}
                         </p>
                       </div>
                     </div>
@@ -187,23 +229,23 @@ export default async function NewsPage({
                 <div className="col-12">
                   <ul className="post-pagination">
                     <li>
-                      <a href="#">
-                        <span className="icon-arrow-left" />
-                      </a>
+                      <button disabled={currentPage === 1} onClick={() => setCurrentPage((p) => p - 1)}>
+                        <LuChevronLeft />
+                      </button>
                     </li>
-                    <li className="active">
-                      <a href="#">01</a>
-                    </li>
+
+                    {Array.from({ length: totalPages }, (_, i) => (
+                      <li key={i} className={currentPage === i + 1 ? "active" : ""}>
+                        <button onClick={() => setCurrentPage(i + 1)}>
+                          {(i + 1).toString().padStart(2, "0")}
+                        </button>
+                      </li>
+                    ))}
+
                     <li>
-                      <a href="#">02</a>
-                    </li>
-                    <li>
-                      <a href="#">03</a>
-                    </li>
-                    <li>
-                      <a href="#">
-                        <span className="icon-arrow-right" />
-                      </a>
+                      <button disabled={currentPage === totalPages} onClick={() => setCurrentPage((p) => p + 1)}>
+                        <LuChevronRight />
+                      </button>
                     </li>
                   </ul>
                 </div>

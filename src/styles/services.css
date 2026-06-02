@@ -231,7 +231,59 @@
 .work-pagination__text {
   font-weight: 700;
 }
+.work-pagination {
+  margin-top: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+}
 
+.work-pagination__nav,
+.work-pagination__page {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all .3s ease;
+  font-weight: 700;
+  font-size: 16px;
+}
+
+/* Prev */
+.work-pagination__prev,
+.work-pagination__next {
+  background: #f2efec;
+  color: #2b1e16;
+}
+
+/* Page */
+.work-pagination__page {
+  background: #f2efec;
+  color: #8f8882;
+}
+
+.work-pagination__page.active {
+  background: #ef3b3a;
+  color: #fff;
+}
+
+.work-pagination__nav:hover:not(:disabled),
+.work-pagination__page:hover {
+  transform: translateY(-2px);
+    background: transparent;
+  border: 1px solid #ef3b3a;
+  color: #ef3b3a;
+}
+
+.work-pagination__nav:disabled {
+  opacity: .4;
+  cursor: not-allowed;
+}
 
 .filter-project {
   list-style: none;

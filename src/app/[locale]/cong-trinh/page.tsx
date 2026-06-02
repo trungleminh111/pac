@@ -133,22 +133,30 @@ export default function WorksPage({
                 type="button"
                 disabled={currentPage === 1}
                 onClick={() => setCurrentPage((prev) => prev - 1)}
-                className="work-pagination__btn"
+                className="work-pagination__nav work-pagination__prev"
               >
-                Prev
+                ‹
               </button>
 
-              <span className="work-pagination__text">
-                {currentPage} / {totalPages}
-              </span>
+              {Array.from({ length: totalPages }, (_, index) => (
+                <button
+                  key={index}
+                  type="button"
+                  onClick={() => setCurrentPage(index + 1)}
+                  className={`work-pagination__page ${currentPage === index + 1 ? "active" : ""
+                    }`}
+                >
+                  {(index + 1).toString().padStart(2, "0")}
+                </button>
+              ))}
 
               <button
                 type="button"
                 disabled={currentPage === totalPages}
                 onClick={() => setCurrentPage((prev) => prev + 1)}
-                className="work-pagination__btn"
+                className="work-pagination__nav work-pagination__next"
               >
-                Next
+                ›
               </button>
             </div>
           )}

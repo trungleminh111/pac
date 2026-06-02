@@ -1,17 +1,38 @@
+"use client";
+
+import { use, useMemo, useState } from "react";
 import { Header } from "@/components/site/Header";
 import { Footer } from "@/components/site/Footer";
 import { PageHeader } from "@/components/site/PageHeader";
-
-const categories = [
-  ["Tin nội bộ", 9],
-  ["Xu hướng thiết kế", 12],
-  ["Thị trường ngành đá tự nhiên", 10],
-];
+import { LuChevronLeft, LuChevronRight } from "react-icons/lu";
+import { FaFacebookF } from "react-icons/fa";
+import { FaYoutube } from "react-icons/fa";
 
 const latestPosts = [
-  ["45+ Mẫu đá ốp cầu thang đẹp 2023", "15/06/2024", "lp-1-1.jpg"],
-  ["5 mẹo cải tạo nhà bếp hợp xu hướng", "12/06/2024", "lp-1-2.jpg"],
-  ["Kinh Nghiệm Chọn Đá Mặt Bếp Đẹp - Rẻ - Bền", "10/06/2024", "lp-1-3.jpg"],
+  ["45+ Mẫu đá ốp cầu thang đẹp 2023", "15/06/2024", "blog-1-1.jpg"],
+  ["5 mẹo cải tạo nhà bếp hợp xu hướng", "12/06/2024", "blog-1-2.jpg"],
+  ["Kinh Nghiệm Chọn Đá Mặt Bếp Đẹp - Rẻ - Bền", "10/06/2024", "blog-1-3.jpg"],
+];
+
+const posts = [
+  {
+    title: "Có nên chọn đá hoa cương ốp mặt tiền không?",
+    summary: "Đá hoa cương ốp mặt tiền đang là lựa chọn hàng đầu...",
+    day: "25/05",
+    year: "2024",
+    image: "blog-1-1.jpg",
+    category: "Thị trường ngành đá tự nhiên",
+    tags: ["Đá marble", "Thị trường đá"],
+  },
+  {
+    title: "Nội Thất Phòng Bếp Đẹp Sử Dụng Đá Marble",
+    summary: "Thiết kế nội thất nhà bếp với đá marble mang đến vẻ đẹp sang trọng...",
+    day: "22/05",
+    year: "2024",
+    image: "blog-1-2.jpg",
+    category: "Xu hướng thiết kế",
+    tags: ["Đá marble"],
+  },
 ];
 
 function toSlug(text: string) {
@@ -24,17 +45,56 @@ function toSlug(text: string) {
     .replace(/^-|-$/g, "");
 }
 
-export default async function NewsDetailPage({
+export default function NewsDetailPage({
   params,
 }: {
-  params: Promise<{ locale: string; slug: string }>;
+  params: Promise<{ locale: string }>;
 }) {
-  const { locale } = await params;
+  const { locale } = use(params);
+  const [keyword, setKeyword] = useState("");
+  const [activeCategory, setActiveCategory] = useState("Tất cả");
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 4;
+
+  const categories = [
+    "Tất cả",
+    ...Array.from(new Set(posts.map((post) => post.category))),
+  ];
+
+  const categoryCounts: Record<string, number> = {};
+
+  categories.forEach((category) => {
+    categoryCounts[category] =
+      category === "Tất cả"
+        ? posts.length
+        : posts.filter((post) => post.category === category).length;
+  });
+  const filteredPosts = useMemo(() => {
+    return posts.filter((post) => {
+      const matchCategory =
+        activeCategory === "Tất cả" || post.category === activeCategory;
+
+      const matchKeyword =
+        post.title.toLowerCase().includes(keyword.toLowerCase()) ||
+        post.summary.toLowerCase().includes(keyword.toLowerCase());
+
+      return matchCategory && matchKeyword;
+    });
+  }, [activeCategory, keyword]);
+
+  const totalPages = Math.ceil(filteredPosts.length / itemsPerPage);
+
+  const paginatedPosts = filteredPosts.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+
+
 
   return (
     <div className="page-wrapper">
       <Header />
-      <PageHeader title=""   bgImage = "/assets/images/backgrounds/PACSTONE-TINTUCSUKIEN-header.png"/>
+      <PageHeader title="" bgImage="/assets/images/backgrounds/PACSTONE-TINTUCSUKIEN-header.png" />
 
 
       <section className="blog-page blog-page--sidebar section-space">
@@ -47,23 +107,38 @@ export default async function NewsDetailPage({
                     <h4 className="sidebar__title sidebar__form__title">
                       Tìm kiếm
                     </h4>
-
                     <form action="#" className="sidebar__search">
-                      <input type="text" placeholder="Từ khóa" />
+                      <input
+                        type="text"
+                        placeholder="Từ khóa"
+                        value={keyword}
+                        onChange={(e) => {
+                          setKeyword(e.target.value);
+                          setCurrentPage(1);
+                        }}
+                      />
                       <button type="submit" aria-label="search submit">
                         <span className="icon-search" />
                       </button>
                     </form>
                   </div>
 
-                  <div className="sidebar__categories-wrapper sidebar__single">
+                  <div className="sidebar__categories-wrapper sidebar__single ">
                     <h4 className="sidebar__title">Danh mục</h4>
+                    <ul className="sidebar__categories list-unstyled ">
+                      {categories.map((name) => (
+                        <li key={name} className={activeCategory === name ? "active" : ""}>
+                          <a
+                            onClick={() => {
+                              setActiveCategory(name);
+                              setCurrentPage(1);
+                            }}
+                          >
 
-                    <ul className="sidebar__categories list-unstyled">
-                      {categories.map(([name, count]) => (
-                        <li key={name}>
-                          <a href={`/${locale}/tin-tuc`}>
-                            {name} <span>({count})</span>
+                            <span>{name}</span>
+                            <span className="sidebar__count">
+                              ({categoryCounts[name]})
+                            </span>
                           </a>
                         </li>
                       ))}
@@ -105,7 +180,6 @@ export default async function NewsDetailPage({
 
                   <div className="sidebar__tags-wrapper sidebar__single">
                     <h4 className="sidebar__title">Tags</h4>
-
                     <div className="sidebar__tags">
                       <a href={`/${locale}/tin-tuc`}>Đá marble</a>
                       <a href={`/${locale}/tin-tuc`}>Đá phong thủy</a>
@@ -246,16 +320,18 @@ export default async function NewsDetailPage({
 
                     <div className="details-social">
                       <a href="https://facebook.com">
-                        <i className="icon-facebook" />
+                        <i className="icon-facebook" >
+                          <FaFacebookF /></i>
                       </a>
-                      <a href="https://twitter.com">
-                        <i className="icon-twitter" />
+                      <a href="https://zalo.com">
+                        <img
+                          src="/assets/images/Icon_of_Zalo.svg.webp"
+                        />
                       </a>
-                      <a href="https://linkedin.com">
-                        <i className="icon-linkedin" />
-                      </a>
+                 
                       <a href="https://youtube.com">
-                        <i className="icon-youtube" />
+                        <i className="icon-youtube">
+                          <FaYoutube /></i>
                       </a>
                     </div>
                   </div>

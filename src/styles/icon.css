@@ -169,3 +169,13 @@
   height: auto;
  
 }
+.details-social a svg, .details-social a img{
+    height: 30px;
+  width: auto;
+}
+.details-social .icon-facebook {
+    color: #1877f2;
+  }
+  .details-social .icon-youtube {
+    color: red;
+}

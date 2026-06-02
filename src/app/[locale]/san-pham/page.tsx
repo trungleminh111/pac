@@ -1,3 +1,6 @@
+"use client";
+
+import { use, useState } from "react";
 import { Header } from "@/components/site/Header";
 import { Footer } from "@/components/site/Footer";
 import { PageHeader } from "@/components/site/PageHeader";
@@ -24,25 +27,41 @@ const categories = [
 ];
 
 const products = [
-  ["Marble Xanh MPN001", "10,500,000", "product-1-1.jpg"],
-  ["Marble Vàng MPN002", "8,000,000", "product-1-2.jpg"],
-  ["Marble Trắng MPN003", "4,000,000", "product-1-3.jpg"],
-  ["Marble Trắng MPN004", "3,500,000", "product-1-4.jpg"],
-  ["Marble Vàng MPN005", "6,000,000", "product-1-5.jpg"],
-  ["Marble Đen MPN006", "4,500,000", "product-1-6.jpg"],
-  ["Marble Hồng MPN007", "5,000,000", "product-1-7.jpg"],
-  ["Marble Xanh MPN008", "3,000,000", "product-1-8.jpg"],
-  ["Marble Đỏ MPN009", "2,000,000", "product-1-9.jpg"],
+  ["Marble Xanh MPN001", "10,500,000", "product-1-1.jpg", "Mẫu Đá"],
+  ["Marble Vàng MPN002", "8,000,000", "product-1-2.jpg", "Mẫu Đá"],
+  ["Marble Trắng MPAC003", "4,000,000", "product-1-3.jpg", "Tranh Đá - Hoa văn Đá"],
+  ["Marble Trắng MPAC004", "3,500,000", "product-1-4.jpg", "Tranh Đá - Hoa văn Đá"],
+  ["Marble Vàng MPAC005", "6,000,000", "product-1-5.jpg", "Vật Tư Phụ - Phụ Gia"],
+  ["Marble Đen MPAC006", "4,500,000", "product-1-6.jpg", "Thiết Bị - Dụng Cụ Ngành Đá"],
+  ["Marble Hồng MPAC007", "5,000,000", "product-1-7.jpg", "Khuyến Mãi - Thanh Lý"],
+  ["Marble Xanh MPAC008", "3,000,000", "product-1-8.jpg", "Mẫu Đá"],
+  ["Marble Đỏ MPAC009", "2,000,000", "product-1-9.jpg", "Mẫu Đá"],
+    ["Marble Đỏ MPAC0010", "2,000,000", "product-1-10.jpg", "Mẫu Đá"],
 ];
 
-
-export default async function ProductsPage({
+export default function ProductsPage({
   params,
 }: {
   params: Promise<{ locale: string }>;
 }) {
-  const { locale } = await params;
+  const { locale } = use(params);
 
+  const [activeCategory, setActiveCategory] = useState("Tất cả");
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 8;
+  const allCategories = ["Tất cả", ...categories];
+
+  const filteredProducts =
+    activeCategory === "Tất cả"
+      ? products
+      : products.filter((product) => product[3] === activeCategory);
+
+  const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
+
+  const paginatedProducts = filteredProducts.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
   return (
     <div className="page-wrapper">
       <Header />
@@ -52,7 +71,7 @@ export default async function ProductsPage({
       <section className="product-page product-page--left section-space-bottom">
 
         <div className="container">
-         
+
           {/* ===================================================
               HÀNG 1: KHU VỰC BỘ LỌC (TÌM KIẾM & CATEGORIES)
              =================================================== */}
@@ -80,11 +99,21 @@ export default async function ProductsPage({
             <div className="col-xl-8 col-md-7 col-12">
               <div className="product__categories" style={{ margin: 0, height: '100%' }}>
                 <ul className="list-unstyled">
-                  {categories.map((category) => (
-                    <li key={category}>
-                      <a href={`/${locale}/san-pham`} data-text={category}>
+                  {allCategories.map((category) => (
+                    <li
+                      key={category}
+                      className={activeCategory === category ? "active" : ""}
+                    >
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setActiveCategory(category);
+                          setCurrentPage(1);
+                        }}
+                        data-text={category}
+                      >
                         <span>{category}</span>
-                      </a>
+                      </button>
                     </li>
                   ))}
                 </ul>
@@ -101,13 +130,14 @@ export default async function ProductsPage({
           <div className="row">
             <div className="col-xl-12 col-lg-12">
               <div className="row gutter-y-30">
-                {products.map(([name, price, image]) => (
+                {paginatedProducts.map(([name, price, image]) => (
                   <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12" key={name}>
                     <div className="product__item">
                       <div className="product__item__image">
                         <img
                           src={`/assets/images/products/${image}`}
                           alt={name}
+                           style={{ height: '180px' }}
                         />
                       </div>
 
@@ -142,29 +172,36 @@ export default async function ProductsPage({
 
                 {/* Phân trang bài viết */}
                 <div className="col-12 mt-5">
-                  <ul className="post-pagination justify-content-center">
-                    <li>
-                      <a href="#">
-                        <span className="icon-arrow-left" />
-                        <GrPrevious />
-                      </a>
-                    </li>
-                    <li className="active">
-                      <a href="#">01</a>
-                    </li>
-                    <li>
-                      <a href="#">02</a>
-                    </li>
-                    <li>
-                      <a href="#">03</a>
-                    </li>
-                    <li>
-                      <a href="#">
-                        <span className="icon-arrow-right" />
-                        <GrNext />
-                      </a>
-                    </li>
-                  </ul>
+                  {filteredProducts.length > itemsPerPage && (
+                    <div className="product-pagination">
+                      <button
+                        className="prev-btn"
+                        disabled={currentPage === 1}
+                        onClick={() => setCurrentPage((prev) => prev - 1)}
+                      >
+                        ‹
+                      </button>
+
+                      {Array.from({ length: totalPages }, (_, index) => (
+                        <button
+                          key={index}
+                          className={`page-number ${currentPage === index + 1 ? "active" : ""
+                            }`}
+                          onClick={() => setCurrentPage(index + 1)}
+                        >
+                          {(index + 1).toString().padStart(2, "0")}
+                        </button>
+                      ))}
+
+                      <button
+                        className="next-btn"
+                        disabled={currentPage === totalPages}
+                        onClick={() => setCurrentPage((prev) => prev + 1)}
+                      >
+                        ›
+                      </button>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>

@@ -44,7 +44,7 @@ export function Footer() {
                             <div className="">
                                 <h4 className="footer-widget__title">Truy cập</h4>
                             </div>
-                            <ul className="list-unstyled ">
+                            <ul className="list-unstyled text-capitalize">
                                 <li><a href="/vi/gioi-thieu">Giới thiệu</a></li>
                                 <li><a href="/vi/dich-vu">Dịch vụ</a></li>
                                 <li><a href="/vi/san-pham">Sản phẩm</a></li>
@@ -59,8 +59,8 @@ export function Footer() {
                             <div className="footer-widget__top">
                                 <h4 className="footer-widget__title">Dịch vụ</h4>
                             </div>
-                            <ul className="list-unstyled footer-widget__links">
-                                <li><a href="/vi/dich-vu">Thi Công Đá Ốp Mặt Tiền</a></li>
+                            <ul className="list-unstyled footer-widget__links text-capitalize">
+                                <li><a href="/vi/dich-vu">Thi công Đá Ốp Mặt Tiền</a></li>
                                 <li><a href="/vi/dich-vu">Thi Công Đá Ốp Cột</a></li>
                                 <li><a href="/vi/dich-vu">Thi Công Đá Ốp Cầu Thang </a></li>
                                 <li><a href="/vi/dich-vu">Thiết Kế Thi Công Đá Ốp Sàn Thang Máy</a></li>

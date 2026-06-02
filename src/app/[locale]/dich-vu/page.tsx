@@ -70,11 +70,11 @@ export default async function ServicesPage({
       <section className="services-page section-space">
         <div className="container">
           <div className="row gutter-y-30 d-flex justify-center">
-            {services.map((service) => {
+           {services.map((service, index) => {
               const Icon = service.Icon;
 
               return (
-                <div className="col-xl-4 col-md-6" key={service.slug}>
+                   <div className="col-xl-4 col-md-6" key={`${service.slug}-${index}`}>
                   <div className="service-card-two">
                     <div
                       className="service-card-two__bg"

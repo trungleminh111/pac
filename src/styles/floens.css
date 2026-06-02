@@ -10450,11 +10450,37 @@ li:hover .sidebar__comments__icon::after {
   margin-top: 30px;
 }
 
-.service-sidebar__info {
+/* .service-sidebar__info {
   padding: 30px;
   background-color: var(--floens-white2, #f2eeea);
+} */
+.service-sidebar__info {
+  position: relative;
+  overflow: hidden;
+  padding: 30px;
+  background: none;
 }
 
+.service-sidebar__info::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: url("/assets/images/services/background-service.jpg") center/cover no-repeat;
+  opacity: 0.5;
+  z-index: 0;
+}
+
+.service-sidebar__info > * {
+  position: relative;
+  z-index: 1;
+}
+/* .service-sidebar__info::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.25);
+  z-index: 0;
+} */
 @media (max-width: 412px) {
   .service-sidebar__info {
     padding: 25px;
@@ -10473,7 +10499,7 @@ li:hover .sidebar__comments__icon::after {
   position: relative;
   display: block;
   padding: 19px 40px;
-  font-size: 22px;
+  font-size: 18px;
   color: var(--floens-black2, #2b1e16);
   font-weight: 600;
   line-height: 1;
@@ -10690,11 +10716,27 @@ li:hover .sidebar__comments__icon::after {
 }
 
 .service-sidebar__company {
+  position: relative;
+  overflow: hidden;
   display: flex;
   align-items: center;
   gap: 30px;
-  background-color: var(--floens-white2, #f2eeea);
   padding-right: 30px;
+  background: none;
+}
+
+.service-sidebar__company::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: url("/assets/images/services/background-service.jpg") center/cover no-repeat;
+  opacity: 0.5;
+  z-index: 0;
+}
+
+.service-sidebar__company > * {
+  position: relative;
+  z-index: 1;
 }
 
 @media (max-width: 1199px) {
@@ -16040,10 +16082,25 @@ li:hover .sidebar__comments__icon::after {
 
 .service-details__info {
   position: relative;
-  padding: 40px;
-  background-color: var(--floens-white2, #f2eeea);
   overflow: hidden;
+  padding: 40px;
   margin-bottom: 31px;
+  background: none;
+}
+
+.service-details__info::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: url("/assets/images/services/background-service.jpg")
+    center/cover no-repeat;
+  opacity: 0.3;
+  z-index: 0;
+}
+
+.service-details__info > * {
+  position: relative;
+  z-index: 1;
 }
 
 @media (max-width: 1199px) {
@@ -17126,7 +17183,7 @@ li:hover .sidebar__comments__icon::after {
 .work-details__text {
   line-height: 1.875;
   font-weight: normal;
-  text-transform: capitalize;
+
   margin-bottom: 25px;
 }
 

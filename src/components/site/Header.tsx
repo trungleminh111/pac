@@ -21,7 +21,7 @@ const menuItems = [
     label: "DỊCH VỤ",
     href: "/vi/dich-vu",
     children: [
-      "Thi Công Đá Ốp Mặt Tiền",
+      "Thi công ốp đá mặt tiền",
       "Thi Công Đá Ốp Cột",
       "Thi Công Đá Ốp Cầu Thang",
       "Thiết Kế Thi Công Đá Ốp Sàn Thang Máy",

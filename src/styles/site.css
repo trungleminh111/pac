@@ -589,52 +589,6 @@ a {
 /* ==========================================================================
    BỘ LỌC DANH MỤC (GALLERY FILTER GRID)
    ========================================================================== */
-.gallery-filter-grid {
-  list-style: none;
-  padding-left: 0;
-  margin: 0 auto 20px auto;
-  display: grid;
-  /* Trên Desktop: Tự động dàn hàng ngang trải đều dựa trên độ rộng chữ */
-  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-  gap: 12px;
-  width: 100%;
-}
-
-.gallery-filter-grid .filter-grid-item {
-  background-color: #f5f0eb;
-  border: 1px solid #ebdcd0;
-  border-radius: 2px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  padding: 12px 10px;
-  min-height: 52px;
-  /* Đảm bảo các nút cùng hàng luôn cao bằng nhau */
-  cursor: pointer;
-  transition: all 0.2s ease-in-out;
-
-  /* Đổ bóng cấu hình chuẩn Figma từ thiết kế của bạn */
-  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
-}
-
-.gallery-filter-grid .filter-grid-text {
-  font-size: 13px;
-  font-weight: 500;
-  color: #1a1a1a;
-  text-transform: uppercase;
-  line-height: 1.3;
-  word-break: break-word;
-}
-
-.gallery-filter-grid .filter-grid-item:hover,
-.gallery-filter-grid .filter-grid-item.active {
-  background-color: #ebdcd0;
-  border-color: #c89156;
-  transform: translateY(-1px);
-  box-shadow: 0px 5px 6px 0px rgba(0, 0, 0, 0.28);
-}
-
 
 .work-card {
   display: flex;
@@ -661,30 +615,6 @@ a {
   object-position: center;
 }
 
-
-@media (max-width: 767px) {
-  .gallery-filter-grid {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
-  }
-
-  .gallery-filter-grid .filter-grid-text {
-    font-size: 11px;
-  }
-}
-
-@media (max-width: 479px) {
-  .gallery-filter-grid {
-
-    grid-template-columns: repeat(2, 1fr);
-    gap: 8px;
-  }
-
-  .gallery-filter-grid .filter-grid-item {
-    min-height: 48px;
-    padding: 8px 6px;
-  }
-}
 
 
 

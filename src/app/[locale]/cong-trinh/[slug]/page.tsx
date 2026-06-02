@@ -3,96 +3,216 @@ import { Footer } from "@/components/site/Footer";
 import { PageHeader } from "@/components/site/PageHeader";
 
 export default function WorkDetailPage() {
+  const project = {
+    title: "Từ lâu người ta đã biết rằng độc giả sẽ",
+    //100 - 200 ký tự
+    intro:
+      "Phúc Nam Stone thực hiện thi công toàn bộ hạng mục đá Marble tự nhiên cho biệt thự cao cấp, bao gồm sảnh chính, cầu thang, phòng khách và các khu vực trang trí.",
+
+    mainImage: "slidechinh.jpg",
+    //100 - 200 ký tự
+    content1:
+      "Có rất nhiều biến thể của đoạn văn Lorem Ipsum, nhưng phần lớn đã bị thay đổi ở một số dạng, bằng cách thêm vào yếu tố hài hước hoặc sử dụng các từ ngẫu nhiên không hề đáng tin cậy. Nếu bạn bạn cần chắc chắn rằng không có bất kỳ điều gì đáng xấu hổ ẩn giấu ở giữa văn bản.  ",
+
+    subTitle: "Tôi có thể mua chúng ở đâu?",
+
+    content2:
+      "Ý tưởng sai lầm về việc lên án khoái lạc và ca ngợi nỗi đau đã ra đời và tôi sẽ cung cấp cho bạn một bản tường thuật đầy đủ về hệ thống này, và trình bày những lời dạy thực tế của nhà thám hiểm vĩ đại về chân lý, người kiến ​​tạo hạnh phúc của con người. Không ai bác bỏ, không thích.",
+
+    gallery: ["project-9.jpg", "project-10.jpg"],
+
+    content3:
+      "Có rất nhiều biến thể của đoạn văn Lorem Ipsum, nhưng phần lớn đã bị thay đổi dưới một hình thức nào đó, bằng cách thêm vào sự hài hước, hoặc các từ ngẫu nhiên trông không hề đáng tin cậy. Nếu bạn định sử dụng một đoạn văn Lorem Ipsum, bạn cần chắc chắn rằng không có bất kỳ điều gì đáng xấu hổ ẩn giấu ở giữa văn bản. Tất cả các trình tạo Lorem Ipsum trên Internet đều có xu hướng lặp lại các đoạn được xác định trước khi cần thiết, khiến đây trở thành trình tạo thực sự đầu tiên trên Internet. Nó sử dụng một từ điển gồm hơn 200 từ tiếng Latin.",
+    content4:
+      "Ý tưởng sai lầm về việc lên án khoái lạc và ca ngợi nỗi đau đã ra đời và tôi sẽ cung cấp cho bạn một bản tường thuật đầy đủ về hệ thống này, và trình bày những lời dạy thực tế của nhà thám hiểm vĩ đại về chân lý, người kiến ​​tạo hạnh phúc của con người. Không ai bác bỏ, không thích.",
+
+    info: {
+      customer: "Anh Nguyễn Văn A",
+      category: "Villa - Penhouse",
+      startDate: "10-06-2023",
+      endDate: "30-08-2023",
+      budget: "3.5 tỷ VNĐ",
+    },
+  };
   return (
     <div className="page-wrapper">
       <Header />
 
-      <PageHeader title=""   bgImage = "/assets/images/backgrounds/PACSTONE-CONGTRINH-header.png"/>
+      <PageHeader title="" bgImage="/assets/images/backgrounds/PACSTONE-CONGTRINH-header.png" />
 
 
-      <section className="work-details section-space">
+      <section className="work-details section-space service-laptop">
+        <div className="container">
+          <div className="row gutter-y-60">
+            <div className="col-lg-8">
+
+
+              <h2 className="work-details__title text-justify">
+                {project.title}
+              </h2>
+
+              <p className="work-details__text text-justify">
+                {project.intro}
+              </p>
+
+              <img
+                src={`/assets/images/works/${project.mainImage}`}
+                alt={project.title}
+              />
+
+              <p className="work-details__text text-justify">
+                {project.content1}
+              </p>
+            </div>
+
+            <div className="col-lg-4">
+              <aside className="work-details__sidebar">
+                <h3 className="work-details__sidebar__title">
+                  Thông tin công trình
+                </h3>
+
+                <div className="work-details__sidebar__inner">
+                  <div className="work-details__sidebar__info work-details__sidebar__info--client">
+                    <h4 className="work-details__sidebar__info__title work-details__sidebar__info__title--client">
+                      Khách hàng:
+                    </h4>
+                    <a
+                      href="#"
+                      className="work-details__sidebar__info__text work-details__sidebar__info__text--link"
+                    >
+                      {project.info.customer}
+                    </a>
+                  </div>
+
+                  <div className="work-details__sidebar__info">
+                    <h4 className="work-details__sidebar__info__title">
+                      Hạng mục:
+                    </h4>
+                    <p className="work-details__sidebar__info__text">
+                      {project.info.category}
+                    </p>
+                  </div>
+
+                  <div className="work-details__sidebar__info">
+                    <h4 className="work-details__sidebar__info__title">
+                      Ngày khởi công:
+                    </h4>
+                    <p className="work-details__sidebar__info__text">
+                      {project.info.startDate}
+                    </p>
+                  </div>
+
+                  <div className="work-details__sidebar__info">
+                    <h4 className="work-details__sidebar__info__title">
+                      Ngày hoàn thành:
+                    </h4>
+                    <p className="work-details__sidebar__info__text">
+                      {project.info.endDate}
+                    </p>
+                  </div>
+
+                  <div className="work-details__sidebar__info">
+                    <h4 className="work-details__sidebar__info__title">
+                      Ngân sách:
+                    </h4>
+                    <p className="work-details__sidebar__info__text">
+                      {project.info.budget}
+                    </p>
+                  </div>
+                </div>
+              </aside>
+            </div>
+
+            <div className="col-lg-4 mt-5">
+
+              <div className="work-details__inner d-flex gap-4 flex-column ">
+                  {project.gallery.map((image) => (
+                    <div className="" key={image}>
+                      <img
+                        src={`/assets/images/works/${image}`}
+                        alt={project.title}
+                      />
+                    </div>
+                  ))}
+             
+              </div>
+
+            </div>
+            <div className="col-lg-8 mt-5">
+               <h3 className="work-details__title text-justify">
+                {project.subTitle}
+              </h3>
+
+              <p className="work-details__text text-justify">
+                {project.content2}
+              </p>
+
+                <p className="work-details__text text-justify">
+                  {project.content3}
+                </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="work-details section-space service-tablet-phone">
         <div className="container">
           <div className="row gutter-y-60">
             <div className="col-lg-8">
               <div className="work-details__content">
+
+
+                <h3 className="work-details__title text-justify">
+                  {project.title}
+                </h3>
+
+                <p className="work-details__text work-details__text--one text-justify">
+                  {project.content1}
+                </p>
                 <div className="work-details__image">
                   <img
-                    src="/assets/images/works/project-d-1.jpg"
-                    alt="Chi tiết công trình"
+                    src={`/assets/images/works/${project.mainImage}`}
+                    alt={project.title}
                   />
                 </div>
-
-                <h3 className="work-details__title">
-                  Thi công đá cao cấp cho biệt thự
+                <h3 className="work-details__title text-justify">
+                  {project.subTitle}
                 </h3>
 
-                <p className="work-details__text work-details__text--one">
-                  Phúc Nam thực hiện hạng mục thi công đá tự nhiên cao cấp với
-                  tiêu chuẩn hoàn thiện tỉ mỉ, đảm bảo tính thẩm mỹ, độ bền và
-                  sự sang trọng cho toàn bộ không gian công trình.
-                </p>
 
-                <h3 className="work-details__title">
-                  Giải pháp thi công chuyên nghiệp
-                </h3>
-
-                <p className="work-details__text work-details__text--two">
-                  Dự án được khảo sát kỹ lưỡng, lựa chọn vật liệu phù hợp và
-                  triển khai bởi đội ngũ thi công nhiều kinh nghiệm nhằm mang
-                  lại hiệu quả tối ưu cho từng hạng mục.
+                <p className="work-details__text work-details__text--two text-justify">
+                  {project.content2}
                 </p>
 
                 <div className="work-details__inner">
                   <div className="row gutter-y-30">
                     <div className="col-lg-6">
-                      <div className="work-details__inner__image">
+                      <div className="col-lg-6" key={project.gallery[0]}>
                         <img
-                          src="/assets/images/works/project-d-1-1.jpg"
-                          alt="Công trình"
+                          src={`/assets/images/works/${project.gallery[0]}`}
+                          alt={project.title}
                         />
                       </div>
                     </div>
+                    <p className="work-details__text work-details__text--three text-justify">
+                      {project.content3}
+                    </p>
 
-                    <div className="col-lg-6">
-                      <div className="work-details__inner__image">
+                    <div className="col-lg-6 my-0">
+                      <div className="col-lg-6" key={project.gallery[1]}>
                         <img
-                          src="/assets/images/works/project-d-1-2.jpg"
-                          alt="Công trình"
+                          src={`/assets/images/works/${project.gallery[1]}`}
+                          alt={project.title}
                         />
                       </div>
                     </div>
                   </div>
                 </div>
 
-                <p className="work-details__text work-details__text--three">
-                  Từng chi tiết được xử lý cẩn thận từ khâu đo đạc, cắt đá, vận
-                  chuyển đến lắp đặt hoàn thiện, giúp công trình đạt độ chính
-                  xác và tính đồng bộ cao.
+                <p className="work-details__text work-details__text--four text-justify" >
+                  {project.content4}
                 </p>
 
-                <div className="work-details__testimonial">
-                  <p className="work-details__testimonial__text">
-                    Phúc Nam luôn hướng đến sự minh bạch, chuyên nghiệp và chất
-                    lượng hoàn thiện cao trong từng công trình.
-                  </p>
-
-                  <svg
-                    className="work-details__testimonial__icon"
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 38 28"
-                    fill="none"
-                  >
-                    <path d="M0 17.4101H7.62083L2.54024 27.5712H10.1611L15.2417 17.4101V2.16846H0V17.4101Z" />
-                    <path d="M20.3223 2.16846V17.4101H27.9431L22.8625 27.5712H30.4833L35.5639 17.4101V2.16846H20.3223Z" />
-                    <path d="M9.7888 14.7417H2.66797V0.5H16.9096V15.1236L12.02 24.9027H5.51723L10.236 15.4653L10.5978 14.7417H9.7888Z" />
-                    <path d="M30.1111 14.7417H22.9902V0.5H37.2319V15.1236L32.3423 24.9027H25.8395L30.5583 15.4653L30.9201 14.7417H30.1111Z" />
-                  </svg>
-                </div>
-
-                <p className="work-details__text work-details__text--four">
-                  Công trình sau khi hoàn thiện mang lại vẻ đẹp sang trọng, hiện
-                  đại và phù hợp với phong cách sống cao cấp của chủ đầu tư.
-                </p>
               </div>
             </div>
 
@@ -111,7 +231,7 @@ export default function WorkDetailPage() {
                       href="#"
                       className="work-details__sidebar__info__text work-details__sidebar__info__text--link"
                     >
-                      Ca sĩ Đoàn Di Băng
+                      {project.info.customer}
                     </a>
                   </div>
 
@@ -120,7 +240,7 @@ export default function WorkDetailPage() {
                       Hạng mục:
                     </h4>
                     <p className="work-details__sidebar__info__text">
-                      Villa - Penhouse
+                      {project.info.category}
                     </p>
                   </div>
 
@@ -129,7 +249,7 @@ export default function WorkDetailPage() {
                       Ngày khởi công:
                     </h4>
                     <p className="work-details__sidebar__info__text">
-                      10-06-2023
+                      {project.info.startDate}
                     </p>
                   </div>
 
@@ -138,7 +258,7 @@ export default function WorkDetailPage() {
                       Ngày hoàn thành:
                     </h4>
                     <p className="work-details__sidebar__info__text">
-                      30-08-2023
+                      {project.info.endDate}
                     </p>
                   </div>
 
@@ -147,7 +267,7 @@ export default function WorkDetailPage() {
                       Ngân sách:
                     </h4>
                     <p className="work-details__sidebar__info__text">
-                      Liên hệ
+                      {project.info.budget}
                     </p>
                   </div>
                 </div>
@@ -156,7 +276,6 @@ export default function WorkDetailPage() {
           </div>
         </div>
       </section>
-
       <Footer />
     </div>
   );

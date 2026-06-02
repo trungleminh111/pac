@@ -1,7 +1,9 @@
 import { Header } from "@/components/site/Header";
 import { Footer } from "@/components/site/Footer";
 import { PageHeader } from "@/components/site/PageHeader";
-
+import { FaCheck } from "react-icons/fa6";
+import { LuDownload } from "react-icons/lu";
+import { FiPhoneCall } from "react-icons/fi";
 const services = [
   {
     slug: "thi-cong-da-op-mat-tien",
@@ -94,7 +96,7 @@ export default async function ServiceDetailPage({
 
                     <div className="service-sidebar__contact__inner">
                       <div className="service-sidebar__contact__icon">
-                        <span className="icon-telephone"></span>
+                        <span className="icon-telephone"><FiPhoneCall /></span>
                       </div>
 
                       <div className="service-sidebar__contact__content">
@@ -103,8 +105,8 @@ export default async function ServiceDetailPage({
                         </h4>
 
                         <h4 className="service-sidebar__contact__number">
-                          <a href="tel:+84909888899">
-                            0909.8888.99
+                          <a href="tel:+84962757475">
+                            0962.757.475
                           </a>
                         </h4>
                       </div>
@@ -115,7 +117,7 @@ export default async function ServiceDetailPage({
                 <div className="service-sidebar__single">
                   <div className="service-sidebar__company">
                     <a href="#" className="service-sidebar__company__btn">
-                      <span className="icon-download"></span>
+                      <span className="icon-download"><LuDownload /></span>
                     </a>
 
                     <h4 className="service-sidebar__company__title">
@@ -125,7 +127,7 @@ export default async function ServiceDetailPage({
 
                   <div className="service-sidebar__company">
                     <a href="#" className="service-sidebar__company__btn">
-                      <span className="icon-download"></span>
+                      <span className="icon-download"><LuDownload /></span>
                     </a>
 
                     <h4 className="service-sidebar__company__title">
@@ -187,28 +189,28 @@ export default async function ServiceDetailPage({
                 <div className="service-details__info">
                   <ul className="list-unstyled service-details__list">
                     <li>
-                      <span className="icon-check"></span>
+                      <span className="icon-check"><FaCheck /></span>
                       Tư vấn miễn phí
                     </li>
 
                     <li>
-                      <span className="icon-check"></span>
+                      <span className="icon-check"><FaCheck /></span>
                       Thi công chuyên nghiệp
                     </li>
 
                     <li>
-                      <span className="icon-check"></span>
+                      <span className="icon-check"><FaCheck /></span>
                       Sản phẩm đa dạng
                     </li>
 
                     <li>
-                      <span className="icon-check"></span>
+                      <span className="icon-check"><FaCheck /></span>
                       Bảo hành chu đáo
                     </li>
                   </ul>
 
                   <img
-                    src="/assets/images/services/service-d-list-1.jpg"
+                    src="/assets/images/services/service-d-list-1.webp"
                     alt="service"
                     className="service-details__info__image"
                   />

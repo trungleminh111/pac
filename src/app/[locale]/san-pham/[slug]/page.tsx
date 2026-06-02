@@ -234,8 +234,8 @@ export default function ProductDetailPage({
                         <div>
 
                           <a href="/lien-he" className="floens-btn product__item__link">
-                            <span>Liên hệ</span>
-                            <FaCartShopping className="product-cart-icon" />
+                            <span>Tìm hiểu thêm</span>
+                            {/* <FaCartShopping className="product-cart-icon" /> */}
                           </a>
                         </div>
                       </div>

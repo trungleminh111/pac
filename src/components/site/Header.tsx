@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { GoSearch } from "react-icons/go";
-import { LuUser } from "react-icons/lu";
+import { FiUser } from "react-icons/fi";
 import {
   FaPaperPlane,
   FaPhoneAlt,
@@ -218,7 +218,7 @@ export function Header() {
                   onClick={() => setSidebarOpen(true)}
                   aria-label="Open sidebar">
 
-                  <LuUser />
+                  <FiUser />
                 </a>
               </div>
 
@@ -320,20 +320,17 @@ export function Header() {
             </li>
           </ul>
 
-          <div className="mobile-nav__social floens-social">
-            <a href="https://facebook.com" target="_blank" rel="noreferrer">
+          <div className="main-footer__social floens-social">
+            <a href="https://facebook.com" aria-label="Facebook">
               <FaFacebookF />
-              <span className="sr-only">Facebook</span>
             </a>
 
-            <a href="https://zalo.me/0962757475" target="_blank" rel="noreferrer">
+            <a href="https://zalo.me" aria-label="Zalo">
               <SiZalo />
-              <span className="sr-only">Zalo</span>
             </a>
 
-            <a href="https://youtube.com" target="_blank" rel="noreferrer">
+            <a href="https://youtube.com" aria-label="Youtube">
               <FaYoutube />
-              <span className="sr-only">Youtube</span>
             </a>
           </div>
         </div>
@@ -355,11 +352,19 @@ export function Header() {
             <FaTimes />
           </span>
 
-          <div className="sidebar-one__logo sidebar-one__item d-flex justify-center">
-            <a href="/" aria-label="logo image" className="d-flex justify-center">
+          <div className="sidebar-one__logo sidebar-one__item mb-4">
+            <a
+              href="/"
+              aria-label="logo image"
+              className="d-flex justify-content-center align-items-center w-100"
+            >
               <img
                 src="/assets/images/logo-PACSTONE.webp"
-                width="80%"
+                className="img-fluid mx-auto d-block"
+                style={{
+                  maxWidth: "180px",
+                  width: "100%",
+                }}
                 alt="Logo P.A.C STONE"
               />
             </a>
@@ -450,20 +455,17 @@ export function Header() {
             </ul>
           </div>
 
-          <div className="sidebar-one__social floens-social sidebar-one__item">
-            <a href="https://facebook.com" target="_blank" rel="noreferrer">
+          <div className="main-footer__social floens-social" style={{ marginBottom: "70px" }}>
+            <a href="https://facebook.com" aria-label="Facebook">
               <FaFacebookF />
-              <span className="sr-only">Facebook</span>
             </a>
 
-            <a href="https://zalo.me/0962757475" target="_blank" rel="noreferrer">
+            <a href="https://zalo.me" aria-label="Zalo">
               <SiZalo />
-              <span className="sr-only">Zalo</span>
             </a>
 
-            <a href="https://youtube.com" target="_blank" rel="noreferrer">
+            <a href="https://youtube.com" aria-label="Youtube">
               <FaYoutube />
-              <span className="sr-only">Youtube</span>
             </a>
           </div>
         </div>

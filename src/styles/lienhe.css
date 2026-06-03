@@ -212,25 +212,48 @@
   left: 0;
   bottom: 118px;
   max-width: 250px;
+
   background: #fff7f2;
   color: #000;
+
   padding: 9px 16px;
   border-radius: 5px;
+
   font-size: 15px;
   font-weight: 800;
   letter-spacing: 5px;
   line-height: 1.25;
+
   z-index: 10;
-  opacity: 0;
-  visibility: hidden;
-  transform: translateY(10px);
-  transition: 0.35s ease;
+
+  animation: showCallNotice 10s infinite;
 }
 
-.contact-call-wrapper:hover .contact-call__subtitle {
-  opacity: 1;
-  visibility: visible;
-  transform: translateY(0);
+/* hiện 7s - ẩn 3s */
+@keyframes showCallNotice {
+  0% {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+
+  70% {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+
+  75% {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+  }
+
+  100% {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+  }
 }
 
 .contact-call {

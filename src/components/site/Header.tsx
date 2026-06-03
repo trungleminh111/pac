@@ -12,6 +12,14 @@ import {
   FaTimes,
   FaAngleDown,
 } from "react-icons/fa";
+import Link from "next/link";
+import {
+  FaFilePdf,
+  FaBoxesPacking,
+  FaScaleBalanced,
+  FaUserShield,
+  FaCommentDots
+} from "react-icons/fa6";
 import { SiZalo } from "react-icons/si";
 
 const menuItems = [
@@ -68,7 +76,14 @@ export function Header() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+  const [isFormOpen, setIsFormOpen] = useState(false);
+  const [fileName, setFileName] = useState("File thiết kế của bạn (Nếu có)");
 
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      setFileName(e.target.files[0].name);
+    }
+  };
   useEffect(() => {
     document.body.classList.toggle(
       "locked",
@@ -152,9 +167,8 @@ export function Header() {
                   {menuItems.map((item, index) => (
                     <li
                       key={item.label}
-                      className={`${index === 0 ? "active" : ""} ${
-                        item.children ? "dropdown" : ""
-                      }`}
+                      className={`${index === 0 ? "active" : ""} ${item.children ? "dropdown" : ""
+                        }`}
                     >
                       <a href={item.href} className={index === 0 ? "current" : ""}>
                         {item.label}
@@ -198,12 +212,16 @@ export function Header() {
                   <GoSearch />
                 </a>
 
-                <a href="#" className="icon-user" aria-label="User">
+                <a href="#" className="icon-user"
+                  type="button"
+
+                  onClick={() => setSidebarOpen(true)}
+                  aria-label="Open sidebar">
                   <LuUser />
                 </a>
               </div>
 
-              <button
+              {/* <button
                 type="button"
                 className="main-header__sidebar-btn sidebar-btn__toggler"
                 onClick={() => setSidebarOpen(true)}
@@ -212,7 +230,7 @@ export function Header() {
                 <span className="main-header__sidebar-btn__box" />
                 <span className="main-header__sidebar-btn__box" />
                 <span className="main-header__sidebar-btn__box" />
-              </button>
+              </button> */}
             </div>
           </div>
         </div>
@@ -326,7 +344,9 @@ export function Header() {
           onClick={() => setSidebarOpen(false)}
         />
 
-        <div className="sidebar-one__content">
+        <div className="sidebar-one__content " style={{
+          backgroundImage: "url('/assets/images/shapes/slidebar-PACSTONE.jpg')",
+        }}>
           <span
             className="sidebar-one__close sidebar-btn__toggler"
             onClick={() => setSidebarOpen(false)}
@@ -334,21 +354,68 @@ export function Header() {
             <FaTimes />
           </span>
 
-          <div className="sidebar-one__logo sidebar-one__item">
-            <a href="/" aria-label="logo image">
+          <div className="sidebar-one__logo sidebar-one__item d-flex justify-center">
+            <a href="/" aria-label="logo image" className="d-flex justify-center">
               <img
                 src="/assets/images/logo-PACSTONE.webp"
-                width="180"
+                width="80%"
                 alt="Logo P.A.C STONE"
               />
             </a>
           </div>
 
-          <div className="sidebar-one__about sidebar-one__item">
-            <p className="sidebar-one__about__text">
-              P.A.C STONE chuyên thi công, thiết kế đá ốp lát cao cấp cho nhà phố,
-              biệt thự, khách sạn, trung tâm thương mại và các công trình dân dụng.
-            </p>
+          <div className="sidebar-one__menu-utilities sidebar-one__item">
+            <ul className="sidebar-util-list">
+
+              {/* 1. Hướng dẫn sử dụng web */}
+              <li>
+                <Link href="/assets/documents/huong-dan-su-dung.pdf" target="_blank" className="sidebar-util-link">
+                  <div className="util-icon-box pdf-type">
+                    <FaFilePdf />
+                  </div>
+                  <div className="util-text-box">
+                    <span className="util-title">Hướng dẫn sử dụng Web</span>
+                    <span className="util-badge">Tải xuống PDF</span>
+                  </div>
+                </Link>
+              </li>
+
+              {/* 2. Quản lý đơn hàng */}
+              <li>
+                <div className="sidebar-util-link disabled-item">
+                  <div className="util-icon-box">
+                    <FaBoxesPacking />
+                  </div>
+                  <div className="util-text-box">
+                    <span className="util-title">Quản lý đơn hàng</span>
+                    <span className="util-badge development">Phát triển sau</span>
+                  </div>
+                </div>
+              </li>
+
+              {/* 3. Hồ sơ pháp lý */}
+              <li>
+                <Link href="/assets/documents/ho-so-phap-ly-pac-stone.pdf" target="_blank" className="sidebar-util-link">
+                  <div className="util-icon-box pdf-type">
+                    <FaFilePdf />
+                  </div>
+                  <div className="util-text-box">
+                    <span className="util-title">Hồ sơ pháp lý P.A.C STONE</span>
+                    <span className="util-badge">Tải xuống PDF</span>
+                  </div>
+                </Link>
+              </li>
+
+
+              {/* 5. Nút Zalo OA */}
+              <li className="mt-2">
+                <Link href="https://zalo.me/YOUR_ZALO_OA_ID" target="_blank" className="sidebar-util-zalo-btn">
+                  <FaCommentDots className="zalo-btn-icon" />
+                  <span>NHẮN TIN ZALO OA NGAY</span>
+                </Link>
+              </li>
+
+            </ul>
           </div>
 
           <div className="sidebar-one__info sidebar-one__item">
@@ -405,7 +472,9 @@ export function Header() {
         <div
           className="search-popup__overlay search-toggler"
           onClick={() => setSearchOpen(false)}
+
         />
+
 
         <div className="search-popup__content">
           <form

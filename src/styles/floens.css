@@ -9911,7 +9911,7 @@ body.megamenu-popup-active .mobile-nav__content {
 }
 
 .sidebar-one__content {
-  width: 300px;
+  width: 350px;
   background-color: var(--floens-black2, #2b1e16);
   z-index: 10;
   position: relative;

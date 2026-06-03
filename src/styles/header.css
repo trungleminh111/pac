@@ -1,6 +1,6 @@
 .mobile-nav__container .main-menu__list li a:hover,
-.mobile-nav__container .main-menu__list li.current > a,
-.mobile-nav__container .main-menu__list li.active > a {
+.mobile-nav__container .main-menu__list li.current>a,
+.mobile-nav__container .main-menu__list li.active>a {
   color: var(--floens-base, #ec3137);
 }
 
@@ -8,10 +8,11 @@
   color: var(--floens-base, #ec3137);
 }
 
-.mobile-nav__container .main-menu__list li.dropdown > a > button {
+.mobile-nav__container .main-menu__list li.dropdown>a>button {
   color: #fff;
   background-color: var(--floens-base, #ec3137);
 }
+
 .mobile-nav__contact li {
   display: flex;
   align-items: center;
@@ -37,4 +38,151 @@
   display: flex;
   align-items: center;
   gap: 10px;
+}
+
+.sidebar-one__content, .search-popup__overlay  {
+
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: absolute;
+
+}
+
+.sidebar-one__logo {
+  display: flex;
+  justify-content: center;
+}
+.sidebar-one__about__text,
+.sidebar-one__info__list {
+  text-align: justify;
+}
+
+/* ==========================================================================
+   SIDEBAR UTILITIES MENU SYSTEM
+   ========================================================================== */
+.sidebar-util-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 30px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px; /* Tạo khoảng giãn cách thoáng giữa các hàng */
+}
+
+/* Khung bọc từng dòng item */
+.sidebar-util-link {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 12px 16px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 6px;
+  text-decoration: none !important;
+  transition: all 0.25s ease-in-out;
+}
+
+/* Hiệu ứng khi di chuột vào từng dòng */
+.sidebar-util-link:hover:not(.disabled-item) {
+  background: rgba(200, 145, 86, 0.1); /* Màu vàng gold mờ */
+  border-color: #c89156; /* Viền màu vàng gold thương hiệu */
+  transform: translateX(4px);
+}
+
+/* Hộp chứa Icon */
+.util-icon-box {
+  font-size: 18px;
+  color: #c89156; /* Mặc định icon màu vàng gold */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 6px;
+  flex-shrink: 0;
+}
+
+/* Đặc tả màu sắc riêng cho từng loại icon để tạo điểm nhấn */
+.util-icon-box.pdf-type {
+  color: #ef4444; /* Màu đỏ cho file PDF dễ nhận biết */
+  background: rgba(239, 68, 68, 0.1);
+}
+
+.util-icon-box.admin-type {
+  color: #3b82f6; /* Màu xanh công nghệ cho hệ thống Admin */
+  background: rgba(59, 130, 246, 0.1);
+}
+
+/* Khối chữ nội dung bên phải */
+.util-text-box {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex-grow: 1;
+}
+
+.util-title {
+  font-size: 14px;
+  font-weight: 500;
+  color: #ffffff; /* Chữ trắng nổi bật trên nền đá đen */
+  line-height: 1.4;
+}
+
+.util-desc {
+  font-size: 11px;
+  color: #aaaaaa;
+}
+
+/* Hệ thống nhãn trạng thái (Badge) đi kèm */
+.util-badge {
+  font-size: 11px;
+  font-weight: 500;
+  color: #c89156;
+  display: inline-block;
+}
+
+.util-badge.development {
+  color: #f59e0b; /* Màu vàng cảnh báo cho tính năng đang phát triển */
+  font-style: italic;
+}
+
+/* Trạng thái bị khóa của tính năng "Phát triển sau" */
+.disabled-item {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: rgba(255, 255, 255, 0.01);
+}
+
+/* ==========================================================================
+   NÚT BẤM NHẮN TIN ZALO OA ĐẶC BIỆT
+   ========================================================================== */
+.sidebar-util-zalo-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  background-color: #0068ff; /* Màu xanh chuẩn nhận diện thương hiệu Zalo */
+  color: #ffffff !important;
+  border: none;
+  padding: 12px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  border-radius: 6px;
+  text-decoration: none !important;
+  box-shadow: 0px 4px 12px rgba(0, 104, 255, 0.3);
+  transition: all 0.2s ease;
+}
+
+.sidebar-util-zalo-btn:hover {
+  background-color: #0056d2;
+  transform: translateY(-1px);
+  box-shadow: 0px 6px 15px rgba(0, 104, 255, 0.4);
+}
+
+.zalo-btn-icon {
+  font-size: 16px;
 }

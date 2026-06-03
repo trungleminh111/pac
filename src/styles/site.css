@@ -147,7 +147,7 @@ a {
   justify-content: center;
   align-items: center;
   height: auto;
-  padding: 10px 24px;
+  padding: 15px 34px;
   font-size: 14px;
   font-weight: 700;
   text-decoration: none;
@@ -168,7 +168,7 @@ a {
 }
 
 .hero-title {
-  margin: 0 0 10px;
+  margin: 0 0 15px;
   font-size: clamp(40px, 5vw, 60px);
   line-height: 1;
   font-weight: 800;
@@ -207,7 +207,6 @@ a {
   align-items: center;
   justify-content: center;
   gap: 24px;
-  width: 50%;
   min-width: max-content;
   height: 56px;
   padding: 0 26px;

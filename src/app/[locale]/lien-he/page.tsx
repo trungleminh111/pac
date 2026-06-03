@@ -10,6 +10,7 @@ import { FaUpload } from "react-icons/fa";
 import { FaPhoneAlt } from "react-icons/fa";
 import { LuDownload } from "react-icons/lu";
 import { LuUpload } from "react-icons/lu";
+import ScrollReveal from "@/components/site/ScrollReveal";
 export default function ContactPage() {
   return (
     <div className="page-wrapper">
@@ -77,50 +78,52 @@ export default function ContactPage() {
                   tư vấn miễn phí từ đội ngũ chuyên gia hàng đầu.
                 </p>
 
+                <ScrollReveal animationClass="fade-in-up" delay="0">
 
-                <form className="contact-one__form contact-form-validated form-one">
-                  <div
-                    className="contact-one__form__bg"
-                    style={{
-                      backgroundImage:
-                        "url('/assets/images/shapes/contact-info-form-bg.png')",
-                    }}
-                  />
+                  <form className="contact-one__form contact-form-validated form-one">
+                    <div
+                      className="contact-one__form__bg"
+                      style={{
+                        backgroundImage:
+                          "url('/assets/images/shapes/contact-info-form-bg.png')",
+                      }}
+                    />
 
-                  <div className="contact-one__form__top">
-                    <h2 className="contact-one__form__title">
-                      Gửi tin nhắn cho chúng tôi
-                    </h2>
-                  </div>
-
-                  <div className="form-one__group form-one__group--grid">
-                    <div className="form-one__control form-one__control--input form-one__control--full">
-                      <input type="text" name="name" placeholder="Họ và tên" />
+                    <div className="contact-one__form__top">
+                      <h2 className="contact-one__form__title">
+                        Gửi tin nhắn cho chúng tôi
+                      </h2>
                     </div>
 
-                    <div className="form-one__control form-one__control--full">
-                      <input type="email" name="email" placeholder="Email" />
-                    </div>
+                    <div className="form-one__group form-one__group--grid">
+                      <div className="form-one__control form-one__control--input form-one__control--full">
+                        <input type="text" name="name" placeholder="Họ và tên" />
+                      </div>
 
-                    <div className="form-one__control form-one__control--full">
-                      <input type="text" name="phone" placeholder="Điện thoại" />
-                    </div>
+                      <div className="form-one__control form-one__control--full">
+                        <input type="email" name="email" placeholder="Email" />
+                      </div>
 
-                    <div className="form-one__control form-one__control--mesgae form-one__control--full">
-                      <textarea name="message" placeholder="Nội dung" />
-                      <div className="button-upload">
+                      <div className="form-one__control form-one__control--full">
+                        <input type="text" name="phone" placeholder="Điện thoại" />
+                      </div>
 
-                        <button>File thiết kế của bạn (Nếu có) <LuUpload /></button>
+                      <div className="form-one__control form-one__control--mesgae form-one__control--full">
+                        <textarea name="message" placeholder="Nội dung" />
+                        <div className="button-upload">
+
+                          <button>File thiết kế của bạn (Nếu có) <LuUpload /></button>
+                        </div>
+                      </div>
+                      <div className="form-one__control form-one__control--full">
+                        <button type="submit" className="floens-btn">
+                          <span>Gửi nội dung</span>
+                          <i className="icon-right-arrow sm-none" >→</i>
+                        </button>
                       </div>
                     </div>
-                    <div className="form-one__control form-one__control--full">
-                      <button type="submit" className="floens-btn">
-                        <span>Gửi nội dung</span>
-                        <i className="icon-right-arrow sm-none" >→</i>
-                      </button>
-                    </div>
-                  </div>
-                </form>
+                  </form>
+                </ScrollReveal>
 
               </div>
             </div>
@@ -128,49 +131,60 @@ export default function ContactPage() {
 
             <div className="contact-right col-lg-6  col-md-12 d-flex flex-column">
               {/* Thẻ bọc ngoài đơn giản, không cố định aspectRatio để chiều cao tự bung theo ảnh */}
-              <div className="doc-card-item">
-                <Image
-                  src="/assets/images/lienhe/ShowroomPAC.png"
-                  alt="Hồ sơ năng lực P.A.C Stone"
-                  width={1448}
-                  height={1086}
-                  sizes="(max-width: 991px) 100vw, 50vw"
-                  className="doc-thumb-img"
-                />
-              </div>
+              <ScrollReveal animationClass="fade-in-up" delay="0">
+                <div className="doc-card-item">
+                  <Image
+                    src="/assets/images/lienhe/ShowroomPAC.png"
+                    alt="Hồ sơ năng lực P.A.C Stone"
+                    width={1448}
+                    height={1086}
+                    sizes="(max-width: 991px) 100vw, 50vw"
+                    className="doc-thumb-img"
+                  />
+                </div>
+              </ScrollReveal>
               <div className="doc-a4-grid">
 
                 {/* Ảnh A4 thứ nhất */}
-                <div className="doc-a4-item">
-                  <Image
-                    src="/assets/images/lienhe/Ho_So_Nang_Luc_PAC_STONE.png"
-                    alt="Hồ sơ năng lực P.A.C Stone"
-                    width={210}
-                    height={297}
-                    sizes="(max-width: 800px) 50vw, 25vw"
-                    className="doc-a4-img"
-                  />
-                </div>
-                <div className="doc-a4-item">
-                  <Image
-                    src="/assets/images/lienhe/Giay_phep_PAC_STONE.png"
-                    alt="Giấy phép kinh doanh"
-                    width={210}
-                    height={297}
-                    sizes="(max-width: 800px) 50vw, 25vw"
-                    className="doc-a4-img"
-                  />
-                </div>
+                <ScrollReveal animationClass="fade-in-up" delay="0.2">
+                  <div className="doc-a4-item">
+
+                    <Image
+                      src="/assets/images/lienhe/Ho_So_Nang_Luc_PAC_STONE.png"
+                      alt="Hồ sơ năng lực P.A.C Stone"
+                      width={210}
+                      height={297}
+                      sizes="(max-width: 800px) 50vw, 25vw"
+                      className="doc-a4-img"
+                    />
+                  </div>
+                </ScrollReveal>
+                <ScrollReveal animationClass="fade-in-up" delay="0.4">
+                  <div className="doc-a4-item">
+
+                    <Image
+                      src="/assets/images/lienhe/Giay_phep_PAC_STONE.png"
+                      alt="Giấy phép kinh doanh"
+                      width={210}
+                      height={297}
+                      sizes="(max-width: 800px) 50vw, 25vw"
+                      className="doc-a4-img"
+                    />
+                  </div>
+                </ScrollReveal>
 
               </div>
-              <div className="download-box ">
-                <button className="download-btn">
-                  <LuDownload />
-                </button>
-                <div className="download-content">
-                  Tải Hồ Sơ Năng Lực P.A.C STONE
+              <ScrollReveal animationClass="fade-in-up" delay="0.8">
+                <div className="download-box ">
+
+                  <button className="download-btn">
+                    <LuDownload />
+                  </button>
+                  <div className="download-content">
+                    Tải Hồ Sơ Năng Lực P.A.C STONE
+                  </div>
                 </div>
-              </div>
+              </ScrollReveal>
             </div>
           </div>
         </div>

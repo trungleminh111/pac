@@ -1,0 +1,29 @@
+/* Trạng thái mặc định ban đầu khi chưa cuộn chuột tới (ẩn đi) */
+.reveal-base {
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 1.5s cubic-bezier(0.25, 1, 0.5, 1), 
+              transform 1.5s cubic-bezier(0.25, 1, 0.5, 1),
+              visibility 1.5s;
+  will-change: transform, opacity; /* Tối ưu phần cứng phần trăm xử lý của trình duyệt */
+}
+
+/* Các kiểu chuyển động xuất phát */
+.fade-in-up {
+  transform: translateY(40px); /* Bị đẩy xuống dưới 40px */
+}
+
+.fade-in-left {
+  transform: translateX(-50px); /* Bị đẩy sang trái 50px */
+}
+
+.fade-in-right {
+  transform: translateX(50px); /* Bị đẩy sang phải 50px */
+}
+
+/* Trạng thái SAU KHI CUỘN CHUỘT TỚI (Kích hoạt class .is-visible) */
+.reveal-base.is-visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translate(0, 0); /* Trở về vị trí gốc ban đầu */
+}

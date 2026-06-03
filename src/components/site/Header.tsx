@@ -218,7 +218,7 @@ export function Header() {
                   onClick={() => setSidebarOpen(true)}
                   aria-label="Open sidebar">
 
-                  <FiUser />
+                <FiUser />
                 </a>
               </div>
 
@@ -243,10 +243,13 @@ export function Header() {
           onClick={() => setMobileOpen(false)}
         />
 
-        <div className="mobile-nav__content">
+        <div className="mobile-nav__content" style={{
+          backgroundImage: "url('/assets/images/shapes/slidebar-PACSTONE.jpg')",
+        }}>
           <span
             className="mobile-nav__close mobile-nav__toggler"
             onClick={() => setMobileOpen(false)}
+
           >
             <FaTimes />
           </span>
@@ -255,8 +258,12 @@ export function Header() {
             <a href="/" aria-label="logo image">
               <img
                 src="/assets/images/logo-PACSTONE.webp"
-                width="155"
+
                 alt="Logo P.A.C STONE"
+                style={{
+                  maxWidth: "180px",
+                  width: "100%",
+                }}
               />
             </a>
           </div>
@@ -394,7 +401,7 @@ export function Header() {
                   </div>
                   <div className="util-text-box">
                     <span className="util-title">Quản lý đơn hàng</span>
-                    <span className="util-badge development">Phát triển sau</span>
+                    <span className="util-badge development">Đang phát triển</span>
                   </div>
                 </div>
               </li>
@@ -486,7 +493,7 @@ export function Header() {
             className="search-popup__form"
             action="/vi/tim-kiem"
           >
-            <input type="text" name="q" id="search" placeholder="Search Here..." />
+            <input type="text" name="q" id="search" placeholder="Tìm kiếm..." />
             <button type="submit" aria-label="search submit" className="floens-btn">
               <GoSearch />
             </button>

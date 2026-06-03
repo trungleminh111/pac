@@ -20,6 +20,27 @@ function contactHref(locale: Locale) {
   return locale === "vi" ? "/vi/lien-he" : "/en/contact";
 }
 
+function buildHref(
+  locale: Locale,
+  params: {
+    category?: string;
+    q?: string;
+    page?: number;
+  }
+) {
+  const search = new URLSearchParams();
+
+  if (params.category) search.set("category", params.category);
+  if (params.q) search.set("q", params.q);
+  if (params.page && params.page > 1) search.set("page", String(params.page));
+
+  const query = search.toString();
+
+  return query
+    ? `${productListHref(locale)}?${query}`
+    : productListHref(locale);
+}
+
 export default async function ProductsPage({
   params,
   searchParams,
@@ -29,6 +50,7 @@ export default async function ProductsPage({
   };
   searchParams?: {
     category?: string;
+    q?: string;
     page?: string;
   };
 }) {
@@ -40,12 +62,21 @@ export default async function ProductsPage({
   );
 
   const activeCategory = searchParams?.category || categories[0] || "";
+  const q = searchParams?.q?.trim() || "";
   const currentPage = Number(searchParams?.page || 1);
   const itemsPerPage = 8;
 
-  const filteredProducts = activeCategory
-    ? products.filter((product) => product.categoryName === activeCategory)
-    : products;
+  const filteredProducts = products.filter((product) => {
+    const matchCategory = activeCategory
+      ? product.categoryName === activeCategory
+      : true;
+
+    const matchSearch = q
+      ? product.title.toLowerCase().includes(q.toLowerCase())
+      : true;
+
+    return matchCategory && matchSearch;
+  });
 
   const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
 
@@ -59,7 +90,7 @@ export default async function ProductsPage({
       <Header locale={locale} />
 
       <PageHeader
-        title={locale === "vi" ? "Sản phẩm" : "Products"}
+        title=""
         bgImage="/assets/images/backgrounds/PACSTONE-SANPHAM-header.png"
       />
 
@@ -76,9 +107,18 @@ export default async function ProductsPage({
                   className="product__search w-100"
                   style={{ display: "flex", position: "relative" }}
                 >
+                  {activeCategory && (
+                    <input
+                      type="hidden"
+                      name="category"
+                      value={activeCategory}
+                    />
+                  )}
+
                   <input
                     type="text"
                     name="q"
+                    defaultValue={q}
                     placeholder={
                       locale === "vi" ? "Tìm sản phẩm" : "Search products"
                     }
@@ -111,24 +151,18 @@ export default async function ProductsPage({
                 style={{ margin: 0, height: "100%" }}
               >
                 <ul className="list-unstyled">
-                  {categories.map((category) => {
-                    const href = `${productListHref(
-                      locale
-                    )}?category=${encodeURIComponent(category)}`;
-
-                    return (
-                      <li
-                        key={category}
-                        className={activeCategory === category ? "active" : ""}
-                      >
-                        <Link href={href}>
-                          <button type="button" data-text={category}>
-                            <span>{category}</span>
-                          </button>
-                        </Link>
-                      </li>
-                    );
-                  })}
+                  {categories.map((category) => (
+                    <li
+                      key={category}
+                      className={activeCategory === category ? "active" : ""}
+                    >
+                      <Link href={buildHref(locale, { category, q })}>
+                        <button type="button" data-text={category}>
+                          <span>{category}</span>
+                        </button>
+                      </Link>
+                    </li>
+                  ))}
                 </ul>
               </div>
             </div>
@@ -153,7 +187,11 @@ export default async function ProductsPage({
                           <img
                             src={product.image}
                             alt={product.title}
-                            style={{ height: "180px" }}
+                            style={{
+                              height: "180px",
+                              width: "100%",
+                              objectFit: "cover",
+                            }}
                           />
                         </Link>
                       </div>
@@ -174,7 +212,8 @@ export default async function ProductsPage({
                         </h4>
 
                         <div className="product__item__price">
-                          {product.price || (locale === "vi" ? "Liên hệ" : "Contact")}
+                          {product.price ||
+                            (locale === "vi" ? "Liên hệ" : "Contact")}
                         </div>
 
                         <Link
@@ -195,11 +234,11 @@ export default async function ProductsPage({
                       {currentPage > 1 && (
                         <Link
                           className="prev-btn"
-                          href={`${productListHref(
-                            locale
-                          )}?category=${encodeURIComponent(
-                            activeCategory
-                          )}&page=${currentPage - 1}`}
+                          href={buildHref(locale, {
+                            category: activeCategory,
+                            q,
+                            page: currentPage - 1,
+                          })}
                         >
                           ‹
                         </Link>
@@ -214,11 +253,11 @@ export default async function ProductsPage({
                             className={`page-number ${
                               currentPage === page ? "active" : ""
                             }`}
-                            href={`${productListHref(
-                              locale
-                            )}?category=${encodeURIComponent(
-                              activeCategory
-                            )}&page=${page}`}
+                            href={buildHref(locale, {
+                              category: activeCategory,
+                              q,
+                              page,
+                            })}
                           >
                             {page.toString().padStart(2, "0")}
                           </Link>
@@ -228,11 +267,11 @@ export default async function ProductsPage({
                       {currentPage < totalPages && (
                         <Link
                           className="next-btn"
-                          href={`${productListHref(
-                            locale
-                          )}?category=${encodeURIComponent(
-                            activeCategory
-                          )}&page=${currentPage + 1}`}
+                          href={buildHref(locale, {
+                            category: activeCategory,
+                            q,
+                            page: currentPage + 1,
+                          })}
                         >
                           ›
                         </Link>
@@ -245,8 +284,8 @@ export default async function ProductsPage({
                   <div className="col-12">
                     <p className="text-center">
                       {locale === "vi"
-                        ? "Chưa có sản phẩm nào."
-                        : "No products found."}
+                        ? "Không tìm thấy sản phẩm phù hợp."
+                        : "No matching products found."}
                     </p>
                   </div>
                 )}

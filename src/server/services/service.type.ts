@@ -2,29 +2,21 @@ export type Locale = "vi" | "en";
 
 export type PublishStatus = "DRAFT" | "PUBLISHED" | "ARCHIVED";
 
-export type ProductCardItem = {
+export type ServiceCardItem = {
   id: string;
   title: string;
   slug: string;
   excerpt: string;
   image: string;
-  price: string;
-  categoryId: string | null;
-  categoryName: string;
+  icon: string;
 };
 
-export type ProductDetailItem = {
+export type ServiceDetailItem = {
   id: string;
   status: PublishStatus;
-  sku: string | null;
-  price: string;
   thumbnail: string | null;
-  gallery: any;
-  origin: string | null;
-  size: string | null;
-  material: string | null;
-  color: string | null;
-  isFeatured: boolean;
+  icon: string | null;
+  sortOrder: number;
   categoryId: string | null;
   allowIndex: boolean;
   publishedAt: Date | null;
@@ -36,7 +28,7 @@ export type ProductDetailItem = {
   seoDescription: string;
 };
 
-export type ProductFormState = {
+export type ServiceFormState = {
   ok: boolean;
   message: string;
 };

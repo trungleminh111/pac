@@ -1,10 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import { Plus, Trash2, Menu as MenuIcon } from "lucide-react";
+import { useEffect, useState, useTransition } from "react";
+import { useRouter } from "next/navigation";
+import { GripVertical, Save, Trash2, Pencil } from "lucide-react";
 
 type MenuItem = {
   id: string;
+  menuId: string;
   labelVi: string;
   labelEn: string | null;
   urlVi: string | null;
@@ -12,211 +15,263 @@ type MenuItem = {
   parentId: string | null;
   sortOrder: number;
   isActive: boolean;
+  icon: string | null;
+  target: string | null;
 };
 
-type Menu = {
-  id: string;
-  name: string;
-  location: string;
-  items: MenuItem[];
+type TreeItem = MenuItem & {
+  children: TreeItem[];
 };
+
+function buildTree(items: MenuItem[]) {
+  const map = new Map<string, TreeItem>();
+
+  items.forEach((item) => {
+    map.set(item.id, {
+      ...item,
+      children: [],
+    });
+  });
+
+  const roots: TreeItem[] = [];
+
+  map.forEach((item) => {
+    if (item.parentId && map.has(item.parentId)) {
+      map.get(item.parentId)?.children.push(item);
+    } else {
+      roots.push(item);
+    }
+  });
+
+  const sort = (list: TreeItem[]) => {
+    list.sort((a, b) => a.sortOrder - b.sortOrder);
+    list.forEach((item) => sort(item.children));
+  };
+
+  sort(roots);
+
+  return roots;
+}
+
+function flattenTree(items: TreeItem[]) {
+  const result: {
+    id: string;
+    parentId: string | null;
+    sortOrder: number;
+  }[] = [];
+
+  items.forEach((item, index) => {
+    result.push({
+      id: item.id,
+      parentId: null,
+      sortOrder: index,
+    });
+
+    item.children.forEach((child, childIndex) => {
+      result.push({
+        id: child.id,
+        parentId: item.id,
+        sortOrder: childIndex,
+      });
+    });
+  });
+
+  return result;
+}
 
 export default function MenusClient({
-  menus,
-  activeMenu,
-  createMenuAction,
-  deleteMenuAction,
+  items,
+  reorderAction,
+  deleteAction,
 }: {
-  menus: Menu[];
-  activeMenu: Menu | null;
-  createMenuAction: (formData: FormData) => void;
-  deleteMenuAction: (formData: FormData) => void;
+  items: MenuItem[];
+  reorderAction: (formData: FormData) => void;
+  deleteAction: (formData: FormData) => void;
 }) {
-  const parentItems = activeMenu?.items.filter((item) => !item.parentId) || [];
+  const router = useRouter();
+  const [isPending, startTransition] = useTransition();
+  const [tree, setTree] = useState<TreeItem[]>(() => buildTree(items));
+  const [dragId, setDragId] = useState<string | null>(null);
+
+  useEffect(() => {
+    setTree(buildTree(items));
+  }, [items]);
+
+  function moveRoot(fromId: string, toId: string) {
+    setTree((prev) => {
+      const copy = [...prev];
+      const fromIndex = copy.findIndex((item) => item.id === fromId);
+      const toIndex = copy.findIndex((item) => item.id === toId);
+
+      if (fromIndex < 0 || toIndex < 0) return prev;
+
+      const [removed] = copy.splice(fromIndex, 1);
+      copy.splice(toIndex, 0, removed);
+
+      return copy;
+    });
+  }
+
+  function moveChild(parentId: string, fromId: string, toId: string) {
+    setTree((prev) =>
+      prev.map((root) => {
+        if (root.id !== parentId) return root;
+
+        const children = [...root.children];
+        const fromIndex = children.findIndex((item) => item.id === fromId);
+        const toIndex = children.findIndex((item) => item.id === toId);
+
+        if (fromIndex < 0 || toIndex < 0) return root;
+
+        const [removed] = children.splice(fromIndex, 1);
+        children.splice(toIndex, 0, removed);
+
+        return {
+          ...root,
+          children,
+        };
+      })
+    );
+  }
+
+  function saveOrder() {
+    const formData = new FormData();
+    formData.set("items", JSON.stringify(flattenTree(tree)));
+
+    startTransition(() => {
+      reorderAction(formData);
+      router.refresh();
+    });
+  }
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold text-slate-950">Menu website</h1>
-        <p className="mt-1 text-sm text-slate-500">
-          Quản lý menu đa ngôn ngữ: Header, Footer, Mobile.
-        </p>
+    <div className="space-y-4">
+      <div className="flex justify-end">
+        <button
+          type="button"
+          disabled={isPending}
+          onClick={saveOrder}
+          className="inline-flex items-center gap-2 rounded-xl bg-slate-950 px-4 py-3 text-sm font-semibold text-white disabled:opacity-60"
+        >
+          <Save className="h-4 w-4" />
+          {isPending ? "Đang lưu..." : "Lưu thứ tự"}
+        </button>
       </div>
 
-      <div className="grid gap-6 xl:grid-cols-[340px_1fr]">
-        <div className="space-y-6">
-          <form action={createMenuAction} className="rounded-2xl border bg-white p-5 shadow-sm">
-            <div className="mb-4 flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50 text-[#2271b1]">
-                <MenuIcon className="h-5 w-5" />
+      <div className="space-y-4">
+        {tree.map((item) => (
+          <div
+            key={item.id}
+            draggable
+            onDragStart={() => setDragId(item.id)}
+            onDragOver={(e) => e.preventDefault()}
+            onDrop={() => {
+              if (dragId) moveRoot(dragId, item.id);
+              setDragId(null);
+            }}
+            className="rounded-2xl border bg-white p-4 shadow-sm"
+          >
+            <MenuItemRow item={item} deleteAction={deleteAction} isParent />
+
+            {item.children.length > 0 && (
+              <div className="mt-4 space-y-3 border-l-2 border-slate-200 pl-5">
+                {item.children.map((child) => (
+                  <div
+                    key={child.id}
+                    draggable
+                    onDragStart={() => setDragId(child.id)}
+                    onDragOver={(e) => e.preventDefault()}
+                    onDrop={() => {
+                      if (dragId) moveChild(item.id, dragId, child.id);
+                      setDragId(null);
+                    }}
+                    className="rounded-xl border bg-slate-50 p-4"
+                  >
+                    <MenuItemRow item={child} deleteAction={deleteAction} />
+                  </div>
+                ))}
               </div>
-              <div>
-                <h2 className="font-semibold">Tạo menu</h2>
-                <p className="text-sm text-slate-500">Header/Footer/Mobile</p>
-              </div>
-            </div>
+            )}
+          </div>
+        ))}
 
-            <div className="space-y-3">
-              <input
-                name="name"
-                required
-                placeholder="Tên menu, ví dụ: Main Menu"
-                className="w-full rounded-xl border px-4 py-3 text-sm"
-              />
+        {tree.length === 0 && (
+          <div className="rounded-2xl border bg-white p-10 text-center text-sm text-slate-500">
+            Chưa có menu item nào.
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
 
-              <select
-                name="location"
-                defaultValue="header"
-                className="w-full rounded-xl border px-4 py-3 text-sm"
-              >
-                <option value="header">Header</option>
-                <option value="footer">Footer</option>
-                <option value="mobile">Mobile</option>
-              </select>
+function MenuItemRow({
+  item,
+  deleteAction,
+  isParent = false,
+}: {
+  item: MenuItem;
+  deleteAction: (formData: FormData) => void;
+  isParent?: boolean;
+}) {
+  return (
+    <div className="flex items-center justify-between gap-4">
+      <div className="flex items-center gap-3">
+        <GripVertical className="h-5 w-5 cursor-grab text-slate-400" />
 
-              <button className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#2271b1] px-4 py-3 text-sm font-semibold text-white">
-                <Plus className="h-4 w-4" />
-                Tạo menu
-              </button>
-            </div>
-          </form>
+        <div>
+          <div className="flex items-center gap-2">
+            <span
+              className={`font-semibold ${
+                isParent ? "text-slate-950" : "text-slate-700"
+              }`}
+            >
+              {item.labelVi}
+            </span>
 
-          <div className="rounded-2xl border bg-white p-4 shadow-sm">
-            <h2 className="mb-3 font-semibold">Danh sách menu</h2>
+            {!item.isActive && (
+              <span className="rounded-full bg-red-50 px-2 py-0.5 text-xs font-semibold text-red-600">
+                Ẩn
+              </span>
+            )}
 
-            <div className="space-y-2">
-              {menus.map((menu) => (
-                <div
-                  key={menu.id}
-                  className={`flex items-center justify-between rounded-xl border px-4 py-3 ${
-                    activeMenu?.id === menu.id ? "border-[#2271b1] bg-blue-50" : ""
-                  }`}
-                >
-                  <Link href={`/admin/menus?menuId=${menu.id}`}>
-                    <div className="font-semibold text-slate-900">{menu.name}</div>
-                    <div className="text-xs text-slate-500">{menu.location}</div>
-                  </Link>
+            {item.target === "_blank" && (
+              <span className="rounded-full bg-blue-50 px-2 py-0.5 text-xs font-semibold text-blue-600">
+                Tab mới
+              </span>
+            )}
+          </div>
 
-                  <form action={deleteMenuAction}>
-                    <input type="hidden" name="id" value={menu.id} />
-                    <button
-                      type="submit"
-                      onClick={(e) => {
-                        if (!confirm(`Xóa menu "${menu.name}"?`)) {
-                          e.preventDefault();
-                        }
-                      }}
-                      className="text-red-600"
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </button>
-                  </form>
-                </div>
-              ))}
-
-              {menus.length === 0 && (
-                <div className="rounded-xl border border-dashed px-4 py-8 text-center text-sm text-slate-500">
-                  Chưa có menu nào.
-                </div>
-              )}
-            </div>
+          <div className="mt-1 text-xs text-slate-500">
+            {item.urlVi || "Không có URL"} {item.labelEn ? `• ${item.labelEn}` : ""}
           </div>
         </div>
+      </div>
 
-        <div className="rounded-2xl border bg-white shadow-sm">
-          {activeMenu ? (
-            <>
-              <div className="flex items-center justify-between border-b px-5 py-4">
-                <div>
-                  <h2 className="font-semibold">{activeMenu.name}</h2>
-                  <p className="text-sm text-slate-500">
-                    Vị trí: {activeMenu.location}
-                  </p>
-                </div>
+      <div className="flex items-center gap-3">
+        <Link
+          href={`/admin/menus/${item.id}/edit`}
+          className="inline-flex items-center gap-1 text-sm font-medium text-[#2271b1]"
+        >
+          <Pencil className="h-4 w-4" />
+          Sửa
+        </Link>
 
-                <Link
-                  href={`/admin/menus/${activeMenu.id}/items/create`}
-                  className="rounded-xl bg-[#2271b1] px-4 py-3 text-sm font-semibold text-white"
-                >
-                  Thêm item
-                </Link>
-              </div>
-
-              <div className="divide-y">
-                {parentItems.map((item) => {
-                  const children = activeMenu.items.filter(
-                    (child) => child.parentId === item.id
-                  );
-
-                  return (
-                    <div key={item.id} className="p-5">
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <div className="font-semibold text-slate-900">
-                            {item.labelVi}
-                            {!item.isActive && (
-                              <span className="ml-2 rounded-full bg-slate-100 px-2 py-0.5 text-xs text-slate-500">
-                                Ẩn
-                              </span>
-                            )}
-                          </div>
-                          <div className="text-sm text-slate-500">
-                            EN: {item.labelEn || "—"}
-                          </div>
-                          <div className="text-xs text-slate-400">
-                            VI: {item.urlVi || "—"} | EN: {item.urlEn || "—"}
-                          </div>
-                        </div>
-
-                        <Link
-                          href={`/admin/menus/${activeMenu.id}/items/${item.id}/edit`}
-                          className="text-sm font-semibold text-[#2271b1]"
-                        >
-                          Sửa
-                        </Link>
-                      </div>
-
-                      {children.length > 0 && (
-                        <div className="mt-4 space-y-2 border-l pl-4">
-                          {children.map((child) => (
-                            <div
-                              key={child.id}
-                              className="flex items-center justify-between rounded-xl bg-slate-50 px-4 py-3"
-                            >
-                              <div>
-                                <div className="font-medium">{child.labelVi}</div>
-                                <div className="text-xs text-slate-500">
-                                  {child.urlVi || "—"} | {child.urlEn || "—"}
-                                </div>
-                              </div>
-
-                              <Link
-                                href={`/admin/menus/${activeMenu.id}/items/${child.id}/edit`}
-                                className="text-sm font-semibold text-[#2271b1]"
-                              >
-                                Sửa
-                              </Link>
-                            </div>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                  );
-                })}
-
-                {activeMenu.items.length === 0 && (
-                  <div className="px-5 py-10 text-center text-sm text-slate-500">
-                    Menu này chưa có item nào.
-                  </div>
-                )}
-              </div>
-            </>
-          ) : (
-            <div className="px-5 py-10 text-center text-sm text-slate-500">
-              Tạo menu trước.
-            </div>
-          )}
-        </div>
+        <form action={deleteAction}>
+          <input type="hidden" name="id" value={item.id} />
+          <button
+            type="submit"
+            onClick={(e) => {
+              if (!confirm(`Xóa menu "${item.labelVi}"?`)) {
+                e.preventDefault();
+              }
+            }}
+            className="inline-flex items-center gap-1 text-sm font-medium text-red-600"
+          >
+            <Trash2 className="h-4 w-4" />
+            Xóa
+          </button>
+        </form>
       </div>
     </div>
   );

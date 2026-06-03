@@ -13,7 +13,7 @@ type CategoryType = "POST" | "PAGE" | "PRODUCT" | "SERVICE" | "PROJECT";
 function getType(value: FormDataEntryValue | null): CategoryType {
   const type = String(value || "POST");
 
-  if (["POST", "PRODUCT", "SERVICE", "PROJECT"].includes(type)) {
+  if (["POST", "PAGE", "PRODUCT", "SERVICE", "PROJECT"].includes(type)) {
     return type as CategoryType;
   }
 
@@ -31,6 +31,9 @@ async function updateCategory(
   const nameVi = String(formData.get("nameVi") || "").trim();
   const nameEn = String(formData.get("nameEn") || "").trim();
   const slug = String(formData.get("slug") || "").trim();
+  const detailTemplate = String(
+    formData.get("detailTemplate") || "default"
+  ).trim();
 
   if (!nameVi || !slug) {
     return { ok: false, message: "Vui lòng nhập tên danh mục và slug." };
@@ -44,6 +47,7 @@ async function updateCategory(
         nameVi,
         nameEn: nameEn || null,
         slug,
+        detailTemplate: type === "PRODUCT" ? detailTemplate : "default",
         parentId: null,
         sortOrder: 0,
       },
@@ -65,9 +69,11 @@ async function updateCategory(
 export default async function EditCategoryPage({
   params,
 }: {
-  params: Promise<{ id: string }>;
+  params: {
+    id: string;
+  };
 }) {
-  const { id } = await params;
+  const { id } = params;
 
   const category = await prisma.category.findUnique({
     where: { id },

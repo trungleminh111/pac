@@ -47,7 +47,6 @@ function LinkSelect({
         onChange={(e) => {
           const value = e.target.value;
           if (!value) return;
-
           onSelect(JSON.parse(value));
         }}
         className="w-full rounded-xl border px-4 py-3 text-sm outline-none focus:border-[#2271b1]"
@@ -56,10 +55,7 @@ function LinkSelect({
 
         <optgroup label="Trang tĩnh">
           {linkOptions.staticLinks.map((item) => (
-            <option
-              key={item.vi}
-              value={JSON.stringify({ vi: item.vi, en: item.en })}
-            >
+            <option key={item.vi} value={JSON.stringify({ vi: item.vi, en: item.en })}>
               {item.label}
             </option>
           ))}
@@ -67,10 +63,7 @@ function LinkSelect({
 
         <optgroup label="Danh mục bài viết">
           {linkOptions.postCategories.map((item) => (
-            <option
-              key={item.vi}
-              value={JSON.stringify({ vi: item.vi, en: item.en })}
-            >
+            <option key={item.vi} value={JSON.stringify({ vi: item.vi, en: item.en })}>
               {item.label}
             </option>
           ))}
@@ -78,10 +71,7 @@ function LinkSelect({
 
         <optgroup label="Danh mục sản phẩm">
           {linkOptions.productCategories.map((item) => (
-            <option
-              key={item.vi}
-              value={JSON.stringify({ vi: item.vi, en: item.en })}
-            >
+            <option key={item.vi} value={JSON.stringify({ vi: item.vi, en: item.en })}>
               {item.label}
             </option>
           ))}
@@ -89,10 +79,7 @@ function LinkSelect({
 
         <optgroup label="Danh mục dịch vụ">
           {linkOptions.serviceCategories.map((item) => (
-            <option
-              key={item.vi}
-              value={JSON.stringify({ vi: item.vi, en: item.en })}
-            >
+            <option key={item.vi} value={JSON.stringify({ vi: item.vi, en: item.en })}>
               {item.label}
             </option>
           ))}
@@ -100,10 +87,7 @@ function LinkSelect({
 
         <optgroup label="Danh mục công trình">
           {linkOptions.projectCategories.map((item) => (
-            <option
-              key={item.vi}
-              value={JSON.stringify({ vi: item.vi, en: item.en })}
-            >
+            <option key={item.vi} value={JSON.stringify({ vi: item.vi, en: item.en })}>
               {item.label}
             </option>
           ))}
@@ -129,6 +113,8 @@ export default function MenuItemForm({
 
   return (
     <form action={action} className="mx-auto max-w-4xl space-y-6">
+      <input type="hidden" name="menuId" value={menu.id} />
+
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-slate-950">Thêm menu item</h1>
@@ -137,10 +123,7 @@ export default function MenuItemForm({
           </p>
         </div>
 
-        <Link
-          href={`/admin/menus?menuId=${menu.id}`}
-          className="rounded-xl border px-4 py-2 text-sm font-medium"
-        >
+        <Link href="/admin/menus" className="rounded-xl border px-4 py-2 text-sm font-medium">
           Quay lại
         </Link>
       </div>
@@ -148,28 +131,18 @@ export default function MenuItemForm({
       <div className="rounded-2xl border bg-white p-6 shadow-sm">
         <div className="space-y-5">
           <div className="grid gap-4 md:grid-cols-2">
-            <div>
-              <label className="mb-2 block text-sm font-semibold">
-                Label tiếng Việt
-              </label>
-              <input
-                name="labelVi"
-                required
-                placeholder="Sản phẩm"
-                className="w-full rounded-xl border px-4 py-3 text-sm outline-none focus:border-[#2271b1]"
-              />
-            </div>
+            <input
+              name="labelVi"
+              required
+              placeholder="Label tiếng Việt"
+              className="w-full rounded-xl border px-4 py-3 text-sm outline-none focus:border-[#2271b1]"
+            />
 
-            <div>
-              <label className="mb-2 block text-sm font-semibold">
-                Label English
-              </label>
-              <input
-                name="labelEn"
-                placeholder="Products"
-                className="w-full rounded-xl border px-4 py-3 text-sm outline-none focus:border-[#2271b1]"
-              />
-            </div>
+            <input
+              name="labelEn"
+              placeholder="Label English"
+              className="w-full rounded-xl border px-4 py-3 text-sm outline-none focus:border-[#2271b1]"
+            />
           </div>
 
           <LinkSelect
@@ -181,45 +154,49 @@ export default function MenuItemForm({
           />
 
           <div className="grid gap-4 md:grid-cols-2">
-            <div>
-              <label className="mb-2 block text-sm font-semibold">
-                URL tiếng Việt
-              </label>
-              <input
-                name="urlVi"
-                value={urlVi}
-                onChange={(e) => setUrlVi(e.target.value)}
-                placeholder="/vi/san-pham"
-                className="w-full rounded-xl border px-4 py-3 text-sm outline-none focus:border-[#2271b1]"
-              />
-            </div>
+            <input
+              name="urlVi"
+              value={urlVi}
+              onChange={(e) => setUrlVi(e.target.value)}
+              placeholder="/vi/san-pham"
+              className="w-full rounded-xl border px-4 py-3 text-sm outline-none focus:border-[#2271b1]"
+            />
 
-            <div>
-              <label className="mb-2 block text-sm font-semibold">
-                URL English
-              </label>
-              <input
-                name="urlEn"
-                value={urlEn}
-                onChange={(e) => setUrlEn(e.target.value)}
-                placeholder="/en/products"
-                className="w-full rounded-xl border px-4 py-3 text-sm outline-none focus:border-[#2271b1]"
-              />
-            </div>
+            <input
+              name="urlEn"
+              value={urlEn}
+              onChange={(e) => setUrlEn(e.target.value)}
+              placeholder="/en/products"
+              className="w-full rounded-xl border px-4 py-3 text-sm outline-none focus:border-[#2271b1]"
+            />
           </div>
 
-          <div>
-            <label className="mb-2 block text-sm font-semibold">Menu cha</label>
+          <select
+            name="parentId"
+            className="w-full rounded-xl border px-4 py-3 text-sm outline-none focus:border-[#2271b1]"
+          >
+            <option value="">Không có menu cha</option>
+            {parentItems.map((item) => (
+              <option key={item.id} value={item.id}>
+                {item.labelVi}
+              </option>
+            ))}
+          </select>
+
+          <div className="grid gap-4 md:grid-cols-2">
+            <input
+              name="icon"
+              placeholder="Icon optional"
+              className="w-full rounded-xl border px-4 py-3 text-sm outline-none focus:border-[#2271b1]"
+            />
+
             <select
-              name="parentId"
+              name="target"
+              defaultValue="_self"
               className="w-full rounded-xl border px-4 py-3 text-sm outline-none focus:border-[#2271b1]"
             >
-              <option value="">Không có menu cha</option>
-              {parentItems.map((item) => (
-                <option key={item.id} value={item.id}>
-                  {item.labelVi}
-                </option>
-              ))}
+              <option value="_self">Mở cùng tab</option>
+              <option value="_blank">Mở tab mới</option>
             </select>
           </div>
 

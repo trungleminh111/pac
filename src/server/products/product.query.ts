@@ -10,6 +10,17 @@ function formatPrice(value: unknown) {
   return numberValue.toLocaleString("vi-VN");
 }
 
+function getCategoryName(
+  locale: Locale,
+  category?: {
+    nameVi: string;
+    nameEn: string | null;
+  } | null
+) {
+  if (!category) return "";
+  return locale === "vi" ? category.nameVi : category.nameEn || category.nameVi;
+}
+
 export async function getHomeProducts(
   locale: Locale = "vi"
 ): Promise<ProductCardItem[]> {
@@ -31,8 +42,11 @@ export async function getHomeProducts(
       categoryId: true,
       category: {
         select: {
+          id: true,
+          slug: true,
           nameVi: true,
           nameEn: true,
+          detailTemplate: true,
         },
       },
       translations: {
@@ -59,10 +73,8 @@ export async function getHomeProducts(
         image: product.thumbnail || "/assets/images/products/product-1-1.jpg",
         price: formatPrice(product.price),
         categoryId: product.categoryId,
-        categoryName:
-          locale === "vi"
-            ? product.category?.nameVi || ""
-            : product.category?.nameEn || product.category?.nameVi || "",
+        categoryName: getCategoryName(locale, product.category),
+        categorySlug: product.category?.slug || "",
       };
     })
     .filter((product): product is ProductCardItem => product !== null);
@@ -88,8 +100,11 @@ export async function getProductsPage(
       categoryId: true,
       category: {
         select: {
+          id: true,
+          slug: true,
           nameVi: true,
           nameEn: true,
+          detailTemplate: true,
         },
       },
       translations: {
@@ -116,10 +131,8 @@ export async function getProductsPage(
         image: product.thumbnail || "/assets/images/products/product-1-1.jpg",
         price: formatPrice(product.price),
         categoryId: product.categoryId,
-        categoryName:
-          locale === "vi"
-            ? product.category?.nameVi || ""
-            : product.category?.nameEn || product.category?.nameVi || "",
+        categoryName: getCategoryName(locale, product.category),
+        categorySlug: product.category?.slug || "",
       };
     })
     .filter((product): product is ProductCardItem => product !== null);
@@ -154,6 +167,15 @@ export async function getProductBySlug(
       categoryId: true,
       allowIndex: true,
       publishedAt: true,
+      category: {
+        select: {
+          id: true,
+          slug: true,
+          nameVi: true,
+          nameEn: true,
+          detailTemplate: true,
+        },
+      },
       translations: {
         where: {
           locale,
@@ -191,6 +213,7 @@ export async function getProductBySlug(
     categoryId: product.categoryId,
     allowIndex: product.allowIndex,
     publishedAt: product.publishedAt,
+    category: product.category,
     title: translation.title,
     slug: translation.slug,
     excerpt: translation.excerpt || "",
@@ -198,4 +221,35 @@ export async function getProductBySlug(
     seoTitle: translation.seoTitle || "",
     seoDescription: translation.seoDescription || "",
   };
+}
+
+export async function getProductCategories(locale: Locale = "vi") {
+  const categories = await prisma.category.findMany({
+    where: {
+      type: "PRODUCT",
+    },
+    orderBy: {
+      sortOrder: "asc",
+    },
+    select: {
+      id: true,
+      slug: true,
+      nameVi: true,
+      nameEn: true,
+    },
+  });
+
+  return categories.map((category) => {
+    const label =
+      locale === "vi" ? category.nameVi : category.nameEn || category.nameVi;
+
+    return {
+      id: category.id,
+      label,
+      href:
+        locale === "vi"
+          ? `/vi/san-pham?category=${encodeURIComponent(label)}`
+          : `/en/products?category=${encodeURIComponent(label)}`,
+    };
+  });
 }

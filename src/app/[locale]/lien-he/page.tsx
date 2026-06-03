@@ -37,9 +37,11 @@ export default function ContactPage() {
             {/* Khối nội dung bên phải */}
             <div className="contact-call__content">
               <div className="contact-call__label">CALL US</div>
-              <a href="tel:0962757475" className="contact-call__phone">
-                0962.757.475
-              </a>
+              <div className="contact-call__phone-wrapper">
+                <a href="tel:0962757475" className="contact-call__phone">
+                  0962.757.475
+                </a>
+              </div>
             </div>
           </div>
 

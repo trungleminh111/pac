@@ -11,54 +11,69 @@
 }
 
 .contact-one__content {
-  padding: 0px 20px;
+  height: 100%;
+  padding: 0 20px;
 }
 
-.contact-right {
-  padding: 0px 40px;
-  gap: 11px
-}
-
-.contact-one__content,
 .contact-right {
   height: 100%;
+  padding: 0 40px;
+  gap: 11px;
 }
 
+/* IMAGE */
+.doc-card-item,
+.doc-a4-item,
+.contact-one__form {
+  background: #fff;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.25);
+}
 
-/* Ảnh lớn */
+.doc-card-item {
+  position: relative;
+  width: 100%;
+  display: block;
+  overflow: hidden;
+  border: 1px solid #ebdcd0;
+}
+
+.office-banner-holder,
+.doc-card-item,
 .contact-img-main {
   min-height: 0;
   overflow: hidden;
 }
 
+.office-banner-holder img,
+.doc-card-item img,
 .contact-img-main img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  object-position: center !important;
   display: block;
 }
 
-/* Hai ảnh dưới */
-.contact-img-list {
+.contact-img-list,
+.doc-a4-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 20px;
-  min-height: 0;
 }
 
-.contact-img-list>div {
-  min-height: 0;
+.contact-img-list > div,
+.doc-a4-item {
   overflow: hidden;
 }
 
-.contact-img-list img {
+.contact-img-list img,
+.doc-a4-img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  display: block;
 }
 
-/* Download */
+/* DOWNLOAD */
 .download-box {
   position: relative;
   display: flex;
@@ -66,7 +81,7 @@
   overflow: hidden;
   cursor: pointer;
   background: #f3f3f3;
-  min-height: 0;
+  min-height: 48px;
 }
 
 .download-box::before {
@@ -77,7 +92,6 @@
   transform: scaleX(0);
   transform-origin: left;
   transition: transform 0.45s ease;
-  z-index: 0;
 }
 
 .download-box:hover::before {
@@ -99,6 +113,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
 }
 
 .download-content {
@@ -110,681 +125,262 @@
   padding: 0 24px;
   font-weight: 700;
   color: #111;
-  transition: 0.3s;
+  transition: color 0.3s ease;
 }
 
 .download-box:hover .download-content {
   color: #fff;
 }
 
-/* Mobile vẫn giữ 2 cột */
-@media (max-width: 767px) {
-  .contact-layout {
-    grid-template-columns: 1fr 1fr;
-    gap: 16px;
-  }
-
-  .contact-right {
-    gap: 12px;
-  }
-
-  .contact-img-list {
-    gap: 12px;
-  }
-
-  .download-content {
-    font-size: 12px;
-    padding: 0 8px;
-  }
-}
-
-
-/* Bổ sung vào file lienhe.css cũ của bạn */
-
-.office-banner-holder img,
-.doc-card-item img {
-  object-fit: cover !important;
-  /* Giữ ảnh không móp méo khi Next.js kéo giãn */
-  object-position: center !important;
-  width: 100% !important;
-  height: 80% !important;
-}
-
-.doc-card-item {
+/* FORM UPLOAD */
+.form-one__control--mesgae {
   position: relative;
+}
+
+.form-one__control--mesgae textarea {
   width: 100%;
-  border: 1px solid #ebdcd0;
-  overflow: hidden;
-  background-color: #ffffff;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.03);
+  min-height: 150px;
+  border: 1px solid #d9d4d0;
+  background: #f5f3f1;
+  resize: none;
+  padding: 16px 16px 50px;
+  font-size: 14px;
+  color: #666;
+  outline: none;
 }
 
-.doc-card-item {
-  width: 100%;
-  display: block;
-}
-
-.contact-one__form,
-.doc-a4-item {
-  background: #ffffff;
-  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.25);
-}
-
-.office-banner-holder,
-.doc-card-item {
-  overflow: hidden;
-}
-
-.office-banner-holder img,
-.doc-card-item img {
-  width: 100% !important;
-  height: 100% !important;
-  object-fit: cover !important;
-  object-position: center !important;
-  transform: scale(1);
-}
-
-
-
-/*  */
-/* Contact Call trong PageHeader */
-/* Contact call in PageHeader */
-.page-header .contact-call {
-  position: absolute;
-  padding-top: 70px;
-  left: 30px;
-  display: flex;
-  align-items: center;
-  isolation: isolate;
-  transform: scale(0.55);
-  transform-origin: left bottom;
-}
-
-/* Bubble */
-.contact-call__bubble {
+.button-upload {
   position: absolute;
   left: 0;
-  top: -78px;
-  z-index: 10;
-
-  background: #fff;
-  color: #111;
-  padding: 12px 18px;
-  border-radius: 5px;
-
-  font-size: 18px;
-  font-weight: 700;
-  line-height: 1.25;
-  letter-spacing: 4px;
-
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18);
-  animation: bubbleShow 10s infinite;
+  bottom: 0;
+  width: 100%;
+  padding: 16px;
+  box-sizing: border-box;
 }
 
-.contact-call__bubble::after {
+.button-upload::before {
   content: "";
   position: absolute;
-  left: 45px;
-  bottom: -14px;
-  border-width: 14px 12px 0;
-  border-style: solid;
-  border-color: #fff transparent transparent;
+  inset: 0;
+  background-color: #cd3527;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.35s ease;
 }
 
-/* Icon */
-.contact-call__icon {
+.button-upload:hover::before {
+  transform: scaleX(1);
+}
+
+.button-upload button {
   position: relative;
-  z-index: 5;
-  width: 110px;
-  height: 110px;
-  background: #ff2d25;
+  z-index: 1;
+  width: 100%;
+  background: transparent;
+  border: none;
+  padding: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #7d7d7d;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.button-upload svg {
+  color: #ff3b30;
+  font-size: 18px;
+}
+
+.button-upload:hover button,
+.button-upload:hover button svg {
   color: #fff;
-  border: 8px solid #ff2d25;
-  box-shadow: inset 0 0 0 3px #fff;
+}
+
+/* CONTACT CALL HEADER */
+.page-header .contact-call-wrapper {
+  position: absolute;
+  left: 0;
+  bottom: -250px;
+  width: 470px;
+  height: 125px;
+  z-index: 99;
+}
+
+.contact-call__subtitle {
+  position: absolute;
+  left: 0;
+  bottom: 118px;
+  max-width: 250px;
+  background: #fff7f2;
+  color: #000;
+  padding: 9px 16px;
+  border-radius: 5px;
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: 5px;
+  line-height: 1.25;
+  z-index: 10;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px);
+  transition: 0.35s ease;
+}
+
+.contact-call-wrapper:hover .contact-call__subtitle {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.contact-call {
+  position: absolute;
+  left: 12px;
+  bottom: 0;
+  width: 450px;
+  height: 110px;
+}
+
+.contact-call__icon {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 105px;
+  height: 105px;
+  border-radius: 50%;
+  background: #ff3028;
+  color: #fff;
+  font-size: 42px;
+  z-index: 5;
   display: flex;
   align-items: center;
   justify-content: center;
+  text-decoration: none;
+  transform-origin: center;
+  animation: phoneShake 2.2s ease-in-out infinite;
+}
 
-  animation: callPulse 2.8s ease-in-out infinite;
+.contact-call__icon::before {
+  content: "";
+  position: absolute;
+  inset: 13px;
+  border: 3px solid #fff;
+  border-radius: 50%;
 }
 
 .contact-call__icon svg {
-  width: 42px;
-  height: 42px;
-}
-
-/* Content */
-.contact-call__content {
   position: relative;
-  z-index: 1;
-  margin-left: -28px;
+  z-index: 2;
+  transform: rotate(-22deg);
 }
 
-/* Black rounded left background */
-.contact-call__content::before {
-  content: "";
-  position: absolute;
-  left: -62px;
-  top: 0;
-  z-index: -1;
-
-  width: 125px;
-  height: 100%;
-
-  background: #000;
-  border-radius: 70px 0 0 70px;
-}
-
-.contact-call__label {
-  width: 270px;
-  margin-left: 35px;
-  padding: 14px 45px 13px;
-
-  background: #000;
-  color: #fff;
-
-  font-size: 26px;
-  font-weight: 800;
-  line-height: 1;
-  letter-spacing: 3px;
-  text-align: center;
-
-  transform: skewX(18deg);
-}
-
-.contact-call__phone {
-  display: block;
-  width: 350px;
-  padding: 15px 55px 15px 70px;
-
-  background: #ff2d25;
-  color: #fff;
-
-  font-size: 28px;
-  font-weight: 800;
-  letter-spacing: 4px;
-  text-align: center;
-  text-decoration: none;
-
-  transform: skewX(-18deg);
-}
-
-/* Animation */
-@keyframes callPulse {
-
+@keyframes phoneShake {
   0%,
   100% {
     transform: scale(1) rotate(0deg);
   }
 
-  35% {
-    transform: scale(1.05) rotate(-4deg);
+  15% {
+    transform: scale(1.04) rotate(-8deg);
   }
 
-  65% {
-    transform: scale(0.98) rotate(4deg);
-  }
-}
-
-@keyframes bubbleShow {
-
-  0%,
-  70% {
-    opacity: 1;
-    transform: translateY(0);
+  30% {
+    transform: scale(1.06) rotate(8deg);
   }
 
-  75%,
-  100% {
-    opacity: 0;
-    transform: translateY(-8px);
+  45% {
+    transform: scale(1.04) rotate(-6deg);
+  }
+
+  60% {
+    transform: scale(1.02) rotate(6deg);
+  }
+
+  75% {
+    transform: scale(1) rotate(0deg);
   }
 }
 
-/* Tablet */
-@media (max-width: 1024px) {
-  .page-header .contact-call {
-    left: 30px;
-    padding-top: 10vh;
-    transform: scale(0.45);
-  }
-}
-
-/* Mobile */
-@media (max-width: 767px) {
-  .page-header .contact-call {
-    left: 14px;
-    padding-top: 20vh;
-    transform: scale(0.32);
-  }
-
-  .contact-call__bubble {
-    top: -72px;
-    max-width: 260px;
-  }
-}
-
-.form-one__control--mesgae {
-  position: relative;
-}
-
-.form-one__control--mesgae textarea {
-  width: 100%;
-  min-height: 150px;
-  border: 1px solid #d9d4d0;
-  background: #f5f3f1;
-  resize: none;
-  padding: 16px;
-  font-size: 14px;
-  color: #666;
-  outline: none;
-
-  /* chừa chỗ cho upload phía dưới */
-  padding-bottom: 50px;
-}
-
-.button-upload {
-  position: absolute;
-  padding: 16px;
-  bottom: 10px;
-  width: 100%;
-  bottom: 0;
-  
-}
-
-.button-upload::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background-color: #cd3527;
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform 0.35s ease;
-  z-index: 0;
-}
-
-.button-upload button {
-  width: 100%;
-  background: transparent;
-  border: none;
-  padding: 0;
-
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-
-  color: #7d7d7d;
-  font-size: 14px;
-  cursor: pointer;
-}
-.button-upload:hover::before {
-  transform: scaleX(1);
-}
-
-.button-upload button {
-  position: relative;
-  z-index: 1;
-}
-
-.button-upload:hover button,
-.button-upload:hover button svg {
-  color: #f3f3f3;
-}
-
-.button-upload svg {
-  color: #ff3b30;
-  font-size: 18px;
-}
-
-/* ========================================================
-   LAYOUT LIÊN HỆ CHÍNH
-   ======================================================== */
-.contact-layout {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 40px;
-  align-items: stretch;
-}
-
-.contact-left,
-.contact-right {
-  min-width: 0;
-}
-
-.contact-right {
-  padding: 0 40px;
-  gap: 11px;
-}
-
-.contact-one__content,
-.contact-right {
-  height: 100%;
-}
-
-.contact-one__content {
-  padding: 0 20px;
-}
-
-/* Khối Form và Thẻ tài liệu */
-.contact-one__form,
-.doc-a4-item,
-.doc-card-item {
-  background: #ffffff;
-  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.25);
-}
-
-.doc-card-item {
-  position: relative;
-  width: 100%;
-  border: 1px solid #ebdcd0;
-  overflow: hidden;
-  display: block;
-}
-
-/* Quản lý ảnh mượt mà */
-.contact-img-main,
-.office-banner-holder,
-.doc-card-item {
-  min-height: 0;
-  overflow: hidden;
-}
-
-.contact-img-main img,
-.office-banner-holder img,
-.doc-card-item img {
-  width: 100% !important;
-  height: 100% !important;
-  object-fit: cover !important;
-  object-position: center !important;
-  display: block;
-}
-
-/* Lưới danh sách ảnh nhỏ dưới */
-.contact-img-list {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 20px;
-  min-height: 0;
-}
-
-.contact-img-list > div {
-  min-height: 0;
-  overflow: hidden;
-}
-
-.contact-img-list img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
-/* ========================================================
-   KHỐI NÚT DOWNLOAD TÀI LIỆU
-   ======================================================== */
-.download-box {
-  position: relative;
-  display: flex;
-  align-items: center;
-  overflow: hidden;
-  cursor: pointer;
-  background: #f3f3f3;
-  min-height: 0;
-}
-
-.download-box::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(90deg, #ef3b3a 0%, #ef3b3a 50%, #c91d28 100%);
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform 0.45s ease;
-  z-index: 0;
-}
-
-.download-box:hover::before {
-  transform: scaleX(1);
-}
-
-.download-btn,
-.download-content {
-  position: relative;
-  z-index: 2;
-}
-
-.download-btn {
-  width: 48px;
-  height: 48px;
-  border: none;
-  background: #ef3b3a;
-  color: #fff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.download-content {
-  flex: 1;
-  height: 48px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0 24px;
-  font-weight: 700;
-  color: #111;
-  transition: 0.3s;
-}
-
-.download-box:hover .download-content {
-  color: #fff;
-}
-
-/* ========================================================
-   TEXTAREA VÀ NÚT UPLOAD FILE TRONG FORM
-   ======================================================== */
-.form-one__control--mesgae {
-  position: relative;
-}
-
-.form-one__control--mesgae textarea {
-  width: 100%;
-  min-height: 150px;
-  border: 1px solid #d9d4d0;
-  background: #f5f3f1;
-  resize: none;
-  padding: 16px 16px 50px 16px; /* Chừa khoảng trống bên dưới cho nút upload */
-  font-size: 14px;
-  color: #666;
-  outline: none;
-}
-
-.button-upload {
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  width: 100%;
-  padding: 16px;
-  box-sizing: border-box;
-}
-
-.button-upload::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background-color: #cd3527;
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform 0.35s ease;
-  z-index: 0;
-}
-
-.button-upload:hover::before {
-  transform: scaleX(1);
-}
-
-.button-upload button {
-  position: relative;
-  z-index: 1;
-  width: 100%;
-  background: transparent;
-  border: none;
-  padding: 0;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  color: #7d7d7d;
-  font-size: 14px;
-  cursor: pointer;
-}
-
-.button-upload:hover button,
-.button-upload:hover button svg {
-  color: #f3f3f3;
-}
-
-.button-upload svg {
-  color: #ff3b30;
-  font-size: 18px;
-}
-
-/* ========================================================
-   CỤM ĐỘNG: CONTACT CALL TRONG PAGE HEADER (ĐÃ TỐI ƯU SẠCH)
-   ======================================================== */
-.page-header .contact-call-wrapper {
-  position: absolute;
-  left: 30px;
-  bottom: 30px; /* Định vị góc trái màn hình banner */
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 15px;
-  font-family: sans-serif;
-  z-index: 99;
-}
-
-/* 1. Thông báo bóng bóng: Hiện 7 giây - Ẩn 3 giây */
-.contact-call__subtitle {
-  background-color: #fcf9f6;
-  color: #000000;
-  border: 1px solid #dcd1c4;
-  border-radius: 12px;
-  padding: 12px 20px;
-  font-size: 14px;
-  font-weight: bold;
-  line-height: 1.4;
-  text-align: center;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-  max-width: 250px;
-  animation: toggleNotice 10s infinite ease-in-out;
-}
-
-@keyframes toggleNotice {
-  0%, 70% {
-    opacity: 1;
-    visibility: visible;
-    transform: translateY(0);
-  }
-  75%, 95% {
-    opacity: 0;
-    visibility: hidden;
-    transform: translateY(-10px);
-  }
-  100% {
-    opacity: 1;
-    visibility: visible;
-    transform: translateY(0);
-  }
-}
-
-/* 2. Nút Gọi tròn đỏ: Giữ tâm lắc nhẹ kết hợp thu phóng */
-.contact-call {
-  display: flex;
-  align-items: center;
-  position: relative;
-}
-
-.contact-call__icon {
-  width: 70px;
-  height: 70px;
-  background-color: #ff2a2a; 
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 3; 
-  box-shadow: 0 0 0 4px #fff, 0 0 0 8px #ff2a2a; 
-  color: #fff;
-  font-size: 30px;
-  text-decoration: none;
-  transform-origin: center;
-  animation: slowPulseShake 3.5s infinite ease-in-out;
-}
-
-@keyframes slowPulseShake {
-  0%, 100% { transform: scale(1); }
-  20% { transform: scale(1.08) rotate(-5deg); }
-  40% { transform: scale(1.05) rotate(5deg); }
-  60% { transform: scale(1.05) rotate(-3deg); }
-  80% { transform: scale(1) rotate(0deg); }
-}
-
-/* 3. Khối màu Đen + Đỏ bên phải (Đồng bộ góc chéo xiên 18 độ) */
 .contact-call__content {
-  margin-left: -35px; 
-  width: 270px; /* Định hình kích thước chuẩn cố định */
-  background: linear-gradient(to bottom, #000000 50%, #ff2a2a 50%); 
-  z-index: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  box-sizing: border-box;
+  position: absolute;
+  left: 70px;
+  top: 0;
+  width: 390px;
+  height: 110px;
+  overflow: hidden;
 
-  /* Giả lập Skew 18 độ thẳng tắp không đứt gãy từ trên xuống dưới */
-  clip-path: polygon(15px 0%, 100% 0%, calc(100% - 22px) 100%, 0% 100%);
-  
-  /* Mặt nạ đục khuyết vòng tròn bên trái */
-  -webkit-mask: radial-gradient(75px at -10px center, transparent 98%, black 100%);
-          mask: radial-gradient(75px at -10px center, transparent 98%, black 100%);
+  -webkit-mask: radial-gradient(
+    circle 58px at 0 55px,
+    transparent 56px,
+    #000 57px
+  );
+  mask: radial-gradient(
+    circle 58px at 0 55px,
+    transparent 56px,
+    #000 57px
+  );
 }
 
-/* Text nội dung đứng thẳng bên trong */
 .contact-call__label {
+  width: 310px;
+  height: 55px;
+  margin-left: 0;
+  padding: 0 20px 0 85px;
+  background: #000;
   color: #fff;
-  font-size: 24px;
+  font-size: 27px;
   font-weight: 800;
-  line-height: 1;
-  letter-spacing: 2px;
-  text-align: center;
-  padding: 14px 20px 12px 50px; /* Padding left rộng chừa chỗ khuyết tròn */
+  letter-spacing: 3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   box-sizing: border-box;
+  transform: none;
+  clip-path: polygon(0 0, 92% 0, 100% 100%, 0 100%);
+}
+
+.contact-call__phone-wrapper {
+  width: 390px;
+  height: 56px;
+  margin-top: -1px;
+  background: #ff3028;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  clip-path: polygon(0 0, 96% 0, 100% 100%, 0 100%);
 }
 
 .contact-call__phone {
+  width: auto;
+  padding: 0 20px 0 70px;
+  background: transparent;
   color: #fff;
+  font-size: 27px;
   font-weight: 800;
-  font-size: 22px;
-  letter-spacing: 1px;
-  padding: 10px 20px 14px 50px;
-  display: block;
+  letter-spacing: 3px;
   text-decoration: none;
   text-align: center;
-  box-sizing: border-box;
+  transform: none;
+  white-space: nowrap;
 }
 
-/* ========================================================
-   RESPONSIVE CHO THIẾT BỊ DI ĐỘNG (MOBILE & TABLET)
-   ======================================================== */
+/* RESPONSIVE */
 @media (max-width: 1024px) {
   .page-header .contact-call-wrapper {
     left: 20px;
-    bottom: 20px;
+    bottom: -65px;
+    transform: scale(0.8);
+    transform-origin: left bottom;
+  }
+
+  .contact-right {
+    padding: 0 20px;
   }
 }
 
 @media (max-width: 767px) {
   .contact-layout {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr;
     gap: 16px;
   }
 
@@ -793,7 +389,8 @@
     padding: 0 10px;
   }
 
-  .contact-img-list {
+  .contact-img-list,
+  .doc-a4-grid {
     gap: 12px;
   }
 
@@ -802,43 +399,14 @@
     padding: 0 8px;
   }
 
-  /* Thu nhỏ cụm nút gọi cho vừa phone */
   .page-header .contact-call-wrapper {
     left: 15px;
-    bottom: 15px;
-    gap: 10px;
+    bottom: -45px;
+    transform: scale(0.42);
+    transform-origin: left bottom;
   }
 
   .contact-call__subtitle {
-    padding: 8px 14px;
-    font-size: 11px;      
-    max-width: 190px;     
-    border-radius: 8px;
-  }
-
-  .contact-call__icon {
-    width: 50px;          
-    height: 50px;
-    font-size: 22px;      
-    box-shadow: 0 0 0 3px #fff, 0 0 0 6px #ff2a2a; 
-  }
-
-  .contact-call__content {
-    margin-left: -25px;   
-    width: 200px; /* Thu nhỏ chiều rộng tổng thể khối chữ */
-    clip-path: polygon(10px 0%, 100% 0%, calc(100% - 15px) 100%, 0% 100%);
-    -webkit-mask: radial-gradient(55px at -10px center, transparent 98%, black 100%);
-            mask: radial-gradient(55px at -10px center, transparent 98%, black 100%);
-  }
-
-  .contact-call__label {
-    font-size: 15px;      
-    padding: 8px 10px 6px 35px;
-    letter-spacing: 1px;
-  }
-
-  .contact-call__phone {
-    font-size: 15px;      
-    padding: 6px 10px 8px 35px;
+    display: none;
   }
 }

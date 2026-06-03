@@ -1,6 +1,7 @@
 "use client";
 
-import { useActionState, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import { experimental_useFormState as useFormState } from "react-dom";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Save } from "lucide-react";
@@ -97,7 +98,7 @@ export default function ProductEditForm({
     (item) => item.locale === selectedLocale
   );
 
-  const [state, formAction, pending] = useActionState(action, {
+  const [state, formAction] = useFormState(action, {
     ok: false,
     message: "",
   });
@@ -159,7 +160,7 @@ export default function ProductEditForm({
               </label>
 
               <select
-                name="locale"
+                name="localeDisplay"
                 value={selectedLocale}
                 disabled
                 className="w-full rounded-xl border bg-slate-50 px-4 py-3 text-sm text-slate-600 outline-none"
@@ -315,11 +316,10 @@ export default function ProductEditForm({
 
               <button
                 type="submit"
-                disabled={pending}
-                className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#2271b1] px-4 py-3 text-sm font-semibold text-white disabled:opacity-60"
+                className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#2271b1] px-4 py-3 text-sm font-semibold text-white"
               >
                 <Save className="h-4 w-4" />
-                {pending ? "Đang cập nhật..." : "Cập nhật sản phẩm"}
+                Cập nhật sản phẩm
               </button>
             </div>
           </div>

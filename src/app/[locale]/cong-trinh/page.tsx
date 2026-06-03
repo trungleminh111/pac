@@ -1,6 +1,6 @@
 "use client";
 
-import { use, useState } from "react";
+import { useState } from "react";
 import { Header } from "@/components/site/Header";
 import { Footer } from "@/components/site/Footer";
 import { PageHeader } from "@/components/site/PageHeader";
@@ -38,13 +38,17 @@ function toSlug(text: string) {
 export default function WorksPage({
   params,
 }: {
-  params: Promise<{ locale: string }>;
+  params: {
+    locale: "vi" | "en";
+  };
 }) {
-  const { locale } = use(params);
+  const { locale } = params;
 
   const [activeFilter, setActiveFilter] = useState("Tất cả");
   const [currentPage, setCurrentPage] = useState(1);
+
   const itemsPerPage = 6;
+
   const filteredWorks =
     activeFilter === "Tất cả"
       ? works
@@ -56,9 +60,10 @@ export default function WorksPage({
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
+
   return (
     <div className="page-wrapper">
-      <Header />
+      <Header locale={locale} />
 
       <PageHeader
         title=""
@@ -77,8 +82,9 @@ export default function WorksPage({
                       setActiveFilter(filter);
                       setCurrentPage(1);
                     }}
-                    className={`filter-grid-item ${activeFilter === filter ? "active" : ""
-                      } ${filter.length > 18 ? "is-long" : "is-short"}`}
+                    className={`filter-grid-item ${
+                      activeFilter === filter ? "active" : ""
+                    } ${filter.length > 18 ? "is-long" : "is-short"}`}
                   >
                     <span className="filter-grid-text">{filter}</span>
                   </li>
@@ -88,45 +94,46 @@ export default function WorksPage({
           </div>
 
           <div className="row gutter-y-30">
-            {paginatedWorks.map(([title, tagline, image]) => (
-              <div className="col-lg-4 col-md-6 col-12" key={title}>
-                <div className="work-card h-100">
-                  <div className="work-card__image">
-                    <img src={`/assets/images/works/${image}`} alt={title} />
-                  </div>
+            {paginatedWorks.map(([title, tagline, image]) => {
+              const href =
+                locale === "vi"
+                  ? `/vi/cong-trinh/${toSlug(title)}`
+                  : `/en/projects/${toSlug(title)}`;
 
-                  <div className="work-card__content-show">
-                    <div className="work-card__content-inner">
-                      <h3 className="work-card__tagline">{tagline}</h3>
-                      <h3 className="work-card__title">
-                        <a href={`/${locale}/cong-trinh/${toSlug(title)}`}>
-                          {title}
-                        </a>
-                      </h3>
-                    </div>
-                  </div>
-
-                  <div className="work-card__content-hover">
-                    <div className="work-card__content-inner">
-                      <h3 className="work-card__tagline">{tagline}</h3>
-                      <h3 className="work-card__title">
-                        <a href={`/${locale}/cong-trinh/${toSlug(title)}`}>
-                          {title}
-                        </a>
-                      </h3>
+              return (
+                <div className="col-lg-4 col-md-6 col-12" key={title}>
+                  <div className="work-card h-100">
+                    <div className="work-card__image">
+                      <img src={`/assets/images/works/${image}`} alt={title} />
                     </div>
 
-                    <a
-                      href={`/${locale}/cong-trinh/${toSlug(title)}`}
-                      className="work-card__link floens-btn"
-                    >
-                      <span className="icon-right-arrow" />
-                    </a>
+                    <div className="work-card__content-show">
+                      <div className="work-card__content-inner">
+                        <h3 className="work-card__tagline">{tagline}</h3>
+                        <h3 className="work-card__title">
+                          <a href={href}>{title}</a>
+                        </h3>
+                      </div>
+                    </div>
+
+                    <div className="work-card__content-hover">
+                      <div className="work-card__content-inner">
+                        <h3 className="work-card__tagline">{tagline}</h3>
+                        <h3 className="work-card__title">
+                          <a href={href}>{title}</a>
+                        </h3>
+                      </div>
+
+                      <a href={href} className="work-card__link floens-btn">
+                        <span className="icon-right-arrow" />
+                      </a>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
+
           {filteredWorks.length > itemsPerPage && (
             <div className="work-pagination">
               <button
@@ -143,8 +150,9 @@ export default function WorksPage({
                   key={index}
                   type="button"
                   onClick={() => setCurrentPage(index + 1)}
-                  className={`work-pagination__page ${currentPage === index + 1 ? "active" : ""
-                    }`}
+                  className={`work-pagination__page ${
+                    currentPage === index + 1 ? "active" : ""
+                  }`}
                 >
                   {(index + 1).toString().padStart(2, "0")}
                 </button>

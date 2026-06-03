@@ -8,6 +8,8 @@ import "@/styles/lienhe.css";
 import { BiSolidPhoneCall } from "react-icons/bi";
 import { FaUpload } from "react-icons/fa";
 import { FaPhoneAlt } from "react-icons/fa";
+import { LuDownload } from "react-icons/lu";
+import { LuUpload } from "react-icons/lu";
 export default function ContactPage() {
   return (
     <div className="page-wrapper">
@@ -106,7 +108,7 @@ export default function ContactPage() {
                       <textarea name="message" placeholder="Nội dung" />
                       <div className="button-upload">
 
-                        <button>File thiết kế của bạn (Nếu có) <FaUpload /></button>
+                        <button>File thiết kế của bạn (Nếu có) <LuUpload /></button>
                       </div>
                     </div>
                     <div className="form-one__control form-one__control--full">
@@ -161,7 +163,7 @@ export default function ContactPage() {
               </div>
               <div className="download-box ">
                 <button className="download-btn">
-                  <FaDownload />
+                  <LuDownload />
                 </button>
                 <div className="download-content">
                   Tải Hồ Sơ Năng Lực P.A.C STONE

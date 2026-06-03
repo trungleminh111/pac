@@ -3316,7 +3316,7 @@ p {
 }
 
 .main-header--two .main-header__logo {
-  margin-right: 162px;
+  /* margin-right: 162px; */
 }
 
 @media (max-width: 1399px) {
@@ -3525,7 +3525,7 @@ p {
 }
 
 .main-header--three .main-header__btn {
-  margin-left: 60px;
+  /* margin-left: 60px; */
 }
 
 @media (max-width: 1399px) {
@@ -5759,13 +5759,13 @@ body.megamenu-popup-active .mobile-nav__content {
 
 @media (min-width: 1400px) {
   .main-slider-two {
-    width: calc(100% - 80px);
+    width: calc(100%);
   }
 }
 
 @media (min-width: 1600px) {
   .main-slider-two {
-    width: calc(100% - 115px);
+    width: calc(100%);
   }
 }
 

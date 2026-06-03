@@ -214,9 +214,10 @@ export function Header() {
 
                 <a href="#" className="icon-user"
                   type="button"
-
+                  style={{ color: "var(--floens-black, #000)" }}
                   onClick={() => setSidebarOpen(true)}
                   aria-label="Open sidebar">
+
                   <LuUser />
                 </a>
               </div>

@@ -186,3 +186,8 @@
 .zalo-btn-icon {
   font-size: 16px;
 }
+
+.main-header__right .icon-user:hover svg{
+      color: var(--floens-base, #c7844f);
+    transition: all .4s;
+}

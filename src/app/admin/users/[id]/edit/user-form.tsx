@@ -1,10 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import {
-  experimental_useFormState as useFormState,
-  experimental_useFormStatus as useFormStatus,
-} from "react-dom";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Save } from "lucide-react";
@@ -19,21 +15,6 @@ type User = {
   image: string | null;
 };
 
-function SubmitButton() {
-  const { pending } = useFormStatus();
-
-  return (
-    <button
-      type="submit"
-      disabled={pending}
-      className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#2271b1] px-4 py-3 text-sm font-semibold text-white disabled:opacity-60"
-    >
-      <Save className="h-4 w-4" />
-      {pending ? "Đang cập nhật..." : "Cập nhật người dùng"}
-    </button>
-  );
-}
-
 export default function EditUserForm({
   user,
   action,
@@ -46,11 +27,12 @@ export default function EditUserForm({
 }) {
   const router = useRouter();
 
-  const [state, formAction] = useFormState(action, {
+  const [state, setState] = useState<UserEditState>({
     ok: false,
     message: "",
   });
 
+  const [submitting, setSubmitting] = useState(false);
   const [image, setImage] = useState(user.image || "");
 
   useEffect(() => {
@@ -58,10 +40,19 @@ export default function EditUserForm({
       router.push("/admin/users");
       router.refresh();
     }
+    setSubmitting(false);
   }, [state.ok, router]);
 
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setSubmitting(true);
+    const formData = new FormData(e.currentTarget);
+    const result = await action(state, formData);
+    setState(result);
+  }
+
   return (
-    <form action={formAction} className="mx-auto max-w-4xl space-y-6">
+    <form onSubmit={handleSubmit} className="mx-auto max-w-4xl space-y-6">
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-slate-950">
@@ -148,7 +139,14 @@ export default function EditUserForm({
               </select>
             </div>
 
-            <SubmitButton />
+            <button
+              type="submit"
+              disabled={submitting}
+              className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#2271b1] px-4 py-3 text-sm font-semibold text-white disabled:opacity-60"
+            >
+              <Save className="h-4 w-4" />
+              {submitting ? "Đang cập nhật..." : "Cập nhật người dùng"}
+            </button>
           </div>
         </div>
 

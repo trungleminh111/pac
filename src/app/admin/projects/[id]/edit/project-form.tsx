@@ -1,10 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import {
-  experimental_useFormState as useFormState,
-  experimental_useFormStatus as useFormStatus,
-} from "react-dom";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Save } from "lucide-react";
@@ -61,21 +57,6 @@ function toSlug(value: string) {
     .replace(/-+/g, "-");
 }
 
-function UpdateButton() {
-  const { pending } = useFormStatus();
-
-  return (
-    <button
-      type="submit"
-      disabled={pending}
-      className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#2271b1] px-4 py-3 text-sm font-semibold text-white disabled:opacity-60"
-    >
-      <Save className="h-4 w-4" />
-      {pending ? "Đang cập nhật..." : "Cập nhật công trình"}
-    </button>
-  );
-}
-
 export default function ProjectEditForm({
   project,
   categories,
@@ -96,11 +77,12 @@ export default function ProjectEditForm({
     (item) => item.locale === selectedLocale
   );
 
-  const [state, formAction] = useFormState(action, {
+  const [state, setState] = useState<ProjectEditState>({
     ok: false,
     message: "",
   });
 
+  const [submitting, setSubmitting] = useState(false);
   const [content, setContent] = useState(getHtml(translation?.content));
   const [thumbnail, setThumbnail] = useState(project.thumbnail || "");
   const [title, setTitle] = useState(translation?.title || "");
@@ -111,10 +93,19 @@ export default function ProjectEditForm({
       router.push("/admin/projects");
       router.refresh();
     }
+    setSubmitting(false);
   }, [state.ok, router]);
 
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setSubmitting(true);
+    const formData = new FormData(e.currentTarget);
+    const result = await action(state, formData);
+    setState(result);
+  }
+
   return (
-    <form action={formAction} className="space-y-6">
+    <form onSubmit={handleSubmit} className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-slate-950">
@@ -283,7 +274,14 @@ export default function ProjectEditForm({
                 Cho Google index
               </label>
 
-              <UpdateButton />
+              <button
+                type="submit"
+                disabled={submitting}
+                className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#2271b1] px-4 py-3 text-sm font-semibold text-white disabled:opacity-60"
+              >
+                <Save className="h-4 w-4" />
+                {submitting ? "Đang cập nhật..." : "Cập nhật công trình"}
+              </button>
             </div>
           </div>
 

@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { experimental_useFormState as useFormState } from "react-dom";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Save } from "lucide-react";
@@ -75,11 +74,12 @@ export default function ServiceEditForm({
     (item) => item.locale === selectedLocale
   );
 
-  const [state, formAction] = useFormState(action, {
+  const [state, setState] = useState<ServiceEditState>({
     ok: false,
     message: "",
   });
 
+  const [submitting, setSubmitting] = useState(false);
   const [content, setContent] = useState(getHtml(translation?.content));
   const [thumbnail, setThumbnail] = useState(service.thumbnail || "");
   const [title, setTitle] = useState(translation?.title || "");
@@ -90,10 +90,19 @@ export default function ServiceEditForm({
       router.push("/admin/services");
       router.refresh();
     }
+    setSubmitting(false);
   }, [state.ok, router]);
 
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setSubmitting(true);
+    const formData = new FormData(e.currentTarget);
+    const result = await action(state, formData);
+    setState(result);
+  }
+
   return (
-    <form action={formAction} className="space-y-6">
+    <form onSubmit={handleSubmit} className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-slate-950">Sửa dịch vụ</h1>
@@ -225,10 +234,11 @@ export default function ServiceEditForm({
 
               <button
                 type="submit"
-                className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#2271b1] px-4 py-3 text-sm font-semibold text-white"
+                disabled={submitting}
+                className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#2271b1] px-4 py-3 text-sm font-semibold text-white disabled:opacity-60"
               >
                 <Save className="h-4 w-4" />
-                Cập nhật dịch vụ
+                {submitting ? "Đang cập nhật..." : "Cập nhật dịch vụ"}
               </button>
             </div>
           </div>

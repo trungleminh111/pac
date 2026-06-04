@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { experimental_useFormState as useFormState } from "react-dom";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Save } from "lucide-react";
@@ -98,11 +97,12 @@ export default function ProductEditForm({
     (item) => item.locale === selectedLocale
   );
 
-  const [state, formAction] = useFormState(action, {
+  const [state, setState] = useState<ProductEditState>({
     ok: false,
     message: "",
   });
 
+  const [submitting, setSubmitting] = useState(false);
   const [content, setContent] = useState(getHtml(translation?.content));
   const [thumbnail, setThumbnail] = useState(product.thumbnail || "");
   const [gallery, setGallery] = useState<string[]>(
@@ -119,10 +119,19 @@ export default function ProductEditForm({
       router.push("/admin/products");
       router.refresh();
     }
+    setSubmitting(false);
   }, [state.ok, router]);
 
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setSubmitting(true);
+    const formData = new FormData(e.currentTarget);
+    const result = await action(state, formData);
+    setState(result);
+  }
+
   return (
-    <form action={formAction} className="space-y-6">
+    <form onSubmit={handleSubmit} className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-slate-950">Sửa sản phẩm</h1>
@@ -316,10 +325,11 @@ export default function ProductEditForm({
 
               <button
                 type="submit"
-                className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#2271b1] px-4 py-3 text-sm font-semibold text-white"
+                disabled={submitting}
+                className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#2271b1] px-4 py-3 text-sm font-semibold text-white disabled:opacity-60"
               >
                 <Save className="h-4 w-4" />
-                Cập nhật sản phẩm
+                {submitting ? "Đang cập nhật..." : "Cập nhật sản phẩm"}
               </button>
             </div>
           </div>

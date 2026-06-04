@@ -1,6 +1,5 @@
 "use client";
 
-import { experimental_useFormState as useFormState } from "react-dom";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -47,11 +46,12 @@ export default function ProductForm({
 }) {
   const router = useRouter();
 
-  const [state, formAction] = useFormState(action, {
+  const [state, setState] = useState<ProductCreateState>({
     ok: false,
     message: "",
   });
 
+  const [submitting, setSubmitting] = useState(false);
   const [content, setContent] = useState("");
   const [thumbnail, setThumbnail] = useState("");
   const [gallery, setGallery] = useState<string[]>([]);
@@ -67,10 +67,19 @@ export default function ProductForm({
       router.push("/admin/products");
       router.refresh();
     }
+    setSubmitting(false);
   }, [state.ok, router]);
 
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setSubmitting(true);
+    const formData = new FormData(e.currentTarget);
+    const result = await action(state, formData);
+    setState(result);
+  }
+
   return (
-    <form action={formAction} className="space-y-6">
+    <form onSubmit={handleSubmit} className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-slate-950">Thêm sản phẩm</h1>
@@ -252,20 +261,22 @@ export default function ProductForm({
               <div className="flex gap-2">
                 <button
                   type="submit"
+                  disabled={submitting}
                   onClick={() => setStatus("DRAFT")}
-                  className="flex flex-1 items-center justify-center gap-2 rounded-xl border px-4 py-3 text-sm font-semibold"
+                  className="flex flex-1 items-center justify-center gap-2 rounded-xl border px-4 py-3 text-sm font-semibold disabled:opacity-60"
                 >
                   <Save className="h-4 w-4" />
-                  Lưu nháp
+                  {submitting ? "Đang lưu..." : "Lưu nháp"}
                 </button>
 
                 <button
                   type="submit"
+                  disabled={submitting}
                   onClick={() => setStatus("PUBLISHED")}
-                  className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-[#2271b1] px-4 py-3 text-sm font-semibold text-white"
+                  className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-[#2271b1] px-4 py-3 text-sm font-semibold text-white disabled:opacity-60"
                 >
                   <Eye className="h-4 w-4" />
-                  Xuất bản
+                  {submitting ? "Đang lưu..." : "Xuất bản"}
                 </button>
               </div>
             </div>

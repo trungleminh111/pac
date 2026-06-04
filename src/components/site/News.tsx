@@ -15,7 +15,7 @@ export function News() {
                 <h6 className="sec-title__tagline">Tin tức</h6>
                 <h3 className="sec-title__title">
                   Cập nhật tin tức
-                  <br />& sự kiện nổi bật
+                  <br />&nbsp;&amp; sự kiện nổi bật
                 </h3>
               </div>
 

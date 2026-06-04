@@ -7,6 +7,12 @@
   margin: 0;
   list-style: none;
   height: 100%;
+  font-size: 19px;
+  font-weight: 500;
+  color: #1a1a1a;
+  text-transform: uppercase;
+  line-height: 0;
+  font-family: var(--floens-font2, "Plus Jakarta Sans");
 }
 
 .product__categories .list-unstyled li {
@@ -14,36 +20,13 @@
   max-width: max-content;
 }
 
+/* RESET LINK */
 .product__categories .list-unstyled li a {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 12px 28px; /* Tăng không gian bấm và diện tích nút chữ */
-  background-color: #f7f5f3;
-  border: 1px solid #e1dad5;
-  color: #000000;
-  font-weight: 500;
-  border-radius: 4px;
-  white-space: nowrap;
-  transition: all 300ms ease;
+  text-decoration: none;
+  display: block;
 }
 
-/* Khi màn hình nhỏ (Mobile) */
-@media (max-width: 767px) {
-  .product__categories .list-unstyled {
-    flex-direction: column;
-    gap: 12px !important;
-  }
-  .product__categories .list-unstyled li {
-    max-width: 100% !important;
-    width: 100%;
-  }
-  .product__categories .list-unstyled li a {
-    display: flex;
-    width: 100%;
-    padding: 14px 20px;
-  }
-}
+
 
 .product-details__info{
     padding: 20px px;
@@ -122,7 +105,7 @@
 }
 .circle-product .product-details__gallery-top {
   width: 100%;
-  aspect-ratio: 1 / 1;
+  /* aspect-ratio: 1 / 1; */
   overflow: hidden;
   display: flex;
   align-items: center;
@@ -387,38 +370,10 @@
   font-family: var(--floens-font2, "Plus Jakarta Sans");
 }
 
-.product__categories .list-unstyled{
-  font-size: 19px;
-  font-weight: 500;
-  color: #1a1a1a;
-  text-transform: uppercase;
-  line-height: 0;
-  font-family: var(--floens-font2, "Plus Jakarta Sans");
-}
 
-.product__categories .list-unstyled li:hover,
-.product__categories .list-unstyled li.active  {
-  background-color: #cd3527;
-  border-color: #c89156;
-  transform: translateY(-1px);
-}
 
-.product__categories .list-unstyled li:hover span,
-.product__categories .list-unstyled li.active span {
-  color: #fff;
-}
 
-@media (min-width: 768px) and (max-width: 1023px) {
-  .product__categories {
-    background: transparent !important;
-    padding: 0 !important;
-  }
- .product__categories .list-unstyled {
-    flex-wrap: wrap;
-    justify-content: flex-start;
-    gap: 14px 32px;
-  }
-}
+
 
 @media (max-width: 575px) {
   .product__categories li button {
@@ -480,4 +435,115 @@
   text-align: justify;
   line-height: 1.7;
   color: #6c757d;
+}
+
+
+
+/* ACTIVE + HOVER */
+.product__categories .list-unstyled li:hover ,
+.product__categories .list-unstyled li.active  {
+  background-color: #cd3527;
+  border-color: #c89156;
+  transform: translateY(-1px);
+}
+
+.product__categories .list-unstyled li:hover span,
+.product__categories .list-unstyled li.active span {
+  color: #fff;
+}
+
+
+/* TABLET */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .product__categories {
+    background: transparent !important;
+    padding: 0 !important;
+  }
+
+  .product__categories .list-unstyled {
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: 14px 32px;
+  }
+}
+@media (max-width: 767px) {
+  .product__categories {
+    width: 100% !important;
+  }
+
+  .product__categories ul {
+    display: flex !important;
+    flex-direction: column !important; 
+    width: 100% !important;
+    gap: 8px; 
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  .product__categories ul li {
+    width: 100% !important;
+    margin: 0 !important; 
+  }
+
+  .product__categories ul li button {
+    width: 100% !important;
+    display: flex !important;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+  .product__categories .list-unstyled li {
+  flex: 1 1 auto;
+  max-width: none;
+}
+}
+/* TABLET */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .product__categories {
+    background: transparent !important;
+    padding: 0 !important;
+  }
+
+  .product__categories .list-unstyled {
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: 14px 32px;
+  }
+}
+
+.product-application-text {
+  display: -webkit-box;
+  -webkit-line-clamp: 5;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+
+}
+
+.toggle-excerpt {
+  display: none;
+}
+
+.toggle-excerpt:checked ~ .product-application-text {
+  -webkit-line-clamp: unset;
+  overflow: visible;
+}
+
+.excerpt-toggle-btn {
+  display: inline-block;
+  margin-top: 10px;
+  cursor: pointer;
+  color: #cd3527;
+  font-weight: 600;
+}
+
+.toggle-excerpt:checked ~ .excerpt-toggle-btn {
+  font-size: 0;
+}
+
+.toggle-excerpt:checked ~ .excerpt-toggle-btn::before {
+  content: "Thu gọn";
+  font-size: 16px;
+}
+.product-details__info{
+    border-top: 1px solid var(--floens-border-color, #ded8d3);
 }

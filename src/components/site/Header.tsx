@@ -170,7 +170,7 @@ export function Header({
                           href={item.href}
                           target={targetValue(item.target)}
                           rel={relValue(item.target)}
-                          className={active ? "current" : ""}
+                           className={`menu-link text-uppercase ${active ? "current" : ""}`}
                         >
                           {item.label}
                         </Link>

@@ -123,11 +123,28 @@ export function ProductDetailDefault({
                 </div>
 
                 {product.excerpt && (
-                  <div className="product-details__excerpt mt-2">
-                    <h5 className="fw-bold text-dark mb-2" style={{ fontSize: 16 }}>
-                      {locale === "vi" ? "Ứng Dụng" : "Application"}
-                    </h5>
-                    <p className="product-application-text">{product.excerpt}</p>
+                  <div className="product-application-text-wrapper">
+                    <input
+                      type="checkbox"
+                      id="toggleExcerpt"
+                      className="toggle-excerpt"
+                    />
+
+                    <p className="product-application-text">
+                      {product.excerpt}
+                    </p>
+
+                    {product.excerpt.length > 300 && (
+                      <label
+                        htmlFor="toggleExcerpt"
+                        className="excerpt-toggle-btn"
+                      >
+                        
+                         {locale === "vi"
+                                ? "Xem thêm..."
+                                : "Learn more"}
+                      </label>
+                    )}
                   </div>
                 )}
 
@@ -146,11 +163,15 @@ export function ProductDetailDefault({
                       {locale === "vi" ? "Chia sẻ:" : "Share:"}
                     </h3>
                     <div className="details-social">
-                      <Link href="https://facebook.com" target="_blank"><FaFacebookF /></Link>
+                      <Link href="https://facebook.com" target="_blank">  <i className="icon-facebook" >
+                        <FaFacebookF /></i></Link>
                       <Link href="https://zalo.com" target="_blank">
                         <img src="/assets/images/Icon_of_Zalo.svg.webp" alt="Zalo" />
                       </Link>
-                      <Link href="https://youtube.com" target="_blank"><FaYoutube /></Link>
+                      <Link href="https://youtube.com" target="_blank">
+                        <i className="icon-youtube">
+                          <FaYoutube /></i>
+                      </Link>
                     </div>
                   </div>
                 </div>
@@ -158,42 +179,92 @@ export function ProductDetailDefault({
             </div>
           </div>
 
-          {contentHtml && (
+          {/* {contentHtml && (
             <div
               className="product-details__description mt-5"
               dangerouslySetInnerHTML={{ __html: contentHtml }}
             />
-          )}
+          )} */}
         </div>
 
         <div className="product-details__description-wrapper">
           <div className="container">
             <div className="product-details__description">
-              <h3 className="product-details__description__title">
-                {locale === "vi" ? "CÁC DÒNG SẢN PHẨM CHÍNH" : "MAIN PRODUCT LINES"}
-              </h3>
+              <h2 className="product-details__description__title">
+                {locale === "vi"
+                  ? "CÁC DÒNG SẢN PHẨM CHÍNH"
+                  : "MAIN PRODUCT LINES"}
+              </h2>
+              <p className="h5">
+                {locale === "vi"
+                  ? "Chúng tôi nhận thiết kế và thi công đa dạng hoa văn đá theo yêu cầu:"
+                  : "We provide custom design and installation services for a wide range of stone patterns upon request:"}
+              </p>
             </div>
 
-            <div className="row gutter-y-30">
-              {relatedProducts.map((item) => (
-                <div className="col-xl-3 col-lg-3 col-md-6" key={item.id}>
-                  <div className="product__item">
-                    <div className="product__item__image">
-                      <Link href={productHref(locale, item.slug)}>
-                        <img src={item.image} alt={item.title} />
-                      </Link>
-                    </div>
-                    <div className="product__item__content">
-                      <h4 className="product__item__title">
+            <div className="product-details__description">
+              <div className="row gutter-y-30">
+                {relatedProducts.map((item) => (
+                  <div
+                    className="col-xl-3 col-lg-3 col-md-6"
+                    key={item.id}
+                  >
+                    <div className="product__item">
+                      <div className="product__item__image">
                         <Link href={productHref(locale, item.slug)}>
-                          {item.title}
+                          <img
+                            src={item.image}
+                            alt={item.title}
+                            style={{ height: "180px", objectFit: "cover" }}
+                          />
+
+                          <div className="product-image-overlay">
+                            <p>
+                              {item.description ||
+                                (locale === "vi"
+                                  ? "Xem chi tiết sản phẩm"
+                                  : "View product details")}
+                            </p>
+                          </div>
                         </Link>
-                      </h4>
-                      <div className="product__item__price">{item.price}</div>
+                      </div>
+
+                      <div className="product__item__content">
+                        <div className="floens-ratings product__item__ratings">
+                          <div className="rating-stars">
+                            {Array.from({ length: 5 }).map((_, index) => (
+                              <FaStar key={index} />
+                            ))}
+                          </div>
+                        </div>
+
+                        <h4 className="product__item__title">
+                          <Link href={productHref(locale, item.slug)}>
+                            {item.title}
+                          </Link>
+                        </h4>
+
+                        <div className="product__item__price">
+                          {item.price}
+                        </div>
+
+                        <div>
+                          <Link
+                            href={productHref(locale, item.slug)}
+                            className="floens-btn product__item__link"
+                          >
+                            <span>
+                              {locale === "vi"
+                                ? "Tìm hiểu thêm"
+                                : "Learn more"}
+                            </span>
+                          </Link>
+                        </div>
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
           </div>
         </div>

@@ -13,70 +13,38 @@ export function ProductGallery({
 
   return (
     <div className="product-details__img h-100">
-      <div
-        style={{
-          width: "100%",
-          maxWidth: "520px",
-          margin: "0 auto",
-        }}
-      >
-        <div
-          className="product-details__gallery-top"
-          style={{
-            width: "100%",
-            aspectRatio: "1 / 1",
-            overflow: "hidden",
-            borderRadius: "16px",
-            background: "transparent",
-            boxShadow: "none",
-          }}
-        >
-          <img
-            src={activeImage}
-            alt={title}
-            style={{
-              width: "100%",
-              height: "100%",
-              objectFit: "cover",
-              display: "block",
-            }}
-          />
-        </div>
-
-        <div className="product-details__gallery-thumb mt-3">
-          <div className="d-flex gap-2 flex-wrap">
-            {images.map((image, index) => (
-              <button
-                type="button"
-                key={`${image}-${index}`}
-                onClick={() => setActiveImage(image)}
-                style={{
-                  width: "82px",
-                  height: "82px",
-                  border:
-                    activeImage === image
-                      ? "2px solid #c89b3c"
-                      : "1px solid transparent",
-                  padding: 0,
-                  borderRadius: "8px",
-                  overflow: "hidden",
-                  background: "transparent",
-                  cursor: "pointer",
-                }}
-              >
-                <img
-                  src={image}
-                  alt={title}
-                  style={{
-                    width: "100%",
-                    height: "100%",
-                    objectFit: "cover",
-                    display: "block",
-                  }}
-                />
-              </button>
-            ))}
+      <div className="swiper product-details__gallery-top">
+        <div className="swiper-wrapper">
+          <div className="swiper-slide">
+            <img
+              src={activeImage}
+              alt={title}
+              className="product-details__gallery-top__img"
+              
+            />
           </div>
+        </div>
+      </div>
+
+      <div className="swiper product-details__gallery-thumb">
+        <div className="swiper-wrapper d-flex gap-2">
+          {images.map((image, idx) => (
+            <div
+              key={`${image}-${idx}`}
+              onClick={() => setActiveImage(image)}
+              className={`product-details__gallery-thumb-slide swiper-slide ${
+                activeImage === image ? "active" : ""
+              }`}
+              style={{ cursor: "pointer" }}
+            >
+              <img
+                src={image}
+                alt={title}
+                className="product-details__gallery-thumb__img"
+                style={{ height: 50}}
+              />
+            </div>
+          ))}
         </div>
       </div>
     </div>

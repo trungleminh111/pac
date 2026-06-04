@@ -54,7 +54,7 @@ export function ProductDetailPage2({
 
       <section className="product-details section-space">
         <div className="container">
-          <div className="row gutter-y-50 align-items-stretch">
+           <div className="row gutter-y-50 align-items-stretch circle-product">
             <div className="col-lg-6 col-xl-6">
               <ProductGallery images={gallery} title={product.title} />
             </div>
@@ -101,11 +101,25 @@ export function ProductDetailPage2({
                   </div>
 
                   {product.excerpt && (
-                    <div className="product-details__excerpt mt-2">
-                      <h5 className="fw-bold text-dark mb-2" style={{ fontSize: 16 }}>
-                        {locale === "vi" ? "Ứng Dụng" : "Application"}
-                      </h5>
-                      <p className="product-application-text">{product.excerpt}</p>
+                    <div className="product-application-text-wrapper">
+                      <input
+                        type="checkbox"
+                        id="toggleExcerpt"
+                        className="toggle-excerpt"
+                      />
+
+                      <p className="product-application-text">
+                        {product.excerpt}
+                      </p>
+
+                      {product.excerpt.length > 300 && (
+                        <label
+                          htmlFor="toggleExcerpt"
+                          className="excerpt-toggle-btn"
+                        >
+                          Xem thêm...
+                        </label>
+                      )}
                     </div>
                   )}
                 </div>
@@ -128,11 +142,15 @@ export function ProductDetailPage2({
                       {locale === "vi" ? "Chia sẻ:" : "Share:"}
                     </h3>
                     <div className="details-social">
-                      <Link href="https://facebook.com" target="_blank"><FaFacebookF /></Link>
+                      <Link href="https://facebook.com" target="_blank">  <i className="icon-facebook" >
+                        <FaFacebookF /></i></Link>
                       <Link href="https://zalo.com" target="_blank">
                         <img src="/assets/images/Icon_of_Zalo.svg.webp" alt="Zalo" />
                       </Link>
-                      <Link href="https://youtube.com" target="_blank"><FaYoutube /></Link>
+                      <Link href="https://youtube.com" target="_blank">
+                        <i className="icon-youtube">
+                          <FaYoutube /></i>
+                      </Link>
                     </div>
                   </div>
                 </div>

@@ -150,7 +150,7 @@ export default async function ProductsPage({
                 className="product__categories"
                 style={{ margin: 0, height: "100%" }}
               >
-                <ul className="list-unstyled">
+                <ul className="list-unstyled" style={{ width: "100%" }}>
                   {categories.map((category) => (
                     <li
                       key={category}

@@ -1,3 +1,4 @@
+import "leaflet/dist/leaflet.css";
 import { SiteHeader as Header } from "@/components/site/SiteHeader";
 import { Footer } from "@/components/site/Footer";
 import { PageHeader } from "@/components/site/PageHeader";
@@ -206,15 +207,6 @@ export default function ContactPage({
       <section className="contact-map">
         <div className="container-fluid">
           <div className="google-map google-map__contact">
-            {/* <iframe
-              src="https://www.google.com/maps/d/edit?mid=1OxB97mvj7vH_G3AYETY6GQ_TvRiiSQg&usp=sharing"
-              className="map__contact"
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-            />
-             */}
-            {/* <iframe src="https://www.google.com/maps/d/u/0/embed?mid=1OxB97mvj7vH_G3AYETY6GQ_TvRiiSQg&ehbc=2E312F&noprof=1" width="640" height="480"></iframe>             */}
-
           </div>
           <LocationMap />
         </div>

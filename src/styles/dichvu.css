@@ -70,3 +70,4 @@
 .service-card-two__link:hover i::after {
   background-color: RGBA(var(--floens-white2-rgb, 242, 238, 234), 0.7);
 }
+

@@ -3,14 +3,10 @@ import type { Locale, SiteMenuItem } from "./menu.type";
 
 export async function getHeaderMenu(locale: Locale): Promise<SiteMenuItem[]> {
   const menu = await prisma.menu.findFirst({
-    where: {
-      location: "HEADER",
-    },
+    where: { location: "HEADER" },
     include: {
       items: {
-        where: {
-          isActive: true,
-        },
+        where: { isActive: true },
         orderBy: [{ sortOrder: "asc" }, { createdAt: "asc" }],
       },
     },

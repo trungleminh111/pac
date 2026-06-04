@@ -44,17 +44,21 @@ function relValue(target?: string | null) {
   return target === "_blank" ? "noopener noreferrer" : undefined;
 }
 
+function cleanPath(url: string) {
+  return url.split("?")[0].replace(/\/$/, "");
+}
+
 function isMenuActive(pathname: string, item: DynamicMenuItem) {
-  if (!item.href || item.href === "#") return false;
+  const currentPath = cleanPath(pathname);
+  const itemPath = cleanPath(item.href || "#");
 
-  const href = item.href.split("?")[0];
+  if (!itemPath || itemPath === "#") return false;
 
-  if (pathname === href) return true;
+  if (currentPath === itemPath) return true;
 
-  const children = getChildren(item);
-  return children.some((child) => {
-    const childHref = child.href.split("?")[0];
-    return pathname === childHref;
+  return getChildren(item).some((child) => {
+    const childPath = cleanPath(child.href || "#");
+    return currentPath === childPath || currentPath.startsWith(`${childPath}/`);
   });
 }
 

@@ -1,4 +1,4 @@
-import { HeaderWrapper as Header } from "@/components/site/HeaderWrapper";
+import { SiteHeader as Header } from "@/components/site/SiteHeader";
 import { Hero } from "@/components/site/HeroSlider";
 import { ClientCarousel } from "@/components/site/ClientCarousel";
 import { Services } from "@/components/site/Services";

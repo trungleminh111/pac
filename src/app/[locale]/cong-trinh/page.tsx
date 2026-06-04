@@ -1,7 +1,5 @@
-"use client";
-
-import { useState } from "react";
-import { HeaderWrapper as Header } from "@/components/site/HeaderWrapper";
+import Link from "next/link";
+import { SiteHeader as Header } from "@/components/site/SiteHeader";
 import { Footer } from "@/components/site/Footer";
 import { PageHeader } from "@/components/site/PageHeader";
 
@@ -35,18 +33,39 @@ function toSlug(text: string) {
     .replace(/^-|-$/g, "");
 }
 
-export default function WorksPage({
+function pageHref(locale: "vi" | "en", category?: string, page?: number) {
+  const base = locale === "vi" ? "/vi/cong-trinh" : "/en/projects";
+  const params = new URLSearchParams();
+
+  if (category && category !== "Tất cả") {
+    params.set("category", category);
+  }
+
+  if (page && page > 1) {
+    params.set("page", String(page));
+  }
+
+  const query = params.toString();
+
+  return query ? `${base}?${query}` : base;
+}
+
+export default async function WorksPage({
   params,
+  searchParams,
 }: {
   params: {
     locale: "vi" | "en";
   };
+  searchParams?: {
+    category?: string;
+    page?: string;
+  };
 }) {
-  const { locale } = params;
+  const locale = params.locale === "en" ? "en" : "vi";
 
-  const [activeFilter, setActiveFilter] = useState("Tất cả");
-  const [currentPage, setCurrentPage] = useState(1);
-
+  const activeFilter = searchParams?.category || "Tất cả";
+  const currentPage = Number(searchParams?.page || 1);
   const itemsPerPage = 6;
 
   const filteredWorks =
@@ -78,15 +97,16 @@ export default function WorksPage({
                 {filters.map((filter) => (
                   <li
                     key={filter}
-                    onClick={() => {
-                      setActiveFilter(filter);
-                      setCurrentPage(1);
-                    }}
                     className={`filter-grid-item ${
                       activeFilter === filter ? "active" : ""
                     } ${filter.length > 18 ? "is-long" : "is-short"}`}
                   >
-                    <span className="filter-grid-text">{filter}</span>
+                    <Link
+                      href={pageHref(locale, filter)}
+                      className="filter-grid-text"
+                    >
+                      {filter}
+                    </Link>
                   </li>
                 ))}
               </ul>
@@ -111,7 +131,7 @@ export default function WorksPage({
                       <div className="work-card__content-inner">
                         <h3 className="work-card__tagline">{tagline}</h3>
                         <h3 className="work-card__title">
-                          <a href={href}>{title}</a>
+                          <Link href={href}>{title}</Link>
                         </h3>
                       </div>
                     </div>
@@ -120,13 +140,13 @@ export default function WorksPage({
                       <div className="work-card__content-inner">
                         <h3 className="work-card__tagline">{tagline}</h3>
                         <h3 className="work-card__title">
-                          <a href={href}>{title}</a>
+                          <Link href={href}>{title}</Link>
                         </h3>
                       </div>
 
-                      <a href={href} className="work-card__link floens-btn">
+                      <Link href={href} className="work-card__link floens-btn">
                         <span className="icon-right-arrow" />
-                      </a>
+                      </Link>
                     </div>
                   </div>
                 </div>
@@ -136,36 +156,39 @@ export default function WorksPage({
 
           {filteredWorks.length > itemsPerPage && (
             <div className="work-pagination">
-              <button
-                type="button"
-                disabled={currentPage === 1}
-                onClick={() => setCurrentPage((prev) => prev - 1)}
-                className="work-pagination__nav work-pagination__prev"
-              >
-                ‹
-              </button>
-
-              {Array.from({ length: totalPages }, (_, index) => (
-                <button
-                  key={index}
-                  type="button"
-                  onClick={() => setCurrentPage(index + 1)}
-                  className={`work-pagination__page ${
-                    currentPage === index + 1 ? "active" : ""
-                  }`}
+              {currentPage > 1 && (
+                <Link
+                  href={pageHref(locale, activeFilter, currentPage - 1)}
+                  className="work-pagination__nav work-pagination__prev"
                 >
-                  {(index + 1).toString().padStart(2, "0")}
-                </button>
-              ))}
+                  ‹
+                </Link>
+              )}
 
-              <button
-                type="button"
-                disabled={currentPage === totalPages}
-                onClick={() => setCurrentPage((prev) => prev + 1)}
-                className="work-pagination__nav work-pagination__next"
-              >
-                ›
-              </button>
+              {Array.from({ length: totalPages }, (_, index) => {
+                const page = index + 1;
+
+                return (
+                  <Link
+                    key={page}
+                    href={pageHref(locale, activeFilter, page)}
+                    className={`work-pagination__page ${
+                      currentPage === page ? "active" : ""
+                    }`}
+                  >
+                    {page.toString().padStart(2, "0")}
+                  </Link>
+                );
+              })}
+
+              {currentPage < totalPages && (
+                <Link
+                  href={pageHref(locale, activeFilter, currentPage + 1)}
+                  className="work-pagination__nav work-pagination__next"
+                >
+                  ›
+                </Link>
+              )}
             </div>
           )}
         </div>

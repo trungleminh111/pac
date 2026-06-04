@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { experimental_useFormState as useFormState } from "react-dom";
+import { useActionState } from "react";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Save } from "lucide-react";
@@ -51,7 +51,7 @@ export default function EditCategoryForm({
 }) {
   const router = useRouter();
 
-  const [state, formAction] = useFormState(action, {
+  const [state, formAction, pending] = useActionState(action, {
     ok: false,
     message: "",
   });
@@ -87,11 +87,10 @@ export default function EditCategoryForm({
 
       {state.message && (
         <div
-          className={`rounded-xl px-4 py-3 text-sm ${
-            state.ok
-              ? "border border-emerald-200 bg-emerald-50 text-emerald-700"
-              : "border border-red-200 bg-red-50 text-red-700"
-          }`}
+          className={`rounded-xl px-4 py-3 text-sm ${state.ok
+            ? "border border-emerald-200 bg-emerald-50 text-emerald-700"
+            : "border border-red-200 bg-red-50 text-red-700"
+            }`}
         >
           {state.message}
         </div>
@@ -171,9 +170,11 @@ export default function EditCategoryForm({
             </div>
           )}
 
-          <button className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#2271b1] px-4 py-3 text-sm font-semibold text-white">
+          <button disabled={pending}
+            className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#2271b1] px-4 py-3 text-sm font-semibold text-white disabled:opacity-60"
+          >
             <Save className="h-4 w-4" />
-            Cập nhật danh mục
+            {pending ? "Đang lưu..." : "Cập nhật danh mục"}
           </button>
         </div>
       </div>

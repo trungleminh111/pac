@@ -87,7 +87,7 @@ export function Projects() {
 
             <a
               href="/cong-trinh"
-              className="project-btn floens-btn floens-btn--border"
+              className=" floens-btn floens-btn--border"
             >
               <span>Xem tất cả</span>
               <i>→</i>

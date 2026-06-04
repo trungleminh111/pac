@@ -97,7 +97,9 @@ export async function Products({ locale }: { locale: Locale }) {
               <span>
                 {locale === "vi" ? "Xem tất cả sản phẩm" : "View all products"}
               </span>
+                <i className="icon-right-arrow" >→</i>
             </Link>
+          
           </div>
         )}
       </div>

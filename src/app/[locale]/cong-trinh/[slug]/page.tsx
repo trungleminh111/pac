@@ -1,4 +1,4 @@
-import { SiteHeader as Header } from "@/components/site/SiteHeader";
+import { Header } from "@/components/site/Header";
 import { Footer } from "@/components/site/Footer";
 import { PageHeader } from "@/components/site/PageHeader";
 
@@ -44,7 +44,7 @@ export default function WorkDetailPage() {
       <section className="work-details section-space service-laptop">
         <div className="container">
           <div className="row gutter-y-60">
-            <div className="col-lg-8">
+            <div className="col-lg-8 work-details__inner work-details__inner__image">
 
 
               <h2 className="work-details__title text-justify">
@@ -123,7 +123,7 @@ export default function WorkDetailPage() {
               </aside>
             </div>
 
-            <div className="col-lg-4 mt-5">
+            <div className="col-lg-4 mt-5 work-details__inner work-details__inner__image">
 
               <div className="work-details__inner d-flex gap-4 flex-column ">
                   {project.gallery.map((image) => (
@@ -169,7 +169,7 @@ export default function WorkDetailPage() {
                 <p className="work-details__text work-details__text--one text-justify">
                   {project.content1}
                 </p>
-                <div className="work-details__image">
+                <div className="work-details__image work-details__inner work-details__inner__image">
                   <img
                     src={`/assets/images/works/${project.mainImage}`}
                     alt={project.title}
@@ -186,7 +186,7 @@ export default function WorkDetailPage() {
 
                 <div className="work-details__inner">
                   <div className="row gutter-y-30">
-                    <div className="col-lg-6">
+                    <div className="col-lg-6 work-details__inner work-details__inner__image">
                       <div className="col-lg-6" key={project.gallery[0]}>
                         <img
                           src={`/assets/images/works/${project.gallery[0]}`}
@@ -198,7 +198,7 @@ export default function WorkDetailPage() {
                       {project.content3}
                     </p>
 
-                    <div className="col-lg-6 my-0">
+                    <div className="col-lg-6 my-0 work-details__inner work-details__inner__image">
                       <div className="col-lg-6" key={project.gallery[1]}>
                         <img
                           src={`/assets/images/works/${project.gallery[1]}`}

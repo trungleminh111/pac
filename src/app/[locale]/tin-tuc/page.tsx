@@ -1,65 +1,69 @@
-"use client";
-
-import { use, useMemo, useState } from "react";
+import Link from "next/link";
 import { SiteHeader as Header } from "@/components/site/SiteHeader";
 import { Footer } from "@/components/site/Footer";
 import { PageHeader } from "@/components/site/PageHeader";
-import { LuChevronLeft, LuChevronRight } from "react-icons/lu";
+import { getFeaturedPosts, getPostsPage } from "@/server/post/post.data";
 
+function pageHref(
+  locale: "vi" | "en",
+  category?: string,
+  keyword?: string,
+  page?: number
+) {
+  const base = locale === "vi" ? "/vi/tin-tuc" : "/en/news";
+  const params = new URLSearchParams();
 
-const latestPosts = [
-  ["45+ Mẫu đá ốp cầu thang đẹp 2023", "15/06/2024", "blog-1-1.jpg"],
-  ["5 mẹo cải tạo nhà bếp hợp xu hướng", "12/06/2024", "blog-1-2.jpg"],
-  ["Kinh Nghiệm Chọn Đá Mặt Bếp Đẹp - Rẻ - Bền", "10/06/2024", "blog-1-3.jpg"],
-];
+  if (category && category !== "Tất cả") {
+    params.set("category", category);
+  }
 
-const posts = [
-  {
-    title: "Có nên chọn đá hoa cương ốp mặt tiền không?",
-    summary: "Đá hoa cương ốp mặt tiền đang là lựa chọn hàng đầu...",
-    day: "25/05",
-    year: "2024",
-    image: "blog-1-1.jpg",
-    category: "Thị trường ngành đá tự nhiên",
-    tags: ["Đá marble", "Thị trường đá"],
-  },
-  {
-    title: "Nội Thất Phòng Bếp Đẹp Sử Dụng Đá Marble",
-    summary: "Thiết kế nội thất nhà bếp với đá marble mang đến vẻ đẹp sang trọng...",
-    day: "22/05",
-    year: "2024",
-    image: "blog-1-2.jpg",
-    category: "Xu hướng thiết kế",
-    tags: ["Đá marble"],
-  },
-];
+  if (keyword) {
+    params.set("keyword", keyword);
+  }
 
-function toSlug(text: string) {
-  return text
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .replace(/đ/g, "d")
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-|-$/g, "");
+  if (page && page > 1) {
+    params.set("page", String(page));
+  }
+
+  const query = params.toString();
+
+  return query ? `${base}?${query}` : base;
 }
 
-export default function NewsPage({
-  params,
-}: {
-  params: Promise<{ locale: string }>;
-}) {
-  const { locale } = use(params);
-  const [keyword, setKeyword] = useState("");
-  const [activeCategory, setActiveCategory] = useState("Tất cả");
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 4;
+function getPostHref(locale: "vi" | "en", slug: string) {
+  return locale === "vi" ? `/vi/tin-tuc/${slug}` : `/en/news/${slug}`;
+}
 
-  const categories = [
+function formatPostDate(date: Date | null) {
+  if (!date) {
+    return {
+      full: "",
+      day: "",
+      year: "",
+    };
+  }
+
+  return {
+    full: date.toLocaleDateString("vi-VN"),
+    day: date.toLocaleDateString("vi-VN", {
+      day: "2-digit",
+      month: "2-digit",
+    }),
+    year: String(date.getFullYear()),
+  };
+}
+
+function getCategories(posts: Awaited<ReturnType<typeof getPostsPage>>) {
+  return [
     "Tất cả",
-    ...Array.from(new Set(posts.map((post) => post.category))),
+    ...Array.from(new Set(posts.map((post) => post.category).filter(Boolean))),
   ];
+}
 
+function getCategoryCounts(
+  posts: Awaited<ReturnType<typeof getPostsPage>>,
+  categories: string[]
+) {
   const categoryCounts: Record<string, number> = {};
 
   categories.forEach((category) => {
@@ -68,18 +72,58 @@ export default function NewsPage({
         ? posts.length
         : posts.filter((post) => post.category === category).length;
   });
-  const filteredPosts = useMemo(() => {
-    return posts.filter((post) => {
-      const matchCategory =
-        activeCategory === "Tất cả" || post.category === activeCategory;
 
-      const matchKeyword =
-        post.title.toLowerCase().includes(keyword.toLowerCase()) ||
-        post.summary.toLowerCase().includes(keyword.toLowerCase());
+  return categoryCounts;
+}
 
-      return matchCategory && matchKeyword;
-    });
-  }, [activeCategory, keyword]);
+function filterPosts(
+  posts: Awaited<ReturnType<typeof getPostsPage>>,
+  activeCategory: string,
+  keyword: string
+) {
+  const search = keyword.toLowerCase();
+
+  return posts.filter((post) => {
+    const matchCategory =
+      activeCategory === "Tất cả" || post.category === activeCategory;
+
+    const matchKeyword =
+      post.title.toLowerCase().includes(search) ||
+      post.excerpt.toLowerCase().includes(search) ||
+      post.category.toLowerCase().includes(search);
+
+    return matchCategory && matchKeyword;
+  });
+}
+
+export default async function NewsPage({
+  params,
+  searchParams,
+}: {
+  params: {
+    locale: "vi" | "en";
+  };
+  searchParams?: {
+    category?: string;
+    keyword?: string;
+    page?: string;
+  };
+}) {
+  const locale = params.locale === "en" ? "en" : "vi";
+
+  const activeCategory = searchParams?.category || "Tất cả";
+  const keyword = searchParams?.keyword || "";
+  const currentPage = Number(searchParams?.page || 1);
+  const itemsPerPage = 4;
+
+  const [latestPosts, posts] = await Promise.all([
+    getFeaturedPosts(locale),
+    getPostsPage(locale),
+  ]);
+
+  const categories = getCategories(posts);
+  const categoryCounts = getCategoryCounts(posts, categories);
+  const filteredPosts = filterPosts(posts, activeCategory, keyword);
 
   const totalPages = Math.ceil(filteredPosts.length / itemsPerPage);
 
@@ -87,12 +131,15 @@ export default function NewsPage({
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
+
   return (
     <div className="page-wrapper">
-      <Header />
+      <Header locale={locale} />
 
-      <PageHeader title="" bgImage="/assets/images/backgrounds/PACSTONE-TINTUCSUKIEN-header.png" />
-
+      <PageHeader
+        title=""
+        bgImage="/assets/images/backgrounds/PACSTONE-TINTUCSUKIEN-header.png"
+      />
 
       <section className="blog-page blog-page--sidebar section-space">
         <div className="container">
@@ -104,39 +151,47 @@ export default function NewsPage({
                     <h4 className="sidebar__title sidebar__form__title">
                       Tìm kiếm
                     </h4>
-                    <form action="#" className="sidebar__search">
+
+                    <form
+                      action={`/${locale}/tin-tuc`}
+                      className="sidebar__search"
+                    >
+                      {activeCategory !== "Tất cả" && (
+                        <input
+                          type="hidden"
+                          name="category"
+                          value={activeCategory}
+                        />
+                      )}
+
                       <input
                         type="text"
+                        name="keyword"
                         placeholder="Từ khóa"
-                        value={keyword}
-                        onChange={(e) => {
-                          setKeyword(e.target.value);
-                          setCurrentPage(1);
-                        }}
+                        defaultValue={keyword}
                       />
+
                       <button type="submit" aria-label="search submit">
                         <span className="icon-search" />
                       </button>
                     </form>
                   </div>
 
-                  <div className="sidebar__categories-wrapper sidebar__single ">
+                  <div className="sidebar__categories-wrapper sidebar__single">
                     <h4 className="sidebar__title">Danh mục</h4>
-                    <ul className="sidebar__categories list-unstyled ">
-                      {categories.map((name) => (
-                        <li key={name} className={activeCategory === name ? "active" : ""}>
-                          <a
-                            onClick={() => {
-                              setActiveCategory(name);
-                              setCurrentPage(1);
-                            }}
-                          >
 
+                    <ul className="sidebar__categories list-unstyled">
+                      {categories.map((name) => (
+                        <li
+                          key={name}
+                          className={activeCategory === name ? "active" : ""}
+                        >
+                          <Link href={pageHref(locale, name, keyword)}>
                             <span>{name}</span>
                             <span className="sidebar__count">
                               ({categoryCounts[name]})
                             </span>
-                          </a>
+                          </Link>
                         </li>
                       ))}
                     </ul>
@@ -148,40 +203,53 @@ export default function NewsPage({
                     </h4>
 
                     <ul className="sidebar__posts list-unstyled">
-                      {latestPosts.map(([title, date, image]) => (
-                        <li className="sidebar__posts__item" key={title}>
-                          <div className="sidebar__posts__image">
-                            <img
-                              src={`/assets/images/blog/${image}`}
-                              alt={title}
-                            />
-                          </div>
+                      {latestPosts.map((post) => {
+                        const date = formatPostDate(post.publishedAt);
+                        const href = getPostHref(locale, post.slug);
 
-                          <div className="sidebar__posts__content">
-                            <p className="sidebar__posts__meta">
-                              <a href={`/${locale}/tin-tuc/${toSlug(title)}`}>
-                                {date}
-                              </a>
-                            </p>
+                        return (
+                          <li className="sidebar__posts__item" key={post.id}>
+                            <div className="sidebar__posts__image">
+                              <img src={post.image} alt={post.title} />
+                            </div>
 
-                            <h4 className="sidebar__posts__title">
-                              <a href={`/${locale}/tin-tuc/${toSlug(title)}`}>
-                                {title}
-                              </a>
-                            </h4>
-                          </div>
-                        </li>
-                      ))}
+                            <div className="sidebar__posts__content">
+                              <p className="sidebar__posts__meta">
+                                <Link href={href}>{date.full}</Link>
+                              </p>
+
+                              <h4 className="sidebar__posts__title">
+                                <Link href={href}>{post.title}</Link>
+                              </h4>
+                            </div>
+                          </li>
+                        );
+                      })}
                     </ul>
                   </div>
 
                   <div className="sidebar__tags-wrapper sidebar__single">
                     <h4 className="sidebar__title">Tags</h4>
+
                     <div className="sidebar__tags">
-                      <a href={`/${locale}/tin-tuc`}>Đá marble</a>
-                      <a href={`/${locale}/tin-tuc`}>Đá phong thủy</a>
-                      <a href={`/${locale}/tin-tuc`}>Thiết kế hoa văn đá</a>
-                      <a href={`/${locale}/tin-tuc`}>Thị trường đá</a>
+                      <Link href={pageHref(locale, undefined, "Đá marble")}>
+                        Đá marble
+                      </Link>
+                      <Link href={pageHref(locale, undefined, "Đá phong thủy")}>
+                        Đá phong thủy
+                      </Link>
+                      <Link
+                        href={pageHref(
+                          locale,
+                          undefined,
+                          "Thiết kế hoa văn đá"
+                        )}
+                      >
+                        Thiết kế hoa văn đá
+                      </Link>
+                      <Link href={pageHref(locale, undefined, "Thị trường đá")}>
+                        Thị trường đá
+                      </Link>
                     </div>
                   </div>
                 </aside>
@@ -190,65 +258,110 @@ export default function NewsPage({
 
             <div className="col-lg-8">
               <div className="row gutter-y-30">
-                {paginatedPosts.map((post) => (
-                  <div className="col-xl-6 col-lg-12 col-md-6" key={post.title}>
-                    <div className="blog-card">
-                      <div className="blog-card__image">
-                        <img
-                          src={`/assets/images/blog/${post.image}`}
-                          alt={post.title}
-                        />
-                        <a
-                          href={`/${locale}/tin-tuc/${toSlug(post.title)}`}
-                          className="blog-card__image__link"
-                        >
-                          <span className="sr-only">{post.title}</span>
-                        </a>
-                      </div>
+                {paginatedPosts.map((post) => {
+                  const date = formatPostDate(post.publishedAt);
+                  const href = getPostHref(locale, post.slug);
 
-                      <div className="blog-card__date">
-                        <span className="blog-card__date__day">{post.day}</span>
-                        <span className="blog-card__date__month">{post.year}</span>
-                      </div>
+                  return (
+                    <div
+                      className="col-xl-6 col-lg-12 col-md-6"
+                      key={post.id}
+                    >
+                      <div className="blog-card">
+                        <div className="blog-card__image">
+                          <img src={post.image} alt={post.title} />
 
-                      <div className="blog-card__content">
-                        <h3 className="blog-card__title">
-                          <a href={`/${locale}/tin-tuc/${toSlug(post.title)}`}>
-                            {post.title}
-                          </a>
-                        </h3>
+                          <Link href={href} className="blog-card__image__link">
+                            <span className="sr-only">{post.title}</span>
+                          </Link>
+                        </div>
 
-                        <p className="blog-card__text blog-card__summary">
-                          {post.summary}
-                        </p>
+                        <div className="blog-card__date">
+                          <span className="blog-card__date__day">
+                            {date.day}
+                          </span>
+                          <span className="blog-card__date__month">
+                            {date.year}
+                          </span>
+                        </div>
+
+                        <div className="blog-card__content">
+                          <h3 className="blog-card__title">
+                            <Link href={href}>{post.title}</Link>
+                          </h3>
+
+                          <p className="blog-card__text blog-card__summary">
+                            {post.excerpt}
+                          </p>
+                        </div>
                       </div>
                     </div>
+                  );
+                })}
+
+                {paginatedPosts.length === 0 && (
+                  <div className="col-12">
+                    <p>Không tìm thấy bài viết phù hợp.</p>
                   </div>
-                ))}
+                )}
 
-                <div className="col-12">
-                  <ul className="post-pagination">
-                    <li>
-                      <button disabled={currentPage === 1} onClick={() => setCurrentPage((p) => p - 1)}>
-                        <LuChevronLeft />
-                      </button>
-                    </li>
+                {filteredPosts.length > itemsPerPage && (
+                  <div className="col-12">
+                    <ul className="post-pagination">
+                      {currentPage > 1 && (
+                        <li>
+                          <Link
+                            href={pageHref(
+                              locale,
+                              activeCategory,
+                              keyword,
+                              currentPage - 1
+                            )}
+                          >
+                            ‹
+                          </Link>
+                        </li>
+                      )}
 
-                    {Array.from({ length: totalPages }, (_, i) => (
-                      <li key={i} className={currentPage === i + 1 ? "active" : ""}>
-                        <button onClick={() => setCurrentPage(i + 1)}>
-                          {(i + 1).toString().padStart(2, "0")}
-                        </button>
-                      </li>
-                    ))}
+                      {Array.from({ length: totalPages }, (_, index) => {
+                        const page = index + 1;
 
-                    <li>
-                      <button disabled={currentPage === totalPages} onClick={() => setCurrentPage((p) => p + 1)}>
-                        <LuChevronRight />
-                      </button>
-                    </li>
-                  </ul>
-                </div>
+                        return (
+                          <li
+                            key={page}
+                            className={currentPage === page ? "active" : ""}
+                          >
+                            <Link
+                              href={pageHref(
+                                locale,
+                                activeCategory,
+                                keyword,
+                                page
+                              )}
+                            >
+                              {page.toString().padStart(2, "0")}
+                            </Link>
+                          </li>
+                        );
+                      })}
+
+                      {currentPage < totalPages && (
+                        <li>
+                          <Link
+                            href={pageHref(
+                              locale,
+                              activeCategory,
+                              keyword,
+                              currentPage + 1
+                            )}
+                          >
+                            ›
+                          </Link>
+                        </li>
+                      )}
+                    </ul>
+                  </div>
+                )}
               </div>
             </div>
           </div>

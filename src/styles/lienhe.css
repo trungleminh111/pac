@@ -457,3 +457,63 @@
   animation: iconBounceUpDown 1.6s infinite ease-in-out; /* Tốc độ nhanh hơn một chút (1.6s) */
   will-change: transform;
 }
+
+.leaflet-container {
+  width: 100%;
+  height: 100%;
+}
+
+.leaflet-control-attribution {
+  display: none !important;
+}
+
+.leaflet-marker-icon {
+  background: transparent !important;
+  border: none !important;
+}
+
+.leaflet-control-zoom {
+  border: none !important;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3) !important;
+}
+
+.leaflet-control-zoom a {
+  width: 38px !important;
+  height: 38px !important;
+  line-height: 38px !important;
+  font-size: 22px !important;
+}
+
+.map-type-btn {
+  width: 72px;
+  height: 58px;
+  background: #fff;
+  border-radius: 4px;
+  padding: 4px;
+  cursor: pointer;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+}
+
+.map-type-thumb {
+  width: 64px;
+  height: 40px;
+  border-radius: 3px;
+  background-size: cover;
+  background-position: center;
+}
+
+.map-type-thumb-satellite {
+  background-image: url("https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/13/3824/6520");
+}
+
+.map-type-thumb-normal {
+  background-image: url("https://tile.openstreetmap.org/13/6520/3824.png");
+}
+
+.map-type-label {
+  font-size: 10px;
+  font-weight: 700;
+  color: #333;
+  line-height: 14px;
+  text-align: center;
+}

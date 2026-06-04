@@ -36,7 +36,7 @@ export default function WorkDetailPage() {
   };
   return (
     <div className="page-wrapper">
-      <Header />
+      <Header locale={locale} />
 
       <PageHeader title="" bgImage="/assets/images/backgrounds/PACSTONE-CONGTRINH-header.png" />
 

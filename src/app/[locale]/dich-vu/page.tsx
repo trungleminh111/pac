@@ -35,7 +35,7 @@ export default async function ServicesPage({
 
   return (
     <div className="page-wrapper">
-      <Header />
+      <Header locale={locale} />
 
       <PageHeader
         title=""

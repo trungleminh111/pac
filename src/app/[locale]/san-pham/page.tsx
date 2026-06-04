@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Header } from "@/components/site/Header";
+import { SiteHeader as Header } from "@/components/site/SiteHeader";
 import { Footer } from "@/components/site/Footer";
 import { PageHeader } from "@/components/site/PageHeader";
 import { getProductsPage } from "@/server/products/product.query";

@@ -45,7 +45,7 @@ export default async function ServiceDetailPage({
 
   return (
     <div className="page-wrapper">
-      <Header />
+      <Header locale={locale} />
 
       <PageHeader
         title=""

@@ -14,7 +14,7 @@ import ScrollReveal from "@/components/site/ScrollReveal";
 export default function ContactPage() {
   return (
     <div className="page-wrapper">
-      <Header />
+      <Header locale={locale} />
 
       <PageHeader
         title=""

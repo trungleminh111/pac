@@ -8,7 +8,7 @@ import { PageHeader } from "@/components/site/PageHeader";
 export default function AboutPage() {
     return (
         <div className="page-wrapper page-gioithieu">
-            <Header />
+            <Header locale={locale} />
             <PageHeader title=""  bgImage = "/assets/images/backgrounds/PACSTONE-GioiThieu-header.png"/>
             <About backgroundImage="/assets/images/backgrounds/8.png" />
             <section className="about-one section-space" id="about">

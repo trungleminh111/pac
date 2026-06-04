@@ -219,12 +219,7 @@ export function ProductDetailDefault({
                           />
 
                           <div className="product-image-overlay">
-                            <p>
-                              {item.description ||
-                                (locale === "vi"
-                                  ? "Xem chi tiết sản phẩm"
-                                  : "View product details")}
-                            </p>
+                            
                           </div>
                         </Link>
                       </div>

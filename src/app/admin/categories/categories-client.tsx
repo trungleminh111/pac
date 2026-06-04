@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { useFormState } from "react-dom";
 import { useEffect, useRef, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { FolderTree, Pencil, Plus, Search, Trash2 } from "lucide-react";
@@ -49,9 +48,12 @@ function typeLabel(type: string) {
 
 function typeBadgeClass(type: string) {
   if (type === "POST") return "bg-blue-50 text-blue-700 ring-blue-200";
-  if (type === "PRODUCT") return "bg-emerald-50 text-emerald-700 ring-emerald-200";
-  if (type === "SERVICE") return "bg-orange-50 text-orange-700 ring-orange-200";
-  if (type === "PROJECT") return "bg-violet-50 text-violet-700 ring-violet-200";
+  if (type === "PRODUCT")
+    return "bg-emerald-50 text-emerald-700 ring-emerald-200";
+  if (type === "SERVICE")
+    return "bg-orange-50 text-orange-700 ring-orange-200";
+  if (type === "PROJECT")
+    return "bg-violet-50 text-violet-700 ring-violet-200";
   return "bg-slate-50 text-slate-700 ring-slate-200";
 }
 
@@ -102,13 +104,13 @@ export default function CategoriesClient({
   const formRef = useRef<HTMLFormElement | null>(null);
   const [isRefreshing, startTransition] = useTransition();
 
-  const [state, formAction] = useFormState(action, {
+  const [state, setState] = useState<CategoryState>({
     ok: false,
     message: "",
     nonce: 0,
   });
 
-  const pending = false;
+  const [pending, setPending] = useState(false);
 
   const [nameVi, setNameVi] = useState("");
   const [slug, setSlug] = useState("");
@@ -138,6 +140,17 @@ export default function CategoriesClient({
 
   const total = stats.reduce((sum, item) => sum + item._count.id, 0);
 
+  async function handleSubmit(formData: FormData) {
+    setPending(true);
+
+    try {
+      const result = await action(state, formData);
+      setState(result);
+    } finally {
+      setPending(false);
+    }
+  }
+
   return (
     <div className="space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-4">
@@ -146,7 +159,8 @@ export default function CategoriesClient({
             Quản lý danh mục
           </h1>
           <p className="mt-1 text-sm text-slate-500">
-            Quản lý danh mục một cấp cho bài viết, sản phẩm, dịch vụ và công trình.
+            Quản lý danh mục một cấp cho bài viết, sản phẩm, dịch vụ và công
+            trình.
           </p>
         </div>
       </div>
@@ -159,31 +173,40 @@ export default function CategoriesClient({
 
         <div className="rounded-2xl border bg-white p-4 shadow-sm">
           <div className="text-sm text-slate-500">Bài viết</div>
-          <div className="mt-2 text-2xl font-bold">{statCount(stats, "POST")}</div>
+          <div className="mt-2 text-2xl font-bold">
+            {statCount(stats, "POST")}
+          </div>
         </div>
 
         <div className="rounded-2xl border bg-white p-4 shadow-sm">
           <div className="text-sm text-slate-500">Sản phẩm</div>
-          <div className="mt-2 text-2xl font-bold">{statCount(stats, "PRODUCT")}</div>
+          <div className="mt-2 text-2xl font-bold">
+            {statCount(stats, "PRODUCT")}
+          </div>
         </div>
 
         <div className="rounded-2xl border bg-white p-4 shadow-sm">
           <div className="text-sm text-slate-500">Dịch vụ</div>
-          <div className="mt-2 text-2xl font-bold">{statCount(stats, "SERVICE")}</div>
+          <div className="mt-2 text-2xl font-bold">
+            {statCount(stats, "SERVICE")}
+          </div>
         </div>
 
         <div className="rounded-2xl border bg-white p-4 shadow-sm">
           <div className="text-sm text-slate-500">Công trình</div>
-          <div className="mt-2 text-2xl font-bold">{statCount(stats, "PROJECT")}</div>
+          <div className="mt-2 text-2xl font-bold">
+            {statCount(stats, "PROJECT")}
+          </div>
         </div>
       </div>
 
       {state.message && (
         <div
-          className={`rounded-xl px-4 py-3 text-sm ${state.ok
+          className={`rounded-xl px-4 py-3 text-sm ${
+            state.ok
               ? "border border-emerald-200 bg-emerald-50 text-emerald-700"
               : "border border-red-200 bg-red-50 text-red-700"
-            }`}
+          }`}
         >
           {state.message}
         </div>
@@ -192,7 +215,7 @@ export default function CategoriesClient({
       <div className="grid gap-6 xl:grid-cols-[380px_1fr]">
         <form
           ref={formRef}
-          action={formAction}
+          action={handleSubmit}
           className="rounded-2xl border bg-white p-5 shadow-sm"
         >
           <div className="mb-5 flex items-center gap-3">
@@ -202,7 +225,9 @@ export default function CategoriesClient({
 
             <div>
               <h2 className="font-semibold text-slate-950">Thêm danh mục</h2>
-              <p className="text-sm text-slate-500">Chọn loại danh mục cần tạo</p>
+              <p className="text-sm text-slate-500">
+                Chọn loại danh mục cần tạo
+              </p>
             </div>
           </div>
 
@@ -300,7 +325,9 @@ export default function CategoriesClient({
 
           <div className="overflow-hidden rounded-2xl border bg-white shadow-sm">
             <div className="border-b px-5 py-4">
-              <h2 className="font-semibold text-slate-950">Danh sách danh mục</h2>
+              <h2 className="font-semibold text-slate-950">
+                Danh sách danh mục
+              </h2>
               <p className="mt-1 text-sm text-slate-500">
                 Đang hiển thị {categories.length} danh mục
               </p>
@@ -340,10 +367,14 @@ export default function CategoriesClient({
                       </span>
                     </td>
 
-                    <td className="px-5 py-4 text-slate-600">/{category.slug}</td>
+                    <td className="px-5 py-4 text-slate-600">
+                      /{category.slug}
+                    </td>
 
                     <td className="px-5 py-4 text-slate-600">
-                      {category.type === "PRODUCT" ? category.detailTemplate : "—"}
+                      {category.type === "PRODUCT"
+                        ? category.detailTemplate
+                        : "—"}
                     </td>
 
                     <td className="px-5 py-4 text-slate-600">

@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { useFormState } from "react-dom";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Save } from "lucide-react";
@@ -51,24 +50,36 @@ export default function EditCategoryForm({
 }) {
   const router = useRouter();
 
-  const [state, formAction, pending] = useActionState(action, {
-  ok: false,
-  message: "",
-});
+  const [state, setState] = useState<EditCategoryState>({
+    ok: false,
+    message: "",
+  });
 
   const [nameVi, setNameVi] = useState(category.nameVi);
   const [slug, setSlug] = useState(category.slug);
   const [type, setType] = useState<CategoryType>(category.type);
+  const [pending, setPending] = useState(false);
 
   useEffect(() => {
-    if (state.ok) {
-      router.push(`/admin/categories?type=${type}`);
-      router.refresh();
-    }
+    if (!state.ok) return;
+
+    router.push(`/admin/categories?type=${type}`);
+    router.refresh();
   }, [state.ok, router, type]);
 
+  async function handleSubmit(formData: FormData) {
+    setPending(true);
+
+    try {
+      const result = await action(state, formData);
+      setState(result);
+    } finally {
+      setPending(false);
+    }
+  }
+
   return (
-    <form action={formAction} className="mx-auto max-w-3xl space-y-6">
+    <form action={handleSubmit} className="mx-auto max-w-3xl space-y-6">
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-slate-950">Sửa danh mục</h1>
@@ -87,10 +98,11 @@ export default function EditCategoryForm({
 
       {state.message && (
         <div
-          className={`rounded-xl px-4 py-3 text-sm ${state.ok
-            ? "border border-emerald-200 bg-emerald-50 text-emerald-700"
-            : "border border-red-200 bg-red-50 text-red-700"
-            }`}
+          className={`rounded-xl px-4 py-3 text-sm ${
+            state.ok
+              ? "border border-emerald-200 bg-emerald-50 text-emerald-700"
+              : "border border-red-200 bg-red-50 text-red-700"
+          }`}
         >
           {state.message}
         </div>
@@ -170,7 +182,8 @@ export default function EditCategoryForm({
             </div>
           )}
 
-          <button disabled={pending}
+          <button
+            disabled={pending}
             className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#2271b1] px-4 py-3 text-sm font-semibold text-white disabled:opacity-60"
           >
             <Save className="h-4 w-4" />

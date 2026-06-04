@@ -2,7 +2,15 @@ import { Header } from "@/components/site/Header";
 import { Footer } from "@/components/site/Footer";
 import { PageHeader } from "@/components/site/PageHeader";
 
-export default function WorkDetailPage() {
+export default async function WorkDetailPage({
+  params,
+}: {
+  params: {
+    locale: "vi" | "en";
+    slug: string;
+  };
+}) {
+  const locale = params.locale === "en" ? "en" : "vi";
   const project = {
     title: "Từ lâu người ta đã biết rằng độc giả sẽ",
     //100 - 200 ký tự

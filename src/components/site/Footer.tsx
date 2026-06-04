@@ -18,7 +18,7 @@ export function Footer() {
                             <a href="/" className="footer-widget__logo">
 
                                 <img
-                                    src="/assets/images/P.A.C stone_logo.png"
+                                    src="/assets/images/shapes/Footer-PACSTONE.webp"
                                     alt="Logo P.A.C STONE"
                                     className="footer-logo"
                                 ></img>

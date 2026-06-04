@@ -11,9 +11,7 @@ export async function getHeaderMenu(locale: Locale): Promise<SiteMenuItem[]> {
         where: {
           isActive: true,
         },
-        orderBy: {
-          sortOrder: "asc",
-        },
+        orderBy: [{ sortOrder: "asc" }, { createdAt: "asc" }],
       },
     },
   });
@@ -26,9 +24,11 @@ export async function getHeaderMenu(locale: Locale): Promise<SiteMenuItem[]> {
     return {
       id: item.id,
       label: locale === "vi" ? item.labelVi : item.labelEn || item.labelVi,
-      href: locale === "vi" ? item.urlVi || "#" : item.urlEn || item.urlVi || "#",
+      href:
+        locale === "vi"
+          ? item.urlVi || "#"
+          : item.urlEn || item.urlVi || "#",
       target: item.target || "_self",
-      icon: item.icon,
       children: items
         .filter((child) => child.parentId === item.id)
         .sort((a, b) => a.sortOrder - b.sortOrder)

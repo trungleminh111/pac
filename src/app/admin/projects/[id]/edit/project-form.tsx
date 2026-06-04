@@ -1,6 +1,10 @@
 "use client";
 
-import { useActionState, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import {
+  experimental_useFormState as useFormState,
+  experimental_useFormStatus as useFormStatus,
+} from "react-dom";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Save } from "lucide-react";
@@ -57,6 +61,21 @@ function toSlug(value: string) {
     .replace(/-+/g, "-");
 }
 
+function UpdateButton() {
+  const { pending } = useFormStatus();
+
+  return (
+    <button
+      type="submit"
+      disabled={pending}
+      className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#2271b1] px-4 py-3 text-sm font-semibold text-white disabled:opacity-60"
+    >
+      <Save className="h-4 w-4" />
+      {pending ? "Đang cập nhật..." : "Cập nhật công trình"}
+    </button>
+  );
+}
+
 export default function ProjectEditForm({
   project,
   categories,
@@ -77,7 +96,7 @@ export default function ProjectEditForm({
     (item) => item.locale === selectedLocale
   );
 
-  const [state, formAction, pending] = useActionState(action, {
+  const [state, formAction] = useFormState(action, {
     ok: false,
     message: "",
   });
@@ -264,14 +283,7 @@ export default function ProjectEditForm({
                 Cho Google index
               </label>
 
-              <button
-                type="submit"
-                disabled={pending}
-                className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#2271b1] px-4 py-3 text-sm font-semibold text-white disabled:opacity-60"
-              >
-                <Save className="h-4 w-4" />
-                {pending ? "Đang cập nhật..." : "Cập nhật công trình"}
-              </button>
+              <UpdateButton />
             </div>
           </div>
 

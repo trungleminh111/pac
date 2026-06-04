@@ -1,6 +1,10 @@
 "use client";
 
-import { useActionState, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import {
+  experimental_useFormState as useFormState,
+  experimental_useFormStatus as useFormStatus,
+} from "react-dom";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Eye, Save, X } from "lucide-react";
@@ -26,6 +30,40 @@ function toSlug(value: string) {
     .replace(/-+/g, "-");
 }
 
+function DraftButton() {
+  const { pending } = useFormStatus();
+
+  return (
+    <button
+      type="submit"
+      name="status"
+      value="DRAFT"
+      disabled={pending}
+      className="flex flex-1 items-center justify-center gap-2 rounded-xl border px-4 py-3 text-sm font-semibold disabled:opacity-60"
+    >
+      <Save className="h-4 w-4" />
+      {pending ? "Đang lưu..." : "Lưu nháp"}
+    </button>
+  );
+}
+
+function PublishButton() {
+  const { pending } = useFormStatus();
+
+  return (
+    <button
+      type="submit"
+      name="status"
+      value="PUBLISHED"
+      disabled={pending}
+      className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-[#2271b1] px-4 py-3 text-sm font-semibold text-white disabled:opacity-60"
+    >
+      <Eye className="h-4 w-4" />
+      {pending ? "Đang lưu..." : "Xuất bản"}
+    </button>
+  );
+}
+
 export default function ProjectForm({
   action,
   categories,
@@ -38,7 +76,7 @@ export default function ProjectForm({
 }) {
   const router = useRouter();
 
-  const [state, formAction, pending] = useActionState(action, {
+  const [state, formAction] = useFormState(action, {
     ok: false,
     message: "",
   });
@@ -287,27 +325,8 @@ export default function ProjectForm({
               </label>
 
               <div className="flex gap-2">
-                <button
-                  type="submit"
-                  name="status"
-                  value="DRAFT"
-                  disabled={pending}
-                  className="flex flex-1 items-center justify-center gap-2 rounded-xl border px-4 py-3 text-sm font-semibold"
-                >
-                  <Save className="h-4 w-4" />
-                  Lưu nháp
-                </button>
-
-                <button
-                  type="submit"
-                  name="status"
-                  value="PUBLISHED"
-                  disabled={pending}
-                  className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-[#2271b1] px-4 py-3 text-sm font-semibold text-white"
-                >
-                  <Eye className="h-4 w-4" />
-                  Xuất bản
-                </button>
+                <DraftButton />
+                <PublishButton />
               </div>
             </div>
           </div>

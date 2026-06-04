@@ -5,6 +5,5 @@ export type SiteMenuItem = {
   label: string;
   href: string;
   target: string;
-  icon: string | null;
   children: SiteMenuItem[];
 };

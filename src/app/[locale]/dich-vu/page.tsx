@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Header } from "@/components/site/Header";
+import { HeaderWrapper as Header } from "@/components/site/HeaderWrapper";
 import { Footer } from "@/components/site/Footer";
 import { PageHeader } from "@/components/site/PageHeader";
 import { FaStar, FaCartShopping } from "react-icons/fa6";
@@ -292,4 +292,4 @@ export default async function ProductsPage({
       <Footer />
     </div>
   );
-} 
+}

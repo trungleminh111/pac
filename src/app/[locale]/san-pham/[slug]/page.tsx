@@ -19,7 +19,7 @@ export default async function ProductDetailPage({
 
   const product = await getProductBySlug(locale, slug);
   const relatedProducts = await getHomeProducts(locale);
-console.log("TEMPLATE:", product.category?.detailTemplate);
+
   if (!product) notFound();
 
   const template = product.category?.detailTemplate || "default";

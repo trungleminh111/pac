@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { GoSearch } from "react-icons/go";
 import { FiUser } from "react-icons/fi";
 import {
@@ -13,128 +14,62 @@ import {
   FaTimes,
   FaAngleDown,
 } from "react-icons/fa";
-import {
-  FaFilePdf,
-  FaBoxesPacking,
-  FaCommentDots,
-} from "react-icons/fa6";
+import { FaFilePdf, FaBoxesPacking, FaCommentDots } from "react-icons/fa6";
 import { SiZalo } from "react-icons/si";
 
 type Locale = "vi" | "en";
 
-type HeaderProps = {
-  locale?: Locale;
+type DynamicMenuItem = {
+  id: string;
+  label: string;
+  href: string;
+  target?: string | null;
+  children?: DynamicMenuItem[];
 };
 
-function getMenuItems(locale: Locale) {
-  if (locale === "en") {
-    return [
-      { label: "HOME", href: "/en" },
-      { label: "ABOUT", href: "/en/about" },
-      {
-        label: "SERVICES",
-        href: "/en/services",
-        children: [
-          "Facade Stone Cladding",
-          "Column Stone Cladding",
-          "Stair Stone Cladding",
-          "Elevator Floor Stone Design & Installation",
-          "Kitchen Stone Cladding",
-          "Stone Artwork Installation",
-          "Stone Pattern Design & Installation",
-        ],
-      },
-      {
-        label: "PRODUCTS",
-        href: "/en/products",
-        children: [
-          "Stone Samples",
-          "Stone Artwork & Patterns",
-          "Accessories & Additives",
-          "Stone Tools & Equipment",
-          "Promotions & Clearance",
-        ],
-      },
-      {
-        label: "PROJECTS",
-        href: "/en/projects",
-        children: [
-          "All",
-          "Villa - Penthouse",
-          "Hotel - Shopping Mall",
-          "Apartment - Townhouse",
-          "Kitchen Stone Designs",
-          "Stair Stone Designs",
-          "Bathroom Stone Designs",
-          "Elevator Floor Stone Designs",
-        ],
-      },
-      {
-        label: "NEWS",
-        href: "/en/news",
-        children: ["Company News", "Design Trends", "Natural Stone Market"],
-      },
-      { label: "CONTACT", href: "/en/contact" },
-    ];
-  }
+type HeaderProps = {
+  locale?: Locale;
+  dynamicMenuItems?: DynamicMenuItem[];
+};
 
-  return [
-    { label: "TRANG CHỦ", href: "/vi" },
-    { label: "GIỚI THIỆU", href: "/vi/gioi-thieu" },
-    {
-      label: "DỊCH VỤ",
-      href: "/vi/dich-vu",
-      children: [
-        "Thi công ốp đá mặt tiền",
-        "Thi Công Đá Ốp Cột",
-        "Thi Công Đá Ốp Cầu Thang",
-        "Thiết Kế Thi Công Đá Ốp Sàn Thang Máy",
-        "Thi Công Đá Ốp Bếp",
-        "Thi Công Tranh Đá",
-        "Thiết Kế Và Thi Công Hoa Văn Đá",
-      ],
-    },
-    {
-      label: "SẢN PHẨM",
-      href: "/vi/san-pham",
-      children: [
-        "Mẫu Đá",
-        "Tranh Đá Hoa Văn",
-        "Vật Tư Phụ - Phụ Gia",
-        "Thiết Bị - Dụng Cụ Ngành Đá",
-        "Khuyến Mãi - Thanh Lý",
-      ],
-    },
-    {
-      label: "CÔNG TRÌNH",
-      href: "/vi/cong-trinh",
-      children: [
-        "Tất Cả",
-        "Villa - Penhouse",
-        "Khách Sạn - Trung Tâm Thương Mại",
-        "Chung Cư - Nhà Phố",
-        "Mẫu Bếp Ốp Đá Đẹp",
-        "Mẫu Cầu Thang Ốp Đá Đẹp",
-        "Mẫu Nhà Vệ Sinh Ốp Đá Đẹp",
-        "Mẫu Sàn Thang Máy Ốp Đá Đẹp",
-      ],
-    },
-    {
-      label: "TIN TỨC",
-      href: "/vi/tin-tuc",
-      children: ["Tin nội bộ", "Xu hướng thiết kế", "Thị trường ngành đá tự nhiên"],
-    },
-    { label: "LIÊN HỆ", href: "/vi/lien-he" },
-  ];
+function getChildren(item: DynamicMenuItem) {
+  return item.children || [];
 }
 
-export function Header({ locale = "vi" }: HeaderProps) {
+function targetValue(target?: string | null) {
+  return target === "_blank" ? "_blank" : undefined;
+}
+
+function relValue(target?: string | null) {
+  return target === "_blank" ? "noopener noreferrer" : undefined;
+}
+
+function isMenuActive(pathname: string, item: DynamicMenuItem) {
+  if (!item.href || item.href === "#") return false;
+
+  const href = item.href.split("?")[0];
+
+  if (pathname === href) return true;
+
+  const children = getChildren(item);
+  return children.some((child) => {
+    const childHref = child.href.split("?")[0];
+    return pathname === childHref;
+  });
+}
+
+export function Header({
+  locale = "vi",
+  dynamicMenuItems = [],
+}: HeaderProps) {
+  const pathname = usePathname();
+
   const [mobileOpen, setMobileOpen] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
 
-  const menuItems = useMemo(() => getMenuItems(locale), [locale]);
+  const menuItems = useMemo(() => dynamicMenuItems, [dynamicMenuItems]);
 
   const homeHref = locale === "vi" ? "/vi" : "/en";
   const viHref = "/vi";
@@ -159,7 +94,9 @@ export function Header({ locale = "vi" }: HeaderProps) {
             <ul className="list-unstyled topbar-one__info">
               <li className="topbar-one__info__item">
                 <FaPaperPlane />
-                <a href="mailto:Pacstone.cskh@gmail.com">Pacstone.cskh@gmail.com</a>
+                <a href="mailto:Pacstone.cskh@gmail.com">
+                  Pacstone.cskh@gmail.com
+                </a>
               </li>
 
               <li className="topbar-one__info__item">
@@ -218,31 +155,44 @@ export function Header({ locale = "vi" }: HeaderProps) {
             <div className="main-header__left">
               <nav className="main-header__nav main-menu">
                 <ul className="main-menu__list">
-                  {menuItems.map((item, index) => (
-                    <li
-                      key={item.label}
-                      className={`${index === 0 ? "active" : ""} ${
-                        item.children ? "dropdown" : ""
-                      }`}
-                    >
-                      <Link
-                        href={item.href}
-                        className={index === 0 ? "current" : ""}
-                      >
-                        {item.label}
-                      </Link>
+                  {menuItems.map((item) => {
+                    const children = getChildren(item);
+                    const active = isMenuActive(pathname, item);
 
-                      {item.children && (
-                        <ul>
-                          {item.children.map((child) => (
-                            <li key={child}>
-                              <Link href={item.href}>{child}</Link>
-                            </li>
-                          ))}
-                        </ul>
-                      )}
-                    </li>
-                  ))}
+                    return (
+                      <li
+                        key={item.id}
+                        className={`${active ? "active" : ""} ${
+                          children.length > 0 ? "dropdown" : ""
+                        }`}
+                      >
+                        <Link
+                          href={item.href}
+                          target={targetValue(item.target)}
+                          rel={relValue(item.target)}
+                          className={active ? "current" : ""}
+                        >
+                          {item.label}
+                        </Link>
+
+                        {children.length > 0 && (
+                          <ul>
+                            {children.map((child) => (
+                              <li key={child.id}>
+                                <Link
+                                  href={child.href || item.href}
+                                  target={targetValue(child.target)}
+                                  rel={relValue(child.target)}
+                                >
+                                  {child.label}
+                                </Link>
+                              </li>
+                            ))}
+                          </ul>
+                        )}
+                      </li>
+                    );
+                  })}
                 </ul>
               </nav>
             </div>
@@ -315,14 +265,22 @@ export function Header({ locale = "vi" }: HeaderProps) {
           <div className="mobile-nav__container">
             <ul className="main-menu__list">
               {menuItems.map((item) => {
-                const isOpen = openDropdown === item.label;
+                const children = getChildren(item);
+                const isOpen = openDropdown === item.id;
 
                 return (
-                  <li key={item.label} className={item.children ? "dropdown" : ""}>
-                    <Link href={item.href}>
+                  <li
+                    key={item.id}
+                    className={children.length > 0 ? "dropdown" : ""}
+                  >
+                    <Link
+                      href={item.href}
+                      target={targetValue(item.target)}
+                      rel={relValue(item.target)}
+                    >
                       {item.label}
 
-                      {item.children && (
+                      {children.length > 0 && (
                         <button
                           type="button"
                           aria-label="dropdown toggler"
@@ -330,7 +288,7 @@ export function Header({ locale = "vi" }: HeaderProps) {
                           onClick={(e) => {
                             e.preventDefault();
                             e.stopPropagation();
-                            setOpenDropdown(isOpen ? null : item.label);
+                            setOpenDropdown(isOpen ? null : item.id);
                           }}
                         >
                           <FaAngleDown />
@@ -338,11 +296,17 @@ export function Header({ locale = "vi" }: HeaderProps) {
                       )}
                     </Link>
 
-                    {item.children && (
+                    {children.length > 0 && (
                       <ul style={{ display: isOpen ? "block" : "none" }}>
-                        {item.children.map((child) => (
-                          <li key={child}>
-                            <Link href={item.href}>{child}</Link>
+                        {children.map((child) => (
+                          <li key={child.id}>
+                            <Link
+                              href={child.href || item.href}
+                              target={targetValue(child.target)}
+                              rel={relValue(child.target)}
+                            >
+                              {child.label}
+                            </Link>
                           </li>
                         ))}
                       </ul>
@@ -358,7 +322,9 @@ export function Header({ locale = "vi" }: HeaderProps) {
               <span className="mobile-nav__contact-icon">
                 <FaPaperPlane />
               </span>
-              <a href="mailto:Pacstone.cskh@gmail.com">Pacstone.cskh@gmail.com</a>
+              <a href="mailto:Pacstone.cskh@gmail.com">
+                Pacstone.cskh@gmail.com
+              </a>
             </li>
 
             <li>
@@ -392,7 +358,8 @@ export function Header({ locale = "vi" }: HeaderProps) {
         <div
           className="sidebar-one__content"
           style={{
-            backgroundImage: "url('/assets/images/shapes/slidebar-PACSTONE.jpg')",
+            backgroundImage:
+              "url('/assets/images/shapes/slidebar-PACSTONE.jpg')",
           }}
         >
           <span
@@ -430,7 +397,9 @@ export function Header({ locale = "vi" }: HeaderProps) {
                   </div>
                   <div className="util-text-box">
                     <span className="util-title">
-                      {locale === "vi" ? "Hướng dẫn sử dụng Web" : "Website User Guide"}
+                      {locale === "vi"
+                        ? "Hướng dẫn sử dụng Web"
+                        : "Website User Guide"}
                     </span>
                     <span className="util-badge">
                       {locale === "vi" ? "Tải xuống PDF" : "Download PDF"}
@@ -446,7 +415,9 @@ export function Header({ locale = "vi" }: HeaderProps) {
                   </div>
                   <div className="util-text-box">
                     <span className="util-title">
-                      {locale === "vi" ? "Quản lý đơn hàng" : "Order Management"}
+                      {locale === "vi"
+                        ? "Quản lý đơn hàng"
+                        : "Order Management"}
                     </span>
                     <span className="util-badge development">
                       {locale === "vi" ? "Phát triển sau" : "Coming soon"}
@@ -485,7 +456,9 @@ export function Header({ locale = "vi" }: HeaderProps) {
                 >
                   <FaCommentDots className="zalo-btn-icon" />
                   <span>
-                    {locale === "vi" ? "NHẮN TIN ZALO OA NGAY" : "MESSAGE ZALO OA NOW"}
+                    {locale === "vi"
+                      ? "NHẮN TIN ZALO OA NGAY"
+                      : "MESSAGE ZALO OA NOW"}
                   </span>
                 </Link>
               </li>
@@ -509,7 +482,9 @@ export function Header({ locale = "vi" }: HeaderProps) {
                 <span className="sidebar-contact-icon">
                   <FaPaperPlane />
                 </span>
-                <a href="mailto:Pacstone.cskh@gmail.com">Pacstone.cskh@gmail.com</a>
+                <a href="mailto:Pacstone.cskh@gmail.com">
+                  Pacstone.cskh@gmail.com
+                </a>
               </li>
 
               <li>
@@ -521,7 +496,10 @@ export function Header({ locale = "vi" }: HeaderProps) {
             </ul>
           </div>
 
-          <div className="main-footer__social floens-social" style={{ marginBottom: "70px" }}>
+          <div
+            className="main-footer__social floens-social"
+            style={{ marginBottom: "70px" }}
+          >
             <a href="https://facebook.com" aria-label="Facebook">
               <FaFacebookF />
             </a>
@@ -554,7 +532,11 @@ export function Header({ locale = "vi" }: HeaderProps) {
               id="search"
               placeholder={locale === "vi" ? "Tìm kiếm..." : "Search here..."}
             />
-            <button type="submit" aria-label="search submit" className="floens-btn">
+            <button
+              type="submit"
+              aria-label="search submit"
+              className="floens-btn"
+            >
               <GoSearch />
             </button>
           </form>

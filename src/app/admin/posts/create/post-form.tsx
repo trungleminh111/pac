@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useFormState } from "react-dom";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Eye, Save } from "lucide-react";
@@ -40,12 +39,10 @@ export default function CreatePostForm({
 }) {
   const router = useRouter();
 
-const [state, formAction] = useFormState(action, {
-  ok: false,
-  message: "",
-});
-
-const pending = false;
+  const [state, setState] = useState<CreatePostState>({
+    ok: false,
+    message: "",
+  });
 
   const [title, setTitle] = useState("");
   const [slug, setSlug] = useState("");
@@ -55,14 +52,22 @@ const pending = false;
   const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
-    if (state.ok) {
-      router.push("/admin/posts");
-      router.refresh();
-      return;
-    }
+    if (!state.ok) return;
 
-    setSubmitting(false);
+    router.push("/admin/posts");
+    router.refresh();
   }, [state.ok, router]);
+
+  async function handleSubmit(formData: FormData) {
+    setSubmitting(true);
+
+    try {
+      const result = await action(state, formData);
+      setState(result);
+    } finally {
+      setSubmitting(false);
+    }
+  }
 
   function handleTitleChange(value: string) {
     setTitle(value);
@@ -78,11 +83,7 @@ const pending = false;
   }
 
   return (
-    <form
-      action={formAction}
-      onSubmit={() => setSubmitting(true)}
-      className="space-y-6"
-    >
+    <form action={handleSubmit} className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-slate-950">Thêm bài viết</h1>

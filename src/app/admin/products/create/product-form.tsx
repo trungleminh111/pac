@@ -1,6 +1,7 @@
 "use client";
 
-import { useActionState, useEffect, useState } from "react";
+import { experimental_useFormState as useFormState } from "react-dom";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Eye, Save } from "lucide-react";
@@ -46,7 +47,7 @@ export default function ProductForm({
 }) {
   const router = useRouter();
 
-  const [state, formAction, pending] = useActionState(action, {
+  const [state, formAction] = useFormState(action, {
     ok: false,
     message: "",
   });
@@ -251,22 +252,20 @@ export default function ProductForm({
               <div className="flex gap-2">
                 <button
                   type="submit"
-                  disabled={pending}
                   onClick={() => setStatus("DRAFT")}
-                  className="flex flex-1 items-center justify-center gap-2 rounded-xl border px-4 py-3 text-sm font-semibold disabled:opacity-60"
+                  className="flex flex-1 items-center justify-center gap-2 rounded-xl border px-4 py-3 text-sm font-semibold"
                 >
                   <Save className="h-4 w-4" />
-                  {pending ? "Đang lưu..." : "Lưu nháp"}
+                  Lưu nháp
                 </button>
 
                 <button
                   type="submit"
-                  disabled={pending}
                   onClick={() => setStatus("PUBLISHED")}
-                  className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-[#2271b1] px-4 py-3 text-sm font-semibold text-white disabled:opacity-60"
+                  className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-[#2271b1] px-4 py-3 text-sm font-semibold text-white"
                 >
                   <Eye className="h-4 w-4" />
-                  {pending ? "Đang lưu..." : "Xuất bản"}
+                  Xuất bản
                 </button>
               </div>
             </div>

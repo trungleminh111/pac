@@ -1,11 +1,35 @@
 "use client";
 
-import { useActionState, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import {
+  experimental_useFormState as useFormState,
+  experimental_useFormStatus as useFormStatus,
+} from "react-dom";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Save } from "lucide-react";
 import { MediaPicker } from "@/components/admin/media-picker";
 import type { UserCreateState } from "./page";
+
+const initialState: UserCreateState = {
+  ok: false,
+  message: "",
+};
+
+function SubmitButton() {
+  const { pending } = useFormStatus();
+
+  return (
+    <button
+      type="submit"
+      disabled={pending}
+      className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#2271b1] px-4 py-3 text-sm font-semibold text-white disabled:opacity-60"
+    >
+      <Save className="h-4 w-4" />
+      {pending ? "Đang tạo..." : "Tạo người dùng"}
+    </button>
+  );
+}
 
 export default function UserForm({
   action,
@@ -17,11 +41,7 @@ export default function UserForm({
 }) {
   const router = useRouter();
 
-  const [state, formAction, pending] = useActionState(action, {
-    ok: false,
-    message: "",
-  });
-
+  const [state, formAction] = useFormState(action, initialState);
   const [image, setImage] = useState("");
 
   useEffect(() => {
@@ -118,14 +138,7 @@ export default function UserForm({
               </select>
             </div>
 
-            <button
-              type="submit"
-              disabled={pending}
-              className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#2271b1] px-4 py-3 text-sm font-semibold text-white disabled:opacity-60"
-            >
-              <Save className="h-4 w-4" />
-              {pending ? "Đang tạo..." : "Tạo người dùng"}
-            </button>
+            <SubmitButton />
           </div>
         </div>
 

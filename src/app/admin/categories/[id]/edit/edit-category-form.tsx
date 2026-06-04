@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useActionState, useEffect, useState } from "react";
+import { experimental_useFormState as useFormState } from "react-dom";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Save } from "lucide-react";
 import type { EditCategoryState } from "./page";
@@ -14,6 +15,7 @@ type Category = {
   slug: string;
   nameVi: string;
   nameEn: string | null;
+  detailTemplate: string;
 };
 
 const typeOptions: { label: string; value: CategoryType }[] = [
@@ -49,20 +51,21 @@ export default function EditCategoryForm({
 }) {
   const router = useRouter();
 
-  const [state, formAction, pending] = useActionState(action, {
+  const [state, formAction] = useFormState(action, {
     ok: false,
     message: "",
   });
 
   const [nameVi, setNameVi] = useState(category.nameVi);
   const [slug, setSlug] = useState(category.slug);
+  const [type, setType] = useState<CategoryType>(category.type);
 
   useEffect(() => {
     if (state.ok) {
-      router.push(`/admin/categories?type=${category.type}`);
+      router.push(`/admin/categories?type=${type}`);
       router.refresh();
     }
-  }, [state.ok, router, category.type]);
+  }, [state.ok, router, type]);
 
   return (
     <form action={formAction} className="mx-auto max-w-3xl space-y-6">
@@ -75,7 +78,7 @@ export default function EditCategoryForm({
         </div>
 
         <Link
-          href={`/admin/categories?type=${category.type}`}
+          href={`/admin/categories?type=${type}`}
           className="rounded-xl border px-4 py-2 text-sm font-medium"
         >
           Quay lại
@@ -102,7 +105,8 @@ export default function EditCategoryForm({
             </label>
             <select
               name="type"
-              defaultValue={category.type}
+              value={type}
+              onChange={(e) => setType(e.target.value as CategoryType)}
               className="w-full rounded-xl border px-4 py-3 text-sm outline-none focus:border-[#2271b1]"
             >
               {typeOptions.map((item) => (
@@ -151,12 +155,25 @@ export default function EditCategoryForm({
             />
           </div>
 
-          <button
-            disabled={pending}
-            className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#2271b1] px-4 py-3 text-sm font-semibold text-white disabled:opacity-60"
-          >
+          {type === "PRODUCT" && (
+            <div>
+              <label className="mb-2 block text-sm font-semibold">
+                Giao diện chi tiết sản phẩm
+              </label>
+              <select
+                name="detailTemplate"
+                defaultValue={category.detailTemplate || "default"}
+                className="w-full rounded-xl border px-4 py-3 text-sm outline-none focus:border-[#2271b1]"
+              >
+                <option value="default">Giao diện mặc định</option>
+                <option value="page2">Giao diện chi tiết 2</option>
+              </select>
+            </div>
+          )}
+
+          <button className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#2271b1] px-4 py-3 text-sm font-semibold text-white">
             <Save className="h-4 w-4" />
-            {pending ? "Đang cập nhật..." : "Cập nhật danh mục"}
+            Cập nhật danh mục
           </button>
         </div>
       </div>

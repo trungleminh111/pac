@@ -1,4 +1,4 @@
-import "../[locale]/globals.css";
+import "../../globals.css"; 
 import { AdminHeader } from "@/components/admin/admin-header";
 import { AdminSidebar } from "@/components/admin/admin-sidebar";
 

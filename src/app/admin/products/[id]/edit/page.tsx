@@ -3,11 +3,23 @@ import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import ProductEditForm from "./product-form";
 
-
 export type ProductEditState = {
   ok: boolean;
   message: string;
 };
+
+function parseGallery(value: string) {
+  if (!value) return [];
+
+  try {
+    const data = JSON.parse(value);
+    return Array.isArray(data)
+      ? data.filter((item): item is string => typeof item === "string")
+      : [];
+  } catch {
+    return [];
+  }
+}
 
 async function updateProduct(
   id: string,
@@ -17,12 +29,17 @@ async function updateProduct(
   "use server";
 
   const locale = String(formData.get("locale") || "vi") as "vi" | "en";
-  const status = String(formData.get("status") || "DRAFT");
+  const status = String(formData.get("status") || "DRAFT") as
+    | "DRAFT"
+    | "PUBLISHED"
+    | "ARCHIVED";
+
   const categoryId = String(formData.get("categoryId") || "");
   const thumbnail = String(formData.get("thumbnail") || "");
-  const galleryRaw = String(formData.get("gallery") || "[]");
+  const gallery = parseGallery(String(formData.get("gallery") || "[]"));
+
   const isFeatured = formData.get("isFeatured") === "on";
-  const allowIndex = formData.get("allowIndex") !== "off";
+  const allowIndex = formData.get("allowIndex") === "on";
 
   const sku = String(formData.get("sku") || "").trim();
   const priceRaw = String(formData.get("price") || "").trim();
@@ -33,18 +50,10 @@ async function updateProduct(
 
   const title = String(formData.get("title") || "").trim();
   const slug = String(formData.get("slug") || "").trim();
-  const excerpt = String(formData.get("excerpt") || "");
+  const excerpt = String(formData.get("excerpt") || "").trim();
   const content = String(formData.get("content") || "");
-  const seoTitle = String(formData.get("seoTitle") || "");
-  const seoDescription = String(formData.get("seoDescription") || "");
-
-  let gallery: string[] = [];
-
-  try {
-    gallery = JSON.parse(galleryRaw);
-  } catch {
-    gallery = [];
-  }
+  const seoTitle = String(formData.get("seoTitle") || "").trim();
+  const seoDescription = String(formData.get("seoDescription") || "").trim();
 
   if (!title || !slug) {
     return {
@@ -72,13 +81,15 @@ async function updateProduct(
 
   try {
     await prisma.product.update({
-      where: { id },
+      where: {
+        id,
+      },
       data: {
-        status: status as "DRAFT" | "PUBLISHED" | "ARCHIVED",
+        status,
         sku: sku || null,
         price: priceRaw ? new Prisma.Decimal(priceRaw) : null,
         thumbnail: thumbnail || gallery[0] || null,
-        gallery: [],
+        gallery: gallery.length > 0 ? gallery : [],
         origin: origin || null,
         size: size || null,
         material: material || null,
@@ -101,7 +112,7 @@ async function updateProduct(
               title,
               slug,
               excerpt: excerpt || null,
-              content: { html: content },
+              content: content ? { html: content } : undefined,
               seoTitle: seoTitle || null,
               seoDescription: seoDescription || null,
             },
@@ -109,7 +120,7 @@ async function updateProduct(
               title,
               slug,
               excerpt: excerpt || null,
-              content: { html: content },
+              content: content ? { html: content } : undefined,
               seoTitle: seoTitle || null,
               seoDescription: seoDescription || null,
             },
@@ -123,6 +134,8 @@ async function updateProduct(
       message: "Cập nhật sản phẩm thành công.",
     };
   } catch (error) {
+    console.error(error);
+
     if (
       error instanceof Prisma.PrismaClientKnownRequestError &&
       error.code === "P2002"
@@ -143,25 +156,35 @@ async function updateProduct(
 export default async function EditProductPage({
   params,
 }: {
-  params: Promise<{ id: string }>;
+  params: {
+    id: string;
+  };
 }) {
-  const { id } = await params;
+  const { id } = params;
 
   const product = await prisma.product.findUnique({
-    where: { id },
+    where: {
+      id,
+    },
     include: {
       translations: true,
       category: true,
     },
   });
 
-  if (!product) notFound();
+  if (!product) {
+    notFound();
+  }
 
   const translation = product.translations[0];
 
   const categories = await prisma.category.findMany({
-    where: { type: "PRODUCT" },
-    orderBy: { sortOrder: "asc" },
+    where: {
+      type: "PRODUCT",
+    },
+    orderBy: {
+      sortOrder: "asc",
+    },
   });
 
   const productForForm = {

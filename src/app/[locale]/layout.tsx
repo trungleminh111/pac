@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 
-import "./globals.css";
+
 import "@/styles/site.css";
 import "@/styles/header.css";
 import "@/styles/ClientCarousel.css";

@@ -6,6 +6,273 @@ datasource db {
   provider = "postgresql"
 }
 
+model User {
+  id        String   @id @default(cuid())
+  name      String?
+  email     String   @unique
+  password  String
+  role      Role     @default(ADMIN)
+  image     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  media     Media[]
+  posts     Post[]
+}
+
+model Category {
+  id        String      @id @default(cuid())
+  type      ContentType
+  slug      String
+  nameVi    String
+  nameEn    String?
+  detailTemplate String @default("default")
+  parentId  String?
+  sortOrder Int         @default(0)
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+  parent    Category?   @relation("CategoryTree", fields: [parentId], references: [id])
+  children  Category[]  @relation("CategoryTree")
+  posts     Post[]
+  products  Product[]
+  projects  Project[]
+  services  Service[]
+
+  @@unique([type, slug])
+}
+
+model Media {
+  id        String   @id @default(cuid())
+  filename  String
+  key       String   @unique
+  url       String
+  mimeType  String?
+  size      Int?
+  width     Int?
+  height    Int?
+  altVi     String?
+  altEn     String?
+  authorId  String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  hash      String?  @unique
+  author    User?    @relation(fields: [authorId], references: [id])
+}
+
+model Post {
+  id           String            @id @default(cuid())
+  status       PublishStatus     @default(DRAFT)
+  thumbnail    String?
+  isFeatured   Boolean           @default(false)
+  allowIndex   Boolean           @default(true)
+  authorId     String?
+  categoryId   String?
+  publishedAt  DateTime?
+  createdAt    DateTime          @default(now())
+  updatedAt    DateTime          @updatedAt
+  author       User?             @relation(fields: [authorId], references: [id])
+  category     Category?         @relation(fields: [categoryId], references: [id])
+  translations PostTranslation[]
+
+  @@index([status])
+  @@index([categoryId])
+}
+
+model PostTranslation {
+  id             String   @id @default(cuid())
+  postId         String
+  locale         Locale
+  title          String
+  slug           String
+  excerpt        String?
+  content        Json?
+  seoTitle       String?
+  seoDescription String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  post           Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+
+  @@unique([locale, slug])
+  @@unique([postId, locale])
+}
+
+model Page {
+  id           String            @id @default(cuid())
+  status       PublishStatus     @default(DRAFT)
+  thumbnail    String?
+  allowIndex   Boolean           @default(true)
+  publishedAt  DateTime?
+  createdAt    DateTime          @default(now())
+  updatedAt    DateTime          @updatedAt
+  translations PageTranslation[]
+}
+
+model PageTranslation {
+  id             String   @id @default(cuid())
+  pageId         String
+  locale         Locale
+  title          String
+  slug           String
+  excerpt        String?
+  content        Json?
+  seoTitle       String?
+  seoDescription String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  page           Page     @relation(fields: [pageId], references: [id], onDelete: Cascade)
+
+  @@unique([locale, slug])
+  @@unique([pageId, locale])
+}
+
+model Service {
+  id           String               @id @default(cuid())
+  status       PublishStatus        @default(DRAFT)
+  thumbnail    String?
+  icon         String?
+  sortOrder    Int                  @default(0)
+  categoryId   String?
+  allowIndex   Boolean              @default(true)
+  publishedAt  DateTime?
+  createdAt    DateTime             @default(now())
+  updatedAt    DateTime             @updatedAt
+  category     Category?            @relation(fields: [categoryId], references: [id])
+  translations ServiceTranslation[]
+}
+
+model ServiceTranslation {
+  id             String   @id @default(cuid())
+  serviceId      String
+  locale         Locale
+  title          String
+  slug           String
+  excerpt        String?
+  content        Json?
+  seoTitle       String?
+  seoDescription String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  service        Service  @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+
+  @@unique([locale, slug])
+  @@unique([serviceId, locale])
+}
+
+model Product {
+  id           String               @id @default(cuid())
+  status       PublishStatus        @default(DRAFT)
+  sku          String?
+  price        Decimal?             @db.Decimal(12, 2)
+  thumbnail    String?
+  gallery      Json?
+  origin       String?
+  size         String?
+  material     String?
+  color        String?
+  isFeatured   Boolean              @default(false)
+  categoryId   String?
+  allowIndex   Boolean              @default(true)
+  publishedAt  DateTime?
+  createdAt    DateTime             @default(now())
+  updatedAt    DateTime             @updatedAt
+  category     Category?            @relation(fields: [categoryId], references: [id])
+  translations ProductTranslation[]
+
+  @@index([status])
+  @@index([categoryId])
+}
+
+model ProductTranslation {
+  id             String   @id @default(cuid())
+  productId      String
+  locale         Locale
+  title          String
+  slug           String
+  excerpt        String?
+  content        Json?
+  seoTitle       String?
+  seoDescription String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  product        Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@unique([locale, slug])
+  @@unique([productId, locale])
+}
+
+model Project {
+  id           String               @id @default(cuid())
+  status       PublishStatus        @default(DRAFT)
+  thumbnail    String?
+  gallery      Json?
+  clientName   String?
+  projectType  String?
+  startedAt    DateTime?
+  completedAt  DateTime?
+  budget       String?
+  categoryId   String?
+  allowIndex   Boolean              @default(true)
+  publishedAt  DateTime?
+  createdAt    DateTime             @default(now())
+  updatedAt    DateTime             @updatedAt
+  category     Category?            @relation(fields: [categoryId], references: [id])
+  translations ProjectTranslation[]
+}
+
+model ProjectTranslation {
+  id             String   @id @default(cuid())
+  projectId      String
+  locale         Locale
+  title          String
+  slug           String
+  excerpt        String?
+  content        Json?
+  seoTitle       String?
+  seoDescription String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  structuredData Json?
+  project        Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@unique([locale, slug])
+  @@unique([projectId, locale])
+}
+
+model Menu {
+  id        String     @id @default(cuid())
+  name      String
+  location  String
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  items     MenuItem[]
+}
+
+model MenuItem {
+  id        String     @id @default(cuid())
+  menuId    String
+  labelVi   String
+  labelEn   String?
+  parentId  String?
+  icon      String?
+  target    String? @default("_self")
+  sortOrder Int        @default(0)
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  isActive  Boolean    @default(true)
+  urlEn     String?
+  urlVi     String?
+  menu      Menu       @relation(fields: [menuId], references: [id], onDelete: Cascade)
+  parent    MenuItem?  @relation("MenuTree", fields: [parentId], references: [id])
+  children  MenuItem[] @relation("MenuTree")
+}
+
+model Setting {
+  id        String   @id @default(cuid())
+  key       String   @unique
+  value     Json
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
 enum Role {
   ADMIN
   EDITOR
@@ -29,287 +296,4 @@ enum ContentType {
   SERVICE
   PRODUCT
   PROJECT
-}
-
-model User {
-  id        String   @id @default(cuid())
-  name      String?
-  email     String   @unique
-  password  String
-  role      Role     @default(ADMIN)
-  image     String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  posts Post[]
-  media Media[]
-}
-
-model Category {
-  id        String      @id @default(cuid())
-  type      ContentType
-  slug      String
-  nameVi    String
-  nameEn    String?
-  parentId  String?
-  sortOrder Int         @default(0)
-  createdAt DateTime    @default(now())
-  updatedAt DateTime    @updatedAt
-
-  parent   Category?  @relation("CategoryTree", fields: [parentId], references: [id])
-  children Category[] @relation("CategoryTree")
-
-  posts    Post[]
-  products Product[]
-  services Service[]
-  projects Project[]
-
-  @@unique([type, slug])
-}
-
-model Media {
-  id        String   @id @default(cuid())
-  filename  String
-  key       String   @unique
-  url       String
-  mimeType  String?
-  size      Int?
-  width     Int?
-  height    Int?
-  altVi     String?
-  altEn     String?
-  hash String? @unique
-  authorId  String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  author User? @relation(fields: [authorId], references: [id])
-}
-
-model Post {
-  id          String        @id @default(cuid())
-  status      PublishStatus @default(DRAFT)
-  thumbnail   String?
-  isFeatured  Boolean       @default(false)
-  allowIndex  Boolean       @default(true)
-  authorId    String?
-  categoryId  String?
-  publishedAt DateTime?
-  createdAt   DateTime      @default(now())
-  updatedAt   DateTime      @updatedAt
-
-  author       User?             @relation(fields: [authorId], references: [id])
-  category     Category?         @relation(fields: [categoryId], references: [id])
-  translations PostTranslation[]
-
-  @@index([status])
-  @@index([categoryId])
-}
-
-model PostTranslation {
-  id             String   @id @default(cuid())
-  postId         String
-  locale         Locale
-  title          String
-  slug           String
-  excerpt        String?
-  content        Json?
-  seoTitle       String?
-  seoDescription String?
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
-
-  post Post @relation(fields: [postId], references: [id], onDelete: Cascade)
-
-  @@unique([locale, slug])
-  @@unique([postId, locale])
-}
-
-model Page {
-  id          String        @id @default(cuid())
-  status      PublishStatus @default(DRAFT)
-  thumbnail   String?
-  allowIndex  Boolean       @default(true)
-  publishedAt DateTime?
-  createdAt   DateTime      @default(now())
-  updatedAt   DateTime      @updatedAt
-
-  translations PageTranslation[]
-}
-
-model PageTranslation {
-  id             String   @id @default(cuid())
-  pageId         String
-  locale         Locale
-  title          String
-  slug           String
-  excerpt        String?
-  content        Json?
-  seoTitle       String?
-  seoDescription String?
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
-
-  page Page @relation(fields: [pageId], references: [id], onDelete: Cascade)
-
-  @@unique([locale, slug])
-  @@unique([pageId, locale])
-}
-
-model Service {
-  id          String        @id @default(cuid())
-  status      PublishStatus @default(DRAFT)
-  thumbnail   String?
-  icon        String?
-  sortOrder   Int           @default(0)
-  categoryId  String?
-  allowIndex  Boolean       @default(true)
-  publishedAt DateTime?
-  createdAt   DateTime      @default(now())
-  updatedAt   DateTime      @updatedAt
-
-  category     Category?            @relation(fields: [categoryId], references: [id])
-  translations ServiceTranslation[]
-}
-
-model ServiceTranslation {
-  id             String   @id @default(cuid())
-  serviceId      String
-  locale         Locale
-  title          String
-  slug           String
-  excerpt        String?
-  content        Json?
-  seoTitle       String?
-  seoDescription String?
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
-
-  service Service @relation(fields: [serviceId], references: [id], onDelete: Cascade)
-
-  @@unique([locale, slug])
-  @@unique([serviceId, locale])
-}
-
-model Product {
-  id          String        @id @default(cuid())
-  status      PublishStatus @default(DRAFT)
-  sku         String?
-  price       Decimal?      @db.Decimal(12, 2)
-  thumbnail   String?
-  gallery     Json?
-  origin      String?
-  size        String?
-  material    String?
-  color       String?
-  isFeatured  Boolean       @default(false)
-  categoryId  String?
-  allowIndex  Boolean       @default(true)
-  publishedAt DateTime?
-  createdAt   DateTime      @default(now())
-  updatedAt   DateTime      @updatedAt
-
-  category     Category?            @relation(fields: [categoryId], references: [id])
-  translations ProductTranslation[]
-
-  @@index([status])
-  @@index([categoryId])
-}
-
-model ProductTranslation {
-  id             String   @id @default(cuid())
-  productId      String
-  locale         Locale
-  title          String
-  slug           String
-  excerpt        String?
-  content        Json?
-  seoTitle       String?
-  seoDescription String?
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
-
-  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
-
-  @@unique([locale, slug])
-  @@unique([productId, locale])
-}
-
-model Project {
-  id          String        @id @default(cuid())
-  status      PublishStatus @default(DRAFT)
-  thumbnail   String?
-  gallery     Json?
-  clientName  String?
-  projectType String?
-  startedAt   DateTime?
-  completedAt DateTime?
-  budget      String?
-  categoryId  String?
-  allowIndex  Boolean       @default(true)
-  publishedAt DateTime?
-  createdAt   DateTime      @default(now())
-  updatedAt   DateTime      @updatedAt
-
-  category     Category?            @relation(fields: [categoryId], references: [id])
-  translations ProjectTranslation[]
-}
-
-model ProjectTranslation {
-  id             String   @id @default(cuid())
-  projectId      String
-  locale         Locale
-  title          String
-  slug           String
-  excerpt        String?
-  content        Json?
-  structuredData Json?
-  seoTitle       String?
-  seoDescription String?
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
-
-  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
-
-  @@unique([locale, slug])
-  @@unique([projectId, locale])
-}
-
-model Menu {
-  id        String     @id @default(cuid())
-  name      String
-  location  String
-  items     MenuItem[]
-  createdAt DateTime   @default(now())
-  updatedAt DateTime   @updatedAt
-}
-
-model MenuItem {
-  id        String   @id @default(cuid())
-  menuId    String
-
-  labelVi   String
-  labelEn   String?
-
-  urlVi     String?
-  urlEn     String?
-
-  parentId  String?
-  sortOrder Int      @default(0)
-  isActive  Boolean  @default(true)
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  menu     Menu       @relation(fields: [menuId], references: [id], onDelete: Cascade)
-  parent   MenuItem?  @relation("MenuTree", fields: [parentId], references: [id])
-  children MenuItem[] @relation("MenuTree")
-}
-
-model Setting {
-  id        String   @id @default(cuid())
-  key       String   @unique
-  value     Json
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
 }

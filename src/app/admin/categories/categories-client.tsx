@@ -2,7 +2,9 @@
 
 import Link from "next/link";
 import {
-  useActionState,
+  experimental_useFormState as useFormState,
+} from "react-dom";
+import {
   useEffect,
   useRef,
   useState,
@@ -20,6 +22,7 @@ type Category = {
   slug: string;
   nameVi: string;
   nameEn: string | null;
+  detailTemplate: string;
   _count: {
     posts: number;
     products: number;
@@ -53,15 +56,9 @@ function typeLabel(type: string) {
 
 function typeBadgeClass(type: string) {
   if (type === "POST") return "bg-blue-50 text-blue-700 ring-blue-200";
-  if (type === "PRODUCT") {
-    return "bg-emerald-50 text-emerald-700 ring-emerald-200";
-  }
-  if (type === "SERVICE") {
-    return "bg-orange-50 text-orange-700 ring-orange-200";
-  }
-  if (type === "PROJECT") {
-    return "bg-violet-50 text-violet-700 ring-violet-200";
-  }
+  if (type === "PRODUCT") return "bg-emerald-50 text-emerald-700 ring-emerald-200";
+  if (type === "SERVICE") return "bg-orange-50 text-orange-700 ring-orange-200";
+  if (type === "PROJECT") return "bg-violet-50 text-violet-700 ring-violet-200";
   return "bg-slate-50 text-slate-700 ring-slate-200";
 }
 
@@ -112,11 +109,13 @@ export default function CategoriesClient({
   const formRef = useRef<HTMLFormElement | null>(null);
   const [isRefreshing, startTransition] = useTransition();
 
-  const [state, formAction, pending] = useActionState(action, {
+  const [state, formAction] = useFormState(action, {
     ok: false,
     message: "",
     nonce: 0,
   });
+
+  const pending = false;
 
   const [nameVi, setNameVi] = useState("");
   const [slug, setSlug] = useState("");
@@ -142,7 +141,7 @@ export default function CategoriesClient({
     startTransition(() => {
       router.refresh();
     });
-  }, [state.nonce]);
+  }, [state.nonce, state.ok, router]);
 
   const total = stats.reduce((sum, item) => sum + item._count.id, 0);
 
@@ -154,8 +153,7 @@ export default function CategoriesClient({
             Quản lý danh mục
           </h1>
           <p className="mt-1 text-sm text-slate-500">
-            Quản lý danh mục một cấp cho bài viết, sản phẩm, dịch vụ và công
-            trình.
+            Quản lý danh mục một cấp cho bài viết, sản phẩm, dịch vụ và công trình.
           </p>
         </div>
       </div>
@@ -168,30 +166,22 @@ export default function CategoriesClient({
 
         <div className="rounded-2xl border bg-white p-4 shadow-sm">
           <div className="text-sm text-slate-500">Bài viết</div>
-          <div className="mt-2 text-2xl font-bold">
-            {statCount(stats, "POST")}
-          </div>
+          <div className="mt-2 text-2xl font-bold">{statCount(stats, "POST")}</div>
         </div>
 
         <div className="rounded-2xl border bg-white p-4 shadow-sm">
           <div className="text-sm text-slate-500">Sản phẩm</div>
-          <div className="mt-2 text-2xl font-bold">
-            {statCount(stats, "PRODUCT")}
-          </div>
+          <div className="mt-2 text-2xl font-bold">{statCount(stats, "PRODUCT")}</div>
         </div>
 
         <div className="rounded-2xl border bg-white p-4 shadow-sm">
           <div className="text-sm text-slate-500">Dịch vụ</div>
-          <div className="mt-2 text-2xl font-bold">
-            {statCount(stats, "SERVICE")}
-          </div>
+          <div className="mt-2 text-2xl font-bold">{statCount(stats, "SERVICE")}</div>
         </div>
 
         <div className="rounded-2xl border bg-white p-4 shadow-sm">
           <div className="text-sm text-slate-500">Công trình</div>
-          <div className="mt-2 text-2xl font-bold">
-            {statCount(stats, "PROJECT")}
-          </div>
+          <div className="mt-2 text-2xl font-bold">{statCount(stats, "PROJECT")}</div>
         </div>
       </div>
 
@@ -220,9 +210,7 @@ export default function CategoriesClient({
 
             <div>
               <h2 className="font-semibold text-slate-950">Thêm danh mục</h2>
-              <p className="text-sm text-slate-500">
-                Chọn loại danh mục cần tạo
-              </p>
+              <p className="text-sm text-slate-500">Chọn loại danh mục cần tạo</p>
             </div>
           </div>
 
@@ -265,6 +253,17 @@ export default function CategoriesClient({
               placeholder="slug-danh-muc"
               className="w-full rounded-xl border px-4 py-3 text-sm outline-none focus:border-[#2271b1]"
             />
+
+            {createType === "PRODUCT" && (
+              <select
+                name="detailTemplate"
+                defaultValue="default"
+                className="w-full rounded-xl border px-4 py-3 text-sm outline-none focus:border-[#2271b1]"
+              >
+                <option value="default">Giao diện mặc định</option>
+                <option value="page2">Giao diện chi tiết 2</option>
+              </select>
+            )}
 
             <button
               disabled={pending || isRefreshing}
@@ -309,9 +308,7 @@ export default function CategoriesClient({
 
           <div className="overflow-hidden rounded-2xl border bg-white shadow-sm">
             <div className="border-b px-5 py-4">
-              <h2 className="font-semibold text-slate-950">
-                Danh sách danh mục
-              </h2>
+              <h2 className="font-semibold text-slate-950">Danh sách danh mục</h2>
               <p className="mt-1 text-sm text-slate-500">
                 Đang hiển thị {categories.length} danh mục
               </p>
@@ -323,6 +320,7 @@ export default function CategoriesClient({
                   <th className="px-5 py-4">Tên danh mục</th>
                   <th className="px-5 py-4">Loại</th>
                   <th className="px-5 py-4">Slug</th>
+                  <th className="px-5 py-4">Template</th>
                   <th className="px-5 py-4">Đang dùng</th>
                   <th className="px-5 py-4 text-right">Thao tác</th>
                 </tr>
@@ -352,6 +350,12 @@ export default function CategoriesClient({
 
                     <td className="px-5 py-4 text-slate-600">
                       /{category.slug}
+                    </td>
+
+                    <td className="px-5 py-4 text-slate-600">
+                      {category.type === "PRODUCT"
+                        ? category.detailTemplate
+                        : "—"}
                     </td>
 
                     <td className="px-5 py-4 text-slate-600">
@@ -395,7 +399,7 @@ export default function CategoriesClient({
                 {categories.length === 0 && (
                   <tr>
                     <td
-                      colSpan={5}
+                      colSpan={6}
                       className="px-5 py-10 text-center text-slate-500"
                     >
                       Không tìm thấy danh mục nào.

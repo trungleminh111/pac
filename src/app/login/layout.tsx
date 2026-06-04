@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 
-
-import "../[locale]/globals.css";
-
+import "../../globals.css";
 
 
 

@@ -32,6 +32,9 @@ async function createCategory(
   const nameVi = String(formData.get("nameVi") || "").trim();
   const nameEn = String(formData.get("nameEn") || "").trim();
   const slug = String(formData.get("slug") || "").trim();
+  const detailTemplate = String(
+    formData.get("detailTemplate") || "default"
+  ).trim();
 
   if (!nameVi || !slug) {
     return {
@@ -48,6 +51,7 @@ async function createCategory(
         nameVi,
         nameEn: nameEn || null,
         slug,
+        detailTemplate: type === "PRODUCT" ? detailTemplate : "default",
         parentId: null,
         sortOrder: 0,
       },
@@ -97,12 +101,13 @@ async function deleteCategory(formData: FormData) {
 export default async function AdminCategoriesPage({
   searchParams,
 }: {
-  searchParams: Promise<{ q?: string; type?: string }>;
+  searchParams: {
+    q?: string;
+    type?: string;
+  };
 }) {
-  const params = await searchParams;
-
-  const q = params.q?.trim() || "";
-  const type = params.type || "";
+  const q = searchParams.q?.trim() || "";
+  const type = searchParams.type || "";
 
   const categories = await prisma.category.findMany({
     where: {

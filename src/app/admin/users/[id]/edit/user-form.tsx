@@ -1,6 +1,10 @@
 "use client";
 
-import { useActionState, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import {
+  experimental_useFormState as useFormState,
+  experimental_useFormStatus as useFormStatus,
+} from "react-dom";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Save } from "lucide-react";
@@ -15,6 +19,21 @@ type User = {
   image: string | null;
 };
 
+function SubmitButton() {
+  const { pending } = useFormStatus();
+
+  return (
+    <button
+      type="submit"
+      disabled={pending}
+      className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#2271b1] px-4 py-3 text-sm font-semibold text-white disabled:opacity-60"
+    >
+      <Save className="h-4 w-4" />
+      {pending ? "Đang cập nhật..." : "Cập nhật người dùng"}
+    </button>
+  );
+}
+
 export default function EditUserForm({
   user,
   action,
@@ -27,7 +46,7 @@ export default function EditUserForm({
 }) {
   const router = useRouter();
 
-  const [state, formAction, pending] = useActionState(action, {
+  const [state, formAction] = useFormState(action, {
     ok: false,
     message: "",
   });
@@ -109,6 +128,7 @@ export default function EditUserForm({
                 name="password"
                 type="password"
                 placeholder="Bỏ trống nếu không đổi"
+                autoComplete="new-password"
                 className="w-full rounded-xl border px-4 py-3 text-sm outline-none focus:border-[#2271b1]"
               />
             </div>
@@ -128,14 +148,7 @@ export default function EditUserForm({
               </select>
             </div>
 
-            <button
-              type="submit"
-              disabled={pending}
-              className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#2271b1] px-4 py-3 text-sm font-semibold text-white disabled:opacity-60"
-            >
-              <Save className="h-4 w-4" />
-              {pending ? "Đang cập nhật..." : "Cập nhật người dùng"}
-            </button>
+            <SubmitButton />
           </div>
         </div>
 

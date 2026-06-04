@@ -1,6 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { GoSearch } from "react-icons/go";
 import { FiUser } from "react-icons/fi";
 import {
@@ -12,78 +14,67 @@ import {
   FaTimes,
   FaAngleDown,
 } from "react-icons/fa";
-import Link from "next/link";
-import {
-  FaFilePdf,
-  FaBoxesPacking,
-  FaScaleBalanced,
-  FaUserShield,
-  FaCommentDots
-} from "react-icons/fa6";
+import { FaFilePdf, FaBoxesPacking, FaCommentDots } from "react-icons/fa6";
 import { SiZalo } from "react-icons/si";
 
-const menuItems = [
-  { label: "TRANG CHỦ", href: "/" },
-  { label: "GIỚI THIỆU", href: "/vi/gioi-thieu" },
-  {
-    label: "DỊCH VỤ",
-    href: "/vi/dich-vu",
-    children: [
-      "Thi công ốp đá mặt tiền",
-      "Thi Công Đá Ốp Cột",
-      "Thi Công Đá Ốp Cầu Thang",
-      "Thiết Kế Thi Công Đá Ốp Sàn Thang Máy",
-      "Thi Công Đá Ốp Bếp",
-      "Thi Công Tranh Đá",
-      "Thiết Kế Và Thi Công Hoa Văn Đá",
-    ],
-  },
-  {
-    label: "SẢN PHẨM",
-    href: "/vi/san-pham",
-    children: [
-      "Mẫu Đá",
-      "Tranh Đá Hoa Văn",
-      "Vật Tư Phụ - Phụ Gia",
-      "Thiết Bị - Dụng Cụ Ngành Đá",
-      "Khuyến Mãi - Thanh Lý",
-    ],
-  },
-  {
-    label: "CÔNG TRÌNH",
-    href: "/vi/cong-trinh",
-    children: [
-      "Tất Cả",
-      "Villa - Penhouse",
-      "Khách Sạn - Trung Tâm Thương Mại",
-      "Chung Cư - Nhà Phố",
-      "Mẫu Bếp Ốp Đá Đẹp",
-      "Mẫu Cầu Thang Ốp Đá Đẹp",
-      "Mẫu Nhà Vệ Sinh Ốp Đá Đẹp",
-      "Mẫu Sàn Thang Máy Ốp Đá Đẹp",
-    ],
-  },
-  {
-    label: "TIN TỨC",
-    href: "/vi/tin-tuc",
-    children: ["Tin nội bộ", "Xu hướng thiết kế", "Thị trường ngành đá tự nhiên"],
-  },
-  { label: "LIÊN HỆ", href: "/vi/lien-he" },
-];
+type Locale = "vi" | "en";
 
-export function Header() {
+type DynamicMenuItem = {
+  id: string;
+  label: string;
+  href: string;
+  target?: string | null;
+  children?: DynamicMenuItem[];
+};
+
+type HeaderProps = {
+  locale?: Locale;
+  dynamicMenuItems?: DynamicMenuItem[];
+};
+
+function getChildren(item: DynamicMenuItem) {
+  return item.children || [];
+}
+
+function targetValue(target?: string | null) {
+  return target === "_blank" ? "_blank" : undefined;
+}
+
+function relValue(target?: string | null) {
+  return target === "_blank" ? "noopener noreferrer" : undefined;
+}
+
+function isMenuActive(pathname: string, item: DynamicMenuItem) {
+  if (!item.href || item.href === "#") return false;
+
+  const href = item.href.split("?")[0];
+
+  if (pathname === href) return true;
+
+  const children = getChildren(item);
+  return children.some((child) => {
+    const childHref = child.href.split("?")[0];
+    return pathname === childHref;
+  });
+}
+
+export function Header({
+  locale = "vi",
+  dynamicMenuItems = [],
+}: HeaderProps) {
+  const pathname = usePathname();
+
   const [mobileOpen, setMobileOpen] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
-  const [isFormOpen, setIsFormOpen] = useState(false);
-  const [fileName, setFileName] = useState("File thiết kế của bạn (Nếu có)");
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      setFileName(e.target.files[0].name);
-    }
-  };
+  const menuItems = useMemo(() => dynamicMenuItems, [dynamicMenuItems]);
+
+  const homeHref = locale === "vi" ? "/vi" : "/en";
+  const viHref = "/vi";
+  const enHref = "/en";
+
   useEffect(() => {
     document.body.classList.toggle(
       "locked",
@@ -127,21 +118,21 @@ export function Header() {
 
             <div className="topbar-one__right">
               <div className="topbar-one__social">
-                <a href="/">
+                <Link href={viHref}>
                   <img
                     src="/assets/images/language/VI.png"
-                    alt="VietNam"
+                    alt="Vietnamese"
                     className="icon-language"
                   />
-                </a>
+                </Link>
                 <span>|</span>
-                <a href="/">
+                <Link href={enHref}>
                   <img
                     src="/assets/images/language/EN.svg"
-                    alt="Eng"
+                    alt="English"
                     className="icon-language"
                   />
-                </a>
+                </Link>
               </div>
             </div>
           </div>
@@ -152,39 +143,56 @@ export function Header() {
         <div className="container-fluid">
           <div className="main-header__inner">
             <div className="main-header__logo">
-              <a href="/">
+              <Link href={homeHref}>
                 <img
                   src="/assets/images/logo-PACSTONE.webp"
                   alt="Logo P.A.C STONE"
                   className="site-logo"
                 />
-              </a>
+              </Link>
             </div>
 
             <div className="main-header__left">
               <nav className="main-header__nav main-menu">
                 <ul className="main-menu__list">
-                  {menuItems.map((item, index) => (
-                    <li
-                      key={item.label}
-                      className={`${index === 0 ? "active" : ""} ${item.children ? "dropdown" : ""
-                        }`}
-                    >
-                      <a href={item.href} className={index === 0 ? "current" : ""}>
-                        {item.label}
-                      </a>
+                  {menuItems.map((item) => {
+                    const children = getChildren(item);
+                    const active = isMenuActive(pathname, item);
 
-                      {item.children && (
-                        <ul>
-                          {item.children.map((child) => (
-                            <li key={child}>
-                              <a href={item.href}>{child}</a>
-                            </li>
-                          ))}
-                        </ul>
-                      )}
-                    </li>
-                  ))}
+                    return (
+                      <li
+                        key={item.id}
+                        className={`${active ? "active" : ""} ${
+                          children.length > 0 ? "dropdown" : ""
+                        }`}
+                      >
+                        <Link
+                          href={item.href}
+                          target={targetValue(item.target)}
+                          rel={relValue(item.target)}
+                          className={active ? "current" : ""}
+                        >
+                          {item.label}
+                        </Link>
+
+                        {children.length > 0 && (
+                          <ul>
+                            {children.map((child) => (
+                              <li key={child.id}>
+                                <Link
+                                  href={child.href || item.href}
+                                  target={targetValue(child.target)}
+                                  rel={relValue(child.target)}
+                                >
+                                  {child.label}
+                                </Link>
+                              </li>
+                            ))}
+                          </ul>
+                        )}
+                      </li>
+                    );
+                  })}
                 </ul>
               </nav>
             </div>
@@ -212,26 +220,19 @@ export function Header() {
                   <GoSearch />
                 </a>
 
-                <a href="#" className="icon-user"
-                  type="button"
+                <a
+                  href="#"
+                  className="icon-user"
                   style={{ color: "var(--floens-black, #000)" }}
-                  onClick={() => setSidebarOpen(true)}
-                  aria-label="Open sidebar">
-
-                <FiUser />
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setSidebarOpen(true);
+                  }}
+                  aria-label="Open sidebar"
+                >
+                  <FiUser />
                 </a>
               </div>
-
-              {/* <button
-                type="button"
-                className="main-header__sidebar-btn sidebar-btn__toggler"
-                onClick={() => setSidebarOpen(true)}
-                aria-label="Open sidebar"
-              >
-                <span className="main-header__sidebar-btn__box" />
-                <span className="main-header__sidebar-btn__box" />
-                <span className="main-header__sidebar-btn__box" />
-              </button> */}
             </div>
           </div>
         </div>
@@ -243,42 +244,43 @@ export function Header() {
           onClick={() => setMobileOpen(false)}
         />
 
-        <div className="mobile-nav__content" style={{
-          backgroundImage: "url('/assets/images/shapes/slidebar-PACSTONE.jpg')",
-        }}>
+        <div className="mobile-nav__content">
           <span
             className="mobile-nav__close mobile-nav__toggler"
             onClick={() => setMobileOpen(false)}
-
           >
             <FaTimes />
           </span>
 
           <div className="logo-box">
-            <a href="/" aria-label="logo image">
+            <Link href={homeHref} aria-label="logo image">
               <img
                 src="/assets/images/logo-PACSTONE.webp"
-
+                width="155"
                 alt="Logo P.A.C STONE"
-                style={{
-                  maxWidth: "180px",
-                  width: "100%",
-                }}
               />
-            </a>
+            </Link>
           </div>
 
           <div className="mobile-nav__container">
             <ul className="main-menu__list">
               {menuItems.map((item) => {
-                const isOpen = openDropdown === item.label;
+                const children = getChildren(item);
+                const isOpen = openDropdown === item.id;
 
                 return (
-                  <li key={item.label} className={item.children ? "dropdown" : ""}>
-                    <a href={item.href}>
+                  <li
+                    key={item.id}
+                    className={children.length > 0 ? "dropdown" : ""}
+                  >
+                    <Link
+                      href={item.href}
+                      target={targetValue(item.target)}
+                      rel={relValue(item.target)}
+                    >
                       {item.label}
 
-                      {item.children && (
+                      {children.length > 0 && (
                         <button
                           type="button"
                           aria-label="dropdown toggler"
@@ -286,19 +288,25 @@ export function Header() {
                           onClick={(e) => {
                             e.preventDefault();
                             e.stopPropagation();
-                            setOpenDropdown(isOpen ? null : item.label);
+                            setOpenDropdown(isOpen ? null : item.id);
                           }}
                         >
                           <FaAngleDown />
                         </button>
                       )}
-                    </a>
+                    </Link>
 
-                    {item.children && (
+                    {children.length > 0 && (
                       <ul style={{ display: isOpen ? "block" : "none" }}>
-                        {item.children.map((child) => (
-                          <li key={child}>
-                            <a href={item.href}>{child}</a>
+                        {children.map((child) => (
+                          <li key={child.id}>
+                            <Link
+                              href={child.href || item.href}
+                              target={targetValue(child.target)}
+                              rel={relValue(child.target)}
+                            >
+                              {child.label}
+                            </Link>
                           </li>
                         ))}
                       </ul>
@@ -331,11 +339,9 @@ export function Header() {
             <a href="https://facebook.com" aria-label="Facebook">
               <FaFacebookF />
             </a>
-
             <a href="https://zalo.me" aria-label="Zalo">
               <SiZalo />
             </a>
-
             <a href="https://youtube.com" aria-label="Youtube">
               <FaYoutube />
             </a>
@@ -349,9 +355,13 @@ export function Header() {
           onClick={() => setSidebarOpen(false)}
         />
 
-        <div className="sidebar-one__content " style={{
-          backgroundImage: "url('/assets/images/shapes/slidebar-PACSTONE.jpg')",
-        }}>
+        <div
+          className="sidebar-one__content"
+          style={{
+            backgroundImage:
+              "url('/assets/images/shapes/slidebar-PACSTONE.jpg')",
+          }}
+        >
           <span
             className="sidebar-one__close sidebar-btn__toggler"
             onClick={() => setSidebarOpen(false)}
@@ -360,88 +370,112 @@ export function Header() {
           </span>
 
           <div className="sidebar-one__logo sidebar-one__item mb-4">
-            <a
-              href="/"
+            <Link
+              href={homeHref}
               aria-label="logo image"
               className="d-flex justify-content-center align-items-center w-100"
             >
               <img
                 src="/assets/images/logo-PACSTONE.webp"
                 className="img-fluid mx-auto d-block"
-                style={{
-                  maxWidth: "180px",
-                  width: "100%",
-                }}
+                style={{ maxWidth: "180px", width: "100%" }}
                 alt="Logo P.A.C STONE"
               />
-            </a>
+            </Link>
           </div>
 
           <div className="sidebar-one__menu-utilities sidebar-one__item">
             <ul className="sidebar-util-list">
-
-              {/* 1. Hướng dẫn sử dụng web */}
               <li>
-                <Link href="/assets/documents/huong-dan-su-dung.pdf" target="_blank" className="sidebar-util-link">
+                <Link
+                  href="/assets/documents/huong-dan-su-dung.pdf"
+                  target="_blank"
+                  className="sidebar-util-link"
+                >
                   <div className="util-icon-box pdf-type">
                     <FaFilePdf />
                   </div>
                   <div className="util-text-box">
-                    <span className="util-title">Hướng dẫn sử dụng Web</span>
-                    <span className="util-badge">Tải xuống PDF</span>
+                    <span className="util-title">
+                      {locale === "vi"
+                        ? "Hướng dẫn sử dụng Web"
+                        : "Website User Guide"}
+                    </span>
+                    <span className="util-badge">
+                      {locale === "vi" ? "Tải xuống PDF" : "Download PDF"}
+                    </span>
                   </div>
                 </Link>
               </li>
 
-              {/* 2. Quản lý đơn hàng */}
               <li>
                 <div className="sidebar-util-link disabled-item">
                   <div className="util-icon-box">
                     <FaBoxesPacking />
                   </div>
                   <div className="util-text-box">
-                    <span className="util-title">Quản lý đơn hàng</span>
-                    <span className="util-badge development">Đang phát triển</span>
+                    <span className="util-title">
+                      {locale === "vi"
+                        ? "Quản lý đơn hàng"
+                        : "Order Management"}
+                    </span>
+                    <span className="util-badge development">
+                      {locale === "vi" ? "Phát triển sau" : "Coming soon"}
+                    </span>
                   </div>
                 </div>
               </li>
 
-              {/* 3. Hồ sơ pháp lý */}
               <li>
-                <Link href="/assets/documents/ho-so-phap-ly-pac-stone.pdf" target="_blank" className="sidebar-util-link">
+                <Link
+                  href="/assets/documents/ho-so-phap-ly-pac-stone.pdf"
+                  target="_blank"
+                  className="sidebar-util-link"
+                >
                   <div className="util-icon-box pdf-type">
                     <FaFilePdf />
                   </div>
                   <div className="util-text-box">
-                    <span className="util-title">Hồ sơ pháp lý P.A.C STONE</span>
-                    <span className="util-badge">Tải xuống PDF</span>
+                    <span className="util-title">
+                      {locale === "vi"
+                        ? "Hồ sơ pháp lý P.A.C STONE"
+                        : "P.A.C STONE Legal Profile"}
+                    </span>
+                    <span className="util-badge">
+                      {locale === "vi" ? "Tải xuống PDF" : "Download PDF"}
+                    </span>
                   </div>
                 </Link>
               </li>
 
-
-              {/* 5. Nút Zalo OA */}
               <li className="mt-2">
-                <Link href="https://zalo.me/YOUR_ZALO_OA_ID" target="_blank" className="sidebar-util-zalo-btn">
+                <Link
+                  href="https://zalo.me/YOUR_ZALO_OA_ID"
+                  target="_blank"
+                  className="sidebar-util-zalo-btn"
+                >
                   <FaCommentDots className="zalo-btn-icon" />
-                  <span>NHẮN TIN ZALO OA NGAY</span>
+                  <span>
+                    {locale === "vi"
+                      ? "NHẮN TIN ZALO OA NGAY"
+                      : "MESSAGE ZALO OA NOW"}
+                  </span>
                 </Link>
               </li>
-
             </ul>
           </div>
 
           <div className="sidebar-one__info sidebar-one__item">
-            <h4 className="sidebar-one__title">Thông tin liên hệ</h4>
+            <h4 className="sidebar-one__title">
+              {locale === "vi" ? "Thông tin liên hệ" : "Contact Information"}
+            </h4>
 
             <ul className="sidebar-one__info__list">
               <li>
                 <span className="sidebar-contact-icon">
                   <FaMapMarkerAlt />
                 </span>
-                <address>
-                  114 C Hoàng Hoa Thám, Phường Bảy Hiền, TP. HCM
-                </address>
+                <address>114 C Hoàng Hoa Thám, Phường Bảy Hiền, TP. HCM</address>
               </li>
 
               <li>
@@ -462,15 +496,16 @@ export function Header() {
             </ul>
           </div>
 
-          <div className="main-footer__social floens-social" style={{ marginBottom: "70px" }}>
+          <div
+            className="main-footer__social floens-social"
+            style={{ marginBottom: "70px" }}
+          >
             <a href="https://facebook.com" aria-label="Facebook">
               <FaFacebookF />
             </a>
-
             <a href="https://zalo.me" aria-label="Zalo">
               <SiZalo />
             </a>
-
             <a href="https://youtube.com" aria-label="Youtube">
               <FaYoutube />
             </a>
@@ -482,19 +517,26 @@ export function Header() {
         <div
           className="search-popup__overlay search-toggler"
           onClick={() => setSearchOpen(false)}
-
         />
-
 
         <div className="search-popup__content">
           <form
             role="search"
             method="get"
             className="search-popup__form"
-            action="/vi/tim-kiem"
+            action={locale === "vi" ? "/vi/tim-kiem" : "/en/search"}
           >
-            <input type="text" name="q" id="search" placeholder="Tìm kiếm..." />
-            <button type="submit" aria-label="search submit" className="floens-btn">
+            <input
+              type="text"
+              name="q"
+              id="search"
+              placeholder={locale === "vi" ? "Tìm kiếm..." : "Search here..."}
+            />
+            <button
+              type="submit"
+              aria-label="search submit"
+              className="floens-btn"
+            >
               <GoSearch />
             </button>
           </form>

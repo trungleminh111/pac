@@ -1,6 +1,7 @@
 "use client";
 
-import { useActionState, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import { experimental_useFormState as useFormState } from "react-dom";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Eye, Save } from "lucide-react";
@@ -39,7 +40,7 @@ export default function ServiceForm({
 }) {
   const router = useRouter();
 
-  const [state, formAction, pending] = useActionState(action, {
+  const [state, formAction] = useFormState(action, {
     ok: false,
     message: "",
   });
@@ -137,10 +138,6 @@ export default function ServiceForm({
               <PostEditor value={content} onChange={setContent} />
               <input type="hidden" name="content" value={content} />
 
-              <div className="grid gap-4 md:grid-cols-2">
-               
-              </div>
-
               <div className="rounded-xl border p-4">
                 <h3 className="mb-3 font-semibold">SEO</h3>
 
@@ -186,22 +183,20 @@ export default function ServiceForm({
                   type="submit"
                   name="status"
                   value="DRAFT"
-                  disabled={pending}
-                  className="flex flex-1 items-center justify-center gap-2 rounded-xl border px-4 py-3 text-sm font-semibold disabled:opacity-60"
+                  className="flex flex-1 items-center justify-center gap-2 rounded-xl border px-4 py-3 text-sm font-semibold"
                 >
                   <Save className="h-4 w-4" />
-                  {pending ? "Đang lưu..." : "Lưu nháp"}
+                  Lưu nháp
                 </button>
 
                 <button
                   type="submit"
                   name="status"
                   value="PUBLISHED"
-                  disabled={pending}
-                  className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-[#2271b1] px-4 py-3 text-sm font-semibold text-white disabled:opacity-60"
+                  className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-[#2271b1] px-4 py-3 text-sm font-semibold text-white"
                 >
                   <Eye className="h-4 w-4" />
-                  {pending ? "Đang lưu..." : "Xuất bản"}
+                  Xuất bản
                 </button>
               </div>
             </div>

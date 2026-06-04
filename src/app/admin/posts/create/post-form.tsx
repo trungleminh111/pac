@@ -1,6 +1,7 @@
 "use client";
 
-import { useActionState, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import { experimental_useFormState as useFormState } from "react-dom";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Eye, Save } from "lucide-react";
@@ -14,6 +15,19 @@ type Category = {
   nameEn: string | null;
 };
 
+function toSlug(value: string) {
+  return value
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/đ/g, "d")
+    .replace(/Đ/g, "d")
+    .replace(/[^a-z0-9\s-]/g, "")
+    .trim()
+    .replace(/\s+/g, "-")
+    .replace(/-+/g, "-");
+}
+
 export default function CreatePostForm({
   action,
   categories,
@@ -26,23 +40,47 @@ export default function CreatePostForm({
 }) {
   const router = useRouter();
 
-  const [state, formAction, pending] = useActionState(action, {
+  const [state, formAction] = useFormState(action, {
     ok: false,
     message: "",
   });
 
+  const [title, setTitle] = useState("");
+  const [slug, setSlug] = useState("");
+  const [slugEdited, setSlugEdited] = useState(false);
   const [content, setContent] = useState("");
   const [thumbnail, setThumbnail] = useState("");
+  const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
     if (state.ok) {
       router.push("/admin/posts");
       router.refresh();
+      return;
     }
+
+    setSubmitting(false);
   }, [state.ok, router]);
 
+  function handleTitleChange(value: string) {
+    setTitle(value);
+
+    if (!slugEdited) {
+      setSlug(toSlug(value));
+    }
+  }
+
+  function handleSlugChange(value: string) {
+    setSlugEdited(true);
+    setSlug(toSlug(value));
+  }
+
   return (
-    <form action={formAction} className="space-y-6">
+    <form
+      action={formAction}
+      onSubmit={() => setSubmitting(true)}
+      className="space-y-6"
+    >
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-slate-950">Thêm bài viết</h1>
@@ -93,6 +131,8 @@ export default function CreatePostForm({
               <input
                 name="title"
                 required
+                value={title}
+                onChange={(event) => handleTitleChange(event.target.value)}
                 placeholder="Nhập tiêu đề tại đây"
                 className="w-full rounded-xl border px-4 py-4 text-2xl font-semibold outline-none focus:border-[#2271b1]"
               />
@@ -100,6 +140,8 @@ export default function CreatePostForm({
               <input
                 name="slug"
                 required
+                value={slug}
+                onChange={(event) => handleSlugChange(event.target.value)}
                 placeholder="duong-dan-bai-viet"
                 className="w-full rounded-xl border px-4 py-3 text-sm outline-none focus:border-[#2271b1]"
               />
@@ -164,22 +206,22 @@ export default function CreatePostForm({
                   type="submit"
                   name="status"
                   value="DRAFT"
-                  disabled={pending}
+                  disabled={submitting}
                   className="flex flex-1 items-center justify-center gap-2 rounded-xl border px-4 py-3 text-sm font-semibold disabled:opacity-60"
                 >
                   <Save className="h-4 w-4" />
-                  {pending ? "Đang lưu..." : "Lưu nháp"}
+                  {submitting ? "Đang lưu..." : "Lưu nháp"}
                 </button>
 
                 <button
                   type="submit"
                   name="status"
                   value="PUBLISHED"
-                  disabled={pending}
+                  disabled={submitting}
                   className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-[#2271b1] px-4 py-3 text-sm font-semibold text-white disabled:opacity-60"
                 >
                   <Eye className="h-4 w-4" />
-                  {pending ? "Đang lưu..." : "Xuất bản"}
+                  {submitting ? "Đang lưu..." : "Xuất bản"}
                 </button>
               </div>
             </div>

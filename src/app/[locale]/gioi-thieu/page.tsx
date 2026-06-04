@@ -1,4 +1,4 @@
-import { HeaderWrapper as Header } from "@/components/site/HeaderWrapper";
+import { SiteHeader as Header } from "@/components/site/SiteHeader";
 import { Footer } from "@/components/site/Footer";
 import { About } from "@/components/site/About";
 import { PageHeader } from "@/components/site/PageHeader";

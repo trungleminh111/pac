@@ -1,3 +1,4 @@
+'use client'
 import { Header } from "@/components/site/Header";
 import { getHeaderMenu } from "@/server/menus/menu.query";
 import type { Locale } from "@/server/menus/menu.type";

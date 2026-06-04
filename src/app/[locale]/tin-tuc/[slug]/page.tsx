@@ -1,7 +1,7 @@
 "use client";
 
 import { use, useMemo, useState } from "react";
-import { HeaderWrapper as Header } from "@/components/site/HeaderWrapper";
+import { SiteHeader as Header } from "@/components/site/SiteHeader";
 import { Footer } from "@/components/site/Footer";
 import { PageHeader } from "@/components/site/PageHeader";
 import { LuChevronLeft, LuChevronRight } from "react-icons/lu";

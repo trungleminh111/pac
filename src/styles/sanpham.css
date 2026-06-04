@@ -548,3 +548,6 @@
 .product__categories .list-unstyled li.active span {
   color: #fff !important;
 }
+    .product__categories li button span{
+color: black !important
+}

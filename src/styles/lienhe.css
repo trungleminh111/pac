@@ -410,6 +410,7 @@
   .contact-right {
     gap: 12px;
     padding: 0 10px;
+    padding-bottom: 20px;
   }
 
   .contact-img-list,
@@ -432,6 +433,7 @@
   .contact-call__subtitle {
     display: none;
   }
+  
 }
 
 

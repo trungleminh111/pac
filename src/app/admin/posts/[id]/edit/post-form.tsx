@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { experimental_useFormState as useFormState } from "react-dom";
+import { useFormState } from "react-dom";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Save } from "lucide-react";
@@ -75,9 +75,11 @@ export default function EditPostForm({
   );
 
   const [state, formAction] = useFormState(action, {
-    ok: false,
-    message: "",
-  });
+  ok: false,
+  message: "",
+});
+
+const pending = false;
 
   const [title, setTitle] = useState(translation?.title || "");
   const [slug, setSlug] = useState(translation?.slug || "");

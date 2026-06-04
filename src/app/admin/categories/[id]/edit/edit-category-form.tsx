@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useActionState } from "react";
+import { useFormState } from "react-dom";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Save } from "lucide-react";
@@ -52,9 +52,9 @@ export default function EditCategoryForm({
   const router = useRouter();
 
   const [state, formAction, pending] = useActionState(action, {
-    ok: false,
-    message: "",
-  });
+  ok: false,
+  message: "",
+});
 
   const [nameVi, setNameVi] = useState(category.nameVi);
   const [slug, setSlug] = useState(category.slug);

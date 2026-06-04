@@ -248,6 +248,7 @@ export function Header({
           onClick={() => setMobileOpen(false)}
         />
 
+
         <div className="mobile-nav__content"  style={{
             backgroundImage:
               "url('/assets/images/shapes/slidebar-PACSTONE.jpg')",

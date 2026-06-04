@@ -1,9 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import {
-  experimental_useFormState as useFormState,
-} from "react-dom";
+import { useActionState } from "react";from "react-dom";
 import {
   useEffect,
   useRef,
@@ -109,10 +107,9 @@ export default function CategoriesClient({
   const formRef = useRef<HTMLFormElement | null>(null);
   const [isRefreshing, startTransition] = useTransition();
 
-  const [state, formAction] = useFormState(action, {
+  const [state, formAction, pending] = useActionState(action, {
     ok: false,
     message: "",
-    nonce: 0,
   });
 
   const pending = false;
@@ -187,11 +184,10 @@ export default function CategoriesClient({
 
       {state.message && (
         <div
-          className={`rounded-xl px-4 py-3 text-sm ${
-            state.ok
+          className={`rounded-xl px-4 py-3 text-sm ${state.ok
               ? "border border-emerald-200 bg-emerald-50 text-emerald-700"
               : "border border-red-200 bg-red-50 text-red-700"
-          }`}
+            }`}
         >
           {state.message}
         </div>
@@ -266,11 +262,11 @@ export default function CategoriesClient({
             )}
 
             <button
-              disabled={pending || isRefreshing}
+              disabled={pending}
               className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#2271b1] px-4 py-3 text-sm font-semibold text-white disabled:opacity-60"
             >
               <Plus className="h-4 w-4" />
-              {pending || isRefreshing ? "Đang xử lý..." : "Thêm danh mục"}
+              {pending ? "Đang lưu..." : "Cập nhật danh mục"}
             </button>
           </div>
         </form>

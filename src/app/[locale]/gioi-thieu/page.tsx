@@ -5,7 +5,14 @@ import { PageHeader } from "@/components/site/PageHeader";
 
 
 
-export default function AboutPage() {
+export default function AboutPage({
+  params,
+}: {
+  params: {
+    locale: "vi" | "en";
+  };
+}) {
+  const locale = params.locale === "en" ? "en" : "vi";
     return (
         <div className="page-wrapper page-gioithieu">
             <Header locale={locale} />

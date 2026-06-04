@@ -11,7 +11,14 @@ import { FaPhoneAlt } from "react-icons/fa";
 import { LuDownload } from "react-icons/lu";
 import { LuUpload } from "react-icons/lu";
 import ScrollReveal from "@/components/site/ScrollReveal";
-export default function ContactPage() {
+export default function ContactPage({
+  params,
+}: {
+  params: {
+    locale: "vi" | "en";
+  };
+}) {
+  const locale = params.locale === "en" ? "en" : "vi";
   return (
     <div className="page-wrapper">
       <Header locale={locale} />

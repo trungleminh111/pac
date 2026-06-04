@@ -42,7 +42,12 @@ export async function Products({ locale }: { locale: Locale }) {
               <div className="product__item">
                 <div className="product__item__image">
                   <Link href={productHref(locale, product.slug)}>
-                    <img src={product.image} alt={product.title} />
+                    <img src={product.image} alt={product.title}
+                      style={{
+                        height: "180px",
+                        width: "100%",
+                        objectFit: "cover",
+                      }} />
                   </Link>
                 </div>
 
@@ -97,9 +102,9 @@ export async function Products({ locale }: { locale: Locale }) {
               <span>
                 {locale === "vi" ? "Xem tất cả sản phẩm" : "View all products"}
               </span>
-                <i className="icon-right-arrow" >→</i>
+              <i className="icon-right-arrow" >→</i>
             </Link>
-          
+
           </div>
         )}
       </div>

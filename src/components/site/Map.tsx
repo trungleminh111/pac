@@ -38,7 +38,6 @@ export default function LocationMap() {
       if (!mapRef.current || mapInstanceRef.current) return;
 
       const L = await import("leaflet");
-      await import("leaflet/dist/leaflet.css");
 
       if (!mounted || !mapRef.current) return;
 
@@ -193,7 +192,7 @@ export default function LocationMap() {
       };
 
       mapRef.current.addEventListener("wheel", handleWheel, {
-        passive: false, 
+        passive: false,
       });
     }
 

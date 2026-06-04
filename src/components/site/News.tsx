@@ -23,7 +23,7 @@ export function News() {
 
             <div className="col-lg-4">
               <div className="blog-one__top__button">
-                <a href="/tin-tuc" className="floens-btn floens-btn--border">
+                <a href="/vi/tin-tuc" className="floens-btn floens-btn--border">
                   <span>Xem tất cả</span>
                   <i>→</i>
                 </a>

@@ -433,3 +433,27 @@
     display: none;
   }
 }
+
+
+@keyframes iconBounceUpDown {
+  0%, 100% {
+    transform: translateY(0); 
+  }
+  50% {
+    transform: translateY(-5px); 
+  }
+}
+
+
+.download-btn svg {
+  display: inline-block; /* Bắt buộc để thuộc tính transform hoạt động chuẩn */
+  animation: iconBounceUpDown 2s infinite ease-in-out; /* Chạy vô hạn trong 2 giây */
+  will-change: transform;
+}
+
+/* 2. Áp dụng hiệu ứng tự động chạy vô hạn cho icon Mũi tên gửi nội dung */
+.floens-btn svg {
+  display: inline-block;
+  animation: iconBounceUpDown 1.6s infinite ease-in-out; /* Tốc độ nhanh hơn một chút (1.6s) */
+  will-change: transform;
+}

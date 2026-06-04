@@ -12,7 +12,7 @@ import "@/styles/icon.css";
 import "@/styles/gioithieu.css";
 import "@/styles/footer.css";
 import "@/styles/title.css";
-
+import "@/styles/scroll-reveal.css";
 import ScrollTopProgress from "@/components/site/ScrollTopProgress";
 
 export const metadata: Metadata = {

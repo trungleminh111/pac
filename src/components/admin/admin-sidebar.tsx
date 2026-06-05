@@ -28,6 +28,7 @@ const menu: {
   { label: "Danh mục", href: "/admin/categories", icon: FolderTree, module: "categories" },
   { label: "Media", href: "/admin/media", icon: ImageIcon, module: "media" },
   { label: "Người dùng", href: "/admin/users", icon: Users, module: "users" },
+  { label: "Menus", href: "/admin/menus", icon: FolderTree, module: "menus" },
   { label: "Cài đặt", href: "/admin/settings", icon: Settings, module: "settings" },
 ];
 

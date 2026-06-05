@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 
 import "bootstrap/dist/css/bootstrap.min.css";
-
+import Preloader from "@/components/site/Preloader";
 
 import "@/styles/site.css";
+import "@/styles/animate.min.css";
 import "@/styles/header.css";
 import "@/styles/ClientCarousel.css";
 import "@/styles/services.css";
@@ -28,6 +29,7 @@ export default function RootLayout({
   return (
     <html lang="vi">
       <body>
+        <Preloader />
         {children}
         <ScrollTopProgress />
       </body>

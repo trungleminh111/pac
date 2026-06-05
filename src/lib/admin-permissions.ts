@@ -12,6 +12,7 @@ export type AdminModule =
   | "media"
   | "users"
   | "categories"
+  | "menus"
   | "settings";
 
 export async function getCurrentAdminRole() {

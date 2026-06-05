@@ -117,7 +117,6 @@ export default function ProductForm({
               <label className="mb-2 block text-sm font-semibold text-slate-700">
                 Ngôn ngữ sản phẩm
               </label>
-
               <select
                 name="locale"
                 defaultValue="vi"
@@ -129,101 +128,205 @@ export default function ProductForm({
             </div>
 
             <div className="space-y-5">
-              <input
-                name="title"
-                required
-                value={title}
-                onChange={(e) => {
-                  const value = e.target.value;
-                  setTitle(value);
-                  setSlug(toSlug(value));
-                }}
-                placeholder="Nhập tên sản phẩm"
-                className="w-full rounded-xl border px-4 py-4 text-2xl font-semibold outline-none focus:border-[#2271b1]"
-              />
-
-              <input
-                name="slug"
-                required
-                value={slug}
-                onChange={(e) => setSlug(toSlug(e.target.value))}
-                placeholder="slug-san-pham"
-                className="w-full rounded-xl border px-4 py-3 text-sm outline-none focus:border-[#2271b1]"
-              />
-
-              <textarea
-                name="excerpt"
-                rows={3}
-                placeholder="Mô tả ngắn"
-                className="w-full rounded-xl border px-4 py-3 text-sm outline-none focus:border-[#2271b1]"
-              />
-
-              <PostEditor value={content} onChange={setContent} />
-              <input type="hidden" name="content" value={content} />
-
-              <div className="grid gap-4 md:grid-cols-2">
+              <div>
+                <label className="mb-2 block text-sm font-semibold text-slate-700">
+                  Tên sản phẩm <span className="text-red-500">*</span>
+                </label>
                 <input
-                  name="sku"
-                  placeholder="Mã sản phẩm / SKU"
-                  className="rounded-xl border px-4 py-3 text-sm"
-                />
-
-                <div>
-                  <input
-                    value={priceDisplay}
-                    onChange={(e) =>
-                      setPriceDisplay(formatMoney(e.target.value))
-                    }
-                    placeholder="Giá, ví dụ 10.500.000"
-                    className="w-full rounded-xl border px-4 py-3 text-sm"
-                  />
-                  <input
-                    type="hidden"
-                    name="price"
-                    value={priceDisplay.replace(/\D/g, "")}
-                  />
-                </div>
-
-                <input
-                  name="origin"
-                  placeholder="Xuất xứ"
-                  className="rounded-xl border px-4 py-3 text-sm"
-                />
-
-                <input
-                  name="size"
-                  placeholder="Kích thước"
-                  className="rounded-xl border px-4 py-3 text-sm"
-                />
-
-                <input
-                  name="material"
-                  placeholder="Chất liệu"
-                  className="rounded-xl border px-4 py-3 text-sm"
-                />
-
-                <input
-                  name="color"
-                  placeholder="Màu sắc"
-                  className="rounded-xl border px-4 py-3 text-sm"
+                  name="title"
+                  required
+                  value={title}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    setTitle(value);
+                    setSlug(toSlug(value));
+                  }}
+                  placeholder="Nhập tên sản phẩm"
+                  className="w-full rounded-xl border px-4 py-4 text-2xl font-semibold outline-none focus:border-[#2271b1]"
                 />
               </div>
 
-              <div className="rounded-xl border p-4">
-                <h3 className="mb-3 font-semibold">SEO</h3>
-
+              <div>
+                <label className="mb-2 block text-sm font-semibold text-slate-700">
+                  Slug <span className="text-red-500">*</span>
+                </label>
                 <input
-                  name="seoTitle"
-                  placeholder="SEO title"
-                  className="mb-3 w-full rounded-xl border px-4 py-3 text-sm"
+                  name="slug"
+                  required
+                  value={slug}
+                  onChange={(e) => setSlug(toSlug(e.target.value))}
+                  placeholder="slug-san-pham"
+                  className="w-full rounded-xl border px-4 py-3 text-sm outline-none focus:border-[#2271b1]"
                 />
+              </div>
 
+              <div>
+                <label className="mb-2 block text-sm font-semibold text-slate-700">
+                  Mô tả ngắn
+                </label>
                 <textarea
-                  name="seoDescription"
+                  name="excerpt"
                   rows={3}
-                  placeholder="SEO description"
-                  className="w-full rounded-xl border px-4 py-3 text-sm"
+                  placeholder="Mô tả ngắn về sản phẩm"
+                  className="w-full rounded-xl border px-4 py-3 text-sm outline-none focus:border-[#2271b1]"
                 />
+              </div>
+
+              <div>
+                <label className="mb-2 block text-sm font-semibold text-slate-700">
+                  Nội dung chi tiết
+                </label>
+                <PostEditor value={content} onChange={setContent} />
+                <input type="hidden" name="content" value={content} />
+              </div>
+
+              {/* Thông tin cơ bản */}
+              <div className="rounded-xl border p-4">
+                <h3 className="mb-4 font-semibold text-slate-800">Thông tin cơ bản</h3>
+                <div className="grid gap-4 md:grid-cols-2">
+                  <div>
+                    <label className="mb-1.5 block text-sm font-medium text-slate-600">
+                      Mã sản phẩm / SKU
+                    </label>
+                    <input
+                      name="sku"
+                      placeholder="VD: PAC-001"
+                      className="w-full rounded-xl border px-4 py-3 text-sm outline-none focus:border-[#2271b1]"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="mb-1.5 block text-sm font-medium text-slate-600">
+                      Giá bán
+                    </label>
+                    <input
+                      value={priceDisplay}
+                      onChange={(e) =>
+                        setPriceDisplay(formatMoney(e.target.value))
+                      }
+                      placeholder="VD: 10.500.000"
+                      className="w-full rounded-xl border px-4 py-3 text-sm outline-none focus:border-[#2271b1]"
+                    />
+                    <input
+                      type="hidden"
+                      name="price"
+                      value={priceDisplay.replace(/\D/g, "")}
+                    />
+                  </div>
+
+                  <div>
+                    <label className="mb-1.5 block text-sm font-medium text-slate-600">
+                      Xuất xứ
+                    </label>
+                    <input
+                      name="origin"
+                      placeholder="VD: Ấn Độ, Ý, Việt Nam"
+                      className="w-full rounded-xl border px-4 py-3 text-sm outline-none focus:border-[#2271b1]"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="mb-1.5 block text-sm font-medium text-slate-600">
+                      Màu sắc
+                    </label>
+                    <input
+                      name="color"
+                      placeholder="VD: Trắng vân xám"
+                      className="w-full rounded-xl border px-4 py-3 text-sm outline-none focus:border-[#2271b1]"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Thông số kỹ thuật */}
+              <div className="rounded-xl border p-4">
+                <h3 className="mb-4 font-semibold text-slate-800">Thông số kỹ thuật</h3>
+                <div className="grid gap-4 md:grid-cols-2">
+                  <div>
+                    <label className="mb-1.5 block text-sm font-medium text-slate-600">
+                      Chất liệu / Chủng loại
+                    </label>
+                    <input
+                      name="material"
+                      placeholder="VD: Đá Marble tự nhiên"
+                      className="w-full rounded-xl border px-4 py-3 text-sm outline-none focus:border-[#2271b1]"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="mb-1.5 block text-sm font-medium text-slate-600">
+                      Kích thước
+                    </label>
+                    <input
+                      name="size"
+                      placeholder="VD: Khổ lớn theo yêu cầu"
+                      className="w-full rounded-xl border px-4 py-3 text-sm outline-none focus:border-[#2271b1]"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="mb-1.5 block text-sm font-medium text-slate-600">
+                      Độ dày
+                    </label>
+                    <input
+                      name="thickness"
+                      placeholder="VD: 2cm"
+                      className="w-full rounded-xl border px-4 py-3 text-sm outline-none focus:border-[#2271b1]"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="mb-1.5 block text-sm font-medium text-slate-600">
+                      Khối lượng riêng
+                    </label>
+                    <input
+                      name="density"
+                      placeholder="VD: 2.71 g/m3"
+                      className="w-full rounded-xl border px-4 py-3 text-sm outline-none focus:border-[#2271b1]"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="mb-1.5 block text-sm font-medium text-slate-600">
+                      Độ cứng
+                    </label>
+                    <input
+                      name="hardness"
+                      placeholder="VD: 4 Mohs"
+                      className="w-full rounded-xl border px-4 py-3 text-sm outline-none focus:border-[#2271b1]"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* SEO */}
+              <div className="rounded-xl border p-4">
+                <h3 className="mb-4 font-semibold text-slate-800">SEO</h3>
+
+                <div className="space-y-3">
+                  <div>
+                    <label className="mb-1.5 block text-sm font-medium text-slate-600">
+                      SEO Title
+                    </label>
+                    <input
+                      name="seoTitle"
+                      placeholder="Tiêu đề SEO"
+                      className="w-full rounded-xl border px-4 py-3 text-sm outline-none focus:border-[#2271b1]"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="mb-1.5 block text-sm font-medium text-slate-600">
+                      SEO Description
+                    </label>
+                    <textarea
+                      name="seoDescription"
+                      rows={3}
+                      placeholder="Mô tả SEO"
+                      className="w-full rounded-xl border px-4 py-3 text-sm outline-none focus:border-[#2271b1]"
+                    />
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -234,19 +337,24 @@ export default function ProductForm({
             <div className="border-b px-5 py-4 font-semibold">Xuất bản</div>
 
             <div className="space-y-4 p-5">
-              <select
-                value={status}
-                onChange={(e) =>
-                  setStatus(
-                    e.target.value as "DRAFT" | "PUBLISHED" | "ARCHIVED"
-                  )
-                }
-                className="w-full rounded-xl border px-4 py-3 text-sm"
-              >
-                <option value="DRAFT">Bản nháp</option>
-                <option value="PUBLISHED">Xuất bản</option>
-                <option value="ARCHIVED">Lưu trữ</option>
-              </select>
+              <div>
+                <label className="mb-1.5 block text-sm font-medium text-slate-600">
+                  Trạng thái
+                </label>
+                <select
+                  value={status}
+                  onChange={(e) =>
+                    setStatus(
+                      e.target.value as "DRAFT" | "PUBLISHED" | "ARCHIVED"
+                    )
+                  }
+                  className="w-full rounded-xl border px-4 py-3 text-sm"
+                >
+                  <option value="DRAFT">Bản nháp</option>
+                  <option value="PUBLISHED">Xuất bản</option>
+                  <option value="ARCHIVED">Lưu trữ</option>
+                </select>
+              </div>
 
               <label className="flex items-center gap-2 text-sm">
                 <input name="isFeatured" type="checkbox" />
@@ -301,9 +409,7 @@ export default function ProductForm({
           </div>
 
           <div className="rounded-2xl border bg-white shadow-sm">
-            <div className="border-b px-5 py-4 font-semibold">
-              Ảnh đại diện
-            </div>
+            <div className="border-b px-5 py-4 font-semibold">Ảnh đại diện</div>
 
             <div className="space-y-4 p-5">
               <MediaPicker value={thumbnail} onChange={setThumbnail} />
@@ -312,9 +418,7 @@ export default function ProductForm({
           </div>
 
           <div className="rounded-2xl border bg-white shadow-sm">
-            <div className="border-b px-5 py-4 font-semibold">
-              Gallery sản phẩm
-            </div>
+            <div className="border-b px-5 py-4 font-semibold">Gallery sản phẩm</div>
 
             <div className="space-y-4 p-5">
               <MediaGalleryPicker value={gallery} onChange={setGallery} />

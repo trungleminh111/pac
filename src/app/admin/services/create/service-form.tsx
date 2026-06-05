@@ -55,14 +55,17 @@ export default function ServiceForm({
       router.push("/admin/services");
       router.refresh();
     }
+
     setSubmitting(false);
   }, [state.ok, router]);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setSubmitting(true);
+
     const formData = new FormData(e.currentTarget);
     const result = await action(state, formData);
+
     setState(result);
   }
 
@@ -115,53 +118,89 @@ export default function ServiceForm({
             </div>
 
             <div className="space-y-5">
-              <input
-                name="title"
-                required
-                value={title}
-                onChange={(e) => {
-                  const value = e.target.value;
-                  setTitle(value);
-                  setSlug(toSlug(value));
-                }}
-                placeholder="Nhập tên dịch vụ"
-                className="w-full rounded-xl border px-4 py-4 text-2xl font-semibold outline-none focus:border-[#2271b1]"
-              />
+              <div>
+                <label className="mb-2 block text-sm font-semibold text-slate-700">
+                  Tên dịch vụ
+                </label>
 
-              <input
-                name="slug"
-                required
-                value={slug}
-                onChange={(e) => setSlug(toSlug(e.target.value))}
-                placeholder="slug-dich-vu"
-                className="w-full rounded-xl border px-4 py-3 text-sm outline-none focus:border-[#2271b1]"
-              />
+                <input
+                  name="title"
+                  required
+                  value={title}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    setTitle(value);
+                    setSlug(toSlug(value));
+                  }}
+                  placeholder="Nhập tên dịch vụ"
+                  className="w-full rounded-xl border px-4 py-4 text-2xl font-semibold outline-none focus:border-[#2271b1]"
+                />
+              </div>
 
-              <textarea
-                name="excerpt"
-                rows={3}
-                placeholder="Mô tả ngắn"
-                className="w-full rounded-xl border px-4 py-3 text-sm outline-none focus:border-[#2271b1]"
-              />
+              <div>
+                <label className="mb-2 block text-sm font-semibold text-slate-700">
+                  Đường dẫn / Slug
+                </label>
 
-              <PostEditor value={content} onChange={setContent} />
-              <input type="hidden" name="content" value={content} />
+                <input
+                  name="slug"
+                  required
+                  value={slug}
+                  onChange={(e) => setSlug(toSlug(e.target.value))}
+                  placeholder="slug-dich-vu"
+                  className="w-full rounded-xl border px-4 py-3 text-sm outline-none focus:border-[#2271b1]"
+                />
+              </div>
+
+              <div>
+                <label className="mb-2 block text-sm font-semibold text-slate-700">
+                  Mô tả ngắn
+                </label>
+
+                <textarea
+                  name="excerpt"
+                  rows={3}
+                  placeholder="Nhập mô tả ngắn cho dịch vụ"
+                  className="w-full rounded-xl border px-4 py-3 text-sm outline-none focus:border-[#2271b1]"
+                />
+              </div>
+
+              <div>
+                <label className="mb-2 block text-sm font-semibold text-slate-700">
+                  Nội dung dịch vụ
+                </label>
+
+                <PostEditor value={content} onChange={setContent} />
+                <input type="hidden" name="content" value={content} />
+              </div>
 
               <div className="rounded-xl border p-4">
                 <h3 className="mb-3 font-semibold">SEO</h3>
 
-                <input
-                  name="seoTitle"
-                  placeholder="SEO title"
-                  className="mb-3 w-full rounded-xl border px-4 py-3 text-sm"
-                />
+                <div className="mb-3">
+                  <label className="mb-2 block text-sm font-semibold text-slate-700">
+                    SEO title
+                  </label>
 
-                <textarea
-                  name="seoDescription"
-                  rows={3}
-                  placeholder="SEO description"
-                  className="w-full rounded-xl border px-4 py-3 text-sm"
-                />
+                  <input
+                    name="seoTitle"
+                    placeholder="Nhập tiêu đề SEO"
+                    className="w-full rounded-xl border px-4 py-3 text-sm"
+                  />
+                </div>
+
+                <div>
+                  <label className="mb-2 block text-sm font-semibold text-slate-700">
+                    SEO description
+                  </label>
+
+                  <textarea
+                    name="seoDescription"
+                    rows={3}
+                    placeholder="Nhập mô tả SEO"
+                    className="w-full rounded-xl border px-4 py-3 text-sm"
+                  />
+                </div>
               </div>
             </div>
           </div>
@@ -172,15 +211,21 @@ export default function ServiceForm({
             <div className="border-b px-5 py-4 font-semibold">Xuất bản</div>
 
             <div className="space-y-4 p-5">
-              <select
-                name="status"
-                defaultValue="DRAFT"
-                className="w-full rounded-xl border px-4 py-3 text-sm"
-              >
-                <option value="DRAFT">Bản nháp</option>
-                <option value="PUBLISHED">Xuất bản</option>
-                <option value="ARCHIVED">Lưu trữ</option>
-              </select>
+              <div>
+                <label className="mb-2 block text-sm font-semibold text-slate-700">
+                  Trạng thái dịch vụ
+                </label>
+
+                <select
+                  name="status"
+                  defaultValue="DRAFT"
+                  className="w-full rounded-xl border px-4 py-3 text-sm"
+                >
+                  <option value="DRAFT">Bản nháp</option>
+                  <option value="PUBLISHED">Xuất bản</option>
+                  <option value="ARCHIVED">Lưu trữ</option>
+                </select>
+              </div>
 
               <label className="flex items-center gap-2 text-sm">
                 <input name="allowIndex" type="checkbox" defaultChecked />
@@ -217,6 +262,10 @@ export default function ServiceForm({
             <div className="border-b px-5 py-4 font-semibold">Danh mục</div>
 
             <div className="p-5">
+              <label className="mb-2 block text-sm font-semibold text-slate-700">
+                Chọn danh mục dịch vụ
+              </label>
+
               <select
                 name="categoryId"
                 className="w-full rounded-xl border px-4 py-3 text-sm"
@@ -237,6 +286,10 @@ export default function ServiceForm({
             </div>
 
             <div className="space-y-4 p-5">
+              <label className="block text-sm font-semibold text-slate-700">
+                Chọn ảnh đại diện dịch vụ
+              </label>
+
               <MediaPicker value={thumbnail} onChange={setThumbnail} />
               <input type="hidden" name="thumbnail" value={thumbnail} />
             </div>

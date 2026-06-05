@@ -15,6 +15,7 @@ export const defaultPermissionSettings = {
     media: true,
     users: true,
     categories: true,
+    menus: true,
     settings: true,
   },
   EDITOR: {
@@ -26,6 +27,7 @@ export const defaultPermissionSettings = {
     media: true,
     users: false,
     categories: true,
+    menus: false,
     settings: false,
   },
   AUTHOR: {
@@ -37,6 +39,7 @@ export const defaultPermissionSettings = {
     media: true,
     users: false,
     categories: false,
+    menus: false,
     settings: false,
   },
 };

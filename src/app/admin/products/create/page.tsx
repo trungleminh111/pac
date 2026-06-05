@@ -45,6 +45,9 @@ async function createProduct(
   const size = String(formData.get("size") || "").trim();
   const material = String(formData.get("material") || "").trim();
   const color = String(formData.get("color") || "").trim();
+  const thickness = String(formData.get("thickness") || "").trim();
+  const density = String(formData.get("density") || "").trim();
+  const hardness = String(formData.get("hardness") || "").trim();
 
   const title = String(formData.get("title") || "").trim();
   const slug = String(formData.get("slug") || "").trim();
@@ -88,6 +91,9 @@ async function createProduct(
         size: size || null,
         material: material || null,
         color: color || null,
+        thickness: thickness || null,
+        density: density || null,
+        hardness: hardness || null,
         isFeatured,
         allowIndex,
         categoryId: categoryId || null,

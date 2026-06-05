@@ -30,6 +30,9 @@ type Product = {
   size: string | null;
   material: string | null;
   color: string | null;
+  thickness: string | null;
+  density: string | null;
+  hardness: string | null;
   isFeatured: boolean;
   allowIndex: boolean;
   categoryId: string | null;
@@ -216,20 +219,28 @@ export default function ProductEditForm({
               <input type="hidden" name="content" value={content} />
 
               <div className="grid gap-4 md:grid-cols-2">
-                <input
-                  name="sku"
-                  defaultValue={product.sku || ""}
-                  placeholder="Mã sản phẩm / SKU"
-                  className="rounded-xl border px-4 py-3 text-sm"
-                />
+                <div>
+                  <label className="mb-2 block text-sm font-semibold text-slate-700">
+                    SKU
+                  </label>
+                  <input
+                    name="sku"
+                    defaultValue={product.sku || ""}
+                    placeholder="Ví dụ: PS-MAR-001"
+                    className="w-full rounded-xl border px-4 py-3 text-sm"
+                  />
+                </div>
 
                 <div>
+                  <label className="mb-2 block text-sm font-semibold text-slate-700">
+                    Giá
+                  </label>
                   <input
                     value={priceDisplay}
                     onChange={(e) =>
                       setPriceDisplay(formatMoney(e.target.value))
                     }
-                    placeholder="Giá, ví dụ 10.500.000"
+                    placeholder="Ví dụ: 10.500.000"
                     className="w-full rounded-xl border px-4 py-3 text-sm"
                   />
                   <input
@@ -239,33 +250,89 @@ export default function ProductEditForm({
                   />
                 </div>
 
-                <input
-                  name="origin"
-                  defaultValue={product.origin || ""}
-                  placeholder="Xuất xứ"
-                  className="rounded-xl border px-4 py-3 text-sm"
-                />
+                <div>
+                  <label className="mb-2 block text-sm font-semibold text-slate-700">
+                    Xuất xứ
+                  </label>
+                  <input
+                    name="origin"
+                    defaultValue={product.origin || ""}
+                    placeholder="Ví dụ: Ấn Độ"
+                    className="w-full rounded-xl border px-4 py-3 text-sm"
+                  />
+                </div>
 
-                <input
-                  name="size"
-                  defaultValue={product.size || ""}
-                  placeholder="Kích thước"
-                  className="rounded-xl border px-4 py-3 text-sm"
-                />
+                <div>
+                  <label className="mb-2 block text-sm font-semibold text-slate-700">
+                    Chủng loại
+                  </label>
+                  <input
+                    name="material"
+                    defaultValue={product.material || ""}
+                    placeholder="Ví dụ: Đá Marble tự nhiên"
+                    className="w-full rounded-xl border px-4 py-3 text-sm"
+                  />
+                </div>
 
-                <input
-                  name="material"
-                  defaultValue={product.material || ""}
-                  placeholder="Chất liệu"
-                  className="rounded-xl border px-4 py-3 text-sm"
-                />
+                <div>
+                  <label className="mb-2 block text-sm font-semibold text-slate-700">
+                    Kích thước
+                  </label>
+                  <input
+                    name="size"
+                    defaultValue={product.size || ""}
+                    placeholder="Ví dụ: Khổ lớn theo yêu cầu"
+                    className="w-full rounded-xl border px-4 py-3 text-sm"
+                  />
+                </div>
 
-                <input
-                  name="color"
-                  defaultValue={product.color || ""}
-                  placeholder="Màu sắc"
-                  className="rounded-xl border px-4 py-3 text-sm"
-                />
+                <div>
+                  <label className="mb-2 block text-sm font-semibold text-slate-700">
+                    Độ dày
+                  </label>
+                  <input
+                    name="thickness"
+                    defaultValue={product.thickness || ""}
+                    placeholder="Ví dụ: 2cm"
+                    className="w-full rounded-xl border px-4 py-3 text-sm"
+                  />
+                </div>
+
+                <div>
+                  <label className="mb-2 block text-sm font-semibold text-slate-700">
+                    Khối lượng riêng
+                  </label>
+                  <input
+                    name="density"
+                    defaultValue={product.density || ""}
+                    placeholder="Ví dụ: 2.71 g/m3"
+                    className="w-full rounded-xl border px-4 py-3 text-sm"
+                  />
+                </div>
+
+                <div>
+                  <label className="mb-2 block text-sm font-semibold text-slate-700">
+                    Độ cứng
+                  </label>
+                  <input
+                    name="hardness"
+                    defaultValue={product.hardness || ""}
+                    placeholder="Ví dụ: 4Mohs"
+                    className="w-full rounded-xl border px-4 py-3 text-sm"
+                  />
+                </div>
+
+                <div>
+                  <label className="mb-2 block text-sm font-semibold text-slate-700">
+                    Màu sắc
+                  </label>
+                  <input
+                    name="color"
+                    defaultValue={product.color || ""}
+                    placeholder="Ví dụ: Trắng vân xám"
+                    className="w-full rounded-xl border px-4 py-3 text-sm"
+                  />
+                </div>
               </div>
 
               <div className="rounded-xl border p-4">

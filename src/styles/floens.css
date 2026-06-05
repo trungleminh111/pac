@@ -11786,11 +11786,11 @@ li:hover .sidebar__comments__icon::after {
 }
 
 .product-details__socials__title {
-  font-size: 14px;
+  font-size: 18px;
   font-weight: 500;
   line-height: 16px;
   color: var(--floens-text, #7a736a);
-  text-transform: uppercase;
+
   margin-bottom: 0;
 }
 

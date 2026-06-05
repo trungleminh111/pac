@@ -261,11 +261,11 @@ export default async function ServiceDetailPage({
                   />
                 </div>
 
-                <p className="service-details__text-two">
+                {/* <p className="service-details__text-two">
                   {locale === "vi"
                     ? "Công ty Cổ phần Đá quốc tế Phúc Nam - Nơi kiến tạo không gian sống đẳng cấp."
                     : "Phuc Nam International Stone Joint Stock Company - Creating premium living spaces."}
-                </p>
+                </p> */}
               </div>
             </div>
           </div>

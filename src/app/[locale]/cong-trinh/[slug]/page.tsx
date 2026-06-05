@@ -1,7 +1,10 @@
 import { SiteHeader as Header } from "@/components/site/SiteHeader";
 import { Footer } from "@/components/site/Footer";
 import { PageHeader } from "@/components/site/PageHeader";
-
+import { FaStar, FaCartShopping } from "react-icons/fa6";
+import { FaFacebookF, FaYoutube } from "react-icons/fa";
+import Link from "next/link";
+import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 export default async function WorkDetailPage({
   params,
 }: {
@@ -15,7 +18,7 @@ export default async function WorkDetailPage({
     title: "Từ lâu người ta đã biết rằng độc giả sẽ",
     //100 - 200 ký tự
     intro:
-      "Phúc Nam Stone thực hiện thi công toàn bộ hạng mục đá Marble tự nhiên cho biệt thự cao cấp, bao gồm sảnh chính, cầu thang, phòng khách và các khu vực trang trí.",
+      "PAC Stone thực hiện thi công toàn bộ hạng mục đá Marble tự nhiên cho biệt thự cao cấp, bao gồm sảnh chính, cầu thang, phòng khách và các khu vực trang trí.",
 
     mainImage: "slidechinh.jpg",
     //100 - 200 ký tự
@@ -131,23 +134,23 @@ export default async function WorkDetailPage({
               </aside>
             </div>
 
-            <div className="col-lg-4 mt-5 work-details__inner work-details__inner__image">
+            <div className="col-lg-4 mt-0 work-details__inner work-details__inner__image">
 
               <div className="work-details__inner d-flex gap-4 flex-column ">
-                  {project.gallery.map((image) => (
-                    <div className="" key={image}>
-                      <img
-                        src={`/assets/images/works/${image}`}
-                        alt={project.title}
-                      />
-                    </div>
-                  ))}
-             
+                {project.gallery.map((image) => (
+                  <div className="" key={image}>
+                    <img
+                      src={`/assets/images/works/${image}`}
+                      alt={project.title}
+                    />
+                  </div>
+                ))}
+
               </div>
 
             </div>
-            <div className="col-lg-8 mt-5">
-               <h3 className="work-details__title text-justify">
+            <div className="col-lg-8 mt-0 d-flex flex-column pb-4">
+              <h3 className="work-details__title text-justify">
                 {project.subTitle}
               </h3>
 
@@ -155,9 +158,52 @@ export default async function WorkDetailPage({
                 {project.content2}
               </p>
 
-                <p className="work-details__text text-justify">
-                  {project.content3}
-                </p>
+              <p className="work-details__text text-justify">
+                {project.content3}
+              </p>
+
+              {/* Đẩy xuống cuối */}
+              <div className="product-details__socials mt-auto bottom-bar" style={{ paddingBottom: 38 }}>
+                <a href="#" className="floens-btn  btn-consult">CẦN TƯ VẤN - BÁO GIÁ</a>
+
+                <div className="pagination">
+                  <button className="pagination__arrow">
+                    <FaChevronLeft />
+                  </button>
+                  <span className="pagination__item active">01</span>
+                  <span className="pagination__item">02</span>
+                  <span className="pagination__item">03</span>
+
+                  <button className="pagination__arrow">
+                    <FaChevronRight />
+                  </button>
+                </div>
+
+
+                <div className="details-social">
+                  <h3 className="product-details__socials__title">
+                    {locale === "vi" ? "Chia sẻ:" : "Share:"}
+                  </h3>
+                  <Link href="https://facebook.com" target="_blank">
+                    <i className="icon-facebook">
+                      <FaFacebookF />
+                    </i>
+                  </Link>
+
+                  <Link href="https://zalo.com" target="_blank">
+                    <img
+                      src="/assets/images/Icon_of_Zalo.svg.webp"
+                      alt="Zalo"
+                    />
+                  </Link>
+
+                  <Link href="https://youtube.com" target="_blank">
+                    <i className="icon-youtube">
+                      <FaYoutube />
+                    </i>
+                  </Link>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -183,7 +229,7 @@ export default async function WorkDetailPage({
                     alt={project.title}
                   />
                 </div>
-                <h3 className="work-details__title text-justify">
+                <h3 className="work-details__title text-justify mt-0">
                   {project.subTitle}
                 </h3>
 
@@ -280,6 +326,91 @@ export default async function WorkDetailPage({
                   </div>
                 </div>
               </aside>
+              <div className=" mt-auto bottom-bar-phone" >
+                <a href="#" className="floens-btn  btn-consult">CẦN TƯ VẤN - BÁO GIÁ</a>
+
+                <div className="details-social">
+                  <h3 className="product-details__socials__title">
+                    {locale === "vi" ? "Chia sẻ:" : "Share:"}
+                  </h3>
+                  <Link href="https://facebook.com" target="_blank">
+                    <i className="icon-facebook">
+                      <FaFacebookF />
+                    </i>
+                  </Link>
+
+                  <Link href="https://zalo.com" target="_blank">
+                    <img
+                      src="/assets/images/Icon_of_Zalo.svg.webp"
+                      alt="Zalo"
+                    />
+                  </Link>
+
+                  <Link href="https://youtube.com" target="_blank">
+                    <i className="icon-youtube">
+                      <FaYoutube />
+                    </i>
+                  </Link>
+                </div>
+
+                <div className="pagination">
+                  <button className="pagination__arrow">
+                    <FaChevronLeft />
+                  </button>
+                  <span className="pagination__item active">01</span>
+                  <span className="pagination__item">02</span>
+                  <span className="pagination__item">03</span>
+
+                  <button className="pagination__arrow">
+                    <FaChevronRight />
+                  </button>
+                </div>
+
+              </div>
+              <div className="product-details__socials mt-auto bottom-bar-tablet" style={{ paddingBottom: 38 }}>
+                <a href="#" className="floens-btn  btn-consult">CẦN TƯ VẤN - BÁO GIÁ</a>
+
+                <div className="pagination">
+                  <button className="pagination__arrow">
+                    <FaChevronLeft />
+                  </button>
+                  <span className="pagination__item active">01</span>
+                  <span className="pagination__item">02</span>
+                  <span className="pagination__item">03</span>
+
+                  <button className="pagination__arrow">
+                    <FaChevronRight />
+                  </button>
+                </div>
+
+
+                <div className="details-social">
+                  <h3 className="product-details__socials__title">
+                    {locale === "vi" ? "Chia sẻ:" : "Share:"}
+                  </h3>
+                  <div>
+
+                    <Link href="https://facebook.com" target="_blank">
+                      <i className="icon-facebook">
+                        <FaFacebookF />
+                      </i>
+                    </Link>
+
+                    <Link href="https://zalo.com" target="_blank">
+                      <img
+                        src="/assets/images/Icon_of_Zalo.svg.webp"
+                        alt="Zalo"
+                      />
+                    </Link>
+
+                    <Link href="https://youtube.com" target="_blank">
+                      <i className="icon-youtube">
+                        <FaYoutube />
+                      </i>
+                    </Link>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>

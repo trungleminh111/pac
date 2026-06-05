@@ -1,5 +1,10 @@
 import { prisma } from "@/lib/prisma";
-import type { Locale, ProductCardItem, ProductDetailItem } from "./product.type";
+import type {
+  Locale,
+  ProductCardItem,
+  ProductDetailItem,
+  ProductStyleConfig,
+} from "./product.type";
 
 function formatPrice(value: unknown) {
   if (!value) return "";
@@ -21,6 +26,11 @@ function getCategoryName(
   return locale === "vi" ? category.nameVi : category.nameEn || category.nameVi;
 }
 
+function getStyleConfig(value: unknown): ProductStyleConfig | null {
+  if (!value || typeof value !== "object" || Array.isArray(value)) return null;
+  return value as ProductStyleConfig;
+}
+
 export async function getHomeProducts(
   locale: Locale = "vi"
 ): Promise<ProductCardItem[]> {
@@ -31,14 +41,7 @@ export async function getHomeProducts(
         some: { locale },
       },
     },
-    orderBy: [
-      {
-        isFeatured: "desc",
-      },
-      {
-        createdAt: "desc",
-      },
-    ],
+    orderBy: [{ isFeatured: "desc" }, { createdAt: "desc" }],
     take: 4,
     select: {
       id: true,
@@ -81,7 +84,7 @@ export async function getHomeProducts(
         categoryId: product.categoryId,
         categoryName: getCategoryName(locale, product.category),
         categorySlug: product.category?.slug || "",
-        styleConfig: product.styleConfig,
+        styleConfig: getStyleConfig(product.styleConfig),
       };
     })
     .filter((product): product is ProductCardItem => product !== null);
@@ -97,9 +100,7 @@ export async function getProductsPage(
         some: { locale },
       },
     },
-    orderBy: {
-      createdAt: "desc",
-    },
+    orderBy: [{ isFeatured: "desc" }, { createdAt: "desc" }],
     select: {
       id: true,
       price: true,
@@ -141,7 +142,7 @@ export async function getProductsPage(
         categoryId: product.categoryId,
         categoryName: getCategoryName(locale, product.category),
         categorySlug: product.category?.slug || "",
-        styleConfig: product.styleConfig,
+        styleConfig: getStyleConfig(product.styleConfig),
       };
     })
     .filter((product): product is ProductCardItem => product !== null);
@@ -225,7 +226,7 @@ export async function getProductBySlug(
     thickness: product.thickness,
     density: product.density,
     hardness: product.hardness,
-    styleConfig: product.styleConfig,
+    styleConfig: getStyleConfig(product.styleConfig),
     isFeatured: product.isFeatured,
     categoryId: product.categoryId,
     allowIndex: product.allowIndex,

@@ -2,7 +2,7 @@ import Link from "next/link";
 import { SiteHeader as Header } from "@/components/site/SiteHeader";
 import { Footer } from "@/components/site/Footer";
 import { PageHeader } from "@/components/site/PageHeader";
-import { getProductsPage } from "@/server/products/product.query";
+import { getProductsPage, getProductCategories } from "@/server/products/product.query";
 import type { Locale } from "@/server/products/product.type";
 import { FaStar, FaCartShopping } from "react-icons/fa6";
 import { BsSearch } from "react-icons/bs";
@@ -56,19 +56,16 @@ export default async function ProductsPage({
 }) {
   const locale = params.locale;
   const products = await getProductsPage(locale);
+  const categories = await getProductCategories(locale);
 
-  const categories = Array.from(
-    new Set(products.map((product) => product.categoryName).filter(Boolean))
-  );
-
-  const activeCategory = searchParams?.category || categories[0] || "";
+  const activeCategory = searchParams?.category || categories[0]?.slug || "";
   const q = searchParams?.q?.trim() || "";
   const currentPage = Number(searchParams?.page || 1);
   const itemsPerPage = 8;
 
   const filteredProducts = products.filter((product) => {
     const matchCategory = activeCategory
-      ? product.categoryName === activeCategory
+      ? product.categorySlug === activeCategory
       : true;
 
     const matchSearch = q
@@ -153,12 +150,12 @@ export default async function ProductsPage({
                 <ul className="list-unstyled" style={{ width: "100%" }}>
                   {categories.map((category) => (
                     <li
-                      key={category}
-                      className={activeCategory === category ? "active" : ""}
+                      key={category.id}
+                      className={activeCategory === category.slug ? "active" : ""}
                     >
-                      <Link href={buildHref(locale, { category, q })}>
-                        <button type="button" data-text={category}>
-                          <span>{category}</span>
+                      <Link href={buildHref(locale, { category: category.slug, q })}>
+                        <button type="button" data-text={category.name}>
+                          <span>{category.name}</span>
                         </button>
                       </Link>
                     </li>

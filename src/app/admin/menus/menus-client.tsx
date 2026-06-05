@@ -179,9 +179,16 @@ export default function MenusClient({
                   <div
                     key={child.id}
                     draggable
-                    onDragStart={() => setDragId(child.id)}
-                    onDragOver={(e) => e.preventDefault()}
-                    onDrop={() => {
+                    onDragStart={(e) => {
+                      e.stopPropagation();
+                      setDragId(child.id);
+                    }}
+                    onDragOver={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                    }}
+                    onDrop={(e) => {
+                      e.stopPropagation();
                       if (dragId) moveChild(item.id, dragId, child.id);
                       setDragId(null);
                     }}

@@ -239,17 +239,9 @@ export async function getProductCategories(locale: Locale = "vi") {
     },
   });
 
-  return categories.map((category) => {
-    const label =
-      locale === "vi" ? category.nameVi : category.nameEn || category.nameVi;
-
-    return {
-      id: category.id,
-      label,
-      href:
-        locale === "vi"
-          ? `/vi/san-pham?category=${encodeURIComponent(label)}`
-          : `/en/products?category=${encodeURIComponent(label)}`,
-    };
-  });
+  return categories.map((category) => ({
+    id: category.id,
+    slug: category.slug,
+    name: getCategoryName(locale, category),
+  }));
 }

@@ -15,6 +15,36 @@ type Category = {
   nameEn: string | null;
 };
 
+type StyleConfig = {
+  image: {
+    width: string;
+    height: string;
+    objectFit: string;
+  };
+  card: {
+    marginTop: string;
+    marginRight: string;
+    marginBottom: string;
+    marginLeft: string;
+    borderRadius: string;
+  };
+};
+
+const defaultStyleConfig: StyleConfig = {
+  image: {
+    width: "100%",
+    height: "180px",
+    objectFit: "cover",
+  },
+  card: {
+    marginTop: "0",
+    marginRight: "0",
+    marginBottom: "24px",
+    marginLeft: "0",
+    borderRadius: "20px",
+  },
+};
+
 function toSlug(value: string) {
   return value
     .normalize("NFD")
@@ -58,9 +88,20 @@ export default function ProductForm({
   const [title, setTitle] = useState("");
   const [slug, setSlug] = useState("");
   const [priceDisplay, setPriceDisplay] = useState("");
+  const [styleConfig, setStyleConfig] =
+    useState<StyleConfig>(defaultStyleConfig);
+
   const [status, setStatus] = useState<"DRAFT" | "PUBLISHED" | "ARCHIVED">(
     "DRAFT"
   );
+
+  const styleConfigValue = JSON.stringify({
+    image: styleConfig.image,
+    card: {
+      margin: `${styleConfig.card.marginTop} ${styleConfig.card.marginRight} ${styleConfig.card.marginBottom} ${styleConfig.card.marginLeft}`,
+      borderRadius: styleConfig.card.borderRadius,
+    },
+  });
 
   useEffect(() => {
     if (state.ok) {
@@ -73,13 +114,18 @@ export default function ProductForm({
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setSubmitting(true);
+
     const formData = new FormData(e.currentTarget);
     const result = await action(state, formData);
+
     setState(result);
   }
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
+      <input type="hidden" name="status" value={status} />
+      <input type="hidden" name="styleConfig" value={styleConfigValue} />
+
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-slate-950">Thêm sản phẩm</h1>
@@ -98,7 +144,7 @@ export default function ProductForm({
 
       {state.message && (
         <div
-          className={`rounded-xl px-4 py-3 text-sm ${
+          className={`whitespace-pre-line rounded-xl px-4 py-3 text-sm ${
             state.ok
               ? "border border-emerald-200 bg-emerald-50 text-emerald-700"
               : "border border-red-200 bg-red-50 text-red-700"
@@ -108,8 +154,6 @@ export default function ProductForm({
         </div>
       )}
 
-      <input type="hidden" name="status" value={status} />
-
       <div className="grid gap-6 xl:grid-cols-[1fr_340px]">
         <div className="space-y-5">
           <div className="rounded-2xl border bg-white p-5 shadow-sm">
@@ -117,6 +161,7 @@ export default function ProductForm({
               <label className="mb-2 block text-sm font-semibold text-slate-700">
                 Ngôn ngữ sản phẩm
               </label>
+
               <select
                 name="locale"
                 defaultValue="vi"
@@ -132,6 +177,7 @@ export default function ProductForm({
                 <label className="mb-2 block text-sm font-semibold text-slate-700">
                   Tên sản phẩm <span className="text-red-500">*</span>
                 </label>
+
                 <input
                   name="title"
                   required
@@ -150,6 +196,7 @@ export default function ProductForm({
                 <label className="mb-2 block text-sm font-semibold text-slate-700">
                   Slug <span className="text-red-500">*</span>
                 </label>
+
                 <input
                   name="slug"
                   required
@@ -164,6 +211,7 @@ export default function ProductForm({
                 <label className="mb-2 block text-sm font-semibold text-slate-700">
                   Mô tả ngắn
                 </label>
+
                 <textarea
                   name="excerpt"
                   rows={3}
@@ -176,13 +224,16 @@ export default function ProductForm({
                 <label className="mb-2 block text-sm font-semibold text-slate-700">
                   Nội dung chi tiết
                 </label>
+
                 <PostEditor value={content} onChange={setContent} />
                 <input type="hidden" name="content" value={content} />
               </div>
 
-              {/* Thông tin cơ bản */}
               <div className="rounded-xl border p-4">
-                <h3 className="mb-4 font-semibold text-slate-800">Thông tin cơ bản</h3>
+                <h3 className="mb-4 font-semibold text-slate-800">
+                  Thông tin cơ bản
+                </h3>
+
                 <div className="grid gap-4 md:grid-cols-2">
                   <div>
                     <label className="mb-1.5 block text-sm font-medium text-slate-600">
@@ -238,9 +289,11 @@ export default function ProductForm({
                 </div>
               </div>
 
-              {/* Thông số kỹ thuật */}
               <div className="rounded-xl border p-4">
-                <h3 className="mb-4 font-semibold text-slate-800">Thông số kỹ thuật</h3>
+                <h3 className="mb-4 font-semibold text-slate-800">
+                  Thông số kỹ thuật
+                </h3>
+
                 <div className="grid gap-4 md:grid-cols-2">
                   <div>
                     <label className="mb-1.5 block text-sm font-medium text-slate-600">
@@ -299,7 +352,151 @@ export default function ProductForm({
                 </div>
               </div>
 
-              {/* SEO */}
+              <div className="rounded-xl border p-4">
+                <div className="mb-4">
+                  <h3 className="font-semibold text-slate-800">
+                    Advanced Style
+                  </h3>
+                  <p className="mt-1 text-xs text-slate-500">
+                    Tùy chỉnh hiển thị sản phẩm theo kiểu no-code.
+                  </p>
+                </div>
+
+                <div className="space-y-5">
+                  <div className="rounded-xl bg-slate-50 p-4">
+                    <h4 className="mb-3 text-sm font-semibold text-slate-700">
+                      Ảnh sản phẩm
+                    </h4>
+
+                    <div className="grid gap-3 md:grid-cols-3">
+                      <div>
+                        <label className="mb-1 block text-xs font-medium text-slate-500">
+                          Width
+                        </label>
+                        <input
+                          value={styleConfig.image.width}
+                          onChange={(e) =>
+                            setStyleConfig((current) => ({
+                              ...current,
+                              image: {
+                                ...current.image,
+                                width: e.target.value,
+                              },
+                            }))
+                          }
+                          placeholder="100%"
+                          className="w-full rounded-lg border px-3 py-2 text-sm"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="mb-1 block text-xs font-medium text-slate-500">
+                          Height
+                        </label>
+                        <input
+                          value={styleConfig.image.height}
+                          onChange={(e) =>
+                            setStyleConfig((current) => ({
+                              ...current,
+                              image: {
+                                ...current.image,
+                                height: e.target.value,
+                              },
+                            }))
+                          }
+                          placeholder="180px"
+                          className="w-full rounded-lg border px-3 py-2 text-sm"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="mb-1 block text-xs font-medium text-slate-500">
+                          Object fit
+                        </label>
+                        <select
+                          value={styleConfig.image.objectFit}
+                          onChange={(e) =>
+                            setStyleConfig((current) => ({
+                              ...current,
+                              image: {
+                                ...current.image,
+                                objectFit: e.target.value,
+                              },
+                            }))
+                          }
+                          className="w-full rounded-lg border px-3 py-2 text-sm"
+                        >
+                          <option value="cover">cover</option>
+                          <option value="contain">contain</option>
+                          <option value="fill">fill</option>
+                          <option value="none">none</option>
+                          <option value="scale-down">scale-down</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="rounded-xl bg-slate-50 p-4">
+                    <h4 className="mb-3 text-sm font-semibold text-slate-700">
+                      Card sản phẩm
+                    </h4>
+
+                    <div className="grid gap-3 md:grid-cols-4">
+                      {[
+                        ["marginTop", "Top"],
+                        ["marginRight", "Right"],
+                        ["marginBottom", "Bottom"],
+                        ["marginLeft", "Left"],
+                      ].map(([key, label]) => (
+                        <div key={key}>
+                          <label className="mb-1 block text-xs font-medium text-slate-500">
+                            Margin {label}
+                          </label>
+                          <input
+                            value={
+                              styleConfig.card[
+                                key as keyof StyleConfig["card"]
+                              ]
+                            }
+                            onChange={(e) =>
+                              setStyleConfig((current) => ({
+                                ...current,
+                                card: {
+                                  ...current.card,
+                                  [key]: e.target.value,
+                                },
+                              }))
+                            }
+                            placeholder="0"
+                            className="w-full rounded-lg border px-3 py-2 text-sm"
+                          />
+                        </div>
+                      ))}
+                    </div>
+
+                    <div className="mt-3">
+                      <label className="mb-1 block text-xs font-medium text-slate-500">
+                        Border Radius
+                      </label>
+                      <input
+                        value={styleConfig.card.borderRadius}
+                        onChange={(e) =>
+                          setStyleConfig((current) => ({
+                            ...current,
+                            card: {
+                              ...current.card,
+                              borderRadius: e.target.value,
+                            },
+                          }))
+                        }
+                        placeholder="20px"
+                        className="w-full rounded-lg border px-3 py-2 text-sm"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+
               <div className="rounded-xl border p-4">
                 <h3 className="mb-4 font-semibold text-slate-800">SEO</h3>
 
@@ -418,7 +615,9 @@ export default function ProductForm({
           </div>
 
           <div className="rounded-2xl border bg-white shadow-sm">
-            <div className="border-b px-5 py-4 font-semibold">Gallery sản phẩm</div>
+            <div className="border-b px-5 py-4 font-semibold">
+              Gallery sản phẩm
+            </div>
 
             <div className="space-y-4 p-5">
               <MediaGalleryPicker value={gallery} onChange={setGallery} />

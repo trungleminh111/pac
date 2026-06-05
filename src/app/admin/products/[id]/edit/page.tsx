@@ -21,6 +21,16 @@ function parseGallery(value: string) {
   }
 }
 
+function parseStyleConfig(value: string) {
+  if (!value.trim()) return Prisma.JsonNull;
+
+  try {
+    return JSON.parse(value);
+  } catch {
+    return null;
+  }
+}
+
 async function updateProduct(
   id: string,
   _prevState: ProductEditState,
@@ -52,6 +62,9 @@ async function updateProduct(
   const density = String(formData.get("density") || "").trim();
   const hardness = String(formData.get("hardness") || "").trim();
 
+  const styleConfigRaw = String(formData.get("styleConfig") || "").trim();
+  const styleConfig = parseStyleConfig(styleConfigRaw);
+
   const title = String(formData.get("title") || "").trim();
   const slug = String(formData.get("slug") || "").trim();
   const excerpt = String(formData.get("excerpt") || "").trim();
@@ -63,6 +76,13 @@ async function updateProduct(
     return {
       ok: false,
       message: "Vui lòng nhập tên sản phẩm và slug.",
+    };
+  }
+
+  if (styleConfig === null) {
+    return {
+      ok: false,
+      message: "Advanced CSS không đúng định dạng JSON.",
     };
   }
 
@@ -102,6 +122,7 @@ async function updateProduct(
         thickness: thickness || null,
         density: density || null,
         hardness: hardness || null,
+        styleConfig,
 
         isFeatured,
         allowIndex,
@@ -121,7 +142,7 @@ async function updateProduct(
               title,
               slug,
               excerpt: excerpt || null,
-              content: content ? { html: content } : undefined,
+              content: content ? { html: content } : Prisma.JsonNull,
               seoTitle: seoTitle || null,
               seoDescription: seoDescription || null,
             },
@@ -129,7 +150,7 @@ async function updateProduct(
               title,
               slug,
               excerpt: excerpt || null,
-              content: content ? { html: content } : undefined,
+              content: content ? { html: content } : Prisma.JsonNull,
               seoTitle: seoTitle || null,
               seoDescription: seoDescription || null,
             },
@@ -200,6 +221,7 @@ export default async function EditProductPage({
     ...product,
     price: product.price ? product.price.toString() : null,
     gallery: Array.isArray(product.gallery) ? product.gallery : [],
+    styleConfig: product.styleConfig || null,
   };
 
   return (

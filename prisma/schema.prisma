@@ -171,6 +171,7 @@ model Product {
   thickness    String?   // Độ dày
   density      String?   // Khối lượng riêng
   hardness     String?   // Độ cứng
+  styleConfig Json?
   isFeatured   Boolean              @default(false)
   categoryId   String?
   allowIndex   Boolean              @default(true)

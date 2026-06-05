@@ -20,6 +20,16 @@ function parseGallery(value: string) {
   }
 }
 
+function parseStyleConfig(value: string) {
+  if (!value.trim()) return Prisma.JsonNull;
+
+  try {
+    return JSON.parse(value);
+  } catch {
+    return null;
+  }
+}
+
 async function createProduct(
   _prevState: ProductCreateState,
   formData: FormData
@@ -49,6 +59,9 @@ async function createProduct(
   const density = String(formData.get("density") || "").trim();
   const hardness = String(formData.get("hardness") || "").trim();
 
+  const styleConfigRaw = String(formData.get("styleConfig") || "").trim();
+  const styleConfig = parseStyleConfig(styleConfigRaw);
+
   const title = String(formData.get("title") || "").trim();
   const slug = String(formData.get("slug") || "").trim();
   const excerpt = String(formData.get("excerpt") || "").trim();
@@ -60,6 +73,13 @@ async function createProduct(
     return {
       ok: false,
       message: "Vui lòng nhập tên sản phẩm và slug.",
+    };
+  }
+
+  if (styleConfig === null) {
+    return {
+      ok: false,
+      message: "Advanced CSS không đúng định dạng JSON.",
     };
   }
 
@@ -94,6 +114,7 @@ async function createProduct(
         thickness: thickness || null,
         density: density || null,
         hardness: hardness || null,
+        styleConfig,
         isFeatured,
         allowIndex,
         categoryId: categoryId || null,

@@ -19,6 +19,21 @@ type Translation = {
   seoDescription: string | null;
 };
 
+type StyleConfig = {
+  image: {
+    width: string;
+    height: string;
+    objectFit: string;
+  };
+  card: {
+    marginTop: string;
+    marginRight: string;
+    marginBottom: string;
+    marginLeft: string;
+    borderRadius: string;
+  };
+};
+
 type Product = {
   id: string;
   status: "DRAFT" | "PUBLISHED" | "ARCHIVED";
@@ -33,6 +48,7 @@ type Product = {
   thickness: string | null;
   density: string | null;
   hardness: string | null;
+  styleConfig?: any;
   isFeatured: boolean;
   allowIndex: boolean;
   categoryId: string | null;
@@ -45,6 +61,21 @@ type Category = {
   nameEn: string | null;
 };
 
+const defaultStyleConfig: StyleConfig = {
+  image: {
+    width: "100%",
+    height: "180px",
+    objectFit: "cover",
+  },
+  card: {
+    marginTop: "0",
+    marginRight: "0",
+    marginBottom: "24px",
+    marginLeft: "0",
+    borderRadius: "20px",
+  },
+};
+
 function getHtml(content: any) {
   if (!content) return "";
   if (typeof content === "string") return content;
@@ -54,6 +85,25 @@ function getHtml(content: any) {
 function getStringGallery(value: unknown): string[] {
   if (!Array.isArray(value)) return [];
   return value.filter((item): item is string => typeof item === "string");
+}
+
+function getStyleConfig(value: any): StyleConfig {
+  const margin = String(value?.card?.margin || "0 0 24px 0").split(" ");
+
+  return {
+    image: {
+      width: value?.image?.width || "100%",
+      height: value?.image?.height || "180px",
+      objectFit: value?.image?.objectFit || "cover",
+    },
+    card: {
+      marginTop: margin[0] || "0",
+      marginRight: margin[1] || "0",
+      marginBottom: margin[2] || "24px",
+      marginLeft: margin[3] || "0",
+      borderRadius: value?.card?.borderRadius || "20px",
+    },
+  };
 }
 
 function toSlug(value: string) {
@@ -116,6 +166,17 @@ export default function ProductEditForm({
   const [priceDisplay, setPriceDisplay] = useState(
     decimalToMoney(product.price)
   );
+  const [styleConfig, setStyleConfig] = useState<StyleConfig>(
+    product.styleConfig ? getStyleConfig(product.styleConfig) : defaultStyleConfig
+  );
+
+  const styleConfigValue = JSON.stringify({
+    image: styleConfig.image,
+    card: {
+      margin: `${styleConfig.card.marginTop} ${styleConfig.card.marginRight} ${styleConfig.card.marginBottom} ${styleConfig.card.marginLeft}`,
+      borderRadius: styleConfig.card.borderRadius,
+    },
+  });
 
   useEffect(() => {
     if (state.ok) {
@@ -135,6 +196,8 @@ export default function ProductEditForm({
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
+      <input type="hidden" name="styleConfig" value={styleConfigValue} />
+
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-slate-950">Sửa sản phẩm</h1>
@@ -153,7 +216,7 @@ export default function ProductEditForm({
 
       {state.message && (
         <div
-          className={`rounded-xl px-4 py-3 text-sm ${
+          className={`whitespace-pre-line rounded-xl px-4 py-3 text-sm ${
             state.ok
               ? "border border-emerald-200 bg-emerald-50 text-emerald-700"
               : "border border-red-200 bg-red-50 text-red-700"
@@ -185,38 +248,58 @@ export default function ProductEditForm({
             </div>
 
             <div className="space-y-5">
-              <input
-                name="title"
-                required
-                value={title}
-                onChange={(e) => {
-                  const value = e.target.value;
-                  setTitle(value);
-                  setSlug(toSlug(value));
-                }}
-                placeholder="Nhập tên sản phẩm"
-                className="w-full rounded-xl border px-4 py-4 text-2xl font-semibold outline-none focus:border-[#2271b1]"
-              />
+              <div>
+                <label className="mb-2 block text-sm font-semibold text-slate-700">
+                  Tên sản phẩm
+                </label>
+                <input
+                  name="title"
+                  required
+                  value={title}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    setTitle(value);
+                    setSlug(toSlug(value));
+                  }}
+                  placeholder="Nhập tên sản phẩm"
+                  className="w-full rounded-xl border px-4 py-4 text-2xl font-semibold outline-none focus:border-[#2271b1]"
+                />
+              </div>
 
-              <input
-                name="slug"
-                required
-                value={slug}
-                onChange={(e) => setSlug(toSlug(e.target.value))}
-                placeholder="slug-san-pham"
-                className="w-full rounded-xl border px-4 py-3 text-sm outline-none focus:border-[#2271b1]"
-              />
+              <div>
+                <label className="mb-2 block text-sm font-semibold text-slate-700">
+                  Slug
+                </label>
+                <input
+                  name="slug"
+                  required
+                  value={slug}
+                  onChange={(e) => setSlug(toSlug(e.target.value))}
+                  placeholder="slug-san-pham"
+                  className="w-full rounded-xl border px-4 py-3 text-sm outline-none focus:border-[#2271b1]"
+                />
+              </div>
 
-              <textarea
-                name="excerpt"
-                rows={3}
-                defaultValue={translation?.excerpt || ""}
-                placeholder="Mô tả ngắn"
-                className="w-full rounded-xl border px-4 py-3 text-sm outline-none focus:border-[#2271b1]"
-              />
+              <div>
+                <label className="mb-2 block text-sm font-semibold text-slate-700">
+                  Mô tả ngắn
+                </label>
+                <textarea
+                  name="excerpt"
+                  rows={3}
+                  defaultValue={translation?.excerpt || ""}
+                  placeholder="Mô tả ngắn"
+                  className="w-full rounded-xl border px-4 py-3 text-sm outline-none focus:border-[#2271b1]"
+                />
+              </div>
 
-              <PostEditor value={content} onChange={setContent} />
-              <input type="hidden" name="content" value={content} />
+              <div>
+                <label className="mb-2 block text-sm font-semibold text-slate-700">
+                  Nội dung chi tiết
+                </label>
+                <PostEditor value={content} onChange={setContent} />
+                <input type="hidden" name="content" value={content} />
+              </div>
 
               <div className="grid gap-4 md:grid-cols-2">
                 <div>
@@ -332,6 +415,147 @@ export default function ProductEditForm({
                     placeholder="Ví dụ: Trắng vân xám"
                     className="w-full rounded-xl border px-4 py-3 text-sm"
                   />
+                </div>
+              </div>
+
+              <div className="rounded-xl border p-4">
+                <div className="mb-4">
+                  <h3 className="font-semibold text-slate-800">
+                    Advanced Style
+                  </h3>
+                  <p className="mt-1 text-xs text-slate-500">
+                    Tùy chỉnh hiển thị sản phẩm theo kiểu no-code.
+                  </p>
+                </div>
+
+                <div className="space-y-5">
+                  <div className="rounded-xl bg-slate-50 p-4">
+                    <h4 className="mb-3 text-sm font-semibold text-slate-700">
+                      Ảnh sản phẩm
+                    </h4>
+
+                    <div className="grid gap-3 md:grid-cols-3">
+                      <div>
+                        <label className="mb-1 block text-xs font-medium text-slate-500">
+                          Width
+                        </label>
+                        <input
+                          value={styleConfig.image.width}
+                          onChange={(e) =>
+                            setStyleConfig((current) => ({
+                              ...current,
+                              image: {
+                                ...current.image,
+                                width: e.target.value,
+                              },
+                            }))
+                          }
+                          className="w-full rounded-lg border px-3 py-2 text-sm"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="mb-1 block text-xs font-medium text-slate-500">
+                          Height
+                        </label>
+                        <input
+                          value={styleConfig.image.height}
+                          onChange={(e) =>
+                            setStyleConfig((current) => ({
+                              ...current,
+                              image: {
+                                ...current.image,
+                                height: e.target.value,
+                              },
+                            }))
+                          }
+                          className="w-full rounded-lg border px-3 py-2 text-sm"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="mb-1 block text-xs font-medium text-slate-500">
+                          Object fit
+                        </label>
+                        <select
+                          value={styleConfig.image.objectFit}
+                          onChange={(e) =>
+                            setStyleConfig((current) => ({
+                              ...current,
+                              image: {
+                                ...current.image,
+                                objectFit: e.target.value,
+                              },
+                            }))
+                          }
+                          className="w-full rounded-lg border px-3 py-2 text-sm"
+                        >
+                          <option value="cover">cover</option>
+                          <option value="contain">contain</option>
+                          <option value="fill">fill</option>
+                          <option value="none">none</option>
+                          <option value="scale-down">scale-down</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="rounded-xl bg-slate-50 p-4">
+                    <h4 className="mb-3 text-sm font-semibold text-slate-700">
+                      Card sản phẩm
+                    </h4>
+
+                    <div className="grid gap-3 md:grid-cols-4">
+                      {[
+                        ["marginTop", "Top"],
+                        ["marginRight", "Right"],
+                        ["marginBottom", "Bottom"],
+                        ["marginLeft", "Left"],
+                      ].map(([key, label]) => (
+                        <div key={key}>
+                          <label className="mb-1 block text-xs font-medium text-slate-500">
+                            Margin {label}
+                          </label>
+                          <input
+                            value={
+                              styleConfig.card[
+                                key as keyof StyleConfig["card"]
+                              ]
+                            }
+                            onChange={(e) =>
+                              setStyleConfig((current) => ({
+                                ...current,
+                                card: {
+                                  ...current.card,
+                                  [key]: e.target.value,
+                                },
+                              }))
+                            }
+                            className="w-full rounded-lg border px-3 py-2 text-sm"
+                          />
+                        </div>
+                      ))}
+                    </div>
+
+                    <div className="mt-3">
+                      <label className="mb-1 block text-xs font-medium text-slate-500">
+                        Border Radius
+                      </label>
+                      <input
+                        value={styleConfig.card.borderRadius}
+                        onChange={(e) =>
+                          setStyleConfig((current) => ({
+                            ...current,
+                            card: {
+                              ...current.card,
+                              borderRadius: e.target.value,
+                            },
+                          }))
+                        }
+                        className="w-full rounded-lg border px-3 py-2 text-sm"
+                      />
+                    </div>
+                  </div>
                 </div>
               </div>
 

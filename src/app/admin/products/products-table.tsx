@@ -78,13 +78,22 @@ export default function ProductsTable({
           </p>
         </div>
 
-        <Link
-          href="/admin/products/create"
-          className="inline-flex items-center gap-2 rounded-xl bg-[#2271b1] px-4 py-3 text-sm font-semibold text-white hover:bg-[#195f96]"
-        >
-          <Plus className="h-4 w-4" />
-          Thêm sản phẩm
-        </Link>
+        <div className="flex flex-wrap items-center gap-3">
+          <Link
+            href="/admin/products/import"
+            className="inline-flex items-center rounded-xl border px-4 py-3 text-sm font-medium hover:bg-slate-50"
+          >
+            Import Excel
+          </Link>
+
+          <Link
+            href="/admin/products/create"
+            className="inline-flex items-center gap-2 rounded-xl bg-[#2271b1] px-4 py-3 text-sm font-semibold text-white hover:bg-[#195f96]"
+          >
+            <Plus className="h-4 w-4" />
+            Thêm sản phẩm
+          </Link>
+        </div>
       </div>
 
       <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
@@ -99,13 +108,21 @@ export default function ProductsTable({
             />
           </div>
 
-          <select name="locale" defaultValue={locale} className="rounded-xl border px-4 py-3 text-sm">
+          <select
+            name="locale"
+            defaultValue={locale}
+            className="rounded-xl border px-4 py-3 text-sm"
+          >
             <option value="">Tất cả ngôn ngữ</option>
             <option value="vi">Tiếng Việt</option>
             <option value="en">English</option>
           </select>
 
-          <select name="status" defaultValue={status} className="rounded-xl border px-4 py-3 text-sm">
+          <select
+            name="status"
+            defaultValue={status}
+            className="rounded-xl border px-4 py-3 text-sm"
+          >
             <option value="">Tất cả trạng thái</option>
             <option value="DRAFT">Bản nháp</option>
             <option value="PUBLISHED">Xuất bản</option>
@@ -148,7 +165,11 @@ export default function ProductsTable({
             <thead className="bg-slate-50 text-left text-slate-500">
               <tr>
                 <th className="w-12 px-5 py-4">
-                  <input type="checkbox" checked={checkedAll} onChange={toggleAll} />
+                  <input
+                    type="checkbox"
+                    checked={checkedAll}
+                    onChange={toggleAll}
+                  />
                 </th>
                 <th className="px-5 py-4">Sản phẩm</th>
                 <th className="px-5 py-4">Ngôn ngữ</th>
@@ -197,7 +218,11 @@ export default function ProductsTable({
                     </td>
 
                     <td className="px-5 py-4">
-                      <span className={`rounded-full px-2.5 py-1 text-xs font-bold ring-1 ${localeClass(translation?.locale)}`}>
+                      <span
+                        className={`rounded-full px-2.5 py-1 text-xs font-bold ring-1 ${localeClass(
+                          translation?.locale
+                        )}`}
+                      >
                         {localeLabel(translation?.locale)}
                       </span>
                     </td>
@@ -211,7 +236,11 @@ export default function ProductsTable({
                     </td>
 
                     <td className="px-5 py-4">
-                      <span className={`rounded-full px-3 py-1 text-xs font-semibold ${statusClass(product.status)}`}>
+                      <span
+                        className={`rounded-full px-3 py-1 text-xs font-semibold ${statusClass(
+                          product.status
+                        )}`}
+                      >
                         {product.status}
                       </span>
                     </td>
@@ -230,7 +259,10 @@ export default function ProductsTable({
 
               {products.length === 0 && (
                 <tr>
-                  <td colSpan={7} className="px-5 py-10 text-center text-slate-500">
+                  <td
+                    colSpan={7}
+                    className="px-5 py-10 text-center text-slate-500"
+                  >
                     Không tìm thấy sản phẩm nào.
                   </td>
                 </tr>

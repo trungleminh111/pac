@@ -31,15 +31,21 @@ export async function getHomeProducts(
         some: { locale },
       },
     },
-    orderBy: {
-      createdAt: "desc",
-    },
+    orderBy: [
+      {
+        isFeatured: "desc",
+      },
+      {
+        createdAt: "desc",
+      },
+    ],
     take: 4,
     select: {
       id: true,
       price: true,
       thumbnail: true,
       categoryId: true,
+      styleConfig: true,
       category: {
         select: {
           id: true,
@@ -75,6 +81,7 @@ export async function getHomeProducts(
         categoryId: product.categoryId,
         categoryName: getCategoryName(locale, product.category),
         categorySlug: product.category?.slug || "",
+        styleConfig: product.styleConfig,
       };
     })
     .filter((product): product is ProductCardItem => product !== null);
@@ -98,6 +105,7 @@ export async function getProductsPage(
       price: true,
       thumbnail: true,
       categoryId: true,
+      styleConfig: true,
       category: {
         select: {
           id: true,
@@ -133,6 +141,7 @@ export async function getProductsPage(
         categoryId: product.categoryId,
         categoryName: getCategoryName(locale, product.category),
         categorySlug: product.category?.slug || "",
+        styleConfig: product.styleConfig,
       };
     })
     .filter((product): product is ProductCardItem => product !== null);
@@ -166,6 +175,7 @@ export async function getProductBySlug(
       thickness: true,
       density: true,
       hardness: true,
+      styleConfig: true,
       isFeatured: true,
       categoryId: true,
       allowIndex: true,
@@ -215,6 +225,7 @@ export async function getProductBySlug(
     thickness: product.thickness,
     density: product.density,
     hardness: product.hardness,
+    styleConfig: product.styleConfig,
     isFeatured: product.isFeatured,
     categoryId: product.categoryId,
     allowIndex: product.allowIndex,

@@ -41,6 +41,7 @@ export function ProductDetailPage2({
   product: ProductDetailItem;
   relatedProducts: ProductCardItem[];
 }) {
+
   const gallery = getGallery(product);
 
   return (
@@ -181,8 +182,23 @@ export function ProductDetailPage2({
                 <div className="col-xl-3 col-lg-3 col-md-6" key={item.id}>
                   <div className="product__item">
                     <div className="product__item__image">
-                      <Link href={productHref(locale, item.slug)}>
-                        <img src={item.image} alt={item.title} />
+                      <Link href={productHref(locale, item.slug)}
+                        style={{
+                          margin: item.styleConfig?.card?.margin
+                        }}>
+                        <img
+                          src={item.image}
+                          alt={item.title}
+                          style={{
+                            width: item.styleConfig?.image?.width || "100%",
+                            height: item.styleConfig?.image?.height || "180px",
+                            objectFit: item.styleConfig?.image?.objectFit || "cover",
+                          }}
+                        />
+
+                        <div className="product-image-overlay">
+
+                        </div>
                       </Link>
                     </div>
 

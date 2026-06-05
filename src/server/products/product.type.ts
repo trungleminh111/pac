@@ -10,6 +10,18 @@ export type ProductCategoryItem = {
   detailTemplate: string;
 };
 
+export type ProductStyleConfig = {
+  image?: {
+    width?: string;
+    height?: string;
+    objectFit?: string;
+  };
+  card?: {
+    margin?: string;
+    borderRadius?: string;
+  };
+};
+
 export type ProductCardItem = {
   id: string;
   title: string;
@@ -20,6 +32,7 @@ export type ProductCardItem = {
   categoryId: string | null;
   categoryName: string;
   categorySlug: string;
+  styleConfig: ProductStyleConfig | null;
 };
 
 export type ProductDetailItem = {
@@ -36,6 +49,7 @@ export type ProductDetailItem = {
   density: string | null;
   hardness: string | null;
   color: string | null;
+  styleConfig: ProductStyleConfig | null;
   isFeatured: boolean;
   categoryId: string | null;
   allowIndex: boolean;

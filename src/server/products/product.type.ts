@@ -30,8 +30,11 @@ export type ProductDetailItem = {
   thumbnail: string | null;
   gallery: any;
   origin: string | null;
-  size: string | null;
   material: string | null;
+  size: string | null;
+  thickness: string | null;
+  density: string | null;
+  hardness: string | null;
   color: string | null;
   isFeatured: boolean;
   categoryId: string | null;

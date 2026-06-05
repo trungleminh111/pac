@@ -100,28 +100,21 @@ export function ProductDetailDefault({
                   </h5>
 
                   <ul className="list-unstyled d-flex flex-column ps-0">
-                    {product.sku && <li>SKU: {product.sku}</li>}
-                    {product.material && (
-                      <li>
-                        {locale === "vi" ? "Chất liệu:" : "Material:"}{" "}
-                        {product.material}
-                      </li>
-                    )}
-                    {product.size && (
-                      <li>
-                        {locale === "vi" ? "Kích thước:" : "Size:"}{" "}
-                        {product.size}
-                      </li>
-                    )}
-                    {product.color && (
-                      <li>
-                        {locale === "vi" ? "Màu sắc:" : "Color:"}{" "}
-                        {product.color}
-                      </li>
-                    )}
+                    <li>SKU: {product.sku?.trim() || ""}</li>
+
+                    <li>{locale === "vi" ? "Chất liệu:" : "Material:"} {product.material?.trim() || ""}</li>
+
+                    <li>{locale === "vi" ? "Kích thước:" : "Size:"} {product.size?.trim() || ""}</li>
+
+                    <li>{locale === "vi" ? "Màu sắc:" : "Color:"} {product.color?.trim() || ""}</li>
+
+                    <li>{locale === "vi" ? "Độ dày:" : "Thickness:"} {product.thickness?.trim() || ""}</li>
+
+                    <li>{locale === "vi" ? "Khối lượng riêng:" : "Density:"} {product.density?.trim() || ""}</li>
+
+                    <li>{locale === "vi" ? "Độ cứng:" : "Hardness:"} {product.hardness?.trim() || ""}</li>
                   </ul>
                 </div>
-
                 {product.excerpt && (
                   <div className="product-application-text-wrapper">
                     <input
@@ -139,10 +132,10 @@ export function ProductDetailDefault({
                         htmlFor="toggleExcerpt"
                         className="excerpt-toggle-btn"
                       >
-                        
-                         {locale === "vi"
-                                ? "Xem thêm..."
-                                : "Learn more"}
+
+                        {locale === "vi"
+                          ? "Xem thêm..."
+                          : "Learn more"}
                       </label>
                     )}
                   </div>
@@ -219,7 +212,7 @@ export function ProductDetailDefault({
                           />
 
                           <div className="product-image-overlay">
-                            
+
                           </div>
                         </Link>
                       </div>

@@ -3,11 +3,60 @@ import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import ProjectEditForm from "./project-form";
 
-
 export type ProjectEditState = {
   ok: boolean;
   message: string;
 };
+
+function parseStructuredData(value: string) {
+  if (!value) {
+    return {
+      block1: {
+        title: "",
+        textTop: "",
+        image: "",
+        textBottom: "",
+      },
+      block2: {
+        image1: "",
+        image2: "",
+        content: "",
+      },
+    };
+  }
+
+  try {
+    const data = JSON.parse(value);
+
+    return {
+      block1: {
+        title: data?.block1?.title || "",
+        textTop: data?.block1?.textTop || "",
+        image: data?.block1?.image || "",
+        textBottom: data?.block1?.textBottom || "",
+      },
+      block2: {
+        image1: data?.block2?.image1 || "",
+        image2: data?.block2?.image2 || "",
+        content: data?.block2?.content || "",
+      },
+    };
+  } catch {
+    return {
+      block1: {
+        title: "",
+        textTop: "",
+        image: "",
+        textBottom: "",
+      },
+      block2: {
+        image1: "",
+        image2: "",
+        content: "",
+      },
+    };
+  }
+}
 
 async function updateProject(
   id: string,
@@ -20,7 +69,7 @@ async function updateProject(
   const status = String(formData.get("status") || "DRAFT");
   const thumbnail = String(formData.get("thumbnail") || "");
   const categoryId = String(formData.get("categoryId") || "");
-  const allowIndex = formData.get("allowIndex") !== "off";
+  const allowIndex = formData.get("allowIndex") === "on";
 
   const clientName = String(formData.get("clientName") || "").trim();
   const projectType = String(formData.get("projectType") || "").trim();
@@ -30,10 +79,12 @@ async function updateProject(
 
   const title = String(formData.get("title") || "").trim();
   const slug = String(formData.get("slug") || "").trim();
-  const excerpt = String(formData.get("excerpt") || "");
-  const content = String(formData.get("content") || "");
-  const seoTitle = String(formData.get("seoTitle") || "");
-  const seoDescription = String(formData.get("seoDescription") || "");
+  const excerpt = String(formData.get("excerpt") || "").trim();
+  const structuredData = parseStructuredData(
+    String(formData.get("structuredData") || "")
+  );
+  const seoTitle = String(formData.get("seoTitle") || "").trim();
+  const seoDescription = String(formData.get("seoDescription") || "").trim();
 
   if (!title || !slug) {
     return { ok: false, message: "Vui lòng nhập tên công trình và slug." };
@@ -85,7 +136,7 @@ async function updateProject(
               title,
               slug,
               excerpt: excerpt || null,
-              content: { html: content },
+              content: structuredData,
               seoTitle: seoTitle || null,
               seoDescription: seoDescription || null,
             },
@@ -93,7 +144,7 @@ async function updateProject(
               title,
               slug,
               excerpt: excerpt || null,
-              content: { html: content },
+              content: structuredData,
               seoTitle: seoTitle || null,
               seoDescription: seoDescription || null,
             },
@@ -104,6 +155,8 @@ async function updateProject(
 
     return { ok: true, message: "Cập nhật công trình thành công." };
   } catch (error) {
+    console.error(error);
+
     if (
       error instanceof Prisma.PrismaClientKnownRequestError &&
       error.code === "P2002"

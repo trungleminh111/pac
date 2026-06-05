@@ -105,7 +105,10 @@ export default function ProjectForm({
           </p>
         </div>
 
-        <Link href="/admin/projects" className="rounded-xl border px-4 py-2 text-sm">
+        <Link
+          href="/admin/projects"
+          className="rounded-xl border px-4 py-2 text-sm"
+        >
           Quay lại
         </Link>
       </div>
@@ -125,42 +128,62 @@ export default function ProjectForm({
       <div className="grid gap-6 xl:grid-cols-[1fr_340px]">
         <div className="rounded-2xl border bg-white p-5 shadow-sm">
           <div className="space-y-5">
-            <select
-              name="locale"
-              defaultValue="vi"
-              className="w-full rounded-xl border px-4 py-3 text-sm"
-            >
-              <option value="vi">Tiếng Việt</option>
-              <option value="en">English</option>
-            </select>
+            <div>
+              <label className="mb-2 block text-sm font-semibold text-slate-700">
+                Ngôn ngữ công trình
+              </label>
+              <select
+                name="locale"
+                defaultValue="vi"
+                className="w-full rounded-xl border px-4 py-3 text-sm"
+              >
+                <option value="vi">Tiếng Việt</option>
+                <option value="en">English</option>
+              </select>
+            </div>
 
-            <input
-              name="title"
-              required
-              value={title}
-              onChange={(e) => {
-                setTitle(e.target.value);
-                setSlug(toSlug(e.target.value));
-              }}
-              placeholder="Tên công trình"
-              className="w-full rounded-xl border px-4 py-4 text-2xl font-semibold"
-            />
+            <div>
+              <label className="mb-2 block text-sm font-semibold text-slate-700">
+                Tên công trình
+              </label>
+              <input
+                name="title"
+                required
+                value={title}
+                onChange={(e) => {
+                  setTitle(e.target.value);
+                  setSlug(toSlug(e.target.value));
+                }}
+                placeholder="Tên công trình"
+                className="w-full rounded-xl border px-4 py-4 text-2xl font-semibold"
+              />
+            </div>
 
-            <input
-              name="slug"
-              required
-              value={slug}
-              onChange={(e) => setSlug(toSlug(e.target.value))}
-              placeholder="slug-cong-trinh"
-              className="w-full rounded-xl border px-4 py-3 text-sm"
-            />
+            <div>
+              <label className="mb-2 block text-sm font-semibold text-slate-700">
+                Đường dẫn / Slug
+              </label>
+              <input
+                name="slug"
+                required
+                value={slug}
+                onChange={(e) => setSlug(toSlug(e.target.value))}
+                placeholder="slug-cong-trinh"
+                className="w-full rounded-xl border px-4 py-3 text-sm"
+              />
+            </div>
 
-            <textarea
-              name="excerpt"
-              rows={3}
-              placeholder="Mô tả ngắn SEO / listing"
-              className="w-full rounded-xl border px-4 py-3 text-sm"
-            />
+            <div>
+              <label className="mb-2 block text-sm font-semibold text-slate-700">
+                Mô tả ngắn
+              </label>
+              <textarea
+                name="excerpt"
+                rows={3}
+                placeholder="Mô tả ngắn SEO / listing"
+                className="w-full rounded-xl border px-4 py-3 text-sm"
+              />
+            </div>
 
             <div className="rounded-2xl border bg-slate-50 p-4">
               <h2 className="mb-4 font-semibold">
@@ -168,50 +191,70 @@ export default function ProjectForm({
               </h2>
 
               <div className="space-y-4">
-                <input
-                  value={block1.title}
-                  onChange={(e) =>
-                    setBlock1((current) => ({
-                      ...current,
-                      title: e.target.value,
-                    }))
-                  }
-                  placeholder="Tiêu đề khối 1"
-                  className="w-full rounded-xl border px-4 py-3 text-sm"
-                />
+                <div>
+                  <label className="mb-2 block text-sm font-semibold text-slate-700">
+                    Tiêu đề khối 1
+                  </label>
+                  <input
+                    value={block1.title}
+                    onChange={(e) =>
+                      setBlock1((current) => ({
+                        ...current,
+                        title: e.target.value,
+                      }))
+                    }
+                    placeholder="Tiêu đề khối 1"
+                    className="w-full rounded-xl border px-4 py-3 text-sm"
+                  />
+                </div>
 
-                <textarea
-                  value={block1.textTop}
-                  onChange={(e) =>
-                    setBlock1((current) => ({
-                      ...current,
-                      textTop: e.target.value,
-                    }))
-                  }
-                  rows={5}
-                  placeholder="Nội dung phía trên ảnh"
-                  className="w-full rounded-xl border px-4 py-3 text-sm"
-                />
+                <div>
+                  <label className="mb-2 block text-sm font-semibold text-slate-700">
+                    Nội dung phía trên ảnh
+                  </label>
+                  <textarea
+                    value={block1.textTop}
+                    onChange={(e) =>
+                      setBlock1((current) => ({
+                        ...current,
+                        textTop: e.target.value,
+                      }))
+                    }
+                    rows={5}
+                    placeholder="Nội dung phía trên ảnh"
+                    className="w-full rounded-xl border px-4 py-3 text-sm"
+                  />
+                </div>
 
-                <MediaPicker
-                  value={block1.image}
-                  onChange={(url) =>
-                    setBlock1((current) => ({ ...current, image: url }))
-                  }
-                />
+                <div>
+                  <label className="mb-2 block text-sm font-semibold text-slate-700">
+                    Ảnh khối 1
+                  </label>
+                  <MediaPicker
+                    value={block1.image}
+                    onChange={(url) =>
+                      setBlock1((current) => ({ ...current, image: url }))
+                    }
+                  />
+                </div>
 
-                <textarea
-                  value={block1.textBottom}
-                  onChange={(e) =>
-                    setBlock1((current) => ({
-                      ...current,
-                      textBottom: e.target.value,
-                    }))
-                  }
-                  rows={5}
-                  placeholder="Nội dung phía dưới ảnh"
-                  className="w-full rounded-xl border px-4 py-3 text-sm"
-                />
+                <div>
+                  <label className="mb-2 block text-sm font-semibold text-slate-700">
+                    Nội dung phía dưới ảnh
+                  </label>
+                  <textarea
+                    value={block1.textBottom}
+                    onChange={(e) =>
+                      setBlock1((current) => ({
+                        ...current,
+                        textBottom: e.target.value,
+                      }))
+                    }
+                    rows={5}
+                    placeholder="Nội dung phía dưới ảnh"
+                    className="w-full rounded-xl border px-4 py-3 text-sm"
+                  />
+                </div>
               </div>
             </div>
 
@@ -221,50 +264,75 @@ export default function ProjectForm({
               </h2>
 
               <div className="grid gap-4 md:grid-cols-2">
-                <MediaPicker
-                  value={block2.image1}
-                  onChange={(url) =>
-                    setBlock2((current) => ({ ...current, image1: url }))
-                  }
-                />
+                <div>
+                  <label className="mb-2 block text-sm font-semibold text-slate-700">
+                    Ảnh bên trái 1
+                  </label>
+                  <MediaPicker
+                    value={block2.image1}
+                    onChange={(url) =>
+                      setBlock2((current) => ({ ...current, image1: url }))
+                    }
+                  />
+                </div>
 
-                <MediaPicker
-                  value={block2.image2}
-                  onChange={(url) =>
-                    setBlock2((current) => ({ ...current, image2: url }))
-                  }
-                />
+                <div>
+                  <label className="mb-2 block text-sm font-semibold text-slate-700">
+                    Ảnh bên trái 2
+                  </label>
+                  <MediaPicker
+                    value={block2.image2}
+                    onChange={(url) =>
+                      setBlock2((current) => ({ ...current, image2: url }))
+                    }
+                  />
+                </div>
               </div>
 
-              <textarea
-                value={block2.content}
-                onChange={(e) =>
-                  setBlock2((current) => ({
-                    ...current,
-                    content: e.target.value,
-                  }))
-                }
-                rows={8}
-                placeholder="Nội dung bên phải"
-                className="mt-4 w-full rounded-xl border px-4 py-3 text-sm"
-              />
+              <div className="mt-4">
+                <label className="mb-2 block text-sm font-semibold text-slate-700">
+                  Nội dung bên phải
+                </label>
+                <textarea
+                  value={block2.content}
+                  onChange={(e) =>
+                    setBlock2((current) => ({
+                      ...current,
+                      content: e.target.value,
+                    }))
+                  }
+                  rows={8}
+                  placeholder="Nội dung bên phải"
+                  className="w-full rounded-xl border px-4 py-3 text-sm"
+                />
+              </div>
             </div>
 
             <div className="rounded-xl border p-4">
               <h3 className="mb-3 font-semibold">SEO</h3>
 
-              <input
-                name="seoTitle"
-                placeholder="SEO title"
-                className="mb-3 w-full rounded-xl border px-4 py-3 text-sm"
-              />
+              <div className="mb-3">
+                <label className="mb-2 block text-sm font-semibold text-slate-700">
+                  SEO Title
+                </label>
+                <input
+                  name="seoTitle"
+                  placeholder="Nhập tiêu đề SEO"
+                  className="w-full rounded-xl border px-4 py-3 text-sm"
+                />
+              </div>
 
-              <textarea
-                name="seoDescription"
-                rows={3}
-                placeholder="SEO description"
-                className="w-full rounded-xl border px-4 py-3 text-sm"
-              />
+              <div>
+                <label className="mb-2 block text-sm font-semibold text-slate-700">
+                  SEO Description
+                </label>
+                <textarea
+                  name="seoDescription"
+                  rows={3}
+                  placeholder="Nhập mô tả SEO"
+                  className="w-full rounded-xl border px-4 py-3 text-sm"
+                />
+              </div>
             </div>
           </div>
         </div>
@@ -274,15 +342,20 @@ export default function ProjectForm({
             <div className="border-b px-5 py-4 font-semibold">Xuất bản</div>
 
             <div className="space-y-4 p-5">
-              <select
-                name="status"
-                defaultValue="DRAFT"
-                className="w-full rounded-xl border px-4 py-3 text-sm"
-              >
-                <option value="DRAFT">Bản nháp</option>
-                <option value="PUBLISHED">Xuất bản</option>
-                <option value="ARCHIVED">Lưu trữ</option>
-              </select>
+              <div>
+                <label className="mb-2 block text-sm font-semibold text-slate-700">
+                  Trạng thái công trình
+                </label>
+                <select
+                  name="status"
+                  defaultValue="DRAFT"
+                  className="w-full rounded-xl border px-4 py-3 text-sm"
+                >
+                  <option value="DRAFT">Bản nháp</option>
+                  <option value="PUBLISHED">Xuất bản</option>
+                  <option value="ARCHIVED">Lưu trữ</option>
+                </select>
+              </div>
 
               <button
                 type="button"
@@ -329,37 +402,57 @@ export default function ProjectForm({
             </div>
 
             <div className="space-y-4 p-5">
-              <input
-                name="clientName"
-                value={clientName}
-                onChange={(e) => setClientName(e.target.value)}
-                placeholder="Khách hàng"
-                className="w-full rounded-xl border px-4 py-3 text-sm"
-              />
+              <div>
+                <label className="mb-2 block text-sm font-semibold text-slate-700">
+                  Tên khách hàng
+                </label>
+                <input
+                  name="clientName"
+                  value={clientName}
+                  onChange={(e) => setClientName(e.target.value)}
+                  placeholder="Khách hàng"
+                  className="w-full rounded-xl border px-4 py-3 text-sm"
+                />
+              </div>
 
-              <input
-                name="projectType"
-                value={projectType}
-                onChange={(e) => setProjectType(e.target.value)}
-                placeholder="Hạng mục"
-                className="w-full rounded-xl border px-4 py-3 text-sm"
-              />
+              <div>
+                <label className="mb-2 block text-sm font-semibold text-slate-700">
+                  Hạng mục thi công
+                </label>
+                <input
+                  name="projectType"
+                  value={projectType}
+                  onChange={(e) => setProjectType(e.target.value)}
+                  placeholder="Hạng mục"
+                  className="w-full rounded-xl border px-4 py-3 text-sm"
+                />
+              </div>
 
-              <input
-                name="startedAt"
-                type="date"
-                value={startedAt}
-                onChange={(e) => setStartedAt(e.target.value)}
-                className="w-full rounded-xl border px-4 py-3 text-sm"
-              />
+              <div>
+                <label className="mb-2 block text-sm font-semibold text-slate-700">
+                  Ngày khởi công
+                </label>
+                <input
+                  name="startedAt"
+                  type="date"
+                  value={startedAt}
+                  onChange={(e) => setStartedAt(e.target.value)}
+                  className="w-full rounded-xl border px-4 py-3 text-sm"
+                />
+              </div>
 
-              <input
-                name="completedAt"
-                type="date"
-                value={completedAt}
-                onChange={(e) => setCompletedAt(e.target.value)}
-                className="w-full rounded-xl border px-4 py-3 text-sm"
-              />
+              <div>
+                <label className="mb-2 block text-sm font-semibold text-slate-700">
+                  Ngày hoàn thành
+                </label>
+                <input
+                  name="completedAt"
+                  type="date"
+                  value={completedAt}
+                  onChange={(e) => setCompletedAt(e.target.value)}
+                  className="w-full rounded-xl border px-4 py-3 text-sm"
+                />
+              </div>
             </div>
           </div>
 
@@ -367,7 +460,13 @@ export default function ProjectForm({
             <div className="border-b px-5 py-4 font-semibold">Danh mục</div>
 
             <div className="p-5">
-              <select name="categoryId" className="w-full rounded-xl border px-4 py-3 text-sm">
+              <label className="mb-2 block text-sm font-semibold text-slate-700">
+                Chọn danh mục công trình
+              </label>
+              <select
+                name="categoryId"
+                className="w-full rounded-xl border px-4 py-3 text-sm"
+              >
                 <option value="">Không chọn</option>
                 {categories.map((category) => (
                   <option key={category.id} value={category.id}>
@@ -382,6 +481,9 @@ export default function ProjectForm({
             <div className="border-b px-5 py-4 font-semibold">Ảnh đại diện</div>
 
             <div className="space-y-4 p-5">
+              <label className="block text-sm font-semibold text-slate-700">
+                Chọn ảnh đại diện công trình
+              </label>
               <MediaPicker value={thumbnail} onChange={setThumbnail} />
               <input type="hidden" name="thumbnail" value={thumbnail} />
             </div>
@@ -406,32 +508,59 @@ export default function ProjectForm({
 
             <div className="grid gap-8 lg:grid-cols-[1fr_320px]">
               <article className="space-y-8">
-                <h1 className="text-3xl font-bold">{title || "Tên công trình"}</h1>
+                <h1 className="text-3xl font-bold">
+                  {title || "Tên công trình"}
+                </h1>
 
                 {thumbnail && (
-                  <img src={thumbnail} alt="" className="w-full rounded-2xl object-cover" />
+                  <img
+                    src={thumbnail}
+                    alt=""
+                    className="w-full rounded-2xl object-cover"
+                  />
                 )}
 
                 <section className="space-y-4">
                   <h2 className="text-2xl font-bold">{block1.title}</h2>
-                  <p className="whitespace-pre-line text-slate-700">{block1.textTop}</p>
+                  <p className="whitespace-pre-line text-slate-700">
+                    {block1.textTop}
+                  </p>
+
                   {block1.image && (
-                    <img src={block1.image} alt="" className="w-full rounded-2xl object-cover" />
+                    <img
+                      src={block1.image}
+                      alt=""
+                      className="w-full rounded-2xl object-cover"
+                    />
                   )}
-                  <p className="whitespace-pre-line text-slate-700">{block1.textBottom}</p>
+
+                  <p className="whitespace-pre-line text-slate-700">
+                    {block1.textBottom}
+                  </p>
                 </section>
 
                 <section className="grid gap-6 md:grid-cols-[280px_1fr]">
                   <div className="space-y-4">
                     {block2.image1 && (
-                      <img src={block2.image1} alt="" className="rounded-2xl object-cover" />
+                      <img
+                        src={block2.image1}
+                        alt=""
+                        className="rounded-2xl object-cover"
+                      />
                     )}
+
                     {block2.image2 && (
-                      <img src={block2.image2} alt="" className="rounded-2xl object-cover" />
+                      <img
+                        src={block2.image2}
+                        alt=""
+                        className="rounded-2xl object-cover"
+                      />
                     )}
                   </div>
 
-                  <p className="whitespace-pre-line text-slate-700">{block2.content}</p>
+                  <p className="whitespace-pre-line text-slate-700">
+                    {block2.content}
+                  </p>
                 </section>
               </article>
 
@@ -441,22 +570,30 @@ export default function ProjectForm({
                 <div className="space-y-3 text-sm text-slate-700">
                   <div className="flex justify-between gap-4">
                     <span className="text-slate-500">Khách hàng</span>
-                    <strong className="text-right">{clientName || "—"}</strong>
+                    <strong className="text-right">
+                      {clientName || "—"}
+                    </strong>
                   </div>
 
                   <div className="flex justify-between gap-4">
                     <span className="text-slate-500">Hạng mục</span>
-                    <strong className="text-right">{projectType || "—"}</strong>
+                    <strong className="text-right">
+                      {projectType || "—"}
+                    </strong>
                   </div>
 
                   <div className="flex justify-between gap-4">
                     <span className="text-slate-500">Ngày thi công</span>
-                    <strong className="text-right">{startedAt || "—"}</strong>
+                    <strong className="text-right">
+                      {startedAt || "—"}
+                    </strong>
                   </div>
 
                   <div className="flex justify-between gap-4">
                     <span className="text-slate-500">Ngày hoàn thành</span>
-                    <strong className="text-right">{completedAt || "—"}</strong>
+                    <strong className="text-right">
+                      {completedAt || "—"}
+                    </strong>
                   </div>
                 </div>
               </aside>

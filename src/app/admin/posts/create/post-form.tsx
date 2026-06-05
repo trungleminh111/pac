@@ -131,49 +131,79 @@ export default function CreatePostForm({
             </div>
 
             <div className="space-y-5">
-              <input
-                name="title"
-                required
-                value={title}
-                onChange={(event) => handleTitleChange(event.target.value)}
-                placeholder="Nhập tiêu đề tại đây"
-                className="w-full rounded-xl border px-4 py-4 text-2xl font-semibold outline-none focus:border-[#2271b1]"
-              />
+              <div>
+                <label className="mb-2 block text-sm font-semibold text-slate-700">
+                  Tiêu đề bài viết
+                </label>
+                <input
+                  name="title"
+                  required
+                  value={title}
+                  onChange={(event) => handleTitleChange(event.target.value)}
+                  placeholder="Nhập tiêu đề tại đây"
+                  className="w-full rounded-xl border px-4 py-4 text-2xl font-semibold outline-none focus:border-[#2271b1]"
+                />
+              </div>
 
-              <input
-                name="slug"
-                required
-                value={slug}
-                onChange={(event) => handleSlugChange(event.target.value)}
-                placeholder="duong-dan-bai-viet"
-                className="w-full rounded-xl border px-4 py-3 text-sm outline-none focus:border-[#2271b1]"
-              />
+              <div>
+                <label className="mb-2 block text-sm font-semibold text-slate-700">
+                  Đường dẫn / Slug
+                </label>
+                <input
+                  name="slug"
+                  required
+                  value={slug}
+                  onChange={(event) => handleSlugChange(event.target.value)}
+                  placeholder="duong-dan-bai-viet"
+                  className="w-full rounded-xl border px-4 py-3 text-sm outline-none focus:border-[#2271b1]"
+                />
+              </div>
 
-              <textarea
-                name="excerpt"
-                rows={3}
-                placeholder="Mô tả ngắn"
-                className="w-full rounded-xl border px-4 py-3 text-sm outline-none focus:border-[#2271b1]"
-              />
+              <div>
+                <label className="mb-2 block text-sm font-semibold text-slate-700">
+                  Mô tả ngắn
+                </label>
+                <textarea
+                  name="excerpt"
+                  rows={3}
+                  placeholder="Nhập mô tả ngắn cho bài viết"
+                  className="w-full rounded-xl border px-4 py-3 text-sm outline-none focus:border-[#2271b1]"
+                />
+              </div>
 
-              <PostEditor value={content} onChange={setContent} />
-              <input type="hidden" name="content" value={content} />
+              <div>
+                <label className="mb-2 block text-sm font-semibold text-slate-700">
+                  Nội dung bài viết
+                </label>
+                <PostEditor value={content} onChange={setContent} />
+                <input type="hidden" name="content" value={content} />
+              </div>
 
               <div className="rounded-xl border p-4">
                 <h3 className="mb-3 font-semibold">SEO</h3>
 
-                <input
-                  name="seoTitle"
-                  placeholder="SEO title"
-                  className="mb-3 w-full rounded-xl border px-4 py-3 text-sm"
-                />
+                <div className="mb-3">
+                  <label className="mb-2 block text-sm font-semibold text-slate-700">
+                    SEO title
+                  </label>
+                  <input
+                    name="seoTitle"
+                    placeholder="Nhập tiêu đề SEO"
+                    className="w-full rounded-xl border px-4 py-3 text-sm"
+                  />
+                </div>
 
-                <textarea
-                  name="seoDescription"
-                  rows={3}
-                  placeholder="SEO description"
-                  className="w-full rounded-xl border px-4 py-3 text-sm"
-                />
+                <div>
+                  <label className="mb-2 block text-sm font-semibold text-slate-700">
+                    SEO description
+                  </label>
+                  <textarea
+                    name="seoDescription"
+                    rows={3}
+                    placeholder="Nhập mô tả SEO"
+                    className="w-full rounded-xl border px-4 py-3 text-sm"
+                  />
+                </div>
               </div>
             </div>
           </div>
@@ -184,15 +214,20 @@ export default function CreatePostForm({
             <div className="border-b px-5 py-4 font-semibold">Xuất bản</div>
 
             <div className="space-y-4 p-5">
-              <select
-                name="status"
-                defaultValue="DRAFT"
-                className="w-full rounded-xl border px-4 py-3 text-sm"
-              >
-                <option value="DRAFT">Bản nháp</option>
-                <option value="PUBLISHED">Xuất bản</option>
-                <option value="ARCHIVED">Lưu trữ</option>
-              </select>
+              <div>
+                <label className="mb-2 block text-sm font-semibold text-slate-700">
+                  Trạng thái bài viết
+                </label>
+                <select
+                  name="status"
+                  defaultValue="DRAFT"
+                  className="w-full rounded-xl border px-4 py-3 text-sm"
+                >
+                  <option value="DRAFT">Bản nháp</option>
+                  <option value="PUBLISHED">Xuất bản</option>
+                  <option value="ARCHIVED">Lưu trữ</option>
+                </select>
+              </div>
 
               <label className="flex items-center gap-2 text-sm">
                 <input name="isFeatured" type="checkbox" />
@@ -234,6 +269,9 @@ export default function CreatePostForm({
             <div className="border-b px-5 py-4 font-semibold">Chuyên mục</div>
 
             <div className="p-5">
+              <label className="mb-2 block text-sm font-semibold text-slate-700">
+                Chọn chuyên mục
+              </label>
               <select
                 name="categoryId"
                 className="w-full rounded-xl border px-4 py-3 text-sm"
@@ -254,6 +292,9 @@ export default function CreatePostForm({
             </div>
 
             <div className="space-y-4 p-5">
+              <label className="block text-sm font-semibold text-slate-700">
+                Chọn ảnh đại diện bài viết
+              </label>
               <MediaPicker value={thumbnail} onChange={setThumbnail} />
               <input type="hidden" name="thumbnail" value={thumbnail} />
             </div>

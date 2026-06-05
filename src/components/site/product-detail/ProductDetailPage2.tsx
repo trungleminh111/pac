@@ -54,7 +54,7 @@ export function ProductDetailPage2({
 
       <section className="product-details section-space">
         <div className="container">
-           <div className="row gutter-y-50 align-items-stretch circle-product">
+          <div className="row gutter-y-50 align-items-stretch circle-product">
             <div className="col-lg-6 col-xl-6">
               <ProductGallery images={gallery} title={product.title} />
             </div>
@@ -92,11 +92,20 @@ export function ProductDetailPage2({
                       {locale === "vi" ? "Thông Số Kỹ Thuật" : "Specifications"}
                     </h5>
 
-                    <ul className="list-unstyled d-flex flex-column gap-1 ps-0">
-                      {product.material && <li>{locale === "vi" ? "Chủng loại:" : "Material:"} {product.material}</li>}
-                      {product.size && <li>{locale === "vi" ? "Kích thước:" : "Size:"} {product.size}</li>}
-                      {product.color && <li>{locale === "vi" ? "Màu sắc:" : "Color:"} {product.color}</li>}
-                      {product.sku && <li>SKU: {product.sku}</li>}
+                    <ul className="list-unstyled d-flex flex-column ps-0">
+                      <li>SKU: {product.sku?.trim() || ""}</li>
+
+                      <li>{locale === "vi" ? "Chất liệu:" : "Material:"} {product.material?.trim() || ""}</li>
+
+                      <li>{locale === "vi" ? "Kích thước:" : "Size:"} {product.size?.trim() || ""}</li>
+
+                      <li>{locale === "vi" ? "Màu sắc:" : "Color:"} {product.color?.trim() || ""}</li>
+
+                      <li>{locale === "vi" ? "Độ dày:" : "Thickness:"} {product.thickness?.trim() || ""}</li>
+
+                      <li>{locale === "vi" ? "Khối lượng riêng:" : "Density:"} {product.density?.trim() || ""}</li>
+
+                      <li>{locale === "vi" ? "Độ cứng:" : "Hardness:"} {product.hardness?.trim() || ""}</li>
                     </ul>
                   </div>
 

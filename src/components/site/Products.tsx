@@ -49,7 +49,7 @@ export async function Products({ locale }: { locale: Locale }) {
                         style={{
                           height: "180px",
                           width: "100%",
-                          objectFit: "cover",
+                          objectFit: "contain",
                         }} />
                     </Link>
                   </div>

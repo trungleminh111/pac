@@ -83,12 +83,13 @@ export default async function ServiceDetailPage({
                         className="service-sidebar__contact__bg__inner"
                         style={{
                           backgroundImage:
-                            "url('/assets/images/resources/service-sidebar-contact-bg-2.png')",
+                            "url('/assets/images/about/about-2-2.jpg');",
+
                         }}
                       />
                     </div>
 
-                    <div className="service-sidebar__contact__inner">
+                    <div className="service-sidebar__contact__inner " >
                       <div className="service-sidebar__contact__icon">
                         <span className="icon-telephone">
                           <FiPhoneCall />
@@ -174,49 +175,35 @@ export default async function ServiceDetailPage({
                       : "What do our services provide for you?"}
                   </h3>
 
-                  <p className="service-details__text">
-                    <strong>
+                  <ul className="service-feature-list">
+                    <li>
+                      <strong>{locale === "vi" ? "Tư Vấn Thiết Kế Độc Quyền:" : "Exclusive Design Consultation:"}</strong>{" "}
                       {locale === "vi"
-                        ? "• Tư Vấn Thiết Kế:"
-                        : "• Design Consultation:"}
-                    </strong>{" "}
-                    {locale === "vi"
-                      ? "Chúng tôi tư vấn giải pháp phù hợp nhất với từng không gian."
-                      : "We provide suitable solutions for each space."}
-                    <br />
-                    <br />
+                        ? "Mỗi dự án đều được chúng tôi tiếp cận với tâm huyết, lắng nghe và hiểu rõ yêu cầu cụ thể của khách hàng để đưa ra giải pháp thiết kế ốp lát hoàn hảo nhất."
+                        : "Each project is approached with dedication to deliver the best solution."}
+                    </li>
 
-                    <strong>
+                    <li>
+                      <strong>{locale === "vi" ? "Chọn Lọc Đá Hoa Cương Tinh Anh:" : "Selected Premium Granite:"}</strong>{" "}
                       {locale === "vi"
-                        ? "• Vật Liệu Cao Cấp:"
-                        : "• Premium Materials:"}
-                    </strong>{" "}
-                    {locale === "vi"
-                      ? "Đá tự nhiên nhập khẩu chất lượng cao từ nhiều quốc gia."
-                      : "High-quality imported natural stone from many countries."}
-                    <br />
-                    <br />
+                        ? "Chúng tôi cung cấp một loạt các loại đá hoa cương nhập khẩu từ khắp nơi trên thế giới."
+                        : "We provide selected imported granite from around the world."}
+                    </li>
 
-                    <strong>
+                    <li>
+                      <strong>{locale === "vi" ? "Thi Công Chuyên Nghiệp & Tận Tâm:" : "Professional & Dedicated Installation:"}</strong>{" "}
                       {locale === "vi"
-                        ? "• Thi Công Chuyên Nghiệp:"
-                        : "• Professional Installation:"}
-                    </strong>{" "}
-                    {locale === "vi"
-                      ? "Quy trình thi công chuẩn xác, đội ngũ lành nghề."
-                      : "Accurate construction process with skilled workers."}
-                    <br />
-                    <br />
+                        ? "Với quy trình thi công chặt chẽ, chúng tôi đảm bảo mọi chi tiết đều được thực hiện tỉ mỉ và chính xác."
+                        : "With a strict construction process, every detail is carefully completed."}
+                    </li>
 
-                    <strong>
+                    <li>
+                      <strong>{locale === "vi" ? "Bảo Hành Và Hậu Mãi Chu Đáo:" : "Dedicated Warranty & After-sales:"}</strong>{" "}
                       {locale === "vi"
-                        ? "• Bảo Hành Chu Đáo:"
-                        : "• Dedicated Warranty:"}
-                    </strong>{" "}
-                    {locale === "vi"
-                      ? "Chính sách hậu mãi và bảo hành rõ ràng."
-                      : "Clear after-sales and warranty policies."}
-                  </p>
+                        ? "Chúng tôi tự tin về chất lượng sản phẩm và dịch vụ của mình."
+                        : "We are confident in our product and service quality."}
+                    </li>
+                  </ul>
                 </div>
 
                 <div className="service-details__info">

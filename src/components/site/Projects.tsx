@@ -1,53 +1,94 @@
 "use client";
 
-import { Navigation, Autoplay } from "swiper/modules";
+import { useRef } from "react";
+import { Autoplay } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
+import type { Swiper as SwiperType } from "swiper";
 
 import "swiper/css";
-import "swiper/css/navigation";
 
 const projects = [
-  ["project-1-1.jpg", "project-1-2.jpg"],
-  ["project-1-3.jpg", "project-1-4.jpg"],
+  {
+    title: "Dự án ốp đá biệt thự",
+    image: "project-1-1.jpg",
+  },
+  {
+    title: "Dự án đá hoa cương cao cấp",
+    image: "project-1-2.jpg",
+  },
+  {
+    title: "Dự án căn hộ cao cấp",
+    image: "project-1-3.jpg",
+  },
+  {
+    title: "Dự án trung tâm thương mại",
+    image: "project-1-4.jpg",
+  },
 ];
 
 export function Projects() {
+  const swiperRef = useRef<SwiperType | null>(null);
+
   return (
-    <section className="projects-one ">
+    <section className="projects-one">
       <div className="projects-one__container">
         <div className="projects-one__left projects-one__col projects-one__col--left">
           <Swiper
-            modules={[Navigation, Autoplay]}
+            modules={[Autoplay]}
             loop
             speed={700}
+            slidesPerView={1.33}
+            spaceBetween={30}
             autoplay={{
               delay: 5000,
               disableOnInteraction: false,
             }}
-            navigation={{
-              prevEl: ".project-prev",
-              nextEl: ".project-next",
+            breakpoints={{
+              0: {
+                slidesPerView: 1,
+                spaceBetween: 15,
+              },
+              768: {
+                slidesPerView: 1.33,
+                spaceBetween: 30,
+              },
+            }}
+            onSwiper={(swiper) => {
+              swiperRef.current = swiper;
             }}
             className="projects-one__slider"
           >
-            {projects.map(([image1, image2]) => (
-              <SwiperSlide key={image1}>
-                <div className="projects-one__images">
-                  <img src={`/assets/images/works/${image1}`} alt="" />
-                  <img src={`/assets/images/works/${image2}`} alt="" />
+            {projects.map((project) => (
+              <SwiperSlide key={project.image}>
+                <div className="project-card">
+                  <img
+                    src={`/assets/images/works/${project.image}`}
+                    alt={project.title}
+                  />
+
+                  <div className="project-card__overlay">
+                    <h3>{project.title}</h3>
+                  </div>
                 </div>
               </SwiperSlide>
             ))}
           </Swiper>
 
-          {/* Mobile only */}
           <div className="navigation-wrapper justify-content-center d-flex d-md-none pb-2 pt-2">
-            <button className="nav-btn-pair prev project-prev" type="button">
+            <button
+              className="nav-btn-pair prev"
+              type="button"
+              onClick={() => swiperRef.current?.slidePrev()}
+            >
               <span className="circle-base"></span>
               <span className="arrow-line"></span>
             </button>
 
-            <button className="nav-btn-pair next project-next" type="button">
+            <button
+              className="nav-btn-pair next"
+              type="button"
+              onClick={() => swiperRef.current?.slideNext()}
+            >
               <span className="circle-base"></span>
               <span className="arrow-line"></span>
             </button>
@@ -74,17 +115,24 @@ export function Projects() {
           <div className="projects-one__bottom">
             {/* Desktop only */}
             <div className="navigation-wrapper d-none d-md-flex">
-              <button className="nav-btn-pair prev project-prev" type="button">
+              <button
+                className="nav-btn-pair prev"
+                type="button"
+                onClick={() => swiperRef.current?.slidePrev()}
+              >
                 <span className="circle-base"></span>
                 <span className="arrow-line"></span>
               </button>
 
-              <button className="nav-btn-pair next project-next" type="button">
+              <button
+                className="nav-btn-pair next"
+                type="button"
+                onClick={() => swiperRef.current?.slideNext()}
+              >
                 <span className="circle-base"></span>
                 <span className="arrow-line"></span>
               </button>
             </div>
-
             <a
               href="/cong-trinh"
               className=" floens-btn floens-btn--border"

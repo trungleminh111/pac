@@ -14,7 +14,7 @@ export type ProductStyleConfig = {
   image?: {
     width?: string;
     height?: string;
-    objectFit?: string;
+    objectFit?: CSSProperties["objectFit"];
   };
   card?: {
     margin?: string;

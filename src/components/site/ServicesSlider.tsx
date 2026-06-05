@@ -13,7 +13,7 @@ import { FaBuilding, FaImage, FaUtensils } from "react-icons/fa6";
 import { MdStairs, MdDesignServices, MdViewColumn } from "react-icons/md";
 import { LuArrowRight } from "react-icons/lu";
 import type { ServiceCardItem, Locale } from "@/server/services/service.type";
-
+import ScrollReveal from "@/components/site/ScrollReveal";
 const iconMap = {
   building: FaBuilding,
   column: MdViewColumn,
@@ -106,37 +106,40 @@ export function ServicesSlider({
 
             return (
               <SwiperSlide key={service.id}>
-                <div className="item">
-                  <div className="service-card-two">
-                    <div
-                      className="service-card-two__bg"
-                      style={{
-                        backgroundImage: "url('/assets/images/services/service-bg-2-1.png')",
-                      }}
-                    />
+                <ScrollReveal animationClass="fade-in-up" delay="0.8s">
 
-                    <div className="service-card-two__image">
-                      <img src={service.image} alt={service.title} />
-                    </div>
+                  <div className="item">
+                    <div className="service-card-two">
+                      <div
+                        className="service-card-two__bg"
+                        style={{
+                          backgroundImage: "url('/assets/images/services/service-bg-2-1.png')",
+                        }}
+                      />
 
-                    <div className="service-card-two__content">
-                      <h3 className="service-card-two__title">
-                        <Link href={href}>{service.title}</Link>
-                      </h3>
+                      <div className="service-card-two__image">
+                        <img src={service.image} alt={service.title} />
+                      </div>
 
-                      <div className="service-card-two__bottom">
-                        <Link href={href} className="service-detail-link">
-                          <span>{locale === "vi" ? "Xem chi tiết" : "View detail"}</span>
-                          <LuArrowRight className="service-detail-arrow" />
-                        </Link>
+                      <div className="service-card-two__content">
+                        <h3 className="service-card-two__title">
+                          <Link href={href}>{service.title}</Link>
+                        </h3>
 
-                        <span className="service-card-two__icon">
-                          <Icon />
-                        </span>
+                        <div className="service-card-two__bottom">
+                          <Link href={href} className="service-detail-link">
+                            <span>{locale === "vi" ? "Xem chi tiết" : "View detail"}</span>
+                            <LuArrowRight className="service-detail-arrow" />
+                          </Link>
+
+                          <span className="service-card-two__icon">
+                            <Icon />
+                          </span>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
+                </ScrollReveal>
               </SwiperSlide>
             );
           })}

@@ -6,7 +6,7 @@ export function Footer() {
         <footer className="main-footer">
             <div className="main-footer__bg"
                 style={{
-                    backgroundImage: "url('/assets/images/shapes/Footer-PACSTONE.png')",
+                    backgroundImage: "url('/assets/images/shapes/Footer-PACSTONE.jpg')",
 
 
                 }}
@@ -18,7 +18,7 @@ export function Footer() {
                             <a href="/" className="footer-widget__logo">
 
                                 <img
-                                    src="/assets/images/shapes/Footer-PACSTONE.webp"
+                                    src="/assets/images/logo-PACSTONE.webp"
                                     alt="Logo P.A.C STONE"
                                     className="footer-logo"
                                 ></img>
@@ -82,13 +82,13 @@ export function Footer() {
                                             <FaMapMarkerAlt className="icon-location-2" />
                                             <a href="https://www.google.com/maps" className="font-weight-800">
                                                 <b>Trụ sở chính:
-                                                    </b> 114C Hoàng Hoa Thám, Phường Bảy Hiền, TP. HCM
+                                                </b> 114C Hoàng Hoa Thám, Phường Bảy Hiền, TP. HCM
                                             </a>
                                         </li>
                                         <li>
                                             <FaMapMarkerAlt className="icon-location-2" />
                                             <a href="https://www.google.com/maps" className="font-weight-800">
-                                               <b>Nhà máy sản xuất:
+                                                <b>Nhà máy sản xuất:
                                                 </b>  324 Phan Văn Hớn,
                                                 Phường Đông Hưng Thuận, TP.HCM
                                             </a>
@@ -104,11 +104,21 @@ export function Footer() {
                                     </ul>
                                 </div>
                                 <div className="main-footer__social floens-social">
-                                    <a href="https://facebook.com" aria-label="Facebook">
+                                    <a
+                                        href="https://www.facebook.com/dahoacuongpac?rdid=cxhxaMBS0BOL3mV7&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F18fuq8z3U5%2F#"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        aria-label="Facebook"
+                                    >
                                         <FaFacebookF />
                                     </a>
 
-                                    <a href="https://zalo.me" aria-label="Zalo">
+                                    <a
+                                        href="https://zalo.me/0962757475"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        aria-label="Zalo"
+                                    >
                                         <SiZalo />
                                     </a>
 

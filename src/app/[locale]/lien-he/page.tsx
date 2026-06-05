@@ -142,7 +142,7 @@ export default function ContactPage({
               <ScrollReveal animationClass="fade-in-up" delay="0">
                 <div className="doc-card-item">
                   <Image
-                    src="/assets/images/lienhe/ShowroomPAC.png"
+                    src="/assets/images/lienhe/ShowroomPAC.jpg"
                     alt="Hồ sơ năng lực P.A.C Stone"
                     width={1448}
                     height={1086}
@@ -158,7 +158,7 @@ export default function ContactPage({
                   <div className="doc-a4-item">
 
                     <Image
-                      src="/assets/images/lienhe/Ho_So_Nang_Luc_PAC_STONE.png"
+                      src="/assets/images/lienhe/Ho_So_Nang_Luc_PAC_STONE.jpg"
                       alt="Hồ sơ năng lực P.A.C Stone"
                       width={210}
                       height={297}
@@ -171,7 +171,7 @@ export default function ContactPage({
                   <div className="doc-a4-item">
 
                     <Image
-                      src="/assets/images/lienhe/Giay_phep_PAC_STONE.png"
+                      src="/assets/images/lienhe/Giay_phep_PAC_STONE.jpg"
                       alt="Giấy phép kinh doanh"
                       width={210}
                       height={297}

@@ -28535,7 +28535,7 @@ li:hover .sidebar__comments__icon:after {
   color: var(--floens-text, #7a736a);
   text-transform: uppercase;
   margin-bottom: 0;
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 500;
   line-height: 16px;
 }

@@ -47,7 +47,7 @@ export function About({ backgroundImage }: AboutProps) {
                         className="experience__year"
 
                       >
-                        25
+                        20
                         <br />
                         <span style={{ fontSize: 22 }}>năm</span>
                       </h3>

@@ -15,7 +15,7 @@ export function ProductGallery({
     <div className="product-details__img h-100">
       <div className="swiper product-details__gallery-top">
         <div className="swiper-wrapper">
-          <div className="swiper-slide">
+          <div className="swiper-slide d-flex">
             <img
               src={activeImage}
               alt={title}
@@ -41,7 +41,6 @@ export function ProductGallery({
                 src={image}
                 alt={title}
                 className="product-details__gallery-thumb__img"
-                style={{ height: 50}}
               />
             </div>
           ))}

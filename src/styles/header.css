@@ -40,7 +40,8 @@
   gap: 10px;
 }
 
-.sidebar-one__content, .search-popup__overlay  {
+.sidebar-one__content,
+.search-popup__overlay {
 
   background-position: center;
   background-repeat: no-repeat;
@@ -53,11 +54,18 @@
   display: flex;
   justify-content: center;
 }
+
 .sidebar-one__about__text,
 .sidebar-one__info__list {
   text-align: justify;
 }
 
+.sidebar-one__info__list .location:hover, .sidebar-one__info__list .mail:hover, .sidebar-one__info__list .phone:hover {
+  color: red;
+  text-decoration: underline;
+  text-decoration-color: red;
+  text-decoration-skip-ink: none;
+}
 /* ==========================================================================
    SIDEBAR UTILITIES MENU SYSTEM
    ========================================================================== */
@@ -67,7 +75,8 @@
   margin: 0 0 30px 0;
   display: flex;
   flex-direction: column;
-  gap: 14px; /* Tạo khoảng giãn cách thoáng giữa các hàng */
+  gap: 14px;
+  /* Tạo khoảng giãn cách thoáng giữa các hàng */
 }
 
 /* Khung bọc từng dòng item */
@@ -85,15 +94,18 @@
 
 /* Hiệu ứng khi di chuột vào từng dòng */
 .sidebar-util-link:hover:not(.disabled-item) {
-  background: rgba(200, 145, 86, 0.1); /* Màu vàng gold mờ */
-  border-color: #c89156; /* Viền màu vàng gold thương hiệu */
+  background: rgba(200, 145, 86, 0.1);
+  /* Màu vàng gold mờ */
+  border-color: #c89156;
+  /* Viền màu vàng gold thương hiệu */
   transform: translateX(4px);
 }
 
 /* Hộp chứa Icon */
 .util-icon-box {
   font-size: 18px;
-  color: #c89156; /* Mặc định icon màu vàng gold */
+  color: #c89156;
+  /* Mặc định icon màu vàng gold */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -106,12 +118,14 @@
 
 /* Đặc tả màu sắc riêng cho từng loại icon để tạo điểm nhấn */
 .util-icon-box.pdf-type {
-  color: #ef4444; /* Màu đỏ cho file PDF dễ nhận biết */
+  color: #ef4444;
+  /* Màu đỏ cho file PDF dễ nhận biết */
   background: rgba(239, 68, 68, 0.1);
 }
 
 .util-icon-box.admin-type {
-  color: #3b82f6; /* Màu xanh công nghệ cho hệ thống Admin */
+  color: #3b82f6;
+  /* Màu xanh công nghệ cho hệ thống Admin */
   background: rgba(59, 130, 246, 0.1);
 }
 
@@ -126,7 +140,8 @@
 .util-title {
   font-size: 14px;
   font-weight: 500;
-  color: #ffffff; /* Chữ trắng nổi bật trên nền đá đen */
+  color: #ffffff;
+  /* Chữ trắng nổi bật trên nền đá đen */
   line-height: 1.4;
 }
 
@@ -144,7 +159,8 @@
 }
 
 .util-badge.development {
-  color: #f59e0b; /* Màu vàng cảnh báo cho tính năng đang phát triển */
+  color: #f59e0b;
+  /* Màu vàng cảnh báo cho tính năng đang phát triển */
   font-style: italic;
 }
 
@@ -164,7 +180,8 @@
   justify-content: center;
   gap: 10px;
   width: 100%;
-  background-color: #0068ff; /* Màu xanh chuẩn nhận diện thương hiệu Zalo */
+  background-color: #0068ff;
+  /* Màu xanh chuẩn nhận diện thương hiệu Zalo */
   color: #ffffff !important;
   border: none;
   padding: 12px;
@@ -187,7 +204,7 @@
   font-size: 16px;
 }
 
-.main-header__right .icon-user:hover svg{
-      color: var(--floens-base, #c7844f);
-    transition: all .4s;
+.main-header__right .icon-user:hover svg {
+  color: var(--floens-base, #c7844f);
+  transition: all .4s;
 }

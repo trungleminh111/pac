@@ -230,7 +230,7 @@ export default async function ProductsPage({
                     <div className="product-pagination">
                       {currentPage > 1 && (
                         <Link
-                          className="prev-btn"
+                          className="pagination__arrow"
                           href={buildHref(locale, {
                             category: activeCategory,
                             q,
@@ -263,7 +263,7 @@ export default async function ProductsPage({
 
                       {currentPage < totalPages && (
                         <Link
-                          className="next-btn"
+                          className="pagination__arrow"
                           href={buildHref(locale, {
                             category: activeCategory,
                             q,

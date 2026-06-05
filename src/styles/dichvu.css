@@ -1,44 +1,41 @@
-
 .service-card-two__bottom {
   display: flex;
   align-items: center;
-  gap: 10px; 
+  gap: 10px;
   flex-wrap: wrap;
   justify-content: space-between;
-  
-  overflow: hidden; 
+
+  overflow: hidden;
   position: relative;
 }
-.floens-btn{
-    background-color: inherit !important;
-    color: red !important;
+
+.floens-btn {
+  background-color: inherit !important;
+  color: red !important;
 }
-.floens-btn a i{
-    color: red;
+
+.floens-btn a i {
+  color: red;
 }
 
 
-.floens-btn a i:hover, .floens-btn a {
-    color: var(--floens-white) !important;
+.floens-btn a i:hover,
+.floens-btn a {
+  color: var(--floens-white) !important;
 }
 
 .service-card-two__link {
   color: var(--floens-base, #c7844f);
   padding: 0 70px 0 0;
   background-color: transparent;
-  
 
-  transform: translateX(-100%); 
+
+  transform: translateX(-100%);
   opacity: 0;
-  
-  transition: transform 500ms ease, opacity 500ms ease, color 500ms ease; 
+
+  transition: transform 500ms ease, opacity 500ms ease, color 500ms ease;
 }
 
-@media (max-width: 575px) {
-  .service-card-two__link {
-    font-size: 13px;
-  }
-}
 
 .service-card-two:hover .service-card-two__link {
   transform: translateX(0);
@@ -71,3 +68,11 @@
   background-color: RGBA(var(--floens-white2-rgb, 242, 238, 234), 0.7);
 }
 
+
+@media (max-width: 575px) {
+  .service-card-two__link {
+    font-size: 13px;
+  }
+  
+
+}

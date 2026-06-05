@@ -41,7 +41,6 @@ export function ProductDetailPage2({
   product: ProductDetailItem;
   relatedProducts: ProductCardItem[];
 }) {
-
   const gallery = getGallery(product);
 
   return (
@@ -80,20 +79,22 @@ export function ProductDetailPage2({
 
                 <div className="detail-product-title d-flex gap-3 flex-column">
                   {product.origin && (
-                    <div className="product-details__meta-item">
+                    <div className="product-details__meta-item ">
                       <span className="fw-bold text-dark">
-                        {locale === "vi" ? "Xuất Xứ:" : "Origin:"}
+                        {locale === "vi" ? "Xuất Xứ" : "Origin"}
                       </span>
-                      <span className="ms-2 text-secondary">{product.origin}</span>
+                      <span className="ms-2 text-secondary">
+                        {product.origin}
+                      </span>
                     </div>
                   )}
 
-                  <div className="product-details__specs mt-2">
-                    <h5 className="fw-bold text-dark mb-2" style={{ fontSize: 16 }}>
+                  <div className="product-details__specs">
+                    <h5 className="fw-bold text-dark mb-0" style={{ fontSize: 16 }}>
                       {locale === "vi" ? "Thông Số Kỹ Thuật" : "Specifications"}
                     </h5>
 
-                    <ul className="list-unstyled d-flex flex-column ps-0">
+                    <ul className="list-unstyled d-flex flex-column ps-0 mb-0">
                       <li>SKU: {product.sku?.trim() || ""}</li>
 
                       <li>{locale === "vi" ? "Chất liệu:" : "Material:"} {product.material?.trim() || ""}</li>
@@ -111,18 +112,21 @@ export function ProductDetailPage2({
                   </div>
 
                   {product.excerpt && (
-                    <div className="product-application-text-wrapper">
+                    <div className="product-application-text-wrapper mt-0">
+                      <h5 className="fw-bold text-dark mb-0" style={{ fontSize: 16 }}>
+                        {locale === "vi" ? "Ứng dụng" : "Excerpt"}
+                      </h5>
                       <input
                         type="checkbox"
                         id="toggleExcerpt"
                         className="toggle-excerpt"
                       />
 
-                      <p className="product-application-text">
+                      <p className="product-application-text mb-0">
                         {product.excerpt}
                       </p>
 
-                      {product.excerpt.length > 300 && (
+                      {product.excerpt.length > 150 && (
                         <label
                           htmlFor="toggleExcerpt"
                           className="excerpt-toggle-btn"
@@ -182,23 +186,18 @@ export function ProductDetailPage2({
                 <div className="col-xl-3 col-lg-3 col-md-6" key={item.id}>
                   <div className="product__item">
                     <div className="product__item__image">
-                      <Link href={productHref(locale, item.slug)}
-                        style={{
-                          margin: item.styleConfig?.card?.margin
-                        }}>
+                      <Link href={productHref(locale, item.slug)}>
                         <img
                           src={item.image}
                           alt={item.title}
                           style={{
-                            width: item.styleConfig?.image?.width || "100%",
-                            height: item.styleConfig?.image?.height || "180px",
-                            objectFit: item.styleConfig?.image?.objectFit || "cover",
+                            maxWidth: "100%",
+                            maxHeight: "100%",
+                            width: "auto",
+                            height: "auto",
+                            objectFit: "contain",
                           }}
                         />
-
-                        <div className="product-image-overlay">
-
-                        </div>
                       </Link>
                     </div>
 

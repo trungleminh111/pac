@@ -484,23 +484,24 @@ export function Header({
                 <span className="sidebar-contact-icon">
                   <FaMapMarkerAlt />
                 </span>
-                <address>114 C Hoàng Hoa Thám, Phường Bảy Hiền, TP. HCM</address>
+                <a href="https://maps.app.goo.gl/h46QpREsDByeyLQ6A" className="location">
+                114 C Hoàng Hoa Thám, Phường Bảy Hiền, TP. HCM</a>
               </li>
 
               <li>
                 <span className="sidebar-contact-icon">
                   <FaPaperPlane />
                 </span>
-                <a href="mailto:Pacstone.cskh@gmail.com">
+                <a href="mailto:Pacstone.cskh@gmail.com" className="mail">
                   Pacstone.cskh@gmail.com
                 </a>
               </li>
 
               <li>
-                <span className="sidebar-contact-icon">
+                <span className="sidebar-contact-icon" >
                   <FaPhoneAlt />
                 </span>
-                <a href="tel:0962757475">0962.757.475</a>
+                <a href="tel:0962757475" className="phone">0962.757.475</a>
               </li>
             </ul>
           </div>

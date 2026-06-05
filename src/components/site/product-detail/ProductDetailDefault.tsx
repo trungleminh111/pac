@@ -72,7 +72,11 @@ export function ProductDetailDefault({
 
             <div className="col-lg-6 col-xl-6">
               <div className="product-details__content h-100 d-flex flex-column">
-                <h3 className="product-details__name">{product.title}</h3>
+                <div className="product-details__top">
+                  <div className="product-details__top__left">
+                    <h3 className="product-details__name">{product.title}</h3>
+                  </div>
+                </div>
 
                 <div className="product-details__review">
                   <div className="floens-ratings">
@@ -84,70 +88,76 @@ export function ProductDetailDefault({
                   </div>
                 </div>
 
-                {product.origin && (
-                  <div className="product-details__meta-item">
-                    <span className="fw-bold text-dark">
-                      {locale === "vi" ? "Xuất Xứ:" : "Origin:"}
-                    </span>
-                    <span className="ms-2 text-secondary">
-                      {product.origin}
-                    </span>
+                <div className="detail-product-title d-flex gap-3 flex-column">
+                  {product.origin && (
+                    <div className="product-details__meta-item ">
+                      <span className="fw-bold text-dark">
+                        {locale === "vi" ? "Xuất Xứ" : "Origin"}
+                      </span>
+                      <span className="ms-2 text-secondary">
+                        {product.origin}
+                      </span>
+                    </div>
+                  )}
+
+                  <div className="product-details__specs">
+                    <h5 className="fw-bold text-dark mb-0" style={{ fontSize: 16 }}>
+                      {locale === "vi" ? "Thông Số Kỹ Thuật" : "Specifications"}
+                    </h5>
+
+                    <ul className="list-unstyled d-flex flex-column ps-0 mb-0">
+                      <li>SKU: {product.sku?.trim() || ""}</li>
+
+                      <li>{locale === "vi" ? "Chất liệu:" : "Material:"} {product.material?.trim() || ""}</li>
+
+                      <li>{locale === "vi" ? "Kích thước:" : "Size:"} {product.size?.trim() || ""}</li>
+
+                      <li>{locale === "vi" ? "Màu sắc:" : "Color:"} {product.color?.trim() || ""}</li>
+
+                      <li>{locale === "vi" ? "Độ dày:" : "Thickness:"} {product.thickness?.trim() || ""}</li>
+
+                      <li>{locale === "vi" ? "Khối lượng riêng:" : "Density:"} {product.density?.trim() || ""}</li>
+
+                      <li>{locale === "vi" ? "Độ cứng:" : "Hardness:"} {product.hardness?.trim() || ""}</li>
+                    </ul>
                   </div>
-                )}
 
-                <div className="product-details__specs">
-                  <h5 className="fw-bold text-dark mb-0" style={{ fontSize: 16 }}>
-                    {locale === "vi" ? "Thông Số Kỹ Thuật" : "Specifications"}
-                  </h5>
+                  {product.excerpt && (
+                    <div className="product-application-text-wrapper mt-0">
+                      <h5 className="fw-bold text-dark mb-0" style={{ fontSize: 16 }}>
+                        {locale === "vi" ? "Ứng dụng" : "Excerpt"}
+                      </h5>
+                      <input
+                        type="checkbox"
+                        id="toggleExcerpt"
+                        className="toggle-excerpt"
+                      />
 
-                  <ul className="list-unstyled d-flex flex-column ps-0">
-                    <li>SKU: {product.sku?.trim() || ""}</li>
+                      <p className="product-application-text mb-0">
+                        {product.excerpt}
+                      </p>
 
-                    <li>{locale === "vi" ? "Chất liệu:" : "Material:"} {product.material?.trim() || ""}</li>
-
-                    <li>{locale === "vi" ? "Kích thước:" : "Size:"} {product.size?.trim() || ""}</li>
-
-                    <li>{locale === "vi" ? "Màu sắc:" : "Color:"} {product.color?.trim() || ""}</li>
-
-                    <li>{locale === "vi" ? "Độ dày:" : "Thickness:"} {product.thickness?.trim() || ""}</li>
-
-                    <li>{locale === "vi" ? "Khối lượng riêng:" : "Density:"} {product.density?.trim() || ""}</li>
-
-                    <li>{locale === "vi" ? "Độ cứng:" : "Hardness:"} {product.hardness?.trim() || ""}</li>
-                  </ul>
+                      {product.excerpt.length > 150 && (
+                        <label
+                          htmlFor="toggleExcerpt"
+                          className="excerpt-toggle-btn"
+                        >
+                          Xem thêm...
+                        </label>
+                      )}
+                    </div>
+                  )}
                 </div>
-                {product.excerpt && (
-                  <div className="product-application-text-wrapper">
-                    <input
-                      type="checkbox"
-                      id="toggleExcerpt"
-                      className="toggle-excerpt"
-                    />
 
-                    <p className="product-application-text">
-                      {product.excerpt}
-                    </p>
-
-                    {product.excerpt.length > 300 && (
-                      <label
-                        htmlFor="toggleExcerpt"
-                        className="excerpt-toggle-btn"
-                      >
-
-                        {locale === "vi"
-                          ? "Xem thêm..."
-                          : "Learn more"}
-                      </label>
-                    )}
-                  </div>
-                )}
-
-                <div className="product-details__info pt-2">
+                <div className="product-details__info mt-auto pt-4">
                   <h4 className="product-details__price">
                     {product.price || (locale === "vi" ? "Liên hệ" : "Contact")}
                   </h4>
 
-                  <Link href={contactHref(locale)} className="floens-btn product__item__link">
+                  <Link
+                    href={locale === "vi" ? "/vi/lien-he" : "/en/contact"}
+                    className="floens-btn product__item__link"
+                  >
                     <span>{locale === "vi" ? "Liên hệ" : "Contact"}</span>
                     <FaCartShopping className="product-cart-icon" />
                   </Link>
@@ -172,14 +182,8 @@ export function ProductDetailDefault({
               </div>
             </div>
           </div>
-
-          {/* {contentHtml && (
-            <div
-              className="product-details__description mt-5"
-              dangerouslySetInnerHTML={{ __html: contentHtml }}
-            />
-          )} */}
         </div>
+
 
         <div className="product-details__description-wrapper">
           <div className="container">

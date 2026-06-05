@@ -80,14 +80,14 @@ export function Footer() {
                                         <li>
 
                                             <FaMapMarkerAlt className="icon-location-2" />
-                                            <a href="https://www.google.com/maps" className="font-weight-800">
+                                            <a href="https://maps.app.goo.gl/h46QpREsDByeyLQ6A" className="font-weight-800">
                                                 <b>Trụ sở chính:
                                                 </b> 114C Hoàng Hoa Thám, Phường Bảy Hiền, TP. HCM
                                             </a>
                                         </li>
                                         <li>
                                             <FaMapMarkerAlt className="icon-location-2" />
-                                            <a href="https://www.google.com/maps" className="font-weight-800">
+                                            <a href="https://maps.app.goo.gl/aGxUAfP1Gr5HVCeP9" className="font-weight-800">
                                                 <b>Nhà máy sản xuất:
                                                 </b>  324 Phan Văn Hớn,
                                                 Phường Đông Hưng Thuận, TP.HCM

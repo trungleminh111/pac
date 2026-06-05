@@ -1,3 +1,4 @@
+import type { CSSProperties } from "react";
 export type Locale = "vi" | "en";
 
 export type PublishStatus = "DRAFT" | "PUBLISHED" | "ARCHIVED";

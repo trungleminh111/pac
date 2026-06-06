@@ -70,9 +70,9 @@ const defaultStyleConfig: StyleConfig = {
   card: {
     marginTop: "0",
     marginRight: "0",
-    marginBottom: "24px",
+    marginBottom: "0",
     marginLeft: "0",
-    borderRadius: "20px",
+    borderRadius: "0",
   },
 };
 

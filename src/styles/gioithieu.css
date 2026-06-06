@@ -40,8 +40,8 @@
   width: var(--circle-size);
   height: var(--circle-size);
 
-  left: 50%;
-  top: 50%;
+  left: 265px;
+  top: 290px;
 
   transform: translate(-50%, -50%);
   z-index: 10;
@@ -59,14 +59,13 @@
 
 .about-one__circle-text__image {
   position: absolute;
-  inset: 25px;
   z-index: 2;
 
   width: calc(100% - 60px);
   height: calc(100% - 60px);
   object-fit: contain;
 
-  animation: rotateSymbol 10s linear infinite;
+  
 }
 
 @keyframes rotateSymbol {
@@ -116,8 +115,8 @@
     position: absolute;
     width: 165px;
     height: 165px;
-    left: 40%;
-    top: 40%;
+    left: 210px;
+    top: 235px;
     transform: translate(-50%, -50%);
     z-index: 10;
   }
@@ -161,8 +160,8 @@
   @media (max-width: 575px) {
     .about-one__circle-text {
       position: absolute;
-      top: 41.5%;
-      left: 52.3%;
+      top: 175px;
+      left: 175px;
       width: 156px;
       height: 156px;
       display: inline-flex;
@@ -175,7 +174,6 @@
     .about-one__circle-text__image {
       width: calc(100% - 60px);
       height: calc(100% - 60px);
-      inset: 22px;
     }
 
     .about-one__circle-text__bg {
@@ -212,9 +210,9 @@
   }
 
   .about-one__circle-text__image {
-    width: calc(100% - 65%);
-    height: calc(100% - 65%);
-    inset: 16px;
+    width: 50px;
+    height: 50px;
+
   }
 
 

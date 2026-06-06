@@ -143,11 +143,13 @@
   color: #ffffff;
   /* Chữ trắng nổi bật trên nền đá đen */
   line-height: 1.4;
+   font-family: var(--floens-font2, "Plus Jakarta Sans", sans-serif);
 }
 
 .util-desc {
   font-size: 11px;
   color: #aaaaaa;
+   font-family: var(--floens-font2, "Plus Jakarta Sans", sans-serif);
 }
 
 /* Hệ thống nhãn trạng thái (Badge) đi kèm */
@@ -207,4 +209,81 @@
 .main-header__right .icon-user:hover svg {
   color: var(--floens-base, #c7844f);
   transition: all .4s;
+}
+
+/* Lớp phủ mờ toàn màn hình bằng Flexbox để đưa nội dung vào giữa */
+.custom-popup-overlay {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  background-color: rgba(0, 0, 0, 0.65) !important; /* Độ tối nền */
+  
+  display: flex !important;
+  justify-content: center !important; /* Trục ngang: Giữa */
+  align-items: center !important;     /* Trục dọc: Giữa */
+  
+  z-index: 999999 !important; /* Đè lên toàn bộ các thanh menu, sidebar hiện có */
+  backdrop-filter: blur(5px); /* Làm mờ hậu cảnh đằng sau popup */
+}
+
+/* Khung chứa form trắng nằm giữa */
+.custom-popup-content {
+  background: #ffffff !important;
+  position: relative !important;
+  width: 92% !important;
+  max-width: 600px !important; /* Độ rộng form */
+  max-height: 88vh !important; /* Không tràn quá chiều cao màn hình */
+  overflow-y: auto !important; /* Hiện thanh cuộn nếu form dài trên mobile */
+  border-radius: 14px !important;
+  box-shadow: 0px 25px 50px rgba(0, 0, 0, 0.4) !important;
+  
+  /* Hiệu ứng Scale mượt mà từ giữa tâm */
+  animation: popupScaleAnimation 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+/* Nút nút X đóng popup góc trên bên phải */
+.custom-popup-close-btn {
+  position: absolute !important;
+  top: 20px !important;
+  right: 20px !important;
+  background: #f5f5f5 !important;
+  border: none !important;
+  width: 36px !important;
+  height: 36px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: 50% !important;
+  cursor: pointer !important;
+  color: #333 !important;
+  z-index: 99 !important;
+  transition: all 0.2s ease;
+}
+
+.custom-popup-close-btn:hover {
+  background: #e0e0e0 !important;
+  transform: rotate(90deg);
+}
+
+/* CSS Keyframes hiệu ứng */
+@keyframes popupScaleAnimation {
+  from {
+    opacity: 0;
+    transform: scale(0.85);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Tùy chỉnh thanh cuộn thu nhỏ bên trong popup (nếu có) */
+.custom-popup-content::-webkit-scrollbar {
+  width: 6px;
+}
+.custom-popup-content::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 4px;
 }

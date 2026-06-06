@@ -391,7 +391,7 @@
 /* ACTIVE + HOVER */
 .product__categories .list-unstyled li:hover ,
 .product__categories .list-unstyled li.active  {
-  background-color: #cd3527;
+  background-color: var(--floens-base, #c7844f);
   border-color: #c89156;
   transform: translateY(-1px);
 }

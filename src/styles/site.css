@@ -973,3 +973,7 @@ a {
 .sidebar__categories li.active a span {
   color: var(--floens-white, #ffffff);
 }
+
+.blog-card__content h3, .blog-card__content p{
+  font-family: var(--floens-font5);
+}

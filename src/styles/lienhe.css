@@ -162,7 +162,7 @@
   content: "";
   position: absolute;
   inset: 0;
-  background-color: #cd3527;
+  background-color: var(--floens-base, #c7844f);
   transform: scaleX(0);
   transform-origin: left;
   transition: transform 0.35s ease;
@@ -185,6 +185,7 @@
   color: #7d7d7d;
   font-size: 14px;
   cursor: pointer;
+   font-family: var(--floens-font2, "Plus Jakarta Sans", sans-serif);
 }
 
 .button-upload svg {
@@ -227,6 +228,7 @@
   z-index: 10;
 
   animation: showCallNotice 10s infinite;
+  font-family: var(--floens-font5);
 }
 
 /* hiện 7s - ẩn 3s */

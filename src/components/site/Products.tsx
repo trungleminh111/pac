@@ -38,55 +38,114 @@ export async function Products({ locale }: { locale: Locale }) {
 
         <div className="row gutter-y-30">
           {products.map((product) => (
-
-
-            <div className="col-xl-3 col-lg-3 col-md-6" key={product.id}>
-              <ScrollReveal animationClass="fade-in-up" delay="0.2s">
-                <div className="product__item">
-                  <div className="product__item__image">
-                    <Link href={productHref(locale, product.slug)}>
-                      <img src={product.image} alt={product.title}
+            <>
+              <div className="col-xl-3 col-lg-3 col-md-6 d-none d-md-block" key={product.id}>
+                <ScrollReveal animationClass="fade-in-up" delay="0.2s">
+                  <div className="product__item">
+                    <div className="product__item__image">
+                      <Link href={productHref(locale, product.slug)}
                         style={{
-                          height: "180px",
-                          width: "100%",
-                          objectFit: "contain",
-                        }} />
-                    </Link>
-                  </div>
+                          margin: product.styleConfig?.card?.margin
+                        }}>
+                        <img
+                          src={product.image}
+                          alt={product.title}
+                          style={{
+                            padding: product.styleConfig?.card?.margin || "0px",
+                            width: product.styleConfig?.image?.width || "100%",
+                            height: product.styleConfig?.image?.height
+                              ? `calc(${product.styleConfig.image.height} + ${product.styleConfig?.card?.margin || "0px"})`
+                              : "180px",
+                            objectFit: product.styleConfig?.image?.objectFit || "cover",
+                          }}
+                        />
+                      </Link>
+                    </div>
 
-                  <div className="product__item__content">
-                    <div className="floens-ratings product__item__ratings">
-                      <div className="rating-stars">
-                        {Array.from({ length: 5 }).map((_, index) => (
-                          <FaStar key={index} />
-                        ))}
+                    <div className="product__item__content">
+                      <div className="floens-ratings product__item__ratings">
+                        <div className="rating-stars">
+                          {Array.from({ length: 5 }).map((_, index) => (
+                            <FaStar key={index} />
+                          ))}
+                        </div>
+                      </div>
+
+                      <h4 className="product__item__title">
+                        <Link href={productHref(locale, product.slug)}>
+                          {product.title}
+                        </Link>
+                      </h4>
+
+                      <div className="product__item__price">
+                        {product.price || (locale === "vi" ? "Liên hệ" : "Contact")}
+                      </div>
+
+                      <div>
+                        <Link
+                          href={contactHref(locale)}
+                          className="floens-btn product__item__link"
+                        >
+                          <span>{locale === "vi" ? "Liên hệ" : "Contact"}</span>
+                          <span>|</span>
+                          <FaCartShopping className="product-cart-icon" />
+                        </Link>
                       </div>
                     </div>
+                  </div>
+                </ScrollReveal>
+              </div>
 
-                    <h4 className="product__item__title">
+              <div className="col-xl-3 col-lg-3 col-md-6  d-block d-md-none" key={product.id}>
+                <ScrollReveal animationClass="fade-in-up" delay="0.2s">
+                  <div className="product__item">
+                    <div className="product__item__image">
                       <Link href={productHref(locale, product.slug)}>
-                        {product.title}
+                        <img src={product.image} alt={product.title}
+                          style={{
+                            height: "180px",
+                            width: "100%",
+                            objectFit: "contain",
+                          }} />
                       </Link>
-                    </h4>
-
-                    <div className="product__item__price">
-                      {product.price || (locale === "vi" ? "Liên hệ" : "Contact")}
                     </div>
 
-                    <div>
-                      <Link
-                        href={contactHref(locale)}
-                        className="floens-btn product__item__link"
-                      >
-                        <span>{locale === "vi" ? "Liên hệ" : "Contact"}</span>
-                        <span>|</span>
-                        <FaCartShopping className="product-cart-icon" />
-                      </Link>
+                    <div className="product__item__content">
+                      <div className="floens-ratings product__item__ratings">
+                        <div className="rating-stars">
+                          {Array.from({ length: 5 }).map((_, index) => (
+                            <FaStar key={index} />
+                          ))}
+                        </div>
+                      </div>
+
+                      <h4 className="product__item__title">
+                        <Link href={productHref(locale, product.slug)}>
+                          {product.title}
+                        </Link>
+                      </h4>
+
+                      <div className="product__item__price">
+                        {product.price || (locale === "vi" ? "Liên hệ" : "Contact")}
+                      </div>
+
+                      <div>
+                        <Link
+                          href={contactHref(locale)}
+                          className="floens-btn product__item__link"
+                        >
+                          <span>{locale === "vi" ? "Liên hệ" : "Contact"}</span>
+                          <span>|</span>
+                          <FaCartShopping className="product-cart-icon" />
+                        </Link>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </ScrollReveal>
-            </div>
+                </ScrollReveal>
+              </div>
+            </>
+
+
           ))}
 
           {products.length === 0 && (

@@ -48,7 +48,7 @@ export async function Products({ locale }: { locale: Locale }) {
             const margin = product.styleConfig?.card?.margin;
             const marginTop = getMarginTop(margin);
             const imageHeight = product.styleConfig?.image?.height || "180px";
-            const computedHeight = margin
+            const computedHeight = margin 
               ? `calc(${imageHeight} + ${marginTop})`
               : imageHeight;
 
@@ -72,7 +72,7 @@ export async function Products({ locale }: { locale: Locale }) {
                             style={{
                               padding: margin || "0px",
                               width: product.styleConfig?.image?.width || "100%",
-                              height: computedHeight,
+                              height: computedHeight || "180px",
                               objectFit: product.styleConfig?.image?.objectFit || "cover",
                             }}
                           />
@@ -88,7 +88,12 @@ export async function Products({ locale }: { locale: Locale }) {
                           </div>
                         </div>
 
-                        <h4 className="product__item__title">
+                        <h4 className="product__item__title" style={{
+                          display: "-webkit-box",
+                          WebkitLineClamp: 2,
+                          WebkitBoxOrient: "vertical",
+                          overflow: "hidden",
+                        }}>
                           <Link href={productHref(locale, product.slug)}>
                             {product.title}
                           </Link>
@@ -126,9 +131,10 @@ export async function Products({ locale }: { locale: Locale }) {
                             src={product.image}
                             alt={product.title}
                             style={{
-                              height: "180px",
+                              padding: margin || "0px",
+                              aspectRatio: "4/3",
                               width: "100%",
-                              objectFit: "contain",
+                              objectFit: product.styleConfig?.image?.objectFit || "cover",
                             }}
                           />
                         </Link>

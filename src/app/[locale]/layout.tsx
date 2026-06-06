@@ -19,6 +19,11 @@ import ScrollTopProgress from "@/components/site/ScrollTopProgress";
 export const metadata: Metadata = {
   title: "P.A.C STONE",
   description: "Nhà cung cấp giải pháp thiết kế, thi công đá ốp lát cao cấp",
+  icons: {
+    icon: "/assets/images/logo-PACSTONE.webp",
+    shortcut: "/assets/images/logo-PACSTONE.webp",
+    apple: "/assets/images/logo-PACSTONE.webp",
+  },
 };
 
 export default function RootLayout({

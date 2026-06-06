@@ -323,7 +323,7 @@
 
 .filter-project .filter-grid-item:hover,
 .filter-project .filter-grid-item.active {
-  background-color: #cd3527;
+  background-color: var(--floens-base, #c7844f);
   border-color: #c89156;
   transform: translateY(-1px);
 }

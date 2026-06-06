@@ -16999,9 +16999,9 @@ li:hover .sidebar__comments__icon::after {
   position: absolute;
   top: 0;
   left: 0;
-  background: linear-gradient(180deg,
+  /* background: linear-gradient(180deg,
       var(--floens-base, #c7844f) 0%,
-      RGBA(var(--floens-base-rgb, 199, 132, 79), 0) 100%);
+      RGBA(var(--floens-base-rgb, 199, 132, 79), 0) 100%); */
   z-index: -1;
 }
 

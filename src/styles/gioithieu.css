@@ -126,7 +126,7 @@
 }
 
 
-.about-one__circle-text {
+/* .about-one__circle-text {
   position: absolute;
   width: 165px;
   height: 165px;
@@ -134,7 +134,7 @@
   top: 44%;
   transform: translate(-50%, -50%);
   z-index: 10;
-}
+} */
 
 @media (max-width: 575px) {
   .about-one__image-grid {

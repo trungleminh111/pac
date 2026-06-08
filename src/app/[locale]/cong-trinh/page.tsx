@@ -2,7 +2,7 @@ import Link from "next/link";
 import { SiteHeader as Header } from "@/components/site/SiteHeader";
 import { Footer } from "@/components/site/Footer";
 import { PageHeader } from "@/components/site/PageHeader";
-
+import styles from "./Contruct.module.css";
 const filters = [
   "Tất cả",
   "Villa - Penhouse",
@@ -145,7 +145,7 @@ export default async function WorksPage({
                       </div>
 
                       <Link href={href} className="work-card__link floens-btn">
-                        <span className="icon-right-arrow" />
+                        <span className={styles.arrowRight} />
                       </Link>
                     </div>
                   </div>

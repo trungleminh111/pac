@@ -64,7 +64,7 @@ export async function Products({ locale }: { locale: Locale }) {
                       <div className="product__item__image">
                         <Link
                           href={productHref(locale, product.slug)}
-                          style={{ margin }}
+                          // style={{ margin }}
                         >
                           <img
                             src={product.image}

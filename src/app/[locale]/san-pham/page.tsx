@@ -204,7 +204,12 @@ export default async function ProductsPage({
                           </div>
                         </div>
 
-                        <h4 className="product__item__title">
+                        <h4 className="product__item__title" style={{
+                          display: "-webkit-box",
+                          WebkitLineClamp: 2,
+                          WebkitBoxOrient: "vertical",
+                          overflow: "hidden",
+                        }}>
                           <Link href={productDetailHref(locale, product.slug)}>
                             {product.title}
                           </Link>
@@ -302,7 +307,7 @@ export default async function ProductsPage({
                     <div className="product__item">
                       <div className="product__item__image">
                         <Link href={productDetailHref(locale, product.slug)}
-                          >
+                        >
                           <img
                             src={product.image}
                             alt={product.title}
@@ -325,7 +330,12 @@ export default async function ProductsPage({
                           </div>
                         </div>
 
-                        <h4 className="product__item__title">
+                        <h4 className="product__item__title" style={{
+                          display: "-webkit-box",
+                          WebkitLineClamp: 2,
+                          WebkitBoxOrient: "vertical",
+                          overflow: "hidden",
+                        }}>
                           <Link href={productDetailHref(locale, product.slug)}>
                             {product.title}
                           </Link>

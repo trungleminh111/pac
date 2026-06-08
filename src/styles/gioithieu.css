@@ -150,12 +150,12 @@
     row-gap: var(--gap);
   }
 
-  .about-one__circle-text {
+  /* .about-one__circle-text {
     width: var(--circle-size);
     height: var(--circle-size);
     left: 40%;
     top: 40%;
-  }
+  } */
 
   @media (max-width: 575px) {
     .about-one__circle-text {

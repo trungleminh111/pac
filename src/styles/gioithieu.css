@@ -135,7 +135,17 @@
   transform: translate(-50%, -50%);
   z-index: 10;
 } */
-
+@media (max-width:1024px){
+  .about-one__circle-text {
+    position: absolute;
+    width: var(--circle-size);
+    height: var(--circle-size);
+    left: 212px;
+    top: 233px;
+    transform: translate(-50%, -50%);
+    z-index: 10;
+  }
+}
 @media (max-width: 575px) {
   .about-one__image-grid {
     --gap: 10px;

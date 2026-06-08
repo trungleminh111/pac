@@ -403,7 +403,7 @@ a {
   display: grid;
   grid-template-columns: 0.75fr 1.25fr;
   gap: 30px;
-  
+
 }
 
 .projects-one__images img {
@@ -461,6 +461,7 @@ a {
     align-self: flex-start;
   }
 }
+
 .projects-one__left {
   overflow: hidden;
 }
@@ -488,16 +489,94 @@ a {
   position: absolute;
   inset: 0;
   background: rgba(0, 0, 0, 0.45);
+
   display: flex;
   align-items: flex-end;
   padding: 35px;
+
   opacity: 0;
   transition: 0.35s ease;
 }
 
 .project-card__overlay h3 {
-  color: #fff;
   margin: 0;
+  height: 60px;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  background: #fff;
+  color: #222;
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.project-card__overlay span {
+  width: 80px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #ff2b2b;
+  color: #fff;
+  font-size: 32px;
+  flex-shrink: 0; 
+  padding-right: 5px;
+}
+.project-card {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Type ở góc trên */
+.project-card__type {
+  position: absolute;
+  top: 25px;
+  left: 25px;
+  z-index: 2;
+
+  background: #fff;
+  color: var(--color-brown);
+
+  padding: 8px 16px;
+  font-size: 14px;
+  font-weight: 700;
+  text-transform: uppercase;
+
+  transform: translateX(-120%);
+  opacity: 0;
+
+  transition: all 0.45s ease;
+}
+
+/* Hover card thì type chạy ra */
+.project-card:hover .project-card__type {
+  transform: translateX(0);
+  opacity: 1;
+}
+
+@media (max-width: 575px) {
+  .project-card__overlay h3 {
+    font-size: 17px;
+  }
+
+  .project-card__overlay span {
+    font-size: 25;
+    width: 60px;
+
+  }
+  .project-card__type {
+     padding: 6px 12px;
+  font-size: 10px;
+  }
+}
+
+.project-card__overlay span svg {
+  transition: transform 0.3s ease;
+}
+
+.project-card:hover .project-card__overlay span svg {
+  transform: translateX(6px);
 }
 
 .project-card:hover .project-card__overlay {
@@ -942,7 +1021,8 @@ a {
   transition: all 500ms ease;
 }
 
-.sidebar__categories li a:hover , .sidebar__categories li a:active{
+.sidebar__categories li a:hover,
+.sidebar__categories li a:active {
   padding: 12px 12px;
   color: var(--floens-white, #ffffff);
   text-shadow: 0 0 1px currentColor;
@@ -956,6 +1036,7 @@ a {
 .sidebar__categories li a:hover span {
   color: var(--floens-white, #ffffff);
 }
+
 .sidebar__categories li a:hover,
 .sidebar__categories li.active a {
   padding: 12px 12px;
@@ -974,6 +1055,7 @@ a {
   color: var(--floens-white, #ffffff);
 }
 
-.blog-card__content h3, .blog-card__content p{
+.blog-card__content h3,
+.blog-card__content p {
   font-family: var(--floens-font5);
 }

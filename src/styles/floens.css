@@ -596,6 +596,11 @@ p {
   transition: all 400ms ease;
 }
 
+.product__item__content  .floens-btn i::after {
+   height: 50% !important;
+    left: -10px !important;
+}
+
 .floens-btn--border {
   background-color: transparent;
   border: 1px solid var(--floens-base, #c7844f);
@@ -2349,7 +2354,7 @@ p {
 }
 
 .blog-card__image a {
-  color: #f4cb74;
+  color: var(--floens-base, #c7844f)
 }
 
 .blog-card:hover .blog-card__image img {

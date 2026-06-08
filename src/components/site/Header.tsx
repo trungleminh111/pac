@@ -272,7 +272,7 @@ export function Header({
                 </div>
               </li>
               <li>
-                <Link href="/assets/documents/ho-so-phap-ly-pac-stone.pdf" target="_blank" className="sidebar-util-link">
+                <Link href="/assets/files/pPAC-certificates.rar" target="_blank" className="sidebar-util-link">
                   <div className="util-icon-box pdf-type"><FaFilePdf /></div>
                   <div className="util-text-box">
                     <span className="util-title">{locale === "vi" ? "Hồ sơ pháp lý P.A.C STONE" : "P.A.C STONE Legal Profile"}</span>
@@ -286,12 +286,12 @@ export function Header({
                   <span>{locale === "vi" ? "LIÊN HỆ NGAY" : "CONTACT NOW"}</span>
                 </button>
               </li>
-              <li className="mt-2">
+              {/* <li className="mt-2">
                 <Link href="https://zalo.me/YOUR_ZALO_OA_ID" target="_blank" className="sidebar-util-zalo-btn">
                   <FaCommentDots className="zalo-btn-icon" />
                   <span>{locale === "vi" ? "NHẮN TIN ZALO OA NGAY" : "MESSAGE ZALO OA NOW"}</span>
                 </Link>
-              </li>
+              </li> */}
             </ul>
           </div>
 

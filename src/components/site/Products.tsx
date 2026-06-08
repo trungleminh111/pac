@@ -48,7 +48,7 @@ export async function Products({ locale }: { locale: Locale }) {
             const margin = product.styleConfig?.card?.margin;
             const marginTop = getMarginTop(margin);
             const imageHeight = product.styleConfig?.image?.height || "180px";
-            const computedHeight = margin 
+            const computedHeight = margin
               ? `calc(${imageHeight} + ${marginTop})`
               : imageHeight;
 
@@ -102,15 +102,10 @@ export async function Products({ locale }: { locale: Locale }) {
                         <div className="product__item__price">
                           {product.price || (locale === "vi" ? "Liên hệ" : "Contact")}
                         </div>
-
-                        <div>
-                          <Link
-                            href={contactHref(locale)}
-                            className="floens-btn product__item__link"
-                          >
+                        <div className="mt-5 text-center">
+                          <Link href={contactHref(locale)} className="floens-btn">
                             <span>{locale === "vi" ? "Liên hệ" : "Contact"}</span>
-                            <span>|</span>
-                            <FaCartShopping className="product-cart-icon" />
+                            <i className="icon-right-arrow"><FaCartShopping className="product-cart-icon" /></i>
                           </Link>
                         </div>
                       </div>
@@ -158,15 +153,10 @@ export async function Products({ locale }: { locale: Locale }) {
                         <div className="product__item__price">
                           {product.price || (locale === "vi" ? "Liên hệ" : "Contact")}
                         </div>
-
-                        <div>
-                          <Link
-                            href={contactHref(locale)}
-                            className="floens-btn product__item__link"
-                          >
+                        <div className="mt-5 text-center">
+                          <Link href={contactHref(locale)} className="floens-btn">
                             <span>{locale === "vi" ? "Liên hệ" : "Contact"}</span>
-                            <span>|</span>
-                            <FaCartShopping className="product-cart-icon" />
+                            <i className="icon-right-arrow"><FaCartShopping className="product-cart-icon" /></i>
                           </Link>
                         </div>
                       </div>

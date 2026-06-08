@@ -282,7 +282,7 @@ export function Header({
               </li>
 
                 <li className="mt-3">
-                <button onClick={() => { setSidebarOpen(false); openModal(); }} className=" sidebar-util-zalo-btn w-100 open-popup-btn" style={{ padding: "12px 25px", backgroundColor:"var(--floens-base, #c7844f);" }}>
+                <button onClick={() => { setSidebarOpen(false); openModal(); }} className=" sidebar-util-zalo-btn w-100 open-popup-btn" style={{ padding: "12px 25px", backgroundColor:"var(--floens-base, #c7844f)" }}>
                   <span>{locale === "vi" ? "LIÊN HỆ NGAY" : "CONTACT NOW"}</span>
                 </button>
               </li>

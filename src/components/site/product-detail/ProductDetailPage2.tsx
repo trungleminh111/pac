@@ -173,7 +173,68 @@ export function ProductDetailPage2({
           </div>
         </div>
 
-        <div className="product-details__description-wrapper">
+        <div className="product-details__description-wrapper d-none d-md-block">
+          <div className="container">
+            <div className="product-details__description">
+              <h3 className="product-details__description__title">
+                {locale === "vi" ? "SẢN PHẨM TƯƠNG TỰ" : "RELATED PRODUCTS"}
+              </h3>
+            </div>
+
+            <div className="row gutter-y-30">
+              {relatedProducts.map((item) => (
+                <div className="col-xl-3 col-lg-3 col-md-6" key={item.id}>
+                  <div className="product__item">
+                    <div className="product__item__image">
+                      <Link href={productHref(locale, item.slug)}
+                         style={{
+                            margin: item.styleConfig?.card?.margin
+                          }}>
+                        <img
+                            src={item.image}
+                            alt={item.title}
+                            style={{
+                              width: item.styleConfig?.image?.width || "100%",
+                              height: item.styleConfig?.image?.height || "180px",
+                              objectFit: item.styleConfig?.image?.objectFit || "cover",
+                            }}
+                          />
+                      </Link>
+                    </div>
+
+                    <div className="product__item__content">
+                      <div className="floens-ratings product__item__ratings">
+                        <div className="rating-stars">
+                          {Array.from({ length: 5 }).map((_, index) => (
+                            <FaStar key={index} />
+                          ))}
+                        </div>
+                      </div>
+
+                      <h4 className="product__item__title">
+                        <Link href={productHref(locale, item.slug)}>
+                          {item.title}
+                        </Link>
+                      </h4>
+
+                      <div className="product__item__price">{item.price}</div>
+
+                      <Link
+                        href={productHref(locale, item.slug)}
+                        className="floens-btn product__item__link"
+                      >
+                        <span>{locale === "vi" ? "Liên hệ" : "Contact"}</span>
+                        <FaCartShopping className="product-cart-icon" />
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <div className="product-details__description-wrapper d-block d-md-none">
           <div className="container">
             <div className="product-details__description">
               <h3 className="product-details__description__title">

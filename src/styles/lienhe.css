@@ -162,7 +162,7 @@
   content: "";
   position: absolute;
   inset: 0;
-  background-color: #cd3527;
+  background-color: var(--floens-base, #c7844f);
   transform: scaleX(0);
   transform-origin: left;
   transition: transform 0.35s ease;
@@ -185,6 +185,7 @@
   color: #7d7d7d;
   font-size: 14px;
   cursor: pointer;
+   font-family: var(--floens-font2, "Plus Jakarta Sans", sans-serif);
 }
 
 .button-upload svg {
@@ -227,6 +228,7 @@
   z-index: 10;
 
   animation: showCallNotice 10s infinite;
+  font-family: var(--floens-font5);
 }
 
 /* hiện 7s - ẩn 3s */
@@ -518,4 +520,50 @@
   color: #333;
   line-height: 14px;
   text-align: center;
+}
+
+.doc-a4-item {
+  cursor: pointer;
+}
+
+.image-preview-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.85);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  z-index: 9999;
+}
+
+.image-preview-content {
+  position: relative;
+}
+
+.image-preview-a4 {
+  width: auto;
+  height: 90vh;
+  max-width: 90vw;
+  object-fit: contain;
+  border-radius: 8px;
+  background: #fff;
+}
+
+.image-preview-close {
+  position: absolute;
+  top: -15px;
+  right: -15px;
+
+  width: 40px;
+  height: 40px;
+  border: none;
+  border-radius: 50%;
+
+  background: #fff;
+  cursor: pointer;
+
+  font-size: 24px;
+  line-height: 1;
 }

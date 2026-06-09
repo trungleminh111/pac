@@ -4,25 +4,29 @@ import { useRef } from "react";
 import { Autoplay } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import type { Swiper as SwiperType } from "swiper";
-
+import { LuMoveRight } from "react-icons/lu";
 import "swiper/css";
 
 const projects = [
   {
     title: "Dự án ốp đá biệt thự",
     image: "project-1-1.jpg",
+    type: "Thi công ốp đá"
   },
   {
     title: "Dự án đá hoa cương cao cấp",
     image: "project-1-2.jpg",
+    type: "Thi công ốp đá"
   },
   {
     title: "Dự án căn hộ cao cấp",
     image: "project-1-3.jpg",
+    type: "Thi công ốp đá"
   },
   {
     title: "Dự án trung tâm thương mại",
     image: "project-1-4.jpg",
+    type: "Thi công ốp đá"
   },
 ];
 
@@ -40,7 +44,7 @@ export function Projects() {
             slidesPerView={1.33}
             spaceBetween={30}
             autoplay={{
-              delay: 5000,
+              delay: 500000,
               disableOnInteraction: false,
             }}
             breakpoints={{
@@ -65,9 +69,17 @@ export function Projects() {
                     src={`/assets/images/works/${project.image}`}
                     alt={project.title}
                   />
+                  <div className="project-card__type">
+                    {project.type}
+                  </div>
+
 
                   <div className="project-card__overlay">
-                    <h3>{project.title}</h3>
+                    <h3>{project.title} </h3>
+                    <span>
+                      <LuMoveRight />
+                    </span>
+
                   </div>
                 </div>
               </SwiperSlide>

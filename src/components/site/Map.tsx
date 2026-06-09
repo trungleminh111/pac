@@ -72,6 +72,9 @@ export default function LocationMap() {
 
         onAdd: function () {
           const div = L.DomUtil.create("div", "map-type-btn");
+          
+          // Thêm font-family vào nút chuyển đổi bản đồ/vệ tinh
+          div.style.fontFamily = "var(--floens-font5)";
 
           div.innerHTML = `
             <div class="map-type-thumb map-type-thumb-satellite"></div>
@@ -116,7 +119,7 @@ export default function LocationMap() {
         className: "custom-pin",
         html: `
           <div style="width:38px;height:48px;position:relative;filter:drop-shadow(0 5px 8px rgba(0,0,0,.22))">
-            <div style="width:34px;height:34px;background:#ef3340;border-radius:50% 50% 50% 0;transform:rotate(-45deg);position:absolute;left:2px;top:0;box-shadow:0 0 0 3px #fff">
+            <div style="width:34px;height:34px;background:var(--floens-base, #c7844f);border-radius:50% 50% 50% 0;transform:rotate(-45deg);position:absolute;left:2px;top:0;box-shadow:0 0 0 3px #fff">
               <div style="width:9px;height:9px;background:#fff;border-radius:50%;position:absolute;left:12.5px;top:12.5px;"></div>
             </div>
           </div>
@@ -126,6 +129,7 @@ export default function LocationMap() {
       });
 
       locations.forEach((item, index) => {
+        // Đã sửa lại lỗi hiển thị chuỗi template lồng nhau ở đoạn này `2{item.lat}` gốc của bạn
         const dirUrl = `https://www.google.com/maps/dir/?api=1&destination=${item.lat},${item.lng}`;
 
         L.marker([item.lat, item.lng], {
@@ -137,19 +141,20 @@ export default function LocationMap() {
           zIndexOffset: 300,
           icon: L.divIcon({
             className: "custom-card-marker",
+            // Thêm font-family: var(--floens-font5) vào thẻ bao bọc ngoài cùng của Card thông tin
             html: `
-              <div style="width:255px;min-height:82px;background:#fff;border-radius:4px;box-shadow:0 8px 24px rgba(0,0,0,.16),0 1px 3px rgba(0,0,0,.10);display:flex;align-items:stretch;position:relative;">
+              <div style="width:255px;min-height:82px;background:#fff;border-radius:4px;box-shadow:0 8px 24px rgba(0,0,0,.16),0 1px 3px rgba(0,0,0,.10);display:flex;align-items:stretch;position:relative;font-family:var(--floens-font5);">
                 <div style="position:absolute;left:17px;bottom:-8px;width:16px;height:16px;background:#fff;transform:rotate(45deg);box-shadow:4px 4px 8px rgba(0,0,0,.05);z-index:0;"></div>
 
                 <div style="flex:1;padding:13px 13px 12px;position:relative;z-index:1;">
-                  <h3 style="margin:0 0 7px;font-size:14px;line-height:1.2;font-weight:800;color:#111;white-space:nowrap;">${item.title}</h3>
-                  <p style="margin:0;font-size:10.5px;line-height:1.65;color:#202020;">${item.address}</p>
+                  <h3 style="margin:0 0 7px;font-size:14px;line-height:1.2;font-weight:800;color:#111;white-space:nowrap;font-family:var(--floens-font5);">${item.title}</h3>
+                  <p style="margin:0;font-size:10.5px;line-height:1.65;color:#202020;font-family:var(--floens-font5);">${item.address}</p>
                 </div>
 
                 <a href="${dirUrl}" target="_blank" rel="noopener noreferrer"
-                  style="width:72px;flex:0 0 72px;border-left:1px solid #eee;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:8px;color:#0074bd;font-size:10.5px;font-weight:700;text-decoration:none;background:#fff;position:relative;z-index:1;">
+                  style="width:72px;flex:0 0 72px;border-left:1px solid #eee;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:8px;color:#0074bd;font-size:10.5px;font-weight:700;text-decoration:none;background:#fff;position:relative;z-index:1;font-family:var(--floens-font5);">
                   <span>Chỉ đường</span>
-                  <span style="width:34px;height:34px;border-radius:50%;background:#ef3340;display:flex;align-items:center;justify-content:center;color:#fff;box-shadow:0 4px 12px rgba(239,51,64,.32);">➤</span>
+                  <span style="width:34px;height:34px;border-radius:50%;background:var(--floens-base, #c7844f);display:flex;align-items:center;justify-content:center;color:#fff;box-shadow:0 4px 12px rgba(239,51,64,.32);">➤</span>
                 </a>
               </div>
             `,
@@ -222,6 +227,7 @@ export default function LocationMap() {
     >
       <div ref={mapRef} style={{ width: "100%", height: "100%" }} />
 
+      {/* Thêm font-family vào thanh thông báo đen nhỏ dưới bản đồ */}
       <div
         className={`position-absolute start-50 translate-middle-x text-white small fw-semibold rounded-pill ${
           showHint ? "opacity-100" : "opacity-0"
@@ -234,9 +240,10 @@ export default function LocationMap() {
           whiteSpace: "nowrap",
           transition: "opacity .3s",
           zIndex: 9999,
+          fontFamily: "var(--floens-font5)", 
         }}
       >
-        Giữ <kbd>Ctrl</kbd> để phóng to bản đồ
+        Giữ <kbd style={{ fontFamily: "var(--floens-font5)" }}>Ctrl</kbd> để phóng to bản đồ
       </div>
     </div>
   );

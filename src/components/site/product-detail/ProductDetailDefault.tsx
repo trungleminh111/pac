@@ -51,7 +51,7 @@ export function ProductDetailDefault({
   product: ProductDetailItem;
   relatedProducts: ProductCardItem[];
 }) {
-  
+
   const gallery = getGallery(product);
   const contentHtml = getHtml(product.content);
 
@@ -193,17 +193,17 @@ export function ProductDetailDefault({
                   ? "CÁC DÒNG SẢN PHẨM CHÍNH"
                   : "MAIN PRODUCT LINES"}
               </h2>
-              <p className="h5">
+              <p className="product-details__description__subtitle">
                 {locale === "vi"
                   ? "Chúng tôi nhận thiết kế và thi công đa dạng hoa văn đá theo yêu cầu:"
                   : "We provide custom design and installation services for a wide range of stone patterns upon request:"}
               </p>
             </div>
 
-            <div className="product-details__description">
+            <div className="product-details__description d-none d-md-block ">
               <div className="row gutter-y-30">
                 {relatedProducts.map((item) => (
-                  
+
                   <div
                     className="col-xl-3 col-lg-3 col-md-6"
                     key={item.id}
@@ -263,15 +263,82 @@ export function ProductDetailDefault({
                         </div>
                       </div>
                     </div>
+
+                    
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className="product-details__description d-block d-md-none">
+              <div className="row gutter-y-30">
+                {relatedProducts.map((item) => (
+
+                  <div
+                    className="col-xl-3 col-lg-3 col-md-6"
+                    key={item.id}
+                  >
+                    <div className="product__item">
+                      <div className="product__item__image">
+                        <Link href={productHref(locale, item.slug)}>
+                          <img
+                            src={item.image}
+                            alt={item.title}
+                            style={{
+                              maxWidth: "100%",
+                              maxHeight: "100%",
+                              width: "auto",
+                              height: "auto",
+                              objectFit: "contain",
+                            }}
+                          />
+                          <div className="product-image-overlay">
+                            {/* {item.title} */}
+                          </div>
+                        </Link>
+                      </div>
+
+                      <div className="product__item__content">
+                        <div className="floens-ratings product__item__ratings">
+                          <div className="rating-stars">
+                            {Array.from({ length: 5 }).map((_, index) => (
+                              <FaStar key={index} />
+                            ))}
+                          </div>
+                        </div>
+
+                        <h4 className="product__item__title">
+                          <Link href={productHref(locale, item.slug)}>
+                            {item.title}
+                          </Link>
+                        </h4>
+
+                        <div className="product__item__price">
+                          {item.price}
+                        </div>
+
+                        <div>
+                          <Link
+                            href={productHref(locale, item.slug)}
+                            className="floens-btn product__item__link"
+                          >
+                            <span>
+                              {locale === "vi"
+                                ? "Tìm hiểu thêm"
+                                : "Learn more"}
+                            </span>
+                          </Link>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 ))}
               </div>
             </div>
           </div>
         </div>
-      </section>
+      </section >
 
       <Footer />
-    </div>
+    </div >
   );
 }

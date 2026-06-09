@@ -45,8 +45,21 @@ export default function AboutPage({
                                             className="about-one__image__three"
                                         />
                                     </div>
-
                                     <div className="about-one__circle-text">
+                                        <img
+                                            src="/assets/images/about/P.A.C STONE (2).gif"
+                                            alt="P.A.C STONE Animation"
+                                            className="about-one__circle-text__image"
+                                            style={{
+                                                width: "100%",
+                                                height: "100%",
+                                                objectFit: "cover",
+                                                borderRadius: "50%", // Đảm bảo ảnh GIF hiển thị theo khung tròn nếu class cha chưa bo tròn
+                                            }}
+                                        />
+                                    </div>
+
+                                    {/* <div className="about-one__circle-text">
                                         <div
                                             className="about-one__circle-text__bg"
                                             style={{
@@ -59,12 +72,8 @@ export default function AboutPage({
                                             alt="award"
                                             className="about-one__circle-text__image"
                                         />
-                                        {/* <div className="about-one__curved-circle curved-circle">
-                                        <div className="about-one__curved-circle__item curved-circle__item">
-jịi
-                                        </div>
+                                       
                                     </div> */}
-                                    </div>
                                 </div>
                             </ScrollReveal>
                         </div>

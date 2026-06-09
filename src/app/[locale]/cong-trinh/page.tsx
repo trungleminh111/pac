@@ -3,6 +3,7 @@ import { SiteHeader as Header } from "@/components/site/SiteHeader";
 import { Footer } from "@/components/site/Footer";
 import { PageHeader } from "@/components/site/PageHeader";
 import styles from "./Contruct.module.css";
+import Banner from "@/components/site/Banner/Banner";
 const filters = [
   "Tất cả",
   "Villa - Penhouse",
@@ -84,11 +85,16 @@ export default async function WorksPage({
     <div className="page-wrapper">
       <Header locale={locale} />
 
-      <PageHeader
+      {/* <PageHeader
         title=""
         bgImage="/assets/images/backgrounds/PACSTONE-CONGTRINH-header.png"
+      /> */}
+      <Banner
+        title="CÔNG TRÌNH"
+        backgroundImg="/assets/images/backgrounds/contruct-banner.webp"
+        row={2}
+        col={1}
       />
-
       <section className="work-page work-page--grid section-space-bottom">
         <div className="container">
           <div className="row mb-4">

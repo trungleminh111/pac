@@ -3,6 +3,7 @@ import { Footer } from "@/components/site/Footer";
 import { About } from "@/components/site/About";
 import { PageHeader } from "@/components/site/PageHeader";
 import ScrollReveal from "@/components/site/ScrollReveal";
+import Banner from "@/components/site/Banner/Banner";
 
 
 export default function AboutPage({
@@ -16,7 +17,12 @@ export default function AboutPage({
     return (
         <div className="page-wrapper page-gioithieu">
             <Header locale={locale} />
-            <PageHeader title="" bgImage="/assets/images/backgrounds/PACSTONE-GioiThieu-header.png" />
+            <Banner
+                title="GIỚI THIỆU"
+                backgroundImg="/assets/images/backgrounds/intro-banner.webp"
+                row={2}
+                col={1}
+            />
             <About backgroundImage="/assets/images/backgrounds/8.png" />
             <section className="about-one section-space" id="about">
                 <div className="container">

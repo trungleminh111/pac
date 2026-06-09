@@ -12,6 +12,7 @@ import { FaPhoneAlt } from "react-icons/fa";
 import { LuDownload } from "react-icons/lu";
 import { LuUpload } from "react-icons/lu";
 import ScrollReveal from "@/components/site/ScrollReveal";
+import Banner from "@/components/site/Banner/Banner";
 export default function ContactPage({
   params,
 }: {
@@ -23,11 +24,12 @@ export default function ContactPage({
   return (
     <div className="page-wrapper">
       <Header locale={locale} />
-
-      <PageHeader
-        title=""
-        bgImage="/assets/images/backgrounds/PACSTONE-LIENHE-header.png"
-      >
+       <Banner
+        title="LIÊN HỆ"
+        backgroundImg="/assets/images/backgrounds/contact-banner.webp"
+        row={1}
+        col={2}
+      > 
         {/* Khung bao bọc tổng thể theo chiều dọc */}
         <div className="contact-call-wrapper">
 
@@ -55,8 +57,14 @@ export default function ContactPage({
           </div>
 
         </div>
-      </PageHeader>
-
+      </Banner>
+      {/* <PageHeader
+        title=""
+        bgImage="/assets/images/backgrounds/PACSTONE-LIENHE-header.png"
+      >
+        
+      </PageHeader>  */}
+     
       <section className="contact-one section-space">
         <div
           className="contact-one__bg"

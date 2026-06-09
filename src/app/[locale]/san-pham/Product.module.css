@@ -1,0 +1,32 @@
+.productItemLink {
+   display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 12px;
+  line-height: 1;
+   padding-right: 24px !important;
+  width: max-content;
+}
+
+.productText {
+  display: inline-flex;
+  align-items: center;
+}
+
+.productIconWrap {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding-left: 12px;
+  border-left: 1px solid currentColor;
+}
+
+.productCartIcon {
+  display: block;
+  font-size: 16px;
+}
+.productItemLink svg {
+  position: static !important;
+  transform: none !important;
+}

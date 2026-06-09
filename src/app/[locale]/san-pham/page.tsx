@@ -7,6 +7,7 @@ import type { Locale } from "@/server/products/product.type";
 import { FaStar, FaCartShopping } from "react-icons/fa6";
 import { BsSearch } from "react-icons/bs";
 import "@/styles/sanpham.css";
+import styles from "./Product.module.css";
 
 function productListHref(locale: Locale) {
   return locale === "vi" ? "/vi/san-pham" : "/en/products";
@@ -84,6 +85,7 @@ export default async function ProductsPage({
 
   return (
     <div className="page-wrapper">
+      <div className={styles.red}> Hello </div>  
       <Header locale={locale} />
 
       <PageHeader
@@ -222,10 +224,15 @@ export default async function ProductsPage({
 
                         <Link
                           href={contactHref(locale)}
-                          className="floens-btn product__item__link"
+                          className={`floens-btn ${styles.productItemLink}`}
                         >
-                          <span>{locale === "vi" ? "Liên hệ" : "Contact"}</span>
-                          <FaCartShopping className="product-cart-icon" />
+                          <span className={styles.productText}>
+                            {locale === "vi" ? "Liên hệ" : "Contact"}
+                          </span>
+
+                          <span className={styles.productIconWrap}>
+                            <FaCartShopping className={styles.productCartIcon} />
+                          </span>
                         </Link>
                       </div>
                     </div>
@@ -348,10 +355,15 @@ export default async function ProductsPage({
 
                         <Link
                           href={contactHref(locale)}
-                          className="floens-btn product__item__link"
+                          className={`floens-btn ${styles.productItemLink}`}
                         >
-                          <span>{locale === "vi" ? "Liên hệ" : "Contact"}</span>
-                          <FaCartShopping className="product-cart-icon" />
+                          <span className={styles.productText}>
+                            {locale === "vi" ? "Liên hệ" : "Contact"}
+                          </span>
+
+                          <span className={styles.productIconWrap}>
+                            <FaCartShopping className={styles.productCartIcon} />
+                          </span>
                         </Link>
                       </div>
                     </div>

@@ -54,18 +54,36 @@ export default function ProjectForm({
   const [startedAt, setStartedAt] = useState("");
   const [completedAt, setCompletedAt] = useState("");
 
-  const [block1, setBlock1] = useState({
-    title: "",
-    textTop: "",
-    image: "",
-    textBottom: "",
-  });
+  const [contentBlocks, setContentBlocks] = useState([
+    {
+      type: "titleTextImageText",
+      title: "",
+      textTop: "",
+      image: "",
+      textBottom: "",
+    },
+    {
+      type: "twoImagesContent",
+      image1: "",
+      image2: "",
+      content: "",
+    },
+  ]);
 
-  const [block2, setBlock2] = useState({
-    image1: "",
-    image2: "",
-    content: "",
-  });
+  const block1 = contentBlocks[0];
+  const block2 = contentBlocks[1];
+
+  function updateContentBlock(
+    index: number,
+    field: string,
+    value: string
+  ) {
+    setContentBlocks((current) =>
+      current.map((block, blockIndex) =>
+        blockIndex === index ? { ...block, [field]: value } : block
+      )
+    );
+  }
 
   const [previewOpen, setPreviewOpen] = useState(false);
 
@@ -77,12 +95,37 @@ export default function ProjectForm({
     setSubmitting(false);
   }, [state.ok, router]);
 
-  const structuredData = { block1, block2 };
+  const structuredData = { blocks: contentBlocks };
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+
+    const requiredFields = [
+      { label: "Tiêu đề khối 1", value: block1.title },
+      { label: "Nội dung phía trên ảnh", value: block1.textTop },
+      { label: "Ảnh khối 1", value: block1.image },
+      { label: "Nội dung phía dưới ảnh", value: block1.textBottom },
+      { label: "Ảnh bên trái 1", value: block2.image1 },
+      { label: "Ảnh bên trái 2", value: block2.image2 },
+      { label: "Nội dung bên phải", value: block2.content },
+    ];
+
+    const missingField = requiredFields.find(
+      (field) => !field.value || !field.value.trim()
+    );
+
+    if (missingField) {
+      setState({
+        ok: false,
+        message: `Vui lòng nhập đầy đủ: ${missingField.label}`,
+      });
+      setSubmitting(false);
+      return;
+    }
+
     setSubmitting(true);
     const formData = new FormData(e.currentTarget);
+    formData.set("structuredData", JSON.stringify(structuredData));
     const result = await action(state, formData);
     setState(result);
   }
@@ -198,10 +241,7 @@ export default function ProjectForm({
                   <input
                     value={block1.title}
                     onChange={(e) =>
-                      setBlock1((current) => ({
-                        ...current,
-                        title: e.target.value,
-                      }))
+                      updateContentBlock(0, "title", e.target.value)
                     }
                     placeholder="Tiêu đề khối 1"
                     className="w-full rounded-xl border px-4 py-3 text-sm"
@@ -215,10 +255,7 @@ export default function ProjectForm({
                   <textarea
                     value={block1.textTop}
                     onChange={(e) =>
-                      setBlock1((current) => ({
-                        ...current,
-                        textTop: e.target.value,
-                      }))
+                      updateContentBlock(0, "textTop", e.target.value)
                     }
                     rows={5}
                     placeholder="Nội dung phía trên ảnh"
@@ -233,7 +270,7 @@ export default function ProjectForm({
                   <MediaPicker
                     value={block1.image}
                     onChange={(url) =>
-                      setBlock1((current) => ({ ...current, image: url }))
+                      updateContentBlock(0, "image", url)
                     }
                   />
                 </div>
@@ -245,10 +282,7 @@ export default function ProjectForm({
                   <textarea
                     value={block1.textBottom}
                     onChange={(e) =>
-                      setBlock1((current) => ({
-                        ...current,
-                        textBottom: e.target.value,
-                      }))
+                      updateContentBlock(0, "textBottom", e.target.value)
                     }
                     rows={5}
                     placeholder="Nội dung phía dưới ảnh"
@@ -271,7 +305,7 @@ export default function ProjectForm({
                   <MediaPicker
                     value={block2.image1}
                     onChange={(url) =>
-                      setBlock2((current) => ({ ...current, image1: url }))
+                      updateContentBlock(1, "image1", url)
                     }
                   />
                 </div>
@@ -283,7 +317,7 @@ export default function ProjectForm({
                   <MediaPicker
                     value={block2.image2}
                     onChange={(url) =>
-                      setBlock2((current) => ({ ...current, image2: url }))
+                      updateContentBlock(1, "image2", url)
                     }
                   />
                 </div>
@@ -296,10 +330,7 @@ export default function ProjectForm({
                 <textarea
                   value={block2.content}
                   onChange={(e) =>
-                    setBlock2((current) => ({
-                      ...current,
-                      content: e.target.value,
-                    }))
+                    updateContentBlock(1, "content", e.target.value)
                   }
                   rows={8}
                   placeholder="Nội dung bên phải"

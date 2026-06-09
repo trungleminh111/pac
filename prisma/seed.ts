@@ -37,40 +37,68 @@ async function main() {
     },
   });
 
-  await prisma.page.create({
+  await prisma.project.create({
     data: {
-      type: PageType.POLICY,
-      template: PageTemplate.POLICY,
       status: PublishStatus.PUBLISHED,
+      thumbnail: "/assets/images/works/slidechinh.jpg",
+      clientName: "Anh Nguyễn Văn A",
+      projectType: "Thi công đá Marble",
+      startedAt: new Date("2023-06-10"),
+      completedAt: new Date("2023-08-30"),
+      budget: "3.5 tỷ VNĐ",
+      allowIndex: true,
       publishedAt: new Date(),
-      sections: [
-        {
-          type: "hero",
-          title: "Chính sách bảo mật",
-          subtitle: "PAC Stone cam kết bảo vệ thông tin khách hàng.",
-        },
-      ],
-      settings: {
-        layout: "default",
-      },
       translations: {
         create: [
           {
             locale: Locale.vi,
-            title: "Chính sách bảo mật",
-            slug: "privacy-policy",
-            excerpt: "Trang chính sách bảo mật của PAC Stone.",
+            title: "Thi công đá Marble biệt thự ven sông",
+            slug: "thi-cong-da-marble-biet-thu-ven-song",
+            excerpt:
+              "PAC Stone thi công hạng mục đá Marble tự nhiên cho biệt thự cao cấp, bao gồm sảnh chính, phòng khách, cầu thang và khu vệ sinh.",
             content: {
-              type: "doc",
               blocks: [
                 {
-                  type: "paragraph",
-                  text: "Đây là nội dung chính sách bảo mật mẫu.",
+                  type: "titleTextImageText",
+                  title: "Không gian sang trọng với đá Marble tự nhiên",
+                  textTop:
+                    "Đội ngũ PAC Stone khảo sát hiện trạng, tư vấn phối màu và lựa chọn chủng loại đá phù hợp với phong cách kiến trúc của biệt thự. Toàn bộ vật liệu được kiểm tra kỹ về vân đá, độ dày và bề mặt trước khi đưa vào thi công.",
+                  image: "/assets/images/works/project-13.png",
+                  textBottom:
+                    "Quá trình thi công được triển khai theo từng khu vực nhằm đảm bảo tiến độ và hạn chế ảnh hưởng đến các hạng mục nội thất khác. Các chi tiết bo cạnh, ghép mí và xử lý ron được hoàn thiện tỉ mỉ để giữ được vẻ liền mạch cho không gian.",
+                },
+                {
+                  type: "twoImagesContent",
+                  image1: "/assets/images/works/project-9.jpg",
+                  image2: "/assets/images/works/project-10.jpg",
+                  content:
+                    "Sau khi hoàn thiện, bề mặt đá được vệ sinh, đánh bóng và phủ bảo vệ nhằm tăng độ bền trong quá trình sử dụng. Công trình mang lại cảm giác sang trọng, sáng thoáng và đồng bộ với tổng thể kiến trúc biệt thự.",
                 },
               ],
             },
-            seoTitle: "Chính sách bảo mật | PAC Stone",
-            seoDescription: "Chính sách bảo mật của PAC Stone.",
+            structuredData: {
+              blocks: [
+                {
+                  type: "titleTextImageText",
+                  title: "Không gian sang trọng với đá Marble tự nhiên",
+                  textTop:
+                    "Đội ngũ PAC Stone khảo sát hiện trạng, tư vấn phối màu và lựa chọn chủng loại đá phù hợp với phong cách kiến trúc của biệt thự. Toàn bộ vật liệu được kiểm tra kỹ về vân đá, độ dày và bề mặt trước khi đưa vào thi công.",
+                  image: "/assets/images/works/project-13.png",
+                  textBottom:
+                    "Quá trình thi công được triển khai theo từng khu vực nhằm đảm bảo tiến độ và hạn chế ảnh hưởng đến các hạng mục nội thất khác. Các chi tiết bo cạnh, ghép mí và xử lý ron được hoàn thiện tỉ mỉ để giữ được vẻ liền mạch cho không gian.",
+                },
+                {
+                  type: "twoImagesContent",
+                  image1: "/assets/images/works/project-9.jpg",
+                  image2: "/assets/images/works/project-10.jpg",
+                  content:
+                    "Sau khi hoàn thiện, bề mặt đá được vệ sinh, đánh bóng và phủ bảo vệ nhằm tăng độ bền trong quá trình sử dụng. Công trình mang lại cảm giác sang trọng, sáng thoáng và đồng bộ với tổng thể kiến trúc biệt thự.",
+                },
+              ],
+            },
+            seoTitle: "Thi công đá Marble biệt thự ven sông | PAC Stone",
+            seoDescription:
+              "Dự án thi công đá Marble tự nhiên cho biệt thự ven sông bởi PAC Stone.",
           },
         ],
       },
@@ -79,6 +107,9 @@ async function main() {
 
   console.log("Admin created:", email, password);
   console.log("Policy page created: /vi/policies/privacy-policy");
+  console.log(
+    "Project created: /vi/cong-trinh/thi-cong-da-marble-biet-thu-ven-song"
+  );
 }
 
 main()

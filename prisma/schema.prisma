@@ -20,22 +20,22 @@ model User {
 }
 
 model Category {
-  id        String      @id @default(cuid())
-  type      ContentType
-  slug      String
-  nameVi    String
-  nameEn    String?
-  detailTemplate String @default("default")
-  parentId  String?
-  sortOrder Int         @default(0)
-  createdAt DateTime    @default(now())
-  updatedAt DateTime    @updatedAt
-  parent    Category?   @relation("CategoryTree", fields: [parentId], references: [id])
-  children  Category[]  @relation("CategoryTree")
-  posts     Post[]
-  products  Product[]
-  projects  Project[]
-  services  Service[]
+  id             String      @id @default(cuid())
+  type           ContentType
+  slug           String
+  nameVi         String
+  nameEn         String?
+  detailTemplate String      @default("default")
+  parentId       String?
+  sortOrder      Int         @default(0)
+  createdAt      DateTime    @default(now())
+  updatedAt      DateTime    @updatedAt
+  parent         Category?   @relation("CategoryTree", fields: [parentId], references: [id])
+  children       Category[]  @relation("CategoryTree")
+  posts          Post[]
+  products       Product[]
+  projects       Project[]
+  services       Service[]
 
   @@unique([type, slug])
 }
@@ -85,6 +85,7 @@ model PostTranslation {
   slug           String
   excerpt        String?
   content        Json?
+  contentHtml    String?
   seoTitle       String?
   seoDescription String?
   createdAt      DateTime @default(now())
@@ -97,13 +98,21 @@ model PostTranslation {
 
 model Page {
   id           String            @id @default(cuid())
+  type         PageType          @default(NORMAL)
+  template     PageTemplate      @default(DEFAULT)
   status       PublishStatus     @default(DRAFT)
   thumbnail    String?
+  sections     Json?
+  settings     Json?
   allowIndex   Boolean           @default(true)
   publishedAt  DateTime?
   createdAt    DateTime          @default(now())
   updatedAt    DateTime          @updatedAt
   translations PageTranslation[]
+
+  @@index([type])
+  @@index([template])
+  @@index([status])
 }
 
 model PageTranslation {
@@ -168,10 +177,10 @@ model Product {
   size         String?
   material     String?
   color        String?
-  thickness    String?   // Độ dày
-  density      String?   // Khối lượng riêng
-  hardness     String?   // Độ cứng
-  styleConfig Json?
+  thickness    String?
+  density      String?
+  hardness     String?
+  styleConfig  Json?
   isFeatured   Boolean              @default(false)
   categoryId   String?
   allowIndex   Boolean              @default(true)
@@ -257,7 +266,7 @@ model MenuItem {
   labelEn   String?
   parentId  String?
   icon      String?
-  target    String? @default("_self")
+  target    String?    @default("_self")
   sortOrder Int        @default(0)
   createdAt DateTime   @default(now())
   updatedAt DateTime   @updatedAt
@@ -300,4 +309,19 @@ enum ContentType {
   SERVICE
   PRODUCT
   PROJECT
+}
+
+enum PageType {
+  NORMAL
+  POLICY
+  LANDING
+}
+
+enum PageTemplate {
+  DEFAULT
+  POLICY
+  LANDING
+  CONTACT
+  ABOUT
+  FAQ
 }

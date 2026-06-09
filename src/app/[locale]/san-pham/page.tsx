@@ -85,7 +85,6 @@ export default async function ProductsPage({
 
   return (
     <div className="page-wrapper">
-      <div className={styles.red}> Hello </div>  
       <Header locale={locale} />
 
       <PageHeader

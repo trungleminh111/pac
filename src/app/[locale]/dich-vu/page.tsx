@@ -9,6 +9,7 @@ import "@/styles/dichvu.css";
 import { LuArrowRight } from "react-icons/lu";
 import { FaBuilding, FaImage, FaUtensils } from "react-icons/fa6";
 import { MdStairs, MdDesignServices, MdViewColumn } from "react-icons/md";
+import Banner from "@/components/site/Banner/Banner";
 
 const iconMap = {
   building: FaBuilding,
@@ -37,11 +38,16 @@ export default async function ServicesPage({
     <div className="page-wrapper">
       <Header locale={locale} />
 
-      <PageHeader
+      {/* <PageHeader
         title=""
         bgImage="/assets/images/backgrounds/PACSTONE-DICHVU-header.png"
+      /> */}
+      <Banner
+        title="DỊCH VỤ"
+        backgroundImg="/assets/images/backgrounds/service-banner.webp"
+        row={2}
+        col={5}
       />
-
       <section className="services-page section-space">
         <div className="container">
           <div className="row gutter-y-30 d-flex justify-center">

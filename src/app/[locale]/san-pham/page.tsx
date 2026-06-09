@@ -8,6 +8,7 @@ import { FaStar, FaCartShopping } from "react-icons/fa6";
 import { BsSearch } from "react-icons/bs";
 import "@/styles/sanpham.css";
 import styles from "./Product.module.css";
+import Banner from "@/components/site/Banner/Banner";
 
 function productListHref(locale: Locale) {
   return locale === "vi" ? "/vi/san-pham" : "/en/products";
@@ -87,9 +88,15 @@ export default async function ProductsPage({
     <div className="page-wrapper">
       <Header locale={locale} />
 
-      <PageHeader
+      {/* <PageHeader
         title=""
         bgImage="/assets/images/backgrounds/PACSTONE-SANPHAM-header.png"
+      /> */}
+      <Banner
+        title="SẢN PHẨM"
+        backgroundImg="/assets/images/backgrounds/product-banner.webp"
+        row={1}
+        col={2}
       />
 
       <section className="product-page product-page--left section-space-bottom">

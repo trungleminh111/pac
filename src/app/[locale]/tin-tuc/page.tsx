@@ -3,6 +3,7 @@ import { SiteHeader as Header } from "@/components/site/SiteHeader";
 import { Footer } from "@/components/site/Footer";
 import { PageHeader } from "@/components/site/PageHeader";
 import { getFeaturedPosts, getPostsPage } from "@/server/post/post.data";
+import Banner from "@/components/site/Banner/Banner";
 
 function pageHref(
   locale: "vi" | "en",
@@ -136,11 +137,16 @@ export default async function NewsPage({
     <div className="page-wrapper">
       <Header locale={locale} />
 
-      <PageHeader
+      {/* <PageHeader
         title=""
         bgImage="/assets/images/backgrounds/PACSTONE-TINTUCSUKIEN-header.png"
+      /> */}
+      <Banner
+        title="TIN TỨC & SỰ KIỆN"
+        backgroundImg="/assets/images/backgrounds/news-banner.webp"
+        row={2}
+        col={2}
       />
-
       <section className="blog-page blog-page--sidebar section-space">
         <div className="container">
           <div className="row gutter-y-60">

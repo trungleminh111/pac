@@ -122,6 +122,7 @@ model PageTranslation {
   title          String
   slug           String
   excerpt        String?
+  contentHtml    String?
   content        Json?
   seoTitle       String?
   seoDescription String?

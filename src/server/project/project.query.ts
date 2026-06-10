@@ -109,3 +109,37 @@ export async function getProjectListingData(locale: Locale = Locale.vi) {
     works,
   };
 }
+
+
+
+
+export async function getHomeProjectSlides(locale: Locale = Locale.vi) {
+  const projects = await prisma.project.findMany({
+    where: {
+      status: PublishStatus.PUBLISHED,
+    },
+    include: {
+      translations: {
+        where: { locale },
+        take: 1,
+      },
+    },
+    orderBy: {
+      updatedAt: "desc",
+    },
+    take: 8,
+  });
+
+  return projects
+    .filter((project) => project.translations[0])
+    .map((project) => {
+      const translation = project.translations[0];
+
+      return {
+        title: translation.title,
+        image: project.thumbnail || "",
+        type: project.projectType || "Thi công ốp đá",
+        slug: translation.slug,
+      };
+    });
+}

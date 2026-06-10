@@ -1,45 +1,17 @@
 import Link from "next/link";
+import { Locale } from "@prisma/client";
 import { SiteHeader as Header } from "@/components/site/SiteHeader";
 import { Footer } from "@/components/site/Footer";
 import { PageHeader } from "@/components/site/PageHeader";
+import { getProjectListingData } from "@/server/project/project.query";
 import styles from "./Contruct.module.css";
-import Banner from "@/components/site/Banner/Banner";
-const filters = [
-  "Tất cả",
-  "Villa - Penhouse",
-  "Khách sạn - Trung tâm thương mại",
-  "Chung cư - Nhà phố",
-  "Mẫu BẾP ốp đá đẹp",
-  "Mẫu cầu thang ốp đá đẹp",
-  "Mẫu nhà vệ sinh ốp đá đẹp",
-  "Mẫu sàn thang máy ốp đá đẹp",
-];
 
-const works = [
-  ["Modern Tiles fitting", "Tile Care", "project-13.png", "Villa - Penhouse"],
-  ["Indoor Court", "Tile Care", "project-12.png", "Khách sạn - Trung tâm thương mại"],
-  ["Awesome Outdoor Project", "Tile Care", "project-9.jpg", "Chung cư - Nhà phố"],
-  ["Industrial Flooring", "Tile Care", "project-5.png", "Mẫu BẾP ốp đá đẹp"],
-  ["Eco-Friendly-Flooring", "Tile Care", "project-3.png", "Mẫu cầu thang ốp đá đẹp"],
-  ["Laminate Flooring", "Tile Care", "project-11.png", "Mẫu nhà vệ sinh ốp đá đẹp"],
-];
-
-function toSlug(text: string) {
-  return text
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .replace(/đ/g, "d")
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-|-$/g, "");
-}
-
-function pageHref(locale: "vi" | "en", category?: string, page?: number) {
-  const base = locale === "vi" ? "/vi/cong-trinh" : "/en/projects";
+function pageHref(locale: Locale, categorySlug?: string, page?: number) {
+  const base = locale === Locale.vi ? "/vi/cong-trinh" : "/en/projects";
   const params = new URLSearchParams();
 
-  if (category && category !== "Tất cả") {
-    params.set("category", category);
+  if (categorySlug && categorySlug !== "all") {
+    params.set("category", categorySlug);
   }
 
   if (page && page > 1) {
@@ -49,6 +21,12 @@ function pageHref(locale: "vi" | "en", category?: string, page?: number) {
   const query = params.toString();
 
   return query ? `${base}?${query}` : base;
+}
+
+function projectHref(locale: Locale, slug: string) {
+  return locale === Locale.vi
+    ? `/vi/cong-trinh/${slug}`
+    : `/en/projects/${slug}`;
 }
 
 export default async function WorksPage({
@@ -63,16 +41,18 @@ export default async function WorksPage({
     page?: string;
   };
 }) {
-  const locale = params.locale === "en" ? "en" : "vi";
+  const locale = params.locale === "en" ? Locale.en : Locale.vi;
 
-  const activeFilter = searchParams?.category || "Tất cả";
+  const { filters, works } = await getProjectListingData(locale);
+
+  const activeFilter = searchParams?.category || "all";
   const currentPage = Number(searchParams?.page || 1);
   const itemsPerPage = 6;
 
   const filteredWorks =
-    activeFilter === "Tất cả"
+    activeFilter === "all"
       ? works
-      : works.filter((work) => work[3] === activeFilter);
+      : works.filter((work) => work.categorySlug === activeFilter);
 
   const totalPages = Math.ceil(filteredWorks.length / itemsPerPage);
 
@@ -85,16 +65,11 @@ export default async function WorksPage({
     <div className="page-wrapper">
       <Header locale={locale} />
 
-      {/* <PageHeader
+      <PageHeader
         title=""
         bgImage="/assets/images/backgrounds/PACSTONE-CONGTRINH-header.png"
-      /> */}
-      <Banner
-        title="CÔNG TRÌNH"
-        backgroundImg="/assets/images/backgrounds/contruct-banner.webp"
-        row={2}
-        col={1}
       />
+
       <section className="work-page work-page--grid section-space-bottom">
         <div className="container">
           <div className="row mb-4">
@@ -102,16 +77,16 @@ export default async function WorksPage({
               <ul className="filter-project">
                 {filters.map((filter) => (
                   <li
-                    key={filter}
+                    key={filter.slug}
                     className={`filter-grid-item ${
-                      activeFilter === filter ? "active" : ""
-                    } ${filter.length > 18 ? "is-long" : "is-short"}`}
+                      activeFilter === filter.slug ? "active" : ""
+                    } ${filter.label.length > 18 ? "is-long" : "is-short"}`}
                   >
                     <Link
-                      href={pageHref(locale, filter)}
+                      href={pageHref(locale, filter.slug)}
                       className="filter-grid-text"
                     >
-                      {filter}
+                      {filter.label}
                     </Link>
                   </li>
                 ))}
@@ -120,33 +95,30 @@ export default async function WorksPage({
           </div>
 
           <div className="row gutter-y-30">
-            {paginatedWorks.map(([title, tagline, image]) => {
-              const href =
-                locale === "vi"
-                  ? `/vi/cong-trinh/${toSlug(title)}`
-                  : `/en/projects/${toSlug(title)}`;
+            {paginatedWorks.map((work) => {
+              const href = projectHref(locale, work.slug);
 
               return (
-                <div className="col-lg-4 col-md-6 col-12" key={title}>
+                <div className="col-lg-4 col-md-6 col-12" key={work.slug}>
                   <div className="work-card h-100">
                     <div className="work-card__image">
-                      <img src={`/assets/images/works/${image}`} alt={title} />
+                      <img src={work.image} alt={work.title} />
                     </div>
 
                     <div className="work-card__content-show">
                       <div className="work-card__content-inner">
-                        <h3 className="work-card__tagline">{tagline}</h3>
+                        <h3 className="work-card__tagline">{work.type}</h3>
                         <h3 className="work-card__title">
-                          <Link href={href}>{title}</Link>
+                          <Link href={href}>{work.title}</Link>
                         </h3>
                       </div>
                     </div>
 
                     <div className="work-card__content-hover">
                       <div className="work-card__content-inner">
-                        <h3 className="work-card__tagline">{tagline}</h3>
+                        <h3 className="work-card__tagline">{work.type}</h3>
                         <h3 className="work-card__title">
-                          <Link href={href}>{title}</Link>
+                          <Link href={href}>{work.title}</Link>
                         </h3>
                       </div>
 

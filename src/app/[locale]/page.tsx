@@ -26,10 +26,10 @@ export default function HomePage({
       <div className="home-shared-bg">
         <About />
         <Products locale={params.locale} />
-        <Projects />
+        <Projects locale={params.locale} />
       </div>
 
-      <News />
+      <News locale={params.locale} />
       <Footer />
     </div>
   );

@@ -38,7 +38,7 @@ export default function AdminLoginPage() {
         className="w-full max-w-sm border bg-white p-6 shadow-sm"
       >
         <h1 className="mb-6 text-center text-2xl font-semibold">
-          P.A.C STONE CMS
+          P.A.C STONE
         </h1>
 
         {error && (
@@ -71,6 +71,18 @@ export default function AdminLoginPage() {
         >
           {loading ? "Đang đăng nhập..." : "Đăng nhập"}
         </button>
+
+        <div className="mt-5 text-center text-sm">
+          <span className="text-slate-500">
+            Chưa có tài khoản?
+          </span>{" "}
+          <a
+            href="/register"
+            className="font-medium text-[#2271b1] hover:underline"
+          >
+            Tạo tài khoản
+          </a>
+        </div>
       </form>
     </div>
   );

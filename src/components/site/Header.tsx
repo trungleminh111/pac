@@ -4,7 +4,8 @@ import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { GoSearch } from "react-icons/go";
-import { FiUser } from "react-icons/fi";
+import { FiUser, FiShoppingCart } from "react-icons/fi";
+import { CartDrawer } from "@/components/site/cart/CartDrawer";
 import {
   FaPaperPlane,
   FaPhoneAlt,
@@ -22,6 +23,14 @@ import { IoClose } from 'react-icons/io5';
 
 type Locale = "vi" | "en";
 
+type CartDrawerItem = {
+  id: string;
+  title: string;
+  image: string;
+  price: string;
+  quantity: number;
+};
+
 type DynamicMenuItem = {
   id: string;
   label: string;
@@ -33,6 +42,9 @@ type DynamicMenuItem = {
 type HeaderProps = {
   locale?: Locale;
   dynamicMenuItems?: DynamicMenuItem[];
+  cartItems?: CartDrawerItem[];
+  cartTotal?: string;
+  isLoggedIn?: boolean;
 };
 
 function getChildren(item: DynamicMenuItem) {
@@ -67,6 +79,9 @@ function isMenuActive(pathname: string, item: DynamicMenuItem) {
 export function Header({
   locale = "vi",
   dynamicMenuItems = [],
+  cartItems = [],
+  cartTotal = "0đ",
+  isLoggedIn = false,
 }: HeaderProps) {
   const pathname = usePathname();
 
@@ -175,10 +190,35 @@ export function Header({
                 <span /><span /><span />
               </div>
               <div className="header-icon-right">
-                <a href="#" className="search-toggler main-header__search" onClick={(e) => { e.preventDefault(); setSearchOpen(true); setMobileOpen(false); }}>
+                <a
+                  href="#"
+                  className="search-toggler main-header__search"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setSearchOpen(true);
+                    setMobileOpen(false);
+                  }}
+                >
                   <GoSearch />
                 </a>
-                <a href="#" className="icon-user" style={{ color: "var(--floens-black, #000)" }} onClick={(e) => { e.preventDefault(); setSidebarOpen(true); }} aria-label="Open sidebar">
+
+                <CartDrawer
+                  items={cartItems}
+                  total={cartTotal}
+                  cartHref={locale === "vi" ? "/vi/gio-hang" : "/en/cart"}
+                  checkoutHref={locale === "vi" ? "/vi/thanh-toan" : "/en/checkout"}
+                />
+
+                <a
+                  href="#"
+                  className="icon-user"
+                  style={{ color: "var(--floens-black, #000)" }}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setSidebarOpen(true);
+                  }}
+                  aria-label="Open sidebar"
+                >
                   <FiUser />
                 </a>
               </div>
@@ -263,13 +303,23 @@ export function Header({
                 </Link>
               </li>
               <li>
-                <div className="sidebar-util-link disabled-item">
-                  <div className="util-icon-box"><FaBoxesPacking /></div>
-                  <div className="util-text-box">
-                    <span className="util-title">{locale === "vi" ? "Quản lý đơn hàng" : "Order Management"}</span>
-                    <span className="util-badge development">{locale === "vi" ? "Đang phát triển" : "Coming soon"}</span>
+                <Link
+                  href={locale === "vi" ? "/vi/tai-khoan/don-hang" : "/en/account/orders"}
+                  className="sidebar-util-link"
+                  onClick={() => setSidebarOpen(false)}
+                >
+                  <div className="util-icon-box">
+                    <FaBoxesPacking />
                   </div>
-                </div>
+                  <div className="util-text-box">
+                    <span className="util-title">
+                      {locale === "vi" ? "Quản lý đơn hàng" : "Order Management"}
+                    </span>
+                    <span className="util-badge">
+                      {locale === "vi" ? "Xem đơn mua" : "View orders"}
+                    </span>
+                  </div>
+                </Link>
               </li>
               <li>
                 <Link href="/assets/files/pPAC-certificates.rar" target="_blank" className="sidebar-util-link">
@@ -280,9 +330,72 @@ export function Header({
                   </div>
                 </Link>
               </li>
-
-                <li className="mt-3">
-                <button onClick={() => { setSidebarOpen(false); openModal(); }} className=" sidebar-util-zalo-btn w-100 open-popup-btn" style={{ padding: "12px 25px", backgroundColor:"var(--floens-base, #c7844f)" }}>
+              <li>
+                <Link
+                  href={locale === "vi" ? "/vi/tai-khoan/ho-so" : "/en/account/profile"}
+                  className="sidebar-util-link"
+                  onClick={() => setSidebarOpen(false)}
+                >
+                  <div className="util-icon-box">
+                    <FiUser />
+                  </div>
+                  <div className="util-text-box">
+                    <span className="util-title">
+                      {locale === "vi" ? "Tài khoản của tôi" : "My Account"}
+                    </span>
+                    <span className="util-badge">
+                      {locale === "vi" ? "Quản lý hồ sơ" : "Manage profile"}
+                    </span>
+                  </div>
+                </Link>
+              </li>
+              {isLoggedIn ? (
+                <li>
+                  <Link
+                    href={
+                      locale === "vi"
+                        ? "/api/auth/signout?callbackUrl=/vi"
+                        : "/api/auth/signout?callbackUrl=/en"
+                    }
+                    className="sidebar-util-link"
+                    onClick={() => setSidebarOpen(false)}
+                  >
+                    <div className="util-icon-box">
+                      <FiUser />
+                    </div>
+                    <div className="util-text-box">
+                      <span className="util-title">
+                        {locale === "vi" ? "Đăng xuất" : "Logout"}
+                      </span>
+                      <span className="util-badge">
+                        {locale === "vi" ? "Thoát tài khoản" : "Sign out"}
+                      </span>
+                    </div>
+                  </Link>
+                </li>
+              ) : (
+                <li>
+                  <Link
+                    href={locale === "vi" ? "/login" : "/login"}
+                    className="sidebar-util-link"
+                    onClick={() => setSidebarOpen(false)}
+                  >
+                    <div className="util-icon-box">
+                      <FiUser />
+                    </div>
+                    <div className="util-text-box">
+                      <span className="util-title">
+                        {locale === "vi" ? "Đăng nhập" : "Login"}
+                      </span>
+                      <span className="util-badge">
+                        {locale === "vi" ? "Truy cập tài khoản" : "Access account"}
+                      </span>
+                    </div>
+                  </Link>
+                </li>
+              )}
+              <li className="mt-3">
+                <button onClick={() => { setSidebarOpen(false); openModal(); }} className=" sidebar-util-zalo-btn w-100 open-popup-btn" style={{ padding: "12px 25px", backgroundColor: "var(--floens-base, #c7844f)" }}>
                   <span>{locale === "vi" ? "LIÊN HỆ NGAY" : "CONTACT NOW"}</span>
                 </button>
               </li>
@@ -326,7 +439,7 @@ export function Header({
       {isOpen && (
         <div className="custom-popup-overlay" onClick={closeModal}>
           <div className="custom-popup-content" onClick={(e) => e.stopPropagation()}>
-            
+
             {/* Nút Đóng (X) */}
             <button className="custom-popup-close-btn" onClick={closeModal} aria-label="Close popup">
               <IoClose size={26} />

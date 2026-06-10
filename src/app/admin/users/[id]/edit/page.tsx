@@ -22,6 +22,7 @@ async function updateUser(
   const role = String(formData.get("role") || "AUTHOR") as
     | "ADMIN"
     | "EDITOR"
+    | "USER"
     | "AUTHOR";
   const image = String(formData.get("image") || "").trim();
 

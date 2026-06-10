@@ -20,7 +20,8 @@ async function createUser(
   const role = String(formData.get("role") || "AUTHOR") as
     | "ADMIN"
     | "EDITOR"
-    | "AUTHOR";
+    | "AUTHOR"
+    | "USER";
   const image = String(formData.get("image") || "").trim();
 
   if (!email || !password) {

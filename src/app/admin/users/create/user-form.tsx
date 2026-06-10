@@ -119,12 +119,13 @@ export default function UserForm({
               </label>
               <select
                 name="role"
-                defaultValue="AUTHOR"
+                defaultValue="USER"
                 className="w-full rounded-xl border px-4 py-3 text-sm outline-none focus:border-[#2271b1]"
               >
                 <option value="ADMIN">Admin</option>
                 <option value="EDITOR">Editor</option>
                 <option value="AUTHOR">Author</option>
+                <option value="USER">User</option>
               </select>
             </div>
 

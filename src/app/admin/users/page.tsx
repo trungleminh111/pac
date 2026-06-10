@@ -31,7 +31,7 @@ export default async function AdminUsersPage({
 
   const users = await prisma.user.findMany({
     where: {
-      ...(role ? { role: role as "ADMIN" | "EDITOR" | "AUTHOR" } : {}),
+      ...(role ? { role: role as "ADMIN" | "EDITOR" | "AUTHOR" | "USER" } : {}),
       ...(q
         ? {
             OR: [

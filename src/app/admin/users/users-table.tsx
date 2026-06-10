@@ -8,7 +8,7 @@ type User = {
   id: string;
   name: string | null;
   email: string;
-  role: "ADMIN" | "EDITOR" | "AUTHOR";
+  role: "ADMIN" | "EDITOR" | "AUTHOR" | "USER";
   image: string | null;
   createdAt: Date;
 };
@@ -16,6 +16,8 @@ type User = {
 function roleClass(role: string) {
   if (role === "ADMIN") return "bg-red-50 text-red-700 ring-red-200";
   if (role === "EDITOR") return "bg-blue-50 text-blue-700 ring-blue-200";
+  if (role === "AUTHOR") return "bg-purple-50 text-purple-700 ring-purple-200";
+  if (role === "USER") return "bg-slate-50 text-slate-700 ring-slate-200";
   return "bg-emerald-50 text-emerald-700 ring-emerald-200";
 }
 
@@ -86,6 +88,7 @@ export default function UsersTable({
             <option value="ADMIN">Admin</option>
             <option value="EDITOR">Editor</option>
             <option value="AUTHOR">Author</option>
+            <option value="USER">User</option>
           </select>
 
           <button className="rounded-xl bg-slate-900 px-5 py-3 text-sm font-semibold text-white">

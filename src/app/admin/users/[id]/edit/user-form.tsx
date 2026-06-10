@@ -11,7 +11,7 @@ type User = {
   id: string;
   name: string | null;
   email: string;
-  role: "ADMIN" | "EDITOR" | "AUTHOR";
+  role: "ADMIN" | "EDITOR" | "AUTHOR" | "USER";
   image: string | null;
 };
 
@@ -136,6 +136,7 @@ export default function EditUserForm({
                 <option value="ADMIN">Admin</option>
                 <option value="EDITOR">Editor</option>
                 <option value="AUTHOR">Author</option>
+                <option value="USER">User</option>
               </select>
             </div>
 

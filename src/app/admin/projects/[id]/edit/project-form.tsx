@@ -38,6 +38,7 @@ type Category = {
 };
 
 const emptyBlock1 = {
+  type: "titleTextImageText",
   title: "",
   textTop: "",
   image: "",
@@ -45,39 +46,70 @@ const emptyBlock1 = {
 };
 
 const emptyBlock2 = {
+  type: "twoImagesContent",
   image1: "",
   image2: "",
   content: "",
 };
 
 function getStructuredData(content: any) {
-  if (!content) {
+  let parsed = content;
+
+  if (!parsed) {
     return {
       block1: emptyBlock1,
       block2: emptyBlock2,
     };
   }
 
-  if (typeof content === "object") {
+  if (typeof parsed === "string") {
+    try {
+      parsed = JSON.parse(parsed);
+    } catch {
+      return {
+        block1: emptyBlock1,
+        block2: emptyBlock2,
+      };
+    }
+  }
+
+  if (Array.isArray(parsed?.blocks)) {
+    const block1 =
+      parsed.blocks.find((item: any) => item.type === "titleTextImageText") ||
+      parsed.blocks[0] ||
+      emptyBlock1;
+
+    const block2 =
+      parsed.blocks.find((item: any) => item.type === "twoImagesContent") ||
+      parsed.blocks[1] ||
+      emptyBlock2;
+
     return {
-      block1: content.block1 || emptyBlock1,
-      block2: content.block2 || emptyBlock2,
+      block1: {
+        ...emptyBlock1,
+        ...block1,
+        type: "titleTextImageText",
+      },
+      block2: {
+        ...emptyBlock2,
+        ...block2,
+        type: "twoImagesContent",
+      },
     };
   }
 
-  try {
-    const parsed = JSON.parse(content);
-
-    return {
-      block1: parsed.block1 || emptyBlock1,
-      block2: parsed.block2 || emptyBlock2,
-    };
-  } catch {
-    return {
-      block1: emptyBlock1,
-      block2: emptyBlock2,
-    };
-  }
+  return {
+    block1: {
+      ...emptyBlock1,
+      ...(parsed.block1 || {}),
+      type: "titleTextImageText",
+    },
+    block2: {
+      ...emptyBlock2,
+      ...(parsed.block2 || {}),
+      type: "twoImagesContent",
+    },
+  };
 }
 
 function toSlug(value: string) {
@@ -91,6 +123,10 @@ function toSlug(value: string) {
     .replace(/[^a-z0-9\s-]/g, "")
     .replace(/\s+/g, "-")
     .replace(/-+/g, "-");
+}
+
+function isEmpty(value: string) {
+  return !value || value.trim() === "";
 }
 
 export default function ProjectEditForm({
@@ -144,13 +180,48 @@ export default function ProjectEditForm({
     setSubmitting(false);
   }, [state.ok, router]);
 
-  const structuredData = { block1, block2 };
+  const structuredData = {
+    blocks: [
+      {
+        type: "titleTextImageText",
+        title: block1.title,
+        textTop: block1.textTop,
+        image: block1.image,
+        textBottom: block1.textBottom,
+      },
+      {
+        type: "twoImagesContent",
+        image1: block2.image1,
+        image2: block2.image2,
+        content: block2.content,
+      },
+    ],
+  };
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+
+    if (
+      isEmpty(block1.title) ||
+      isEmpty(block1.textTop) ||
+      isEmpty(block1.image) ||
+      isEmpty(block1.textBottom) ||
+      isEmpty(block2.image1) ||
+      isEmpty(block2.image2) ||
+      isEmpty(block2.content)
+    ) {
+      setState({
+        ok: false,
+        message: "Vui lòng nhập đầy đủ nội dung 2 khối trước khi lưu.",
+      });
+      return;
+    }
+
     setSubmitting(true);
 
     const formData = new FormData(e.currentTarget);
+    formData.set("structuredData", JSON.stringify(structuredData));
+
     const result = await action(state, formData);
 
     setState(result);
@@ -270,10 +341,11 @@ export default function ProjectEditForm({
               <div className="space-y-4">
                 <div>
                   <label className="mb-2 block text-sm font-semibold text-slate-700">
-                    Tiêu đề khối 1
+                    Tiêu đề khối 1 <span className="text-red-500">*</span>
                   </label>
 
                   <input
+                    required
                     value={block1.title}
                     onChange={(e) =>
                       setBlock1((current: any) => ({
@@ -288,10 +360,12 @@ export default function ProjectEditForm({
 
                 <div>
                   <label className="mb-2 block text-sm font-semibold text-slate-700">
-                    Nội dung phía trên ảnh
+                    Nội dung phía trên ảnh{" "}
+                    <span className="text-red-500">*</span>
                   </label>
 
                   <textarea
+                    required
                     value={block1.textTop}
                     onChange={(e) =>
                       setBlock1((current: any) => ({
@@ -307,7 +381,7 @@ export default function ProjectEditForm({
 
                 <div>
                   <label className="mb-2 block text-sm font-semibold text-slate-700">
-                    Ảnh khối 1
+                    Ảnh khối 1 <span className="text-red-500">*</span>
                   </label>
 
                   <MediaPicker
@@ -319,14 +393,18 @@ export default function ProjectEditForm({
                       }))
                     }
                   />
+
+                  <input required type="hidden" value={block1.image} />
                 </div>
 
                 <div>
                   <label className="mb-2 block text-sm font-semibold text-slate-700">
-                    Nội dung phía dưới ảnh
+                    Nội dung phía dưới ảnh{" "}
+                    <span className="text-red-500">*</span>
                   </label>
 
                   <textarea
+                    required
                     value={block1.textBottom}
                     onChange={(e) =>
                       setBlock1((current: any) => ({
@@ -350,7 +428,7 @@ export default function ProjectEditForm({
               <div className="grid gap-4 md:grid-cols-2">
                 <div>
                   <label className="mb-2 block text-sm font-semibold text-slate-700">
-                    Ảnh bên trái 1
+                    Ảnh bên trái 1 <span className="text-red-500">*</span>
                   </label>
 
                   <MediaPicker
@@ -362,11 +440,13 @@ export default function ProjectEditForm({
                       }))
                     }
                   />
+
+                  <input required type="hidden" value={block2.image1} />
                 </div>
 
                 <div>
                   <label className="mb-2 block text-sm font-semibold text-slate-700">
-                    Ảnh bên trái 2
+                    Ảnh bên trái 2 <span className="text-red-500">*</span>
                   </label>
 
                   <MediaPicker
@@ -378,15 +458,18 @@ export default function ProjectEditForm({
                       }))
                     }
                   />
+
+                  <input required type="hidden" value={block2.image2} />
                 </div>
               </div>
 
               <div className="mt-4">
                 <label className="mb-2 block text-sm font-semibold text-slate-700">
-                  Nội dung bên phải
+                  Nội dung bên phải <span className="text-red-500">*</span>
                 </label>
 
                 <textarea
+                  required
                   value={block2.content}
                   onChange={(e) =>
                     setBlock2((current: any) => ({
@@ -458,8 +541,9 @@ export default function ProjectEditForm({
               <button
                 type="button"
                 onClick={() => setPreviewOpen(true)}
-                className="w-full rounded-xl border px-4 py-3 text-sm font-semibold"
+                className="flex w-full items-center justify-center gap-2 rounded-xl border px-4 py-3 text-sm font-semibold"
               >
+                <Eye className="h-4 w-4" />
                 Review layout công trình
               </button>
 

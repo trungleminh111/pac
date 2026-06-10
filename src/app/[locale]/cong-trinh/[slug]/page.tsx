@@ -5,6 +5,9 @@ import { FaStar, FaCartShopping } from "react-icons/fa6";
 import { FaFacebookF, FaYoutube } from "react-icons/fa";
 import Link from "next/link";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import { Locale } from "@prisma/client";
+import { getProjectBySlug } from "@/server/project/project.query";
+
 export default async function WorkDetailPage({
   params,
 }: {
@@ -14,35 +17,54 @@ export default async function WorkDetailPage({
   };
 }) {
   const locale = params.locale === "en" ? "en" : "vi";
+
+  const projectData = await getProjectBySlug({
+    slug: params.slug,
+    locale: locale === "en" ? Locale.en : Locale.vi,
+  });
+
+  if (!projectData || !projectData.translations[0]) {
+    return null;
+  }
+
+  const translation = projectData.translations[0];
+  const structuredData: any =
+    translation.structuredData || translation.content || {};
+  const blocks = structuredData.blocks || [];
+
+  const block1 =
+    blocks.find((item: any) => item.type === "titleTextImageText") ||
+    blocks[0] ||
+    {};
+
+  const block2 =
+    blocks.find((item: any) => item.type === "twoImagesContent") ||
+    blocks[1] ||
+    {};
+
   const project = {
-    title: "Từ lâu người ta đã biết rằng độc giả sẽ",
-    //100 - 200 ký tự
-    intro:
-      "PAC Stone thực hiện thi công toàn bộ hạng mục đá Marble tự nhiên cho biệt thự cao cấp, bao gồm sảnh chính, cầu thang, phòng khách và các khu vực trang trí.",
-
-    mainImage: "slidechinh.jpg",
-    //100 - 200 ký tự
-    content1:
-      "Có rất nhiều biến thể của đoạn văn Lorem Ipsum, nhưng phần lớn đã bị thay đổi ở một số dạng, bằng cách thêm vào yếu tố hài hước hoặc sử dụng các từ ngẫu nhiên không hề đáng tin cậy. Nếu bạn bạn cần chắc chắn rằng không có bất kỳ điều gì đáng xấu hổ ẩn giấu ở giữa văn bản.  ",
-
-    subTitle: "Tôi có thể mua chúng ở đâu?",
-
-    content2:
-      "Ý tưởng sai lầm về việc lên án khoái lạc và ca ngợi nỗi đau đã ra đời và tôi sẽ cung cấp cho bạn một bản tường thuật đầy đủ về hệ thống này, và trình bày những lời dạy thực tế của nhà thám hiểm vĩ đại về chân lý, người kiến ​​tạo hạnh phúc của con người. Không ai bác bỏ, không thích.",
-
-    gallery: ["project-9.jpg", "project-10.jpg"],
-
-    content3:
-      "Có rất nhiều biến thể của đoạn văn Lorem Ipsum, nhưng phần lớn đã bị thay đổi dưới một hình thức nào đó, bằng cách thêm vào sự hài hước, hoặc các từ ngẫu nhiên trông không hề đáng tin cậy. Nếu bạn định sử dụng một đoạn văn Lorem Ipsum, bạn cần chắc chắn rằng không có bất kỳ điều gì đáng xấu hổ ẩn giấu ở giữa văn bản. Tất cả các trình tạo Lorem Ipsum trên Internet đều có xu hướng lặp lại các đoạn được xác định trước khi cần thiết, khiến đây trở thành trình tạo thực sự đầu tiên trên Internet. Nó sử dụng một từ điển gồm hơn 200 từ tiếng Latin.",
-    content4:
-      "Ý tưởng sai lầm về việc lên án khoái lạc và ca ngợi nỗi đau đã ra đời và tôi sẽ cung cấp cho bạn một bản tường thuật đầy đủ về hệ thống này, và trình bày những lời dạy thực tế của nhà thám hiểm vĩ đại về chân lý, người kiến ​​tạo hạnh phúc của con người. Không ai bác bỏ, không thích.",
-
+    title: translation.title,
+    intro: translation.excerpt || "",
+    mainImage: projectData.thumbnail || block1.image || "",
+    content1: block1.textTop || "",
+    subTitle: block1.title || "",
+    content2: block1.textBottom || "",
+    gallery: [block2.image1, block2.image2].filter(Boolean),
+    content3: block2.content || "",
+    content4: "",
     info: {
-      customer: "Anh Nguyễn Văn A",
-      category: "Villa - Penhouse",
-      startDate: "10-06-2023",
-      endDate: "30-08-2023",
-      budget: "3.5 tỷ VNĐ",
+      customer: projectData.clientName || "",
+      category:
+        locale === "en" && projectData.category?.nameEn
+          ? projectData.category.nameEn
+          : projectData.category?.nameVi || "",
+      startDate: projectData.startedAt
+        ? projectData.startedAt.toLocaleDateString("vi-VN")
+        : "",
+      endDate: projectData.completedAt
+        ? projectData.completedAt.toLocaleDateString("vi-VN")
+        : "",
+      budget: projectData.budget || "",
     },
   };
   return (
@@ -67,7 +89,7 @@ export default async function WorkDetailPage({
               </p>
 
               <img
-                src={`/assets/images/works/${project.mainImage}`}
+                src={project.mainImage}
                 alt={project.title}
               />
 
@@ -140,7 +162,7 @@ export default async function WorkDetailPage({
                 {project.gallery.map((image) => (
                   <div className="" key={image}>
                     <img
-                      src={`/assets/images/works/${image}`}
+                      src={image}
                       alt={project.title}
                     />
                   </div>
@@ -225,7 +247,7 @@ export default async function WorkDetailPage({
                 </p>
                 <div className="work-details__image work-details__inner work-details__inner__image">
                   <img
-                    src={`/assets/images/works/${project.mainImage}`}
+                    src={project.mainImage}
                     alt={project.title}
                   />
                 </div>
@@ -243,7 +265,7 @@ export default async function WorkDetailPage({
                     <div className="col-lg-6 work-details__inner work-details__inner__image">
                       <div className="col-lg-6" key={project.gallery[0]}>
                         <img
-                          src={`/assets/images/works/${project.gallery[0]}`}
+                          src={project.gallery[0]}
                           alt={project.title}
                         />
                       </div>
@@ -255,7 +277,7 @@ export default async function WorkDetailPage({
                     <div className="col-lg-6 my-0 work-details__inner work-details__inner__image">
                       <div className="col-lg-6" key={project.gallery[1]}>
                         <img
-                          src={`/assets/images/works/${project.gallery[1]}`}
+                          src={project.gallery[1]}
                           alt={project.title}
                         />
                       </div>

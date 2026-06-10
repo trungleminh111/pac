@@ -7,6 +7,7 @@ import Link from "next/link";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { Locale } from "@prisma/client";
 import { getProjectBySlug } from "@/server/project/project.query";
+import Banner from "@/components/site/Banner/Banner";
 
 export default async function WorkDetailPage({
   params,
@@ -71,8 +72,13 @@ export default async function WorkDetailPage({
     <div className="page-wrapper">
       <Header locale={locale} />
 
-      <PageHeader title="" bgImage="/assets/images/backgrounds/PACSTONE-CONGTRINH-header.png" />
-
+      {/* <PageHeader title="" bgImage="/assets/images/backgrounds/PACSTONE-CONGTRINH-header.png" /> */}
+       <Banner
+        title="CÔNG TRÌNH"
+        backgroundImg="/assets/images/backgrounds/contruct-banner.webp"
+        row={2}
+        col={1}
+      />
 
       <section className="work-details section-space service-laptop">
         <div className="container">

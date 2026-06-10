@@ -158,11 +158,10 @@ export default function ProjectForm({
 
       {state.message && (
         <div
-          className={`rounded-xl px-4 py-3 text-sm ${
-            state.ok
-              ? "border border-emerald-200 bg-emerald-50 text-emerald-700"
-              : "border border-red-200 bg-red-50 text-red-700"
-          }`}
+          className={`rounded-xl px-4 py-3 text-sm ${state.ok
+            ? "border border-emerald-200 bg-emerald-50 text-emerald-700"
+            : "border border-red-200 bg-red-50 text-red-700"
+            }`}
         >
           {state.message}
         </div>
@@ -268,10 +267,8 @@ export default function ProjectForm({
                     Ảnh khối 1
                   </label>
                   <MediaPicker
-                    value={block1.image}
-                    onChange={(url) =>
-                      updateContentBlock(0, "image", url)
-                    }
+                    value={block2.image2 || ""}
+                    onChange={(url) => updateContentBlock(1, "image2", url)}
                   />
                 </div>
 
@@ -303,10 +300,8 @@ export default function ProjectForm({
                     Ảnh bên trái 1
                   </label>
                   <MediaPicker
-                    value={block2.image1}
-                    onChange={(url) =>
-                      updateContentBlock(1, "image1", url)
-                    }
+                    value={block2.image1 || ""}
+                    onChange={(url) => updateContentBlock(1, "image1", url)}
                   />
                 </div>
 
@@ -315,10 +310,8 @@ export default function ProjectForm({
                     Ảnh bên trái 2
                   </label>
                   <MediaPicker
-                    value={block2.image2}
-                    onChange={(url) =>
-                      updateContentBlock(1, "image2", url)
-                    }
+                    value={block2.image2 || ""}
+                    onChange={(url) => updateContentBlock(1, "image2", url)}
                   />
                 </div>
               </div>

@@ -3,7 +3,7 @@
 
   width: 100%;
   min-height: 420px;
-
+  height: 100%;
   padding: 40px;
 
   display: flex;
@@ -134,13 +134,18 @@
 /* MOBILE */
 
 @media (max-width: 768px) {
-  .banner {
-    min-height: 260px;
-    padding: 20px;
+   .banner {
+    min-height: 180px;
+    padding: 12px;
+
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
   }
+
   .bannerBody {
-    left: 5px;
-    bottom: 5px;
+    left: 10px;
+    bottom: 10px;
   }
   .content {
     max-width: 100%;

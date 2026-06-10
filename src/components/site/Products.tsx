@@ -21,6 +21,10 @@ function getMarginTop(margin?: string): string {
   if (!margin) return "0px";
   return margin.trim().split(/\s+/)[0];
 }
+function getMarginBottom(margin?: string): string {
+  if (!margin) return "0px";
+  return margin.trim().split(/\s+/)[2] || "0px";
+}
 
 export async function Products({ locale }: { locale: Locale }) {
   const products = await getHomeProducts(locale);
@@ -47,9 +51,10 @@ export async function Products({ locale }: { locale: Locale }) {
           {products.map((product) => {
             const margin = product.styleConfig?.card?.margin;
             const marginTop = getMarginTop(margin);
+             const marginBottom = getMarginBottom(margin);
             const imageHeight = product.styleConfig?.image?.height || "180px";
             const computedHeight = margin
-              ? `calc(${imageHeight} + ${marginTop})`
+          ? `calc(${imageHeight} + ${marginTop} + ${marginBottom})`
               : imageHeight;
 
             return (

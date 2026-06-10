@@ -187,19 +187,22 @@ export function ProductDetailPage2({
                   <div className="product__item">
                     <div className="product__item__image">
                       <Link href={productHref(locale, item.slug)}
-                         style={{
-                            margin: item.styleConfig?.card?.margin
-                          }}>
+                        style={{
+                          margin: item.styleConfig?.card?.margin
+                        }}>
                         <img
-                            src={item.image}
-                            alt={item.title}
-                            style={{
-                              width: item.styleConfig?.image?.width || "100%",
-                              height: item.styleConfig?.image?.height || "180px",
-                              objectFit: item.styleConfig?.image?.objectFit || "cover",
-                            }}
-                          />
+                          src={item.image}
+                          alt={item.title}
+                          style={{
+                            width: item.styleConfig?.image?.width || "100%",
+                            height: item.styleConfig?.image?.height || "180px",
+                            objectFit: item.styleConfig?.image?.objectFit || "cover",
+                          }}
+                        />
                       </Link>
+                      <div className="product-image-overlay">
+
+                      </div>
                     </div>
 
                     <div className="product__item__content">

@@ -275,7 +275,7 @@ export function Header({
             <li><span className="mobile-nav__contact-icon"><FaPhoneAlt /></span><a href="tel:0962757475">0962.757.475</a></li>
           </ul>
           <div className="main-footer__social floens-social">
-            <a href="https://facebook.com" aria-label="Facebook"><FaFacebookF /></a>
+            <a href="https://www.facebook.com/dahoacuongpac?rdid=cxhxaMBS0BOL3mV7&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F18fuq8z3U5%2F#" target="_blank" aria-label="Facebook"><FaFacebookF /></a>
             <a href="https://zalo.me" aria-label="Zalo"><SiZalo /></a>
             <a href="https://youtube.com" aria-label="Youtube"><FaYoutube /></a>
           </div>
@@ -420,7 +420,7 @@ export function Header({
           </div>
 
           <div className="main-footer__social floens-social" style={{ marginBottom: "70px" }}>
-            <a href="https://facebook.com" aria-label="Facebook"><FaFacebookF /></a>
+            <a href="https://www.facebook.com/dahoacuongpac?rdid=cxhxaMBS0BOL3mV7&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F18fuq8z3U5%2F#" target="_blank" aria-label="Facebook"><FaFacebookF /></a>
             <a href="https://zalo.me" aria-label="Zalo"><SiZalo /></a>
             <a href="https://youtube.com" aria-label="Youtube"><FaYoutube /></a>
           </div>

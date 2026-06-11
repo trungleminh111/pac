@@ -1059,3 +1059,10 @@ a {
 .blog-card__content p {
   font-family: var(--floens-font5);
 }
+@media (max-width: 1200px) {
+  .project-card__overlay h3 {
+    font-size: 19px;
+  }
+
+  
+}

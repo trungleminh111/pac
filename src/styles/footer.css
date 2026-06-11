@@ -110,6 +110,7 @@
 .footer-widget__about-text {
   margin-top: auto;
   text-align: center;
+  padding-bottom: 5px;
 }
 
 .footer-widget--about {
@@ -218,7 +219,7 @@
 
 @media (min-width: 1200px) {
   .footer-widget__logo img {
-    width: 68%;
+    width: 190px;
   }
 
   .main-footer__top {
@@ -319,7 +320,7 @@
   }
 
   .footer-widget__logo img {
-    width: 80%;
+    width: 171px;
   }
 
   .footer-widget__title_info {
@@ -331,7 +332,7 @@
   }
 
   .floens-social {
-    padding-top: 6px;
+    padding-top: 19px;
   }
 
   .footer-widget--about {
@@ -494,7 +495,8 @@
     margin: 0;
     text-align: center;
   }
-  .col-logo{
+
+  .col-logo {
     padding: 0px;
     margin: 0;
   }
@@ -538,11 +540,11 @@
 @media (min-width: 1366px) {
 
   .footer-widget--about {
-    gap: 20px;
+    gap: 10px;
   }
 
   .floens-social {
-    padding-top: 12px;
+    padding-top: 25px;
   }
 }
 
@@ -569,6 +571,7 @@
   color: red;
   text-decoration-color: red;
 }
+
 .footer-widget__info li a::after {
   display: none !important;
 }

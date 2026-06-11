@@ -63,7 +63,7 @@ export default async function ProductsPage({
   const activeCategory = searchParams?.category || categories[0]?.slug || "";
   const q = searchParams?.q?.trim() || "";
   const currentPage = Number(searchParams?.page || 1);
-  const itemsPerPage = 8;
+  const itemsPerPage = 12;
 
   const filteredProducts = products.filter((product) => {
     const matchCategory = activeCategory

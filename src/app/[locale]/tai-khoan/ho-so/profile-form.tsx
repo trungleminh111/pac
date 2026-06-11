@@ -33,6 +33,7 @@ export function ProfileForm({
 
   return (
     <form onSubmit={handleSubmit} className={styles.form}>
+
       <div className={styles.field}>
         <label>Tên đăng nhập</label>
         <input value={account.email.split("@")[0]} readOnly />
@@ -49,24 +50,13 @@ export function ProfileForm({
         <label>Email</label>
         <input value={account.email} readOnly />
       </div>
-
-      <div className={styles.field}>
-        <label>Vai trò</label>
-        <input value={account.role} readOnly />
-      </div>
-
-      <div className={styles.field}>
-        <label>Ảnh đại diện</label>
-        <input name="image" defaultValue={account.image} />
-      </div>
-
       <div className={styles.field}>
         <label>Ngày tham gia</label>
         <input value={account.createdAt.toLocaleDateString("vi-VN")} readOnly />
       </div>
 
       <button type="submit" className={styles.saveButton} disabled={pending}>
-        {pending ? "Đang lưu..." : "Lưu"}
+        {pending ? "Đang lưu..." : "Lưu thay đổi"}
       </button>
     </form>
   );

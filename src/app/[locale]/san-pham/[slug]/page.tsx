@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import {
   getHomeProducts,
   getProductBySlug,
+  getRelatedProductsByCategory,
 } from "@/server/products/product.query";
 import type { Locale } from "@/server/products/product.type";
 import { ProductDetailDefault } from "@/components/site/product-detail/ProductDetailDefault";
@@ -18,9 +19,17 @@ export default async function ProductDetailPage({
   const { locale, slug } = params;
 
   const product = await getProductBySlug(locale, slug);
-  const relatedProducts = await getHomeProducts(locale);
 
   if (!product) notFound();
+
+  const relatedProducts = await getHomeProducts(locale);
+
+  const relatedProducts1 = await getRelatedProductsByCategory(
+    locale,
+    product.categoryId,
+    product.id,
+    4
+  );
 
   const template = product.category?.detailTemplate || "default";
 
@@ -29,7 +38,7 @@ export default async function ProductDetailPage({
       <ProductDetailPage2
         locale={locale}
         product={product}
-        relatedProducts={relatedProducts}
+        relatedProducts={relatedProducts1}
       />
     );
   }

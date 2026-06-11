@@ -263,3 +263,71 @@ export async function getProductCategories(locale: Locale = "vi") {
     name: getCategoryName(locale, category),
   }));
 }
+
+export async function getRelatedProductsByCategory(
+  locale: Locale = "vi",
+  categoryId: string | null,
+  currentProductId: string,
+  take: number = 4
+): Promise<ProductCardItem[]> {
+  if (!categoryId) return [];
+
+  const products = await prisma.product.findMany({
+    where: {
+      status: "PUBLISHED",
+      categoryId,
+      id: {
+        not: currentProductId,
+      },
+      translations: {
+        some: { locale },
+      },
+    },
+    orderBy: [{ isFeatured: "desc" }, { createdAt: "desc" }],
+    take,
+    select: {
+      id: true,
+      price: true,
+      thumbnail: true,
+      categoryId: true,
+      styleConfig: true,
+      category: {
+        select: {
+          id: true,
+          slug: true,
+          nameVi: true,
+          nameEn: true,
+          detailTemplate: true,
+        },
+      },
+      translations: {
+        where: { locale },
+        select: {
+          title: true,
+          slug: true,
+          excerpt: true,
+        },
+      },
+    },
+  });
+
+  return products
+    .map((product) => {
+      const translation = product.translations[0];
+      if (!translation) return null;
+
+      return {
+        id: product.id,
+        title: translation.title,
+        slug: translation.slug,
+        excerpt: translation.excerpt || "",
+        image: product.thumbnail || "/assets/images/products/product-1-1.jpg",
+        price: formatPrice(product.price),
+        categoryId: product.categoryId,
+        categoryName: getCategoryName(locale, product.category),
+        categorySlug: product.category?.slug || "",
+        styleConfig: getStyleConfig(product.styleConfig),
+      };
+    })
+    .filter((product): product is ProductCardItem => product !== null);
+}

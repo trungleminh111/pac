@@ -18,20 +18,6 @@ export default async function ProfilePage() {
 
       <div className={styles.profileGrid}>
         <ProfileForm account={account} />
-
-        <div className={styles.avatarBox}>
-          <div className={styles.bigAvatar}>
-            {account.image ? (
-              <img src={account.image} alt={account.name || account.email} />
-            ) : (
-              "👤"
-            )}
-          </div>
-
-          <button>Chọn Ảnh</button>
-          <p>Dung lượng file tối đa 1 MB</p>
-          <p>Định dạng: JPEG, PNG</p>
-        </div>
       </div>
     </section>
   );

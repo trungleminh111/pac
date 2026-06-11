@@ -205,8 +205,10 @@ export function Header({
                 <CartDrawer
                   items={cartItems}
                   total={cartTotal}
-                  cartHref={locale === "vi" ? "/vi/gio-hang" : "/en/cart"}
-                  checkoutHref={locale === "vi" ? "/vi/thanh-toan" : "/en/checkout"}
+                  cartHref={locale === "vi" ? "/vi/gio-hang" : "/en/gio-hang"}
+                  checkoutHref={locale === "vi" ? "/vi/thanh-toan" : "/en/thanh-toan"}
+                  isLoggedIn={isLoggedIn}
+                  loginHref={locale === "vi" ? "/login" : "/login"}
                 />
 
                 <a

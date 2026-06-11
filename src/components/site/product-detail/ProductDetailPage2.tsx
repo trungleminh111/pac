@@ -11,7 +11,7 @@ import type {
 import { FaStar, FaCartShopping } from "react-icons/fa6";
 import { FaFacebookF, FaYoutube } from "react-icons/fa";
 import "@/styles/sanpham.css";
-
+import { AddToCartButton } from "@/components/site/AddToCartButton"; 
 function getGallery(product: ProductDetailItem) {
   const images: string[] = [];
 
@@ -27,7 +27,9 @@ function getGallery(product: ProductDetailItem) {
 
   return images.length > 0 ? images : ["/assets/images/products/product-1-1.jpg"];
 }
-
+function contactHref(locale: Locale) {
+  return locale === "vi" ? "/vi/lien-he" : "/en/contact";
+}
 function productHref(locale: Locale, slug: string) {
   return locale === "vi" ? `/vi/san-pham/${slug}` : `/en/products/${slug}`;
 }
@@ -143,13 +145,15 @@ export function ProductDetailPage2({
                     {product.price || (locale === "vi" ? "Liên hệ" : "Contact")}
                   </h4>
 
-                  <Link
-                    href={locale === "vi" ? "/vi/lien-he" : "/en/contact"}
-                    className="floens-btn product__item__link"
-                  >
-                    <span>{locale === "vi" ? "Liên hệ" : "Contact"}</span>
-                    <FaCartShopping className="product-cart-icon" />
-                  </Link>
+                  <div className="mt-5 text-center product-action-combo">
+                    <Link href={contactHref(locale)} className="floens-btn">
+                      <span>{locale === "vi" ? "Liên hệ" : "Contact"}</span>
+                    </Link>
+
+                    <div className="product-action-combo__cart">
+                      <AddToCartButton productId={product.id} />
+                    </div>
+                  </div>
 
                   <div className="product-details__socials">
                     <h3 className="product-details__socials__title">
@@ -187,18 +191,18 @@ export function ProductDetailPage2({
                   <div className="product__item">
                     <div className="product__item__image">
                       <Link href={productHref(locale, item.slug)}
-                         style={{
-                            margin: item.styleConfig?.card?.margin
-                          }}>
+                        style={{
+                          margin: item.styleConfig?.card?.margin
+                        }}>
                         <img
-                            src={item.image}
-                            alt={item.title}
-                            style={{
-                              width: item.styleConfig?.image?.width || "100%",
-                              height: item.styleConfig?.image?.height || "180px",
-                              objectFit: item.styleConfig?.image?.objectFit || "cover",
-                            }}
-                          />
+                          src={item.image}
+                          alt={item.title}
+                          style={{
+                            width: item.styleConfig?.image?.width || "100%",
+                            height: item.styleConfig?.image?.height || "180px",
+                            objectFit: item.styleConfig?.image?.objectFit || "cover",
+                          }}
+                        />
                       </Link>
                     </div>
 
@@ -219,13 +223,15 @@ export function ProductDetailPage2({
 
                       <div className="product__item__price">{item.price}</div>
 
-                      <Link
-                        href={productHref(locale, item.slug)}
-                        className="floens-btn product__item__link"
-                      >
-                        <span>{locale === "vi" ? "Liên hệ" : "Contact"}</span>
-                        <FaCartShopping className="product-cart-icon" />
-                      </Link>
+                      <div className="mt-5 text-center product-action-combo">
+                        <Link href={contactHref(locale)} className="floens-btn">
+                          <span>{locale === "vi" ? "Liên hệ" : "Contact"}</span>
+                        </Link>
+
+                        <div className="product-action-combo__cart">
+                          <AddToCartButton productId={product.id} />
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -279,13 +285,15 @@ export function ProductDetailPage2({
 
                       <div className="product__item__price">{item.price}</div>
 
-                      <Link
-                        href={productHref(locale, item.slug)}
-                        className="floens-btn product__item__link"
-                      >
-                        <span>{locale === "vi" ? "Liên hệ" : "Contact"}</span>
-                        <FaCartShopping className="product-cart-icon" />
-                      </Link>
+                      <div className="mt-5 text-center product-action-combo">
+                        <Link href={contactHref(locale)} className="floens-btn">
+                          <span>{locale === "vi" ? "Liên hệ" : "Contact"}</span>
+                        </Link>
+
+                        <div className="product-action-combo__cart">
+                          <AddToCartButton productId={product.id} />
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>

@@ -9,10 +9,19 @@
   margin: 0 auto;
 }
 
-.container h1 {
+.desktopOnly {
+  display: block;
+}
+
+.desktopTitle {
   margin: 0 0 24px;
   font-size: 28px;
   font-weight: 600;
+}
+
+.mobileCheckoutHeader,
+.mobileCheckoutBar {
+  display: none;
 }
 
 .grid {
@@ -27,7 +36,14 @@
   gap: 18px;
 }
 
+.right {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
 .card,
+.addressCard,
 .summary,
 .empty {
   background: #fff;
@@ -36,6 +52,7 @@
 }
 
 .card h2,
+.addressCard h2,
 .summary h2 {
   margin: 0 0 18px;
   font-size: 18px;
@@ -101,8 +118,15 @@
 
 .item p {
   margin: 0;
-  color: #777;
+  color: #ee4d2d;
   font-size: 14px;
+}
+
+.item span {
+  display: block;
+  margin-top: 4px;
+  color: #777;
+  font-size: 13px;
 }
 
 .item strong {
@@ -110,18 +134,53 @@
   color: #ee4d2d;
 }
 
+.optionRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 13px 0;
+  border-bottom: 1px solid #eee;
+  font-size: 14px;
+}
+
+.optionRow strong {
+  color: #ee4d2d;
+  font-weight: 500;
+}
+
+.optionRow em {
+  color: #aaa;
+  font-style: normal;
+}
+
+.shippingBox {
+  margin-top: 14px;
+  border: 1px solid #00bfa5;
+  border-radius: 6px;
+  padding: 12px;
+  background: #f7fffd;
+}
+
+.shippingBox strong {
+  display: block;
+  color: #111;
+  margin-bottom: 6px;
+}
+
+.shippingBox p {
+  margin: 0;
+  color: #555;
+  font-size: 13px;
+  line-height: 1.45;
+}
+
 .card textarea {
   width: 100%;
+  margin-top: 14px;
   border: 1px solid #ddd;
   padding: 12px;
   resize: vertical;
   border-radius: 8px;
-}
-
-.right {
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
 }
 
 .payment {
@@ -182,50 +241,204 @@
 }
 
 @media (max-width: 900px) {
+  .desktopOnly,
+  .desktopTitle,
+  .right {
+    display: none;
+  }
+
   .page {
-    padding: 16px 0;
+    padding: 50px 0 72px;
+    background: #f3f3f3;
+    min-height: 100vh;
   }
 
   .container {
-    width: calc(100% - 24px);
+    width: 100%;
+    margin: 0;
   }
 
-  .container h1 {
-    font-size: 22px;
-    margin-bottom: 14px;
+  .mobileCheckoutHeader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 80;
+    height: 50px;
+    padding: 0 14px;
+    background: #fff;
+    border-bottom: 1px solid #eee;
+    display: grid;
+    grid-template-columns: 40px 1fr 40px;
+    align-items: center;
+  }
+
+  .mobileCheckoutHeader a {
+    color: #ee4d2d;
+    font-size: 36px;
+    line-height: 1;
+    text-decoration: none;
+  }
+
+  .mobileCheckoutHeader h1 {
+    margin: 0;
+    text-align: left;
+    font-size: 18px;
+    font-weight: 500;
   }
 
   .grid {
     display: block;
   }
 
-  .left,
-  .right {
-    gap: 12px;
+  .left {
+    display: block;
   }
 
-  .card,
-  .summary {
-    padding: 16px 14px;
-    border-radius: 10px;
-    margin-bottom: 12px;
+  .addressCard,
+  .card {
+    padding: 14px 14px;
+    border-radius: 0;
+    margin-bottom: 10px;
+  }
+
+  .addressCard h2,
+  .card h2 {
+    display: none;
+  }
+
+  .address {
+    display: grid;
+    grid-template-columns: 22px 1fr;
+    gap: 8px;
+    padding: 0;
+    border: 0;
+  }
+
+  .address strong {
+    display: block;
+    font-size: 13px;
+    margin-bottom: 3px;
+  }
+
+  .address p {
+    margin: 0;
+    font-size: 12px;
+    line-height: 1.35;
+    color: #444;
+  }
+
+  .address span {
+    margin-top: 6px;
+    font-size: 11px;
   }
 
   .item {
-    grid-template-columns: 66px 1fr;
+    grid-template-columns: 80px 1fr;
+    gap: 10px;
+    align-items: flex-start;
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
   }
 
   .item img {
-    width: 66px;
-    height: 66px;
+    width: 80px;
+    height: 80px;
+    border-radius: 4px;
+  }
+
+  .item h3 {
+    margin: 0 0 6px;
+    font-size: 13px;
+    line-height: 1.35;
+    font-weight: 400;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .item p {
+    font-size: 13px;
+    color: #ee4d2d;
+  }
+
+  .item span {
+    font-size: 12px;
   }
 
   .item strong {
     grid-column: 2;
     text-align: left;
+    font-size: 13px;
   }
 
-  .summary {
-    position: static;
+  .optionRow {
+    padding: 12px 0;
+    font-size: 14px;
+  }
+
+  .optionRow em {
+    font-size: 13px;
+  }
+
+  .shippingBox {
+    margin-top: 10px;
+    font-size: 13px;
+  }
+
+  .card textarea {
+    min-height: 70px;
+    border-radius: 6px;
+    font-size: 13px;
+  }
+
+  .mobileCheckoutBar {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 90;
+    height: 58px;
+    background: #fff;
+    border-top: 1px solid #eee;
+    display: grid;
+    grid-template-columns: 1fr 120px;
+    align-items: center;
+    padding: 8px 8px 8px 14px;
+    box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.08);
+  }
+
+  .mobileCheckoutBar div {
+    text-align: right;
+    padding-right: 10px;
+  }
+
+  .mobileCheckoutBar span {
+    display: inline-block;
+    margin-right: 4px;
+    font-size: 13px;
+    color: #111;
+  }
+
+  .mobileCheckoutBar strong {
+    color: #ee4d2d;
+    font-size: 16px;
+    font-weight: 500;
+  }
+
+  .mobileCheckoutBar button {
+    width: 100%;
+    height: 42px;
+    border: 0;
+    border-radius: 5px;
+    background: #ee4d2d;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  .mobileCheckoutBar button:disabled {
+    opacity: 0.5;
   }
 }

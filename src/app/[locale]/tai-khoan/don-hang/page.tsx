@@ -1,6 +1,8 @@
 import Link from "next/link";
+import { FiSearch } from "react-icons/fi";
 import { OrderStatus } from "@prisma/client";
 import { getAccountOrders } from "@/server/account/account.query";
+import { OrdersSearch } from "./orders-search";
 import styles from "../account.module.css";
 
 function formatPrice(value: any) {
@@ -38,11 +40,26 @@ export default async function OrdersPage({
   };
   searchParams?: {
     status?: string;
+    q?: string;
   };
 }) {
   const activeStatus = searchParams?.status || "";
+  const keyword = (searchParams?.q || "").trim().toLowerCase();
+
   const status = activeStatus ? (activeStatus as OrderStatus) : undefined;
   const orders = await getAccountOrders(status);
+
+  const filteredOrders = keyword
+    ? orders.filter((order) => {
+      const matchCode = order.code.toLowerCase().includes(keyword);
+
+      const matchProduct = order.items.some((item) =>
+        item.title.toLowerCase().includes(keyword)
+      );
+
+      return matchCode || matchProduct;
+    })
+    : orders;
 
   const base =
     params.locale === "vi" ? "/vi/tai-khoan/don-hang" : "/en/account/orders";
@@ -50,23 +67,31 @@ export default async function OrdersPage({
   return (
     <section>
       <div className={styles.orderTabs}>
-        {tabs.map((tab) => (
-          <Link
-            key={tab.value || "all"}
-            href={tab.value ? `${base}?status=${tab.value}` : base}
-            className={activeStatus === tab.value ? styles.activeTab : ""}
-          >
-            {tab.label}
-          </Link>
-        ))}
+        {tabs.map((tab) => {
+          const href = tab.value
+            ? `${base}?status=${tab.value}${keyword ? `&q=${keyword}` : ""}`
+            : `${base}${keyword ? `?q=${keyword}` : ""}`;
+
+          return (
+            <Link
+              key={tab.value || "all"}
+              href={href}
+              className={activeStatus === tab.value ? styles.activeTab : ""}
+            >
+              {tab.label}
+            </Link>
+          );
+        })}
       </div>
 
-      <div className={styles.searchBox}>
-        🔍 Bạn có thể tìm kiếm theo mã đơn hàng hoặc tên sản phẩm
-      </div>
+      <OrdersSearch
+        base={base}
+        activeStatus={activeStatus}
+        defaultKeyword={searchParams?.q || ""}
+      />
 
       <div className={styles.orderList}>
-        {orders.map((order) => (
+        {filteredOrders.map((order) => (
           <div className={styles.orderCard} key={order.id}>
             <div className={styles.orderTop}>
               <div>
@@ -98,17 +123,12 @@ export default async function OrdersPage({
               <p>
                 Thành tiền: <strong>{formatPrice(order.total)}</strong>
               </p>
-
-              <div>
-                <button>Mua lại</button>
-                <button>Liên hệ tư vấn</button>
-              </div>
             </div>
           </div>
         ))}
 
-        {orders.length === 0 && (
-          <div className={styles.card}>Chưa có đơn hàng.</div>
+        {filteredOrders.length === 0 && (
+          <div className={styles.card}>Không tìm thấy đơn hàng.</div>
         )}
       </div>
     </section>

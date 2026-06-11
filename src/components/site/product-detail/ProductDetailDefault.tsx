@@ -3,6 +3,7 @@ import { SiteHeader as Header } from "@/components/site/SiteHeader";
 import { Footer } from "@/components/site/Footer";
 import { PageHeader } from "@/components/site/PageHeader";
 import { ProductGallery } from "@/components/site/ProductGallery";
+import { AddToCartButton } from "@/components/site/AddToCartButton";
 import type {
   Locale,
   ProductCardItem,
@@ -154,13 +155,15 @@ export function ProductDetailDefault({
                     {product.price || (locale === "vi" ? "Liên hệ" : "Contact")}
                   </h4>
 
-                  <Link
-                    href={locale === "vi" ? "/vi/lien-he" : "/en/contact"}
-                    className="floens-btn product__item__link"
-                  >
-                    <span>{locale === "vi" ? "Liên hệ" : "Contact"}</span>
-                    <FaCartShopping className="product-cart-icon" />
-                  </Link>
+                  <div className="mt-5 text-center product-action-combo">
+                    <Link href={contactHref(locale)} className="floens-btn">
+                      <span>{locale === "vi" ? "Liên hệ" : "Contact"}</span>
+                    </Link>
+
+                    <div className="product-action-combo__cart">
+                      <AddToCartButton productId={product.id} />
+                    </div>
+                  </div>
 
                   <div className="product-details__socials">
                     <h3 className="product-details__socials__title">
@@ -250,21 +253,20 @@ export function ProductDetailDefault({
                         </div>
 
                         <div>
-                          <Link
-                            href={productHref(locale, item.slug)}
-                            className="floens-btn product__item__link"
-                          >
-                            <span>
-                              {locale === "vi"
-                                ? "Tìm hiểu thêm"
-                                : "Learn more"}
-                            </span>
-                          </Link>
+                          <div className="mt-5 text-center product-action-combo">
+                            <Link href={contactHref(locale)} className="floens-btn">
+                              <span>{locale === "vi" ? "Liên hệ" : "Contact"}</span>
+                            </Link>
+
+                            <div className="product-action-combo__cart">
+                              <AddToCartButton productId={product.id} />
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </div>
 
-                    
+
                   </div>
                 ))}
               </div>
@@ -317,16 +319,15 @@ export function ProductDetailDefault({
                         </div>
 
                         <div>
-                          <Link
-                            href={productHref(locale, item.slug)}
-                            className="floens-btn product__item__link"
-                          >
-                            <span>
-                              {locale === "vi"
-                                ? "Tìm hiểu thêm"
-                                : "Learn more"}
-                            </span>
-                          </Link>
+                          <div className="mt-5 text-center product-action-combo">
+                            <Link href={contactHref(locale)} className="floens-btn">
+                              <span>{locale === "vi" ? "Liên hệ" : "Contact"}</span>
+                            </Link>
+
+                            <div className="product-action-combo__cart">
+                              <AddToCartButton productId={product.id} />
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </div>

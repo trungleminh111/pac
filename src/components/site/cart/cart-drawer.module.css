@@ -108,11 +108,7 @@
   color: #fff;
 }
 
-.footer a:first-of-type {
-  background: #fff;
-  color: #ee4d2d;
-  border: 1px solid #ee4d2d;
-}
+
 
 @media (max-width: 480px) {
   .drawer {

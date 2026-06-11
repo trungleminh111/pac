@@ -3,6 +3,8 @@ import { FaStar, FaCartShopping } from "react-icons/fa6";
 import { getHomeProducts } from "@/server/products/product.query";
 import type { Locale } from "@/server/products/product.type";
 import ScrollReveal from "@/components/site/ScrollReveal";
+import { AddToCartButton } from "@/components/site/AddToCartButton"; 
+
 
 function productHref(locale: Locale, slug: string) {
   return locale === "vi" ? `/vi/san-pham/${slug}` : `/en/products/${slug}`;
@@ -64,7 +66,7 @@ export async function Products({ locale }: { locale: Locale }) {
                       <div className="product__item__image">
                         <Link
                           href={productHref(locale, product.slug)}
-                          // style={{ margin }}
+                        // style={{ margin }}
                         >
                           <img
                             src={product.image}
@@ -102,11 +104,14 @@ export async function Products({ locale }: { locale: Locale }) {
                         <div className="product__item__price">
                           {product.price || (locale === "vi" ? "Liên hệ" : "Contact")}
                         </div>
-                        <div className="mt-5 text-center">
+                        <div className="mt-5 text-center product-action-combo">
                           <Link href={contactHref(locale)} className="floens-btn">
                             <span>{locale === "vi" ? "Liên hệ" : "Contact"}</span>
-                            <i className="icon-right-arrow"><FaCartShopping className="product-cart-icon" /></i>
                           </Link>
+
+                          <div className="product-action-combo__cart">
+                            <AddToCartButton productId={product.id} />
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -153,11 +158,14 @@ export async function Products({ locale }: { locale: Locale }) {
                         <div className="product__item__price">
                           {product.price || (locale === "vi" ? "Liên hệ" : "Contact")}
                         </div>
-                        <div className="mt-5 text-center">
+                        <div className="mt-5 text-center product-action-combo">
                           <Link href={contactHref(locale)} className="floens-btn">
                             <span>{locale === "vi" ? "Liên hệ" : "Contact"}</span>
-                            <i className="icon-right-arrow"><FaCartShopping className="product-cart-icon" /></i>
                           </Link>
+
+                          <div className="product-action-combo__cart">
+                            <AddToCartButton productId={product.id} />
+                          </div>
                         </div>
                       </div>
                     </div>

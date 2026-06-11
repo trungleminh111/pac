@@ -17,13 +17,26 @@ export function CartDrawer({
   total,
   cartHref,
   checkoutHref,
+  isLoggedIn,
+  loginHref,
 }: {
   items: CartDrawerItem[];
   total: string;
   cartHref: string;
   checkoutHref: string;
+  isLoggedIn: boolean;
+  loginHref: string;
 }) {
   const [open, setOpen] = useState(false);
+
+  function handleOpenCart() {
+    if (!isLoggedIn) {
+      window.location.href = loginHref;
+      return;
+    }
+
+    setOpen(true);
+  }
 
   return (
     <>
@@ -31,7 +44,7 @@ export function CartDrawer({
         type="button"
         className="icon-cart"
         style={{ color: "var(--floens-black, #000)" }}
-        onClick={() => setOpen(true)}
+        onClick={handleOpenCart}
         aria-label="Open cart"
       >
         <FiShoppingCart size={24} />
@@ -74,7 +87,6 @@ export function CartDrawer({
           </div>
 
           <a href={cartHref}>Xem giỏ hàng</a>
-          <a href={checkoutHref}>Thanh toán</a>
         </div>
       </aside>
     </>

@@ -428,22 +428,22 @@
   .page-header .contact-call-wrapper {
     left: 12px;
     bottom: -60px;
-    width: 260px;
-    height: 70px;
+    width: 200px;
+    height: 50px;
     transform: none;
   }
 
   .contact-call {
     left: 0;
     bottom: 0;
-    width: 260px;
-    height: 70px;
+    width: 200px;
+    height: 50px;
   }
 
   .contact-call__icon {
-    width: 66px;
-    height: 66px;
-    font-size: 26px;
+    width: 55px;
+    height: 55px;
+    font-size: 24px;
   }
 
   .contact-call__icon::before {
@@ -452,9 +452,9 @@
   }
 
   .contact-call__content {
-    left: 45px;
+    left: 35px;
     width: 215px;
-    height: 70px;
+    height: 60px;
 
     -webkit-mask: radial-gradient(
       circle 38px at 0 35px,

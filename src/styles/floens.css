@@ -10519,48 +10519,235 @@ li:hover .sidebar__comments__icon::after {
   left: 0;
   width: 100%;
 }
-
 .service-sidebar__contact {
   position: relative;
   margin-top: 40px;
-  text-align: center;
-  background-repeat: no-repeat;
-  background-position: top;
-  background-size: contain;
+  min-height: 360px;
+
   overflow: hidden;
+  text-align: center;
+
+  background: #fff;
+  border: 1px solid #eee;
 }
 
+/* IMAGE */
 .service-sidebar__contact__bg {
-  position: relative;
   position: absolute;
-  bottom: -3px;
-  left: 0;
-  width: calc(100% + 5px);
-  height: calc(100% - 153px);
-  clip-path: polygon(0 35%, 100% 0%, 100% 99%, 0% 100%);
-  background-color: var(--floens-base, #c7844f);
+  inset: 0;
   z-index: 1;
 }
 
-@media (max-width: 1199px) {
-  .service-sidebar__contact__bg {
-    height: calc(100% - 135px);
+.service-sidebar__contact__bg__inner {
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  height: 56%;
+
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+
+  opacity: 1;
+}
+
+/* RED BLOCK */
+.service-sidebar__contact::after {
+  content: "";
+
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  height: 54%;
+
+  background:
+    repeating-linear-gradient(
+      -45deg,
+      rgba(255, 255, 255, 0.1) 0,
+      rgba(255, 255, 255, 0.1) 2px,
+      transparent 2px,
+      transparent 10px
+    ),
+    #ff3333;
+
+  clip-path: polygon(0 16%, 100% 0, 100% 100%, 0 100%);
+
+  z-index: 2;
+}
+
+/* CONTENT */
+.service-sidebar__contact__inner {
+  position: relative;
+  z-index: 5;
+
+  min-height: 360px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+
+  padding: 0 30px 42px;
+}
+
+.service-sidebar__contact__content {
+  position: relative;
+  z-index: 6;
+}
+
+/* ICON */
+.service-sidebar__contact__icon {
+  position: absolute !important;
+
+  left: 50% !important;
+  top: 51% !important;
+
+  transform: translate(-50%, -50%) !important;
+
+  width: 78px;
+  height: 78px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin: 0 !important;
+
+  background: #fff;
+  border-radius: 50%;
+  overflow: hidden;
+
+  z-index: 20;
+}
+
+.service-sidebar__contact__icon::after {
+  content: "";
+
+  position: absolute;
+  left: 50%;
+  bottom: 100%;
+
+  transform: translateX(-50%);
+
+  width: 150%;
+  height: 150%;
+
+  background-color: var(--floens-black2, #2b1e16);
+  border-radius: 50%;
+
+
+  transition: bottom 800ms cubic-bezier(0.52, 1.64, 0.37, 0.66);
+}
+
+.service-sidebar__contact:hover .service-sidebar__contact__icon::after {
+  bottom: -20%;
+}
+
+.service-sidebar__contact__icon span {
+  position: relative;
+  z-index: 2;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 36px;
+  color: #ff3333;
+
+  transition: color 400ms ease;
+}
+
+.service-sidebar__contact:hover .service-sidebar__contact__icon span {
+  color: #fff;
+}
+
+/* TEXT */
+.service-sidebar__contact__time {
+  margin: 0 0 10px;
+
+  color: #fff;
+
+  font-size: 18px;
+  font-weight: 800;
+  line-height: 1.2;
+
+  text-transform: uppercase;
+}
+
+.service-sidebar__contact__number {
+  margin: 0;
+}
+
+.service-sidebar__contact__number a {
+  color: #fff;
+
+  font-size: 34px;
+  font-weight: 800;
+  line-height: 1;
+
+  text-decoration: none;
+}
+
+/* MOBILE */
+@media (max-width: 767px) {
+  .service-sidebar__contact {
+    min-height: 300px;
+  }
+
+  .service-sidebar__contact__bg__inner {
+    height: 56%;
+  }
+
+  .service-sidebar__contact::after {
+    height: 54%;
+  }
+
+  .service-sidebar__contact__inner {
+    min-height: 300px;
+    padding: 0 20px 32px;
+  }
+
+  .service-sidebar__contact__icon {
+    width: 64px;
+    height: 64px;
+
+    top: 51% !important;
+  }
+
+  .service-sidebar__contact__icon span {
+    font-size: 30px;
+  }
+
+  .service-sidebar__contact__time {
+    font-size: 15px;
+  }
+
+  .service-sidebar__contact__number a {
+    font-size: 26px;
   }
 }
+.service-sidebar__contact__time {
+  margin: 0 0 8px;
 
-.service-sidebar__contact__bg__inner {
-  width: 100%;
-  height: 100%;
-  background-repeat: no-repeat;
-  background-position: top;
-  background-size: cover;
-  opacity: 0.15;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 800;
+  text-transform: uppercase;
 }
 
-.service-sidebar__contact__inner {
-  padding: 156px 30px 59px;
-  position: relative;
-  z-index: 11;
+.service-sidebar__contact__number {
+  margin: 0;
+}
+
+.service-sidebar__contact__number a {
+  color: #fff;
+  font-size: 26px;
+  font-weight: 800;
+  text-decoration: none;
 }
 
 @media (max-width: 1199px) {
@@ -10580,7 +10767,7 @@ li:hover .sidebar__comments__icon::after {
   border-radius: 50%;
   margin: 0 auto 22px;
   overflow: hidden;
-  z-index: 1;
+  z-index: 99;
   transition: all 400ms ease;
 }
 

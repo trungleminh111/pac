@@ -239,7 +239,7 @@ export default function LocationMap() {
           pointerEvents: "none",
           whiteSpace: "nowrap",
           transition: "opacity .3s",
-          zIndex: 9999,
+          zIndex: 9990,
           fontFamily: "var(--floens-font5)", 
         }}
       >

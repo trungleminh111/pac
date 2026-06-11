@@ -54,7 +54,7 @@ export function Hero() {
               />
             </div>
 
-            <div className="main-slider-two__wrapper container">
+            <div className="main-slider-two__wrapper">
               <div className="hero-content">
                 <p className="hero-subtitle">{slide.subtitle}</p>
                 <h1 className="hero-title">{slide.title}</h1>

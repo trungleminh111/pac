@@ -9,6 +9,8 @@ import { BsSearch } from "react-icons/bs";
 import "@/styles/sanpham.css";
 import styles from "./Product.module.css";
 import Banner from "@/components/site/Banner/Banner";
+import { AddToCartButton } from "@/components/site/AddToCartButton";
+import { ProductFilter } from "@/components/site/ProductFilter";
 
 function productListHref(locale: Locale) {
   return locale === "vi" ? "/vi/san-pham" : "/en/products";
@@ -101,78 +103,12 @@ export default async function ProductsPage({
 
       <section className="product-page product-page--left section-space-bottom">
         <div className="container">
-          <div className="row align-items-stretch gy-4 mb-5">
-            <div className="col-xl-4 col-md-12 col-12">
-              <div
-                className="product__search-box product__sidebar__item h-100"
-                style={{ margin: 0, display: "flex" }}
-              >
-                <form
-                  action={productListHref(locale)}
-                  className="product__search w-100"
-                  style={{ display: "flex", position: "relative" }}
-                >
-                  {activeCategory && (
-                    <input
-                      type="hidden"
-                      name="category"
-                      value={activeCategory}
-                    />
-                  )}
-
-                  <input
-                    type="text"
-                    name="q"
-                    defaultValue={q}
-                    placeholder={
-                      locale === "vi" ? "Tìm sản phẩm" : "Search products"
-                    }
-                    style={{ width: "100%", height: "100%", minHeight: "50px" }}
-                  />
-
-                  <button
-                    type="submit"
-                    aria-label="search submit"
-                    style={{
-                      position: "absolute",
-                      right: "15px",
-                      top: "50%",
-                      transform: "translateY(-50%)",
-                      background: "none",
-                      border: "none",
-                    }}
-                  >
-                    <span className="icon-search">
-                      <BsSearch />
-                    </span>
-                  </button>
-                </form>
-              </div>
-            </div>
-
-            <div className="col-xl-8 col-md-12 col-12">
-              <div
-                className="product__categories"
-                style={{ margin: 0, height: "100%" }}
-              >
-                <ul className="list-unstyled" style={{ width: "100%" }}>
-                  {categories.map((category) => (
-                    <li
-                      key={category.id}
-                      className={activeCategory === category.slug ? "active" : ""}
-                    >
-                      <Link href={buildHref(locale, { category: category.slug, q })}>
-                        <button type="button" data-text={category.name}>
-                          <span>{category.name}</span>
-                        </button>
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-          </div>
-
+          <ProductFilter
+            locale={locale}
+            categories={categories}
+            activeCategory={activeCategory}
+            q={q}
+          />
           <hr
             className="mb-5"
             style={{ borderTop: "1px solid #e1dad5", opacity: 0.5 }}
@@ -228,18 +164,15 @@ export default async function ProductsPage({
                             (locale === "vi" ? "Liên hệ" : "Contact")}
                         </div>
 
-                        <Link
-                          href={contactHref(locale)}
-                          className={`floens-btn ${styles.productItemLink}`}
-                        >
-                          <span className={styles.productText}>
-                            {locale === "vi" ? "Liên hệ" : "Contact"}
-                          </span>
+                        <div className="mt-5 text-center product-action-combo">
+                          <Link href={contactHref(locale)} className="floens-btn">
+                            <span>{locale === "vi" ? "Liên hệ" : "Contact"}</span>
+                          </Link>
 
-                          <span className={styles.productIconWrap}>
-                            <FaCartShopping className={styles.productCartIcon} />
-                          </span>
-                        </Link>
+                          <div className="product-action-combo__cart">
+                            <AddToCartButton productId={product.id} />
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -359,18 +292,15 @@ export default async function ProductsPage({
                             (locale === "vi" ? "Liên hệ" : "Contact")}
                         </div>
 
-                        <Link
-                          href={contactHref(locale)}
-                          className={`floens-btn ${styles.productItemLink}`}
-                        >
-                          <span className={styles.productText}>
-                            {locale === "vi" ? "Liên hệ" : "Contact"}
-                          </span>
+                        <div className="mt-5 text-center product-action-combo">
+                          <Link href={contactHref(locale)} className="floens-btn">
+                            <span>{locale === "vi" ? "Liên hệ" : "Contact"}</span>
+                          </Link>
 
-                          <span className={styles.productIconWrap}>
-                            <FaCartShopping className={styles.productCartIcon} />
-                          </span>
-                        </Link>
+                          <div className="product-action-combo__cart">
+                            <AddToCartButton productId={product.id} />
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>

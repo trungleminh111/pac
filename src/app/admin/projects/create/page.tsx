@@ -7,9 +7,9 @@ export type ProjectCreateState = {
   message: string;
 };
 
-function parseJson(value: FormDataEntryValue | null) {
+function parseJson(value: FormDataEntryValue | null): Prisma.InputJsonValue {
   try {
-    return JSON.parse(String(value || "{}"));
+    return JSON.parse(String(value || "{}")) as Prisma.InputJsonValue;
   } catch {
     return {};
   }
@@ -25,7 +25,8 @@ async function createProject(
   const status = String(formData.get("status") || "DRAFT");
   const thumbnail = String(formData.get("thumbnail") || "");
   const categoryId = String(formData.get("categoryId") || "");
-  const allowIndex = formData.get("allowIndex") !== "off";
+
+  const allowIndex = formData.get("allowIndex") === "on";
 
   const clientName = String(formData.get("clientName") || "").trim();
   const projectType = String(formData.get("projectType") || "").trim();
@@ -44,7 +45,12 @@ async function createProject(
   }
 
   const existed = await prisma.projectTranslation.findUnique({
-    where: { locale_slug: { locale, slug } },
+    where: {
+      locale_slug: {
+        locale,
+        slug,
+      },
+    },
   });
 
   if (existed) {
@@ -82,6 +88,8 @@ async function createProject(
 
     return { ok: true, message: "Tạo công trình thành công." };
   } catch (error) {
+    console.error("Create project error:", error);
+
     if (
       error instanceof Prisma.PrismaClientKnownRequestError &&
       error.code === "P2002"

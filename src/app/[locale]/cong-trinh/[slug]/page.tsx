@@ -50,8 +50,8 @@ export default async function WorkDetailPage({
     subTitle: block1.title || "",
     content2: block1.textBottom || "",
     gallery: [block2.image1, block2.image2].filter(Boolean),
-    content3: block2.content || "",
-    content4: "",
+    content3: block2.content1 || "",
+    content4: block2.content2 || "",
     info: {
       customer: projectData.clientName || "",
       category:
@@ -183,7 +183,9 @@ export default async function WorkDetailPage({
               <p className="work-details__text text-justify">
                 {project.content3}
               </p>
-
+              <p className="work-details__text text-justify">
+                {project.content4}
+              </p>
               {/* Đẩy xuống cuối */}
               <div className="product-details__socials mt-auto bottom-bar" style={{ paddingBottom: 38 }}>
                 <a href="#" className="floens-btn  btn-consult">CẦN TƯ VẤN - BÁO GIÁ</a>

@@ -8,53 +8,84 @@ export type ProjectEditState = {
   message: string;
 };
 
-function parseStructuredData(value: string) {
+const emptyStructuredData = {
+  blocks: [
+    {
+      type: "titleTextImageText",
+      title: "",
+      textTop: "",
+      image: "",
+      textBottom: "",
+    },
+    {
+      type: "twoImagesContent",
+      image1: "",
+      image2: "",
+      content1: "",
+      content2: "",
+    },
+  ],
+};
+
+function parseStructuredData(value: string): Prisma.InputJsonValue {
   if (!value) {
-    return {
-      block1: {
-        title: "",
-        textTop: "",
-        image: "",
-        textBottom: "",
-      },
-      block2: {
-        image1: "",
-        image2: "",
-        content: "",
-      },
-    };
+    return emptyStructuredData;
   }
 
   try {
     const data = JSON.parse(value);
 
+    if (Array.isArray(data?.blocks)) {
+      const block1 =
+        data.blocks.find((item: any) => item.type === "titleTextImageText") ||
+        data.blocks[0] ||
+        {};
+
+      const block2 =
+        data.blocks.find((item: any) => item.type === "twoImagesContent") ||
+        data.blocks[1] ||
+        {};
+
+      return {
+        blocks: [
+          {
+            type: "titleTextImageText",
+            title: block1.title || "",
+            textTop: block1.textTop || "",
+            image: block1.image || "",
+            textBottom: block1.textBottom || "",
+          },
+          {
+            type: "twoImagesContent",
+            image1: block2.image1 || "",
+            image2: block2.image2 || "",
+            content1: block2.content1 || block2.content || "",
+            content2: block2.content2 || "",
+          },
+        ],
+      };
+    }
+
     return {
-      block1: {
-        title: data?.block1?.title || "",
-        textTop: data?.block1?.textTop || "",
-        image: data?.block1?.image || "",
-        textBottom: data?.block1?.textBottom || "",
-      },
-      block2: {
-        image1: data?.block2?.image1 || "",
-        image2: data?.block2?.image2 || "",
-        content: data?.block2?.content || "",
-      },
+      blocks: [
+        {
+          type: "titleTextImageText",
+          title: data?.block1?.title || "",
+          textTop: data?.block1?.textTop || "",
+          image: data?.block1?.image || "",
+          textBottom: data?.block1?.textBottom || "",
+        },
+        {
+          type: "twoImagesContent",
+          image1: data?.block2?.image1 || "",
+          image2: data?.block2?.image2 || "",
+          content1: data?.block2?.content1 || data?.block2?.content || "",
+          content2: data?.block2?.content2 || "",
+        },
+      ],
     };
   } catch {
-    return {
-      block1: {
-        title: "",
-        textTop: "",
-        image: "",
-        textBottom: "",
-      },
-      block2: {
-        image1: "",
-        image2: "",
-        content: "",
-      },
-    };
+    return emptyStructuredData;
   }
 }
 
@@ -136,7 +167,8 @@ async function updateProject(
               title,
               slug,
               excerpt: excerpt || null,
-              content: structuredData,
+              content: { html: "" },
+              structuredData,
               seoTitle: seoTitle || null,
               seoDescription: seoDescription || null,
             },
@@ -144,7 +176,8 @@ async function updateProject(
               title,
               slug,
               excerpt: excerpt || null,
-              content: structuredData,
+              content: { html: "" },
+              structuredData,
               seoTitle: seoTitle || null,
               seoDescription: seoDescription || null,
             },
@@ -155,7 +188,7 @@ async function updateProject(
 
     return { ok: true, message: "Cập nhật công trình thành công." };
   } catch (error) {
-    console.error(error);
+    console.error("Update project error:", error);
 
     if (
       error instanceof Prisma.PrismaClientKnownRequestError &&
@@ -190,7 +223,9 @@ export default async function EditProjectPage({
 
   if (!project) notFound();
 
-  const translation = project.translations[0];
+  const translation =
+    project.translations.find((item) => item.locale === "vi") ||
+    project.translations[0];
 
   const categories = await prisma.category.findMany({
     where: { type: "PROJECT" },

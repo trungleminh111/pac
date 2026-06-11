@@ -1,6 +1,5 @@
 import { notFound } from "next/navigation";
 import {
-  getHomeProducts,
   getProductBySlug,
   getRelatedProductsByCategory,
 } from "@/server/products/product.query";
@@ -21,8 +20,6 @@ export default async function ProductDetailPage({
   const product = await getProductBySlug(locale, slug);
 
   if (!product) notFound();
-
-  const relatedProducts = await getHomeProducts(locale);
 
   const relatedProducts1 = await getRelatedProductsByCategory(
     locale,
@@ -47,7 +44,7 @@ export default async function ProductDetailPage({
     <ProductDetailDefault
       locale={locale}
       product={product}
-      relatedProducts={relatedProducts}
+      relatedProducts={relatedProducts1}
     />
   );
 }

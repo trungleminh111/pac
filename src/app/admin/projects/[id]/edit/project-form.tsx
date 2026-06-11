@@ -13,6 +13,7 @@ type Translation = {
   slug: string;
   excerpt: string | null;
   content: any;
+  structuredData: any;
   seoTitle: string | null;
   seoDescription: string | null;
 };
@@ -37,7 +38,23 @@ type Category = {
   nameEn: string | null;
 };
 
-const emptyBlock1 = {
+type Block1 = {
+  type: "titleTextImageText";
+  title: string;
+  textTop: string;
+  image: string;
+  textBottom: string;
+};
+
+type Block2 = {
+  type: "twoImagesContent";
+  image1: string;
+  image2: string;
+  content1: string;
+  content2: string;
+};
+
+const emptyBlock1: Block1 = {
   type: "titleTextImageText",
   title: "",
   textTop: "",
@@ -45,70 +62,134 @@ const emptyBlock1 = {
   textBottom: "",
 };
 
-const emptyBlock2 = {
+const emptyBlock2: Block2 = {
   type: "twoImagesContent",
   image1: "",
   image2: "",
-  content: "",
+  content1: "",
+  content2: "",
 };
 
-function getStructuredData(content: any) {
-  let parsed = content;
+function parseJsonLike(value: any) {
+  if (!value) return null;
+
+  if (typeof value === "string") {
+    try {
+      return JSON.parse(value);
+    } catch {
+      return null;
+    }
+  }
+
+  return value;
+}
+
+function normalizeStructuredData(value: any): {
+  block1: Block1;
+  block2: Block2;
+  hasData: boolean;
+} {
+  const parsed = parseJsonLike(value);
 
   if (!parsed) {
     return {
       block1: emptyBlock1,
       block2: emptyBlock2,
+      hasData: false,
     };
-  }
-
-  if (typeof parsed === "string") {
-    try {
-      parsed = JSON.parse(parsed);
-    } catch {
-      return {
-        block1: emptyBlock1,
-        block2: emptyBlock2,
-      };
-    }
   }
 
   if (Array.isArray(parsed?.blocks)) {
-    const block1 =
+    const rawBlock1 =
       parsed.blocks.find((item: any) => item.type === "titleTextImageText") ||
       parsed.blocks[0] ||
-      emptyBlock1;
+      {};
 
-    const block2 =
+    const rawBlock2 =
       parsed.blocks.find((item: any) => item.type === "twoImagesContent") ||
       parsed.blocks[1] ||
-      emptyBlock2;
+      {};
+
+    const block1: Block1 = {
+      type: "titleTextImageText",
+      title: rawBlock1.title || "",
+      textTop: rawBlock1.textTop || "",
+      image: rawBlock1.image || "",
+      textBottom: rawBlock1.textBottom || "",
+    };
+
+    const block2: Block2 = {
+      type: "twoImagesContent",
+      image1: rawBlock2.image1 || "",
+      image2: rawBlock2.image2 || "",
+      content1: rawBlock2.content1 || rawBlock2.content || "",
+      content2: rawBlock2.content2 || "",
+    };
 
     return {
-      block1: {
-        ...emptyBlock1,
-        ...block1,
-        type: "titleTextImageText",
-      },
-      block2: {
-        ...emptyBlock2,
-        ...block2,
-        type: "twoImagesContent",
-      },
+      block1,
+      block2,
+      hasData:
+        Boolean(block1.title) ||
+        Boolean(block1.textTop) ||
+        Boolean(block1.image) ||
+        Boolean(block1.textBottom) ||
+        Boolean(block2.image1) ||
+        Boolean(block2.image2) ||
+        Boolean(block2.content1) ||
+        Boolean(block2.content2),
     };
   }
 
+  const block1: Block1 = {
+    type: "titleTextImageText",
+    title: parsed?.block1?.title || "",
+    textTop: parsed?.block1?.textTop || "",
+    image: parsed?.block1?.image || "",
+    textBottom: parsed?.block1?.textBottom || "",
+  };
+
+  const block2: Block2 = {
+    type: "twoImagesContent",
+    image1: parsed?.block2?.image1 || "",
+    image2: parsed?.block2?.image2 || "",
+    content1: parsed?.block2?.content1 || parsed?.block2?.content || "",
+    content2: parsed?.block2?.content2 || "",
+  };
+
   return {
-    block1: {
-      ...emptyBlock1,
-      ...(parsed.block1 || {}),
-      type: "titleTextImageText",
-    },
-    block2: {
-      ...emptyBlock2,
-      ...(parsed.block2 || {}),
-      type: "twoImagesContent",
-    },
+    block1,
+    block2,
+    hasData:
+      Boolean(block1.title) ||
+      Boolean(block1.textTop) ||
+      Boolean(block1.image) ||
+      Boolean(block1.textBottom) ||
+      Boolean(block2.image1) ||
+      Boolean(block2.image2) ||
+      Boolean(block2.content1) ||
+      Boolean(block2.content2),
+  };
+}
+
+function getStructuredData(primaryValue: any, fallbackValue: any): {
+  block1: Block1;
+  block2: Block2;
+} {
+  const primary = normalizeStructuredData(primaryValue);
+
+  if (primary.hasData) {
+    return {
+      block1: primary.block1,
+      block2: primary.block2,
+    };
+  }
+
+  const fallback = normalizeStructuredData(fallbackValue);
+
+  return {
+    block1: fallback.block1,
+    block2: fallback.block2,
   };
 }
 
@@ -149,7 +230,10 @@ export default function ProjectEditForm({
     (item) => item.locale === selectedLocale
   );
 
-  const initialStructuredData = getStructuredData(translation?.content);
+  const initialStructuredData = getStructuredData(
+    translation?.structuredData,
+    translation?.content
+  );
 
   const [state, setState] = useState<ProjectEditState>({
     ok: false,
@@ -167,8 +251,8 @@ export default function ProjectEditForm({
   const [startedAt, setStartedAt] = useState(project.startedAt || "");
   const [completedAt, setCompletedAt] = useState(project.completedAt || "");
 
-  const [block1, setBlock1] = useState(initialStructuredData.block1);
-  const [block2, setBlock2] = useState(initialStructuredData.block2);
+  const [block1, setBlock1] = useState<Block1>(initialStructuredData.block1);
+  const [block2, setBlock2] = useState<Block2>(initialStructuredData.block2);
   const [previewOpen, setPreviewOpen] = useState(false);
 
   useEffect(() => {
@@ -193,7 +277,8 @@ export default function ProjectEditForm({
         type: "twoImagesContent",
         image1: block2.image1,
         image2: block2.image2,
-        content: block2.content,
+        content1: block2.content1,
+        content2: block2.content2,
       },
     ],
   };
@@ -208,7 +293,8 @@ export default function ProjectEditForm({
       isEmpty(block1.textBottom) ||
       isEmpty(block2.image1) ||
       isEmpty(block2.image2) ||
-      isEmpty(block2.content)
+      isEmpty(block2.content1) ||
+      isEmpty(block2.content2)
     ) {
       setState({
         ok: false,
@@ -348,7 +434,7 @@ export default function ProjectEditForm({
                     required
                     value={block1.title}
                     onChange={(e) =>
-                      setBlock1((current: any) => ({
+                      setBlock1((current) => ({
                         ...current,
                         title: e.target.value,
                       }))
@@ -368,7 +454,7 @@ export default function ProjectEditForm({
                     required
                     value={block1.textTop}
                     onChange={(e) =>
-                      setBlock1((current: any) => ({
+                      setBlock1((current) => ({
                         ...current,
                         textTop: e.target.value,
                       }))
@@ -387,14 +473,12 @@ export default function ProjectEditForm({
                   <MediaPicker
                     value={block1.image}
                     onChange={(url) =>
-                      setBlock1((current: any) => ({
+                      setBlock1((current) => ({
                         ...current,
                         image: url,
                       }))
                     }
                   />
-
-                  <input required type="hidden" value={block1.image} />
                 </div>
 
                 <div>
@@ -407,7 +491,7 @@ export default function ProjectEditForm({
                     required
                     value={block1.textBottom}
                     onChange={(e) =>
-                      setBlock1((current: any) => ({
+                      setBlock1((current) => ({
                         ...current,
                         textBottom: e.target.value,
                       }))
@@ -434,14 +518,12 @@ export default function ProjectEditForm({
                   <MediaPicker
                     value={block2.image1}
                     onChange={(url) =>
-                      setBlock2((current: any) => ({
+                      setBlock2((current) => ({
                         ...current,
                         image1: url,
                       }))
                     }
                   />
-
-                  <input required type="hidden" value={block2.image1} />
                 </div>
 
                 <div>
@@ -452,33 +534,51 @@ export default function ProjectEditForm({
                   <MediaPicker
                     value={block2.image2}
                     onChange={(url) =>
-                      setBlock2((current: any) => ({
+                      setBlock2((current) => ({
                         ...current,
                         image2: url,
                       }))
                     }
                   />
-
-                  <input required type="hidden" value={block2.image2} />
                 </div>
               </div>
 
               <div className="mt-4">
                 <label className="mb-2 block text-sm font-semibold text-slate-700">
-                  Nội dung bên phải <span className="text-red-500">*</span>
+                  Nội dung bên phải 1 <span className="text-red-500">*</span>
                 </label>
 
                 <textarea
                   required
-                  value={block2.content}
+                  value={block2.content1}
                   onChange={(e) =>
-                    setBlock2((current: any) => ({
+                    setBlock2((current) => ({
                       ...current,
-                      content: e.target.value,
+                      content1: e.target.value,
                     }))
                   }
-                  rows={8}
-                  placeholder="Nội dung bên phải"
+                  rows={5}
+                  placeholder="Nội dung bên phải 1"
+                  className="w-full rounded-xl border px-4 py-3 text-sm"
+                />
+              </div>
+
+              <div className="mt-4">
+                <label className="mb-2 block text-sm font-semibold text-slate-700">
+                  Nội dung bên phải 2 <span className="text-red-500">*</span>
+                </label>
+
+                <textarea
+                  required
+                  value={block2.content2}
+                  onChange={(e) =>
+                    setBlock2((current) => ({
+                      ...current,
+                      content2: e.target.value,
+                    }))
+                  }
+                  rows={5}
+                  placeholder="Nội dung bên phải 2"
                   className="w-full rounded-xl border px-4 py-3 text-sm"
                 />
               </div>
@@ -753,9 +853,15 @@ export default function ProjectEditForm({
                     )}
                   </div>
 
-                  <p className="whitespace-pre-line text-slate-700">
-                    {block2.content}
-                  </p>
+                  <div className="space-y-4">
+                    <p className="whitespace-pre-line text-slate-700">
+                      {block2.content1}
+                    </p>
+
+                    <p className="whitespace-pre-line text-slate-700">
+                      {block2.content2}
+                    </p>
+                  </div>
                 </section>
               </article>
 

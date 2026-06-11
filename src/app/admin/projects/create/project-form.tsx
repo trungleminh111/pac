@@ -13,6 +13,24 @@ type Category = {
   nameEn: string | null;
 };
 
+type TitleTextImageTextBlock = {
+  type: "titleTextImageText";
+  title: string;
+  textTop: string;
+  image: string;
+  textBottom: string;
+};
+
+type TwoImagesContentBlock = {
+  type: "twoImagesContent";
+  image1: string;
+  image2: string;
+  content1: string;
+  content2: string;
+};
+
+type ProjectContentBlock = TitleTextImageTextBlock | TwoImagesContentBlock;
+
 function toSlug(value: string) {
   return value
     .normalize("NFD")
@@ -54,7 +72,7 @@ export default function ProjectForm({
   const [startedAt, setStartedAt] = useState("");
   const [completedAt, setCompletedAt] = useState("");
 
-  const [contentBlocks, setContentBlocks] = useState([
+  const [contentBlocks, setContentBlocks] = useState<ProjectContentBlock[]>([
     {
       type: "titleTextImageText",
       title: "",
@@ -66,21 +84,24 @@ export default function ProjectForm({
       type: "twoImagesContent",
       image1: "",
       image2: "",
-      content: "",
+      content1: "",
+      content2: "",
     },
   ]);
 
-  const block1 = contentBlocks[0];
-  const block2 = contentBlocks[1];
+  const block1 = contentBlocks[0] as TitleTextImageTextBlock;
+  const block2 = contentBlocks[1] as TwoImagesContentBlock;
 
   function updateContentBlock(
     index: number,
-    field: string,
+    field: keyof TitleTextImageTextBlock | keyof TwoImagesContentBlock,
     value: string
   ) {
     setContentBlocks((current) =>
       current.map((block, blockIndex) =>
-        blockIndex === index ? { ...block, [field]: value } : block
+        blockIndex === index
+          ? ({ ...block, [field]: value } as ProjectContentBlock)
+          : block
       )
     );
   }
@@ -92,6 +113,7 @@ export default function ProjectForm({
       router.push("/admin/projects");
       router.refresh();
     }
+
     setSubmitting(false);
   }, [state.ok, router]);
 
@@ -107,7 +129,8 @@ export default function ProjectForm({
       { label: "Nội dung phía dưới ảnh", value: block1.textBottom },
       { label: "Ảnh bên trái 1", value: block2.image1 },
       { label: "Ảnh bên trái 2", value: block2.image2 },
-      { label: "Nội dung bên phải", value: block2.content },
+      { label: "Nội dung bên phải 1", value: block2.content1 },
+      { label: "Nội dung bên phải 2", value: block2.content2 },
     ];
 
     const missingField = requiredFields.find(
@@ -124,8 +147,18 @@ export default function ProjectForm({
     }
 
     setSubmitting(true);
+
     const formData = new FormData(e.currentTarget);
+
+    const submitter = (e.nativeEvent as SubmitEvent)
+      .submitter as HTMLButtonElement | null;
+
+    if (submitter?.name === "status") {
+      formData.set("status", submitter.value);
+    }
+
     formData.set("structuredData", JSON.stringify(structuredData));
+
     const result = await action(state, formData);
     setState(result);
   }
@@ -158,10 +191,11 @@ export default function ProjectForm({
 
       {state.message && (
         <div
-          className={`rounded-xl px-4 py-3 text-sm ${state.ok
-            ? "border border-emerald-200 bg-emerald-50 text-emerald-700"
-            : "border border-red-200 bg-red-50 text-red-700"
-            }`}
+          className={`rounded-xl px-4 py-3 text-sm ${
+            state.ok
+              ? "border border-emerald-200 bg-emerald-50 text-emerald-700"
+              : "border border-red-200 bg-red-50 text-red-700"
+          }`}
         >
           {state.message}
         </div>
@@ -267,8 +301,8 @@ export default function ProjectForm({
                     Ảnh khối 1
                   </label>
                   <MediaPicker
-                    value={block2.image2 || ""}
-                    onChange={(url) => updateContentBlock(1, "image2", url)}
+                    value={block1.image || ""}
+                    onChange={(url) => updateContentBlock(0, "image", url)}
                   />
                 </div>
 
@@ -318,15 +352,30 @@ export default function ProjectForm({
 
               <div className="mt-4">
                 <label className="mb-2 block text-sm font-semibold text-slate-700">
-                  Nội dung bên phải
+                  Nội dung bên phải 1
                 </label>
                 <textarea
-                  value={block2.content}
+                  value={block2.content1}
                   onChange={(e) =>
-                    updateContentBlock(1, "content", e.target.value)
+                    updateContentBlock(1, "content1", e.target.value)
                   }
-                  rows={8}
-                  placeholder="Nội dung bên phải"
+                  rows={5}
+                  placeholder="Nội dung bên phải 1"
+                  className="w-full rounded-xl border px-4 py-3 text-sm"
+                />
+              </div>
+
+              <div className="mt-4">
+                <label className="mb-2 block text-sm font-semibold text-slate-700">
+                  Nội dung bên phải 2
+                </label>
+                <textarea
+                  value={block2.content2}
+                  onChange={(e) =>
+                    updateContentBlock(1, "content2", e.target.value)
+                  }
+                  rows={5}
+                  placeholder="Nội dung bên phải 2"
                   className="w-full rounded-xl border px-4 py-3 text-sm"
                 />
               </div>
@@ -546,6 +595,7 @@ export default function ProjectForm({
 
                 <section className="space-y-4">
                   <h2 className="text-2xl font-bold">{block1.title}</h2>
+
                   <p className="whitespace-pre-line text-slate-700">
                     {block1.textTop}
                   </p>
@@ -582,9 +632,15 @@ export default function ProjectForm({
                     )}
                   </div>
 
-                  <p className="whitespace-pre-line text-slate-700">
-                    {block2.content}
-                  </p>
+                  <div className="space-y-4">
+                    <p className="whitespace-pre-line text-slate-700">
+                      {block2.content1}
+                    </p>
+
+                    <p className="whitespace-pre-line text-slate-700">
+                      {block2.content2}
+                    </p>
+                  </div>
                 </section>
               </article>
 
@@ -608,9 +664,7 @@ export default function ProjectForm({
 
                   <div className="flex justify-between gap-4">
                     <span className="text-slate-500">Ngày thi công</span>
-                    <strong className="text-right">
-                      {startedAt || "—"}
-                    </strong>
+                    <strong className="text-right">{startedAt || "—"}</strong>
                   </div>
 
                   <div className="flex justify-between gap-4">

@@ -29,7 +29,7 @@ export default function ContactPage({
        <Banner
         title="LIÊN HỆ"
         backgroundImg="/assets/images/backgrounds/contact-banner.webp"
-        row={1}
+        row={2}
         col={2}
       > 
         {/* Khung bao bọc tổng thể theo chiều dọc */}

@@ -83,18 +83,18 @@ export default async function ServiceDetailPage({
                         className="service-sidebar__contact__bg__inner"
                         style={{
                           backgroundImage:
-                            "url('/assets/images/about/about-2-2.jpg');",
+                            "url('/assets/images/about/about-2-2.jpg')",
 
                         }}
                       />
                     </div>
-
+                    <div className="service-sidebar__contact__icon">
+                      <span className="icon-telephone">
+                        <FiPhoneCall />
+                      </span>
+                    </div>   
                     <div className="service-sidebar__contact__inner " >
-                      <div className="service-sidebar__contact__icon">
-                        <span className="icon-telephone">
-                          <FiPhoneCall />
-                        </span>
-                      </div>
+                      
 
                       <div className="service-sidebar__contact__content">
                         <h4 className="service-sidebar__contact__time">

@@ -95,7 +95,7 @@ export default async function ProductsPage({
       <Banner
         title="SẢN PHẨM"
         backgroundImg="/assets/images/backgrounds/product-banner.webp"
-        row={1}
+        row={2}
         col={2}
       />
 

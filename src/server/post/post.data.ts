@@ -1,6 +1,105 @@
 import { prisma } from "@/lib/prisma";
 import type { Locale, PostCardItem, PostDetailItem } from "./post.type";
 
+const DEFAULT_POST_IMAGE = "/assets/images/blog/blog-1-1.jpg";
+
+type CategoryWithTranslations = {
+  slug: string;
+  translations: {
+    locale: string;
+    name: string;
+    slug: string | null;
+  }[];
+} | null;
+
+function getLocalizedItem<T extends { locale: string }>(
+  items: T[] | undefined,
+  locale: Locale
+): T | undefined {
+  if (!items?.length) return undefined;
+
+  return (
+    items.find((item) => item.locale === locale) ||
+    items.find((item) => item.locale === "vi") ||
+    items[0]
+  );
+}
+
+function getCategoryName(locale: Locale, category?: CategoryWithTranslations) {
+  if (!category) return "";
+
+  const translation = getLocalizedItem(category.translations, locale);
+  return translation?.name || category.slug || "";
+}
+
+const postCardSelect = (locale: Locale) =>
+  ({
+    id: true,
+    thumbnail: true,
+    isFeatured: true,
+    publishedAt: true,
+    category: {
+      select: {
+        id: true,
+        slug: true,
+        translations: {
+          where: {
+            locale: {
+              in: Array.from(new Set([locale, "vi"])),
+            },
+          },
+          select: {
+            locale: true,
+            name: true,
+            slug: true,
+          },
+        },
+      },
+    },
+    translations: {
+      where: {
+        locale,
+      },
+      take: 1,
+      select: {
+        title: true,
+        slug: true,
+        excerpt: true,
+      },
+    },
+  }) as const;
+
+function mapPostCard(
+  locale: Locale,
+  post: {
+    id: string;
+    thumbnail: string | null;
+    isFeatured: boolean;
+    publishedAt: Date | null;
+    category: CategoryWithTranslations;
+    translations: {
+      title: string;
+      slug: string;
+      excerpt: string | null;
+    }[];
+  }
+): PostCardItem | null {
+  const translation = post.translations[0];
+
+  if (!translation) return null;
+
+  return {
+    id: post.id,
+    title: translation.title,
+    slug: translation.slug,
+    excerpt: translation.excerpt || "",
+    image: post.thumbnail || DEFAULT_POST_IMAGE,
+    category: getCategoryName(locale, post.category),
+    publishedAt: post.publishedAt,
+    isFeatured: post.isFeatured,
+  };
+}
+
 export async function getPostsPage(
   locale: Locale = "vi"
 ): Promise<PostCardItem[]> {
@@ -16,50 +115,11 @@ export async function getPostsPage(
     orderBy: {
       publishedAt: "desc",
     },
-    select: {
-      id: true,
-      thumbnail: true,
-      isFeatured: true,
-      publishedAt: true,
-      category: {
-        select: {
-          nameVi: true,
-          nameEn: true,
-        },
-      },
-      translations: {
-        where: {
-          locale,
-        },
-        select: {
-          title: true,
-          slug: true,
-          excerpt: true,
-        },
-      },
-    },
+    select: postCardSelect(locale),
   });
 
   return posts
-    .map((post) => {
-      const translation = post.translations[0];
-
-      if (!translation) return null;
-
-      return {
-        id: post.id,
-        title: translation.title,
-        slug: translation.slug,
-        excerpt: translation.excerpt || "",
-        image: post.thumbnail || "/assets/images/blog/blog-1-1.jpg",
-        category:
-          locale === "en"
-            ? post.category?.nameEn || post.category?.nameVi || ""
-            : post.category?.nameVi || "",
-        publishedAt: post.publishedAt,
-        isFeatured: post.isFeatured,
-      };
-    })
+    .map((post) => mapPostCard(locale, post))
     .filter((post): post is PostCardItem => post !== null);
 }
 
@@ -80,50 +140,11 @@ export async function getFeaturedPosts(
       publishedAt: "desc",
     },
     take: 3,
-    select: {
-      id: true,
-      thumbnail: true,
-      isFeatured: true,
-      publishedAt: true,
-      category: {
-        select: {
-          nameVi: true,
-          nameEn: true,
-        },
-      },
-      translations: {
-        where: {
-          locale,
-        },
-        select: {
-          title: true,
-          slug: true,
-          excerpt: true,
-        },
-      },
-    },
+    select: postCardSelect(locale),
   });
 
   return posts
-    .map((post) => {
-      const translation = post.translations[0];
-
-      if (!translation) return null;
-
-      return {
-        id: post.id,
-        title: translation.title,
-        slug: translation.slug,
-        excerpt: translation.excerpt || "",
-        image: post.thumbnail || "/assets/images/blog/blog-1-1.jpg",
-        category:
-          locale === "en"
-            ? post.category?.nameEn || post.category?.nameVi || ""
-            : post.category?.nameVi || "",
-        publishedAt: post.publishedAt,
-        isFeatured: post.isFeatured,
-      };
-    })
+    .map((post) => mapPostCard(locale, post))
     .filter((post): post is PostCardItem => post !== null);
 }
 
@@ -152,8 +173,20 @@ export async function getPostBySlug(
       publishedAt: true,
       category: {
         select: {
-          nameVi: true,
-          nameEn: true,
+          id: true,
+          slug: true,
+          translations: {
+            where: {
+              locale: {
+                in: Array.from(new Set([locale, "vi"])),
+              },
+            },
+            select: {
+              locale: true,
+              name: true,
+              slug: true,
+            },
+          },
         },
       },
       translations: {
@@ -161,6 +194,7 @@ export async function getPostBySlug(
           locale,
           slug,
         },
+        take: 1,
         select: {
           title: true,
           slug: true,
@@ -194,9 +228,6 @@ export async function getPostBySlug(
     content: translation.content,
     seoTitle: translation.seoTitle || "",
     seoDescription: translation.seoDescription || "",
-    categoryName:
-      locale === "en"
-        ? post.category?.nameEn || post.category?.nameVi || ""
-        : post.category?.nameVi || "",
+    categoryName: getCategoryName(locale, post.category),
   };
 }

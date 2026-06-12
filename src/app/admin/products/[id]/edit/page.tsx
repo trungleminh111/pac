@@ -1,235 +1,40 @@
-import { Prisma } from "@prisma/client";
+import { Locale } from "@prisma/client";
 import { notFound } from "next/navigation";
-import { prisma } from "@/lib/prisma";
-import ProductEditForm from "./product-form";
+import ProductForm from "../../product-form";
+import { updateProductAction } from "../../product-actions";
+import {
+  getAdminProductById,
+  getProductFormCategories,
+} from "../../product-query";
 
-export type ProductEditState = {
-  ok: boolean;
-  message: string;
-};
-
-function parseGallery(value: string) {
-  if (!value) return [];
-
-  try {
-    const data = JSON.parse(value);
-    return Array.isArray(data)
-      ? data.filter((item): item is string => typeof item === "string")
-      : [];
-  } catch {
-    return [];
-  }
-}
-
-function parseStyleConfig(value: string) {
-  if (!value.trim()) return Prisma.JsonNull;
-
-  try {
-    return JSON.parse(value);
-  } catch {
-    return null;
-  }
-}
-
-async function updateProduct(
-  id: string,
-  _prevState: ProductEditState,
-  formData: FormData
-): Promise<ProductEditState> {
-  "use server";
-
-  const locale = String(formData.get("locale") || "vi") as "vi" | "en";
-  const status = String(formData.get("status") || "DRAFT") as
-    | "DRAFT"
-    | "PUBLISHED"
-    | "ARCHIVED";
-
-  const categoryId = String(formData.get("categoryId") || "");
-  const thumbnail = String(formData.get("thumbnail") || "");
-  const gallery = parseGallery(String(formData.get("gallery") || "[]"));
-
-  const isFeatured = formData.get("isFeatured") === "on";
-  const allowIndex = formData.get("allowIndex") === "on";
-
-  const sku = String(formData.get("sku") || "").trim();
-  const priceRaw = String(formData.get("price") || "").trim();
-  const origin = String(formData.get("origin") || "").trim();
-  const size = String(formData.get("size") || "").trim();
-  const material = String(formData.get("material") || "").trim();
-  const color = String(formData.get("color") || "").trim();
-
-  const thickness = String(formData.get("thickness") || "").trim();
-  const density = String(formData.get("density") || "").trim();
-  const hardness = String(formData.get("hardness") || "").trim();
-
-  const styleConfigRaw = String(formData.get("styleConfig") || "").trim();
-  const styleConfig = parseStyleConfig(styleConfigRaw);
-
-  const title = String(formData.get("title") || "").trim();
-  const slug = String(formData.get("slug") || "").trim();
-  const excerpt = String(formData.get("excerpt") || "").trim();
-  const content = String(formData.get("content") || "");
-  const seoTitle = String(formData.get("seoTitle") || "").trim();
-  const seoDescription = String(formData.get("seoDescription") || "").trim();
-
-  if (!title || !slug) {
-    return {
-      ok: false,
-      message: "Vui lòng nhập tên sản phẩm và slug.",
-    };
-  }
-
-  if (styleConfig === null) {
-    return {
-      ok: false,
-      message: "Advanced CSS không đúng định dạng JSON.",
-    };
-  }
-
-  const existed = await prisma.productTranslation.findFirst({
-    where: {
-      locale,
-      slug,
-      productId: {
-        not: id,
-      },
-    },
-  });
-
-  if (existed) {
-    return {
-      ok: false,
-      message: "Slug đã tồn tại trong ngôn ngữ này. Vui lòng đổi slug khác.",
-    };
-  }
-
-  try {
-    await prisma.product.update({
-      where: {
-        id,
-      },
-      data: {
-        status,
-        sku: sku || null,
-        price: priceRaw ? new Prisma.Decimal(priceRaw) : null,
-        thumbnail: thumbnail || gallery[0] || null,
-        gallery: gallery.length > 0 ? gallery : [],
-
-        origin: origin || null,
-        size: size || null,
-        material: material || null,
-        color: color || null,
-        thickness: thickness || null,
-        density: density || null,
-        hardness: hardness || null,
-        styleConfig,
-
-        isFeatured,
-        allowIndex,
-        categoryId: categoryId || null,
-        publishedAt: status === "PUBLISHED" ? new Date() : null,
-
-        translations: {
-          upsert: {
-            where: {
-              productId_locale: {
-                productId: id,
-                locale,
-              },
-            },
-            create: {
-              locale,
-              title,
-              slug,
-              excerpt: excerpt || null,
-              content: content ? { html: content } : Prisma.JsonNull,
-              seoTitle: seoTitle || null,
-              seoDescription: seoDescription || null,
-            },
-            update: {
-              title,
-              slug,
-              excerpt: excerpt || null,
-              content: content ? { html: content } : Prisma.JsonNull,
-              seoTitle: seoTitle || null,
-              seoDescription: seoDescription || null,
-            },
-          },
-        },
-      },
-    });
-
-    return {
-      ok: true,
-      message: "Cập nhật sản phẩm thành công.",
-    };
-  } catch (error) {
-    console.error(error);
-
-    if (
-      error instanceof Prisma.PrismaClientKnownRequestError &&
-      error.code === "P2002"
-    ) {
-      return {
-        ok: false,
-        message: "Slug đã tồn tại. Vui lòng đổi slug khác.",
-      };
-    }
-
-    return {
-      ok: false,
-      message: "Có lỗi xảy ra khi cập nhật sản phẩm.",
-    };
-  }
-}
-
-export default async function EditProductPage({
-  params,
-}: {
+type Props = {
   params: {
     id: string;
   };
-}) {
-  const { id } = params;
+  searchParams?: {
+    locale?: string;
+  };
+};
 
-  const product = await prisma.product.findUnique({
-    where: {
-      id,
-    },
-    include: {
-      translations: true,
-      category: true,
-    },
-  });
+export default async function EditProductPage({ params, searchParams }: Props) {
+  const locale = searchParams?.locale === "en" ? Locale.en : Locale.vi;
+
+  const [product, categories] = await Promise.all([
+    getAdminProductById(params.id, locale),
+    getProductFormCategories(),
+  ]);
 
   if (!product) {
     notFound();
   }
 
-  const translation = product.translations[0];
-
-  const categories = await prisma.category.findMany({
-    where: {
-      type: "PRODUCT",
-    },
-    orderBy: {
-      sortOrder: "asc",
-    },
-  });
-
-  const productForForm = {
-    ...product,
-    price: product.price ? product.price.toString() : null,
-    gallery: Array.isArray(product.gallery) ? product.gallery : [],
-    styleConfig: product.styleConfig || null,
-  };
-
   return (
-    <ProductEditForm
-      product={productForForm}
+    <ProductForm
+      key={`${params.id}-${locale}`}
+      mode="edit"
+      action={updateProductAction}
       categories={categories}
-      selectedLocale={translation?.locale || "vi"}
-      action={updateProduct.bind(null, id)}
+      initialData={product}
     />
   );
 }

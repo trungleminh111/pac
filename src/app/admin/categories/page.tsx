@@ -1,157 +1,67 @@
-import { Prisma } from "@prisma/client";
-import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
-import { prisma } from "@/lib/prisma";
-import CategoriesClient from "./categories-client";
+import Link from "next/link";
+import { CategoriesBoard } from "./categories-board";
+import { getAdminCategories } from "./category-query";
 
-export type CategoryState = {
-  ok: boolean;
-  message: string;
-  nonce: number;
-};
+export default async function AdminCategoriesPage() {
+  const categories = await getAdminCategories();
 
-type CategoryType = "POST" | "PAGE" | "PRODUCT" | "SERVICE" | "PROJECT";
-
-function getType(value: FormDataEntryValue | null): CategoryType {
-  const type = String(value || "POST");
-
-  if (["POST", "PAGE", "PRODUCT", "SERVICE", "PROJECT"].includes(type)) {
-    return type as CategoryType;
-  }
-
-  return "POST";
-}
-
-async function createCategory(
-  _prevState: CategoryState,
-  formData: FormData
-): Promise<CategoryState> {
-  "use server";
-
-  const type = getType(formData.get("type"));
-  const nameVi = String(formData.get("nameVi") || "").trim();
-  const nameEn = String(formData.get("nameEn") || "").trim();
-  const slug = String(formData.get("slug") || "").trim();
-  const detailTemplate = String(
-    formData.get("detailTemplate") || "default"
-  ).trim();
-
-  if (!nameVi || !slug) {
-    return {
-      ok: false,
-      message: "Vui lòng nhập tên danh mục và slug.",
-      nonce: Date.now(),
-    };
-  }
-
-  try {
-    await prisma.category.create({
-      data: {
-        type,
-        nameVi,
-        nameEn: nameEn || null,
-        slug,
-        detailTemplate: type === "PRODUCT" ? detailTemplate : "default",
-        parentId: null,
-        sortOrder: 0,
-      },
-    });
-
-    revalidatePath("/admin/categories");
-
-    return {
-      ok: true,
-      message: "Tạo danh mục thành công.",
-      nonce: Date.now(),
-    };
-  } catch (error) {
-    if (
-      error instanceof Prisma.PrismaClientKnownRequestError &&
-      error.code === "P2002"
-    ) {
-      return {
-        ok: false,
-        message: "Slug đã tồn tại trong loại danh mục này.",
-        nonce: Date.now(),
-      };
-    }
-
-    return {
-      ok: false,
-      message: "Có lỗi xảy ra khi tạo danh mục.",
-      nonce: Date.now(),
-    };
-  }
-}
-
-async function deleteCategory(formData: FormData) {
-  "use server";
-
-  const id = String(formData.get("id") || "");
-  if (!id) return;
-
-  await prisma.category.delete({
-    where: { id },
-  });
-
-  revalidatePath("/admin/categories");
-  redirect("/admin/categories");
-}
-
-export default async function AdminCategoriesPage({
-  searchParams,
-}: {
-  searchParams: {
-    q?: string;
-    type?: string;
-  };
-}) {
-  const q = searchParams.q?.trim() || "";
-  const type = searchParams.type || "";
-
-  const categories = await prisma.category.findMany({
-    where: {
-      ...(type ? { type: type as CategoryType } : {}),
-      ...(q
-        ? {
-            OR: [
-              { nameVi: { contains: q, mode: "insensitive" } },
-              { nameEn: { contains: q, mode: "insensitive" } },
-              { slug: { contains: q, mode: "insensitive" } },
-            ],
-          }
-        : {}),
-    },
-    include: {
-      _count: {
-        select: {
-          posts: true,
-          products: true,
-          services: true,
-          projects: true,
-        },
-      },
-    },
-    orderBy: {
-      createdAt: "desc",
-    },
-  });
-
-  const stats = await prisma.category.groupBy({
-    by: ["type"],
-    _count: {
-      id: true,
-    },
-  });
+  const total = categories.length;
+  const productCount = categories.filter((item) => item.type === "PRODUCT").length;
+  const activeCount = categories.filter((item) => item.isActive).length;
+  const withAttributesCount = categories.filter(
+    (item) => item.type === "PRODUCT" && item.attributesCount > 0
+  ).length;
 
   return (
-    <CategoriesClient
-      categories={categories}
-      stats={stats}
-      q={q}
-      activeType={type}
-      action={createCategory}
-      deleteAction={deleteCategory}
-    />
+    <div className="space-y-6">
+      <div className="flex flex-col justify-between gap-4 md:flex-row md:items-center">
+        <div>
+          <h1 className="text-2xl font-bold text-slate-900">
+            Quản lý category
+          </h1>
+          <p className="mt-1 text-sm text-slate-500">
+            Category được chia theo nhóm để dễ quản lý. Có thể kéo thả để sắp
+            xếp thứ tự trong từng nhóm.
+          </p>
+        </div>
+
+        <Link
+          href="/admin/categories/create"
+          className="inline-flex rounded-lg bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-700"
+        >
+          Thêm category
+        </Link>
+      </div>
+
+      <div className="grid gap-4 md:grid-cols-4">
+        <div className="rounded-2xl border border-slate-200 bg-white p-5">
+          <div className="text-sm text-slate-500">Tổng category</div>
+          <div className="mt-2 text-2xl font-bold text-slate-900">{total}</div>
+        </div>
+
+        <div className="rounded-2xl border border-slate-200 bg-white p-5">
+          <div className="text-sm text-slate-500">Category sản phẩm</div>
+          <div className="mt-2 text-2xl font-bold text-slate-900">
+            {productCount}
+          </div>
+        </div>
+
+        <div className="rounded-2xl border border-slate-200 bg-white p-5">
+          <div className="text-sm text-slate-500">Đang hoạt động</div>
+          <div className="mt-2 text-2xl font-bold text-slate-900">
+            {activeCount}
+          </div>
+        </div>
+
+        <div className="rounded-2xl border border-slate-200 bg-white p-5">
+          <div className="text-sm text-slate-500">Có bộ thông số</div>
+          <div className="mt-2 text-2xl font-bold text-slate-900">
+            {withAttributesCount}
+          </div>
+        </div>
+      </div>
+
+      <CategoriesBoard categories={categories} />
+    </div>
   );
 }

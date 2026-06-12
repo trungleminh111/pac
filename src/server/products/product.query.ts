@@ -1,333 +1,713 @@
 import { prisma } from "@/lib/prisma";
+import { ContentType, Locale as PrismaLocale } from "@prisma/client";
 import type {
   Locale,
+  ProductAttributeItem,
   ProductCardItem,
+  ProductCategoryItem,
   ProductDetailItem,
   ProductStyleConfig,
+  ProductsPageData,
+  PublishStatus,
 } from "./product.type";
 
-function formatPrice(value: unknown) {
-  if (!value) return "";
+const DEFAULT_PAGE_SIZE = 12;
 
-  const numberValue = Number(value);
-  if (Number.isNaN(numberValue)) return "";
+type AttributeInputTypeValue =
+  | "SELECT"
+  | "MULTI_SELECT"
+  | "TEXT"
+  | "NUMBER"
+  | "BOOLEAN"
+  | "COLOR";
 
-  return numberValue.toLocaleString("vi-VN");
+type TranslationLike = {
+  locale: PrismaLocale;
+  name?: string;
+  title?: string;
+  slug?: string;
+  excerpt?: string | null;
+  content?: string | null;
+  seoTitle?: string | null;
+  seoDescription?: string | null;
+};
+
+function toPrismaLocale(locale: Locale): PrismaLocale {
+  return locale === "en" ? PrismaLocale.en : PrismaLocale.vi;
 }
 
-function getCategoryName(
-  locale: Locale,
-  category?: {
-    nameVi: string;
-    nameEn: string | null;
-  } | null
+function getLocalizedName(
+  translations: { locale: PrismaLocale; name: string }[],
+  locale: Locale
 ) {
-  if (!category) return "";
-  return locale === "vi" ? category.nameVi : category.nameEn || category.nameVi;
+  const prismaLocale = toPrismaLocale(locale);
+
+  return (
+    translations.find((item) => item.locale === prismaLocale)?.name ||
+    translations.find((item) => item.locale === PrismaLocale.vi)?.name ||
+    translations[0]?.name ||
+    ""
+  );
 }
 
-function getStyleConfig(value: unknown): ProductStyleConfig | null {
-  if (!value || typeof value !== "object" || Array.isArray(value)) return null;
+function getLocalizedTranslation<T extends TranslationLike>(
+  translations: T[],
+  locale: Locale
+) {
+  const prismaLocale = toPrismaLocale(locale);
+
+  return (
+    translations.find((item) => item.locale === prismaLocale) ||
+    translations.find((item) => item.locale === PrismaLocale.vi) ||
+    translations[0] ||
+    null
+  );
+}
+
+function numberFromMoney(value: unknown): number | null {
+  if (value === null || value === undefined) return null;
+
+  const raw = String(value).trim();
+
+  if (!raw) return null;
+
+  const number = Number(raw);
+
+  if (Number.isFinite(number)) return number;
+
+  const clean = raw.replace(/[^\d.-]/g, "");
+  const fallback = Number(clean);
+
+  return Number.isFinite(fallback) ? fallback : null;
+}
+
+function formatMoney(value: unknown) {
+  const number = numberFromMoney(value);
+
+  if (number === null) return "";
+
+  return `${new Intl.NumberFormat("vi-VN").format(number)} ₫`;
+}
+
+function safeStyleConfig(value: unknown): ProductStyleConfig | null {
+  if (!value || typeof value !== "object") return null;
   return value as ProductStyleConfig;
 }
 
-export async function getHomeProducts(
-  locale: Locale = "vi"
-): Promise<ProductCardItem[]> {
-  const products = await prisma.product.findMany({
-    where: {
-      status: "PUBLISHED",
-      translations: {
-        some: { locale },
-      },
-    },
-    orderBy: [{ isFeatured: "desc" }, { createdAt: "desc" }],
-    take: 4,
-    select: {
-      id: true,
-      price: true,
-      thumbnail: true,
-      categoryId: true,
-      styleConfig: true,
-      category: {
-        select: {
-          id: true,
-          slug: true,
-          nameVi: true,
-          nameEn: true,
-          detailTemplate: true,
-        },
-      },
-      translations: {
-        where: { locale },
-        select: {
-          title: true,
-          slug: true,
-          excerpt: true,
-        },
-      },
-    },
-  });
+function getGallery(product: {
+  thumbnail: string | null;
+  images: { url: string }[];
+}) {
+  const gallery = product.images.map((image) => image.url).filter(Boolean);
 
-  return products
-    .map((product) => {
-      const translation = product.translations[0];
-      if (!translation) return null;
+  if (gallery.length) return gallery;
 
-      return {
-        id: product.id,
-        title: translation.title,
-        slug: translation.slug,
-        excerpt: translation.excerpt || "",
-        image: product.thumbnail || "/assets/images/products/product-1-1.jpg",
-        price: formatPrice(product.price),
-        categoryId: product.categoryId,
-        categoryName: getCategoryName(locale, product.category),
-        categorySlug: product.category?.slug || "",
-        styleConfig: getStyleConfig(product.styleConfig),
-      };
-    })
-    .filter((product): product is ProductCardItem => product !== null);
+  return product.thumbnail ? [product.thumbnail] : [];
 }
 
-export async function getProductsPage(
-  locale: Locale = "vi"
-): Promise<ProductCardItem[]> {
-  const products = await prisma.product.findMany({
-    where: {
-      status: "PUBLISHED",
-      translations: {
-        some: { locale },
+function getCardImage(product: {
+  thumbnail: string | null;
+  images: { url: string }[];
+}) {
+  return product.thumbnail || product.images[0]?.url || "";
+}
+
+function mapCategory(
+  category:
+    | {
+        id: string;
+        slug: string;
+        detailTemplate: string;
+        translations: { locale: PrismaLocale; name: string }[];
+      }
+    | null,
+  locale: Locale
+): ProductCategoryItem | null {
+  if (!category) return null;
+
+  const nameVi =
+    category.translations.find((item) => item.locale === PrismaLocale.vi)
+      ?.name || category.slug;
+
+  const nameEn =
+    category.translations.find((item) => item.locale === PrismaLocale.en)
+      ?.name || null;
+
+  return {
+    id: category.id,
+    slug: category.slug,
+    nameVi,
+    nameEn,
+    name: getLocalizedName(category.translations, locale) || nameVi,
+    detailTemplate: category.detailTemplate || "default",
+  };
+}
+
+function mapProductAttributes(
+  attributeValues: {
+    attributeId: string;
+    attributeValueId: string | null;
+    valueText: string | null;
+    valueNumber: unknown;
+    valueBoolean: boolean | null;
+    attribute: {
+      id: string;
+      code: string;
+      type: AttributeInputTypeValue;
+      sortOrder: number;
+      translations: { locale: PrismaLocale; name: string }[];
+    };
+    attributeValue: {
+      id: string;
+      code: string;
+      colorHex: string | null;
+      image: string | null;
+      translations: { locale: PrismaLocale; name: string }[];
+    } | null;
+  }[],
+  locale: Locale
+): ProductAttributeItem[] {
+  const map = new Map<string, ProductAttributeItem>();
+
+  const sorted = [...attributeValues].sort((a, b) => {
+    return a.attribute.sortOrder - b.attribute.sortOrder;
+  });
+
+  for (const item of sorted) {
+    const attributeName =
+      getLocalizedName(item.attribute.translations, locale) ||
+      item.attribute.code;
+
+    const nameVi =
+      item.attribute.translations.find(
+        (translation) => translation.locale === PrismaLocale.vi
+      )?.name || item.attribute.code;
+
+    const nameEn =
+      item.attribute.translations.find(
+        (translation) => translation.locale === PrismaLocale.en
+      )?.name || "";
+
+    let displayValue = "";
+    let colorHex: string | null = null;
+    let image: string | null = null;
+
+    if (item.attributeValue) {
+      displayValue =
+        getLocalizedName(item.attributeValue.translations, locale) ||
+        item.attributeValue.code;
+
+      colorHex = item.attributeValue.colorHex;
+      image = item.attributeValue.image;
+    } else if (item.valueText) {
+      displayValue = item.valueText;
+    } else if (item.valueNumber !== null && item.valueNumber !== undefined) {
+      displayValue = String(item.valueNumber);
+    } else if (item.valueBoolean !== null && item.valueBoolean !== undefined) {
+      displayValue =
+        locale === "en"
+          ? item.valueBoolean
+            ? "Yes"
+            : "No"
+          : item.valueBoolean
+            ? "Có"
+            : "Không";
+    }
+
+    if (!displayValue) continue;
+
+    const existed = map.get(item.attributeId);
+
+    if (existed) {
+      existed.values.push(displayValue);
+      existed.value = existed.values.join(", ");
+
+      if (!existed.colorHex && colorHex) {
+        existed.colorHex = colorHex;
+      }
+
+      if (!existed.image && image) {
+        existed.image = image;
+      }
+
+      continue;
+    }
+
+    map.set(item.attributeId, {
+      id: item.attribute.id,
+      code: item.attribute.code,
+      type: item.attribute.type,
+      name: attributeName,
+      nameVi,
+      nameEn,
+      value: displayValue,
+      values: [displayValue],
+      colorHex,
+      image,
+    });
+  }
+
+  return Array.from(map.values());
+}
+
+function getAttributeText(
+  attributes: ProductAttributeItem[],
+  code: string
+): string | null {
+  return attributes.find((item) => item.code === code)?.value || null;
+}
+
+function productCardSelect() {
+  return {
+    id: true,
+    price: true,
+    salePrice: true,
+    thumbnail: true,
+    categoryId: true,
+    styleConfig: true,
+    translations: {
+      select: {
+        locale: true,
+        title: true,
+        slug: true,
+        excerpt: true,
       },
     },
-    orderBy: [{ isFeatured: "desc" }, { createdAt: "desc" }],
-    select: {
-      id: true,
-      price: true,
-      thumbnail: true,
-      categoryId: true,
-      styleConfig: true,
-      category: {
-        select: {
-          id: true,
-          slug: true,
-          nameVi: true,
-          nameEn: true,
-          detailTemplate: true,
+    category: {
+      select: {
+        id: true,
+        slug: true,
+        detailTemplate: true,
+        translations: {
+          select: {
+            locale: true,
+            name: true,
+          },
         },
       },
+    },
+    images: {
+      orderBy: [{ sortOrder: "asc" as const }],
+      take: 1,
+      select: {
+        url: true,
+      },
+    },
+  };
+}
+
+function mapProductCard(
+  product: {
+    id: string;
+    price: unknown;
+    salePrice: unknown;
+    thumbnail: string | null;
+    categoryId: string | null;
+    styleConfig: unknown;
+    translations: {
+      locale: PrismaLocale;
+      title: string;
+      slug: string;
+      excerpt: string | null;
+    }[];
+    category: {
+      id: string;
+      slug: string;
+      detailTemplate: string;
+      translations: { locale: PrismaLocale; name: string }[];
+    } | null;
+    images: { url: string }[];
+  },
+  locale: Locale
+): ProductCardItem {
+  const translation = getLocalizedTranslation(product.translations, locale);
+  const category = mapCategory(product.category, locale);
+
+  return {
+    id: product.id,
+    title: translation?.title || "Chưa có tên",
+    slug: translation?.slug || "",
+    excerpt: translation?.excerpt || "",
+    image: getCardImage(product),
+    price: formatMoney(product.price),
+    salePrice: formatMoney(product.salePrice),
+    categoryId: product.categoryId,
+    categoryName: category?.name || "",
+    categorySlug: category?.slug || "",
+    styleConfig: safeStyleConfig(product.styleConfig),
+  };
+}
+
+export async function getProductCategories(
+  locale: Locale = "vi"
+): Promise<ProductCategoryItem[]> {
+  const categories = await prisma.category.findMany({
+    where: {
+      type: ContentType.PRODUCT,
+      isActive: true,
+    },
+    orderBy: [{ sortOrder: "asc" }, { createdAt: "desc" }],
+    select: {
+      id: true,
+      slug: true,
+      detailTemplate: true,
       translations: {
-        where: { locale },
         select: {
-          title: true,
-          slug: true,
-          excerpt: true,
+          locale: true,
+          name: true,
         },
       },
     },
   });
 
-  return products
-    .map((product) => {
-      const translation = product.translations[0];
-      if (!translation) return null;
+  return categories
+    .map((category) => mapCategory(category, locale))
+    .filter(Boolean) as ProductCategoryItem[];
+}
 
-      return {
-        id: product.id,
-        title: translation.title,
-        slug: translation.slug,
-        excerpt: translation.excerpt || "",
-        image: product.thumbnail || "/assets/images/products/product-1-1.jpg",
-        price: formatPrice(product.price),
-        categoryId: product.categoryId,
-        categoryName: getCategoryName(locale, product.category),
-        categorySlug: product.category?.slug || "",
-        styleConfig: getStyleConfig(product.styleConfig),
-      };
-    })
-    .filter((product): product is ProductCardItem => product !== null);
+export async function getProductsPage({
+  locale = "vi",
+  page = 1,
+  pageSize = DEFAULT_PAGE_SIZE,
+  categorySlug,
+}: {
+  locale?: Locale;
+  page?: number;
+  pageSize?: number;
+  categorySlug?: string;
+} = {}): Promise<ProductsPageData> {
+  const safePage = Math.max(1, page);
+  const safePageSize = Math.max(1, pageSize);
+  const skip = (safePage - 1) * safePageSize;
+
+  const where: any = {
+    status: "PUBLISHED",
+  };
+
+  if (categorySlug) {
+    where.category = {
+      slug: categorySlug,
+    };
+  }
+
+  const [products, total, categories] = await Promise.all([
+    prisma.product.findMany({
+      where,
+      orderBy: [
+        { isFeatured: "desc" },
+        { publishedAt: "desc" },
+        { createdAt: "desc" },
+      ],
+      skip,
+      take: safePageSize,
+      select: productCardSelect(),
+    }),
+    prisma.product.count({ where }),
+    getProductCategories(locale),
+  ]);
+
+  return {
+    products: products.map((product) => mapProductCard(product, locale)),
+    categories,
+    total,
+    page: safePage,
+    pageSize: safePageSize,
+    totalPages: Math.ceil(total / safePageSize),
+  };
+}
+
+export async function getFeaturedProducts(
+  locale: Locale = "vi",
+  take = 8
+): Promise<ProductCardItem[]> {
+  const products = await prisma.product.findMany({
+    where: {
+      status: "PUBLISHED",
+      isFeatured: true,
+    },
+    orderBy: [{ publishedAt: "desc" }, { createdAt: "desc" }],
+    take,
+    select: productCardSelect(),
+  });
+
+  return products.map((product) => mapProductCard(product, locale));
+}
+
+export async function getHomeProducts(
+  locale: Locale = "vi",
+  take = 4
+): Promise<ProductCardItem[]> {
+  const featuredProducts = await prisma.product.findMany({
+    where: {
+      status: "PUBLISHED",
+      isFeatured: true,
+    },
+    orderBy: [{ publishedAt: "desc" }, { createdAt: "desc" }],
+    take,
+    select: productCardSelect(),
+  });
+
+  if (featuredProducts.length > 0) {
+    return featuredProducts.map((product) => mapProductCard(product, locale));
+  }
+
+  const latestProducts = await prisma.product.findMany({
+    where: {
+      status: "PUBLISHED",
+    },
+    orderBy: [{ publishedAt: "desc" }, { createdAt: "desc" }],
+    take,
+    select: productCardSelect(),
+  });
+
+  return latestProducts.map((product) => mapProductCard(product, locale));
 }
 
 export async function getProductBySlug(
-  locale: Locale,
-  slug: string
+  slug: string,
+  locale: Locale = "vi"
 ): Promise<ProductDetailItem | null> {
+  const prismaLocale = toPrismaLocale(locale);
+
   const product = await prisma.product.findFirst({
     where: {
       status: "PUBLISHED",
       translations: {
         some: {
-          locale,
           slug,
+          locale: prismaLocale,
         },
       },
     },
-    select: {
-      id: true,
-      status: true,
-      sku: true,
-      price: true,
-      thumbnail: true,
-      gallery: true,
-      origin: true,
-      size: true,
-      material: true,
-      color: true,
-      thickness: true,
-      density: true,
-      hardness: true,
-      styleConfig: true,
-      isFeatured: true,
-      categoryId: true,
-      allowIndex: true,
-      publishedAt: true,
-      category: {
-        select: {
-          id: true,
-          slug: true,
-          nameVi: true,
-          nameEn: true,
-          detailTemplate: true,
-        },
-      },
-      translations: {
-        where: {
-          locale,
-          slug,
-        },
-        select: {
-          title: true,
-          slug: true,
-          excerpt: true,
-          content: true,
-          seoTitle: true,
-          seoDescription: true,
-        },
-      },
-    },
+    select: productDetailSelect(),
   });
 
-  if (!product) return null;
+  const fallbackProduct =
+    product ||
+    (await prisma.product.findFirst({
+      where: {
+        status: "PUBLISHED",
+        translations: {
+          some: {
+            slug,
+          },
+        },
+      },
+      select: productDetailSelect(),
+    }));
 
-  const translation = product.translations[0];
-  if (!translation) return null;
+  if (!fallbackProduct) return null;
+
+  const translation = getLocalizedTranslation(
+    fallbackProduct.translations,
+    locale
+  );
+
+  const category = mapCategory(fallbackProduct.category, locale);
+  const gallery = getGallery(fallbackProduct);
+  const attributes = mapProductAttributes(
+    fallbackProduct.attributeValues,
+    locale
+  );
 
   return {
-    id: product.id,
-    status: product.status,
-    sku: product.sku,
-    price: formatPrice(product.price),
-    thumbnail: product.thumbnail,
-    gallery: product.gallery,
-    origin: product.origin,
-    size: product.size,
-    material: product.material,
-    color: product.color,
-    thickness: product.thickness,
-    density: product.density,
-    hardness: product.hardness,
-    styleConfig: getStyleConfig(product.styleConfig),
-    isFeatured: product.isFeatured,
-    categoryId: product.categoryId,
-    allowIndex: product.allowIndex,
-    publishedAt: product.publishedAt,
-    category: product.category,
-    title: translation.title,
-    slug: translation.slug,
-    excerpt: translation.excerpt || "",
-    content: translation.content,
-    seoTitle: translation.seoTitle || "",
-    seoDescription: translation.seoDescription || "",
+    id: fallbackProduct.id,
+    status: fallbackProduct.status as PublishStatus,
+    sku: fallbackProduct.sku,
+    price: formatMoney(fallbackProduct.price),
+    salePrice: formatMoney(fallbackProduct.salePrice),
+    thumbnail: fallbackProduct.thumbnail,
+    gallery,
+
+    origin: getAttributeText(attributes, "origin"),
+    material: getAttributeText(attributes, "material"),
+    size: getAttributeText(attributes, "size"),
+    thickness: getAttributeText(attributes, "thickness"),
+    density: getAttributeText(attributes, "density"),
+    hardness: getAttributeText(attributes, "hardness"),
+    color: getAttributeText(attributes, "color"),
+
+    attributes,
+
+    styleConfig: safeStyleConfig(fallbackProduct.styleConfig),
+    isFeatured: fallbackProduct.isFeatured,
+    categoryId: fallbackProduct.categoryId,
+    allowIndex: fallbackProduct.allowIndex,
+    publishedAt: fallbackProduct.publishedAt,
+    category,
+
+    title: translation?.title || "",
+    slug: translation?.slug || "",
+    excerpt: translation?.excerpt || "",
+    content: translation?.content || "",
+    seoTitle: translation?.seoTitle || translation?.title || "",
+    seoDescription:
+      translation?.seoDescription || translation?.excerpt || "",
   };
 }
 
-export async function getProductCategories(locale: Locale = "vi") {
-  const categories = await prisma.category.findMany({
-    where: {
-      type: "PRODUCT",
+function productDetailSelect() {
+  return {
+    id: true,
+    status: true,
+    sku: true,
+    price: true,
+    salePrice: true,
+    thumbnail: true,
+    categoryId: true,
+    allowIndex: true,
+    publishedAt: true,
+    isFeatured: true,
+    styleConfig: true,
+    translations: {
+      select: {
+        locale: true,
+        title: true,
+        slug: true,
+        excerpt: true,
+        content: true,
+        seoTitle: true,
+        seoDescription: true,
+      },
     },
-    orderBy: {
-      sortOrder: "asc",
+    category: {
+      select: {
+        id: true,
+        slug: true,
+        detailTemplate: true,
+        translations: {
+          select: {
+            locale: true,
+            name: true,
+          },
+        },
+      },
     },
-    select: {
-      id: true,
-      slug: true,
-      nameVi: true,
-      nameEn: true,
+    images: {
+      orderBy: [{ sortOrder: "asc" as const }],
+      select: {
+        url: true,
+      },
     },
-  });
-
-  return categories.map((category) => ({
-    id: category.id,
-    slug: category.slug,
-    name: getCategoryName(locale, category),
-  }));
+    attributeValues: {
+      select: {
+        attributeId: true,
+        attributeValueId: true,
+        valueText: true,
+        valueNumber: true,
+        valueBoolean: true,
+        attribute: {
+          select: {
+            id: true,
+            code: true,
+            type: true,
+            sortOrder: true,
+            translations: {
+              select: {
+                locale: true,
+                name: true,
+              },
+            },
+          },
+        },
+        attributeValue: {
+          select: {
+            id: true,
+            code: true,
+            colorHex: true,
+            image: true,
+            translations: {
+              select: {
+                locale: true,
+                name: true,
+              },
+            },
+          },
+        },
+      },
+    },
+  };
 }
 
 export async function getRelatedProductsByCategory(
-  locale: Locale = "vi",
-  categoryId: string | null,
-  currentProductId: string,
-  take: number = 4
+  categoryIdOrOptions:
+    | string
+    | null
+    | undefined
+    | {
+        categoryId?: string | null;
+        excludeProductId?: string;
+        productId?: string;
+        locale?: Locale;
+        take?: number;
+      },
+  excludeProductIdOrLocale?: string | Locale,
+  localeOrTake?: Locale | number,
+  takeMaybe?: number
 ): Promise<ProductCardItem[]> {
-  if (!categoryId) return [];
+  let categoryId: string | null | undefined;
+  let excludeProductId = "";
+  let locale: Locale = "vi";
+  let take = 4;
+
+  if (
+    typeof categoryIdOrOptions === "object" &&
+    categoryIdOrOptions !== null
+  ) {
+    categoryId = categoryIdOrOptions.categoryId;
+    excludeProductId =
+      categoryIdOrOptions.excludeProductId ||
+      categoryIdOrOptions.productId ||
+      "";
+    locale = categoryIdOrOptions.locale || "vi";
+    take = categoryIdOrOptions.take || 4;
+  } else {
+    categoryId = categoryIdOrOptions;
+
+    if (
+      excludeProductIdOrLocale === "vi" ||
+      excludeProductIdOrLocale === "en"
+    ) {
+      locale = excludeProductIdOrLocale;
+    } else {
+      excludeProductId = excludeProductIdOrLocale || "";
+    }
+
+    if (localeOrTake === "vi" || localeOrTake === "en") {
+      locale = localeOrTake;
+    } else if (typeof localeOrTake === "number") {
+      take = localeOrTake;
+    }
+
+    if (typeof takeMaybe === "number") {
+      take = takeMaybe;
+    }
+  }
+
+  const where: any = {
+    status: "PUBLISHED",
+  };
+
+  if (excludeProductId) {
+    where.id = {
+      not: excludeProductId,
+    };
+  }
+
+  if (categoryId) {
+    where.categoryId = categoryId;
+  }
 
   const products = await prisma.product.findMany({
-    where: {
-      status: "PUBLISHED",
-      categoryId,
-      id: {
-        not: currentProductId,
-      },
-      translations: {
-        some: { locale },
-      },
-    },
-    orderBy: [{ isFeatured: "desc" }, { createdAt: "desc" }],
+    where,
+    orderBy: [
+      { isFeatured: "desc" },
+      { publishedAt: "desc" },
+      { createdAt: "desc" },
+    ],
     take,
-    select: {
-      id: true,
-      price: true,
-      thumbnail: true,
-      categoryId: true,
-      styleConfig: true,
-      category: {
-        select: {
-          id: true,
-          slug: true,
-          nameVi: true,
-          nameEn: true,
-          detailTemplate: true,
-        },
-      },
-      translations: {
-        where: { locale },
-        select: {
-          title: true,
-          slug: true,
-          excerpt: true,
-        },
-      },
-    },
+    select: productCardSelect(),
   });
 
-  return products
-    .map((product) => {
-      const translation = product.translations[0];
-      if (!translation) return null;
-
-      return {
-        id: product.id,
-        title: translation.title,
-        slug: translation.slug,
-        excerpt: translation.excerpt || "",
-        image: product.thumbnail || "/assets/images/products/product-1-1.jpg",
-        price: formatPrice(product.price),
-        categoryId: product.categoryId,
-        categoryName: getCategoryName(locale, product.category),
-        categorySlug: product.category?.slug || "",
-        styleConfig: getStyleConfig(product.styleConfig),
-      };
-    })
-    .filter((product): product is ProductCardItem => product !== null);
+  return products.map((product) => mapProductCard(product, locale));
 }

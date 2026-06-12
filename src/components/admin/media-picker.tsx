@@ -9,17 +9,25 @@ type Media = {
   url: string;
 };
 
+type MediaPickerProps = {
+  value: string;
+  onChange: (url: string) => void;
+  variant?: "default" | "compact";
+  buttonText?: string;
+};
+
 export function MediaPicker({
   value,
   onChange,
-}: {
-  value: string;
-  onChange: (url: string) => void;
-}) {
+  variant = "default",
+  buttonText = "Chọn ảnh / Upload mới",
+}: MediaPickerProps) {
   const [open, setOpen] = useState(false);
   const [items, setItems] = useState<Media[]>([]);
   const [uploading, setUploading] = useState(false);
   const [message, setMessage] = useState("");
+
+  const isCompact = variant === "compact";
 
   async function loadMedia() {
     const res = await fetch("/api/admin/media");
@@ -58,7 +66,9 @@ export function MediaPicker({
 
     if (data.failed?.length) {
       setMessage(
-        `${data.message}\n${data.failed.map((x: any) => x.error).join("\n")}`
+        `${data.message}\n${data.failed
+          .map((x: { error: string }) => x.error)
+          .join("\n")}`
       );
     } else {
       setMessage(data.message || "Upload thành công.");
@@ -73,33 +83,73 @@ export function MediaPicker({
   }, [open]);
 
   return (
-    <div className="space-y-3">
-      {value ? (
-        <div className="relative overflow-hidden rounded-xl border">
-          <img src={value} alt="" className="aspect-video w-full object-cover" />
+    <div className={isCompact ? "space-y-2" : "space-y-3"}>
+      {isCompact ? (
+        <div className="flex items-center gap-3">
+          {value ? (
+            <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-xl border border-slate-200 bg-white">
+              <img
+                src={value}
+                alt=""
+                className="h-full w-full object-cover"
+              />
+
+              <button
+                type="button"
+                onClick={() => onChange("")}
+                className="absolute right-1 top-1 rounded-full bg-red-600 p-0.5 text-white"
+              >
+                <X className="h-3 w-3" />
+              </button>
+            </div>
+          ) : (
+            <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl border border-dashed border-slate-300 bg-white text-slate-400">
+              <ImagePlus className="h-5 w-5" />
+            </div>
+          )}
 
           <button
             type="button"
-            onClick={() => onChange("")}
-            className="absolute right-2 top-2 rounded-full bg-red-600 p-1 text-white"
+            onClick={() => setOpen(true)}
+            className="rounded-lg border border-slate-200 px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50"
           >
-            <X className="h-4 w-4" />
+            {value ? "Đổi ảnh" : "Chọn ảnh"}
           </button>
         </div>
       ) : (
-        <div className="flex aspect-video items-center justify-center rounded-xl border border-dashed text-sm text-slate-400">
-          Chưa chọn ảnh
-        </div>
-      )}
+        <>
+          {value ? (
+            <div className="relative overflow-hidden rounded-xl border">
+              <img
+                src={value}
+                alt=""
+                className="aspect-video w-full object-cover"
+              />
 
-      <button
-        type="button"
-        onClick={() => setOpen(true)}
-        className="flex w-full items-center justify-center gap-2 rounded-xl border px-4 py-3 text-sm font-semibold hover:bg-slate-50"
-      >
-        <ImagePlus className="h-4 w-4" />
-        Chọn ảnh / Upload mới
-      </button>
+              <button
+                type="button"
+                onClick={() => onChange("")}
+                className="absolute right-2 top-2 rounded-full bg-red-600 p-1 text-white"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            </div>
+          ) : (
+            <div className="flex aspect-video items-center justify-center rounded-xl border border-dashed text-sm text-slate-400">
+              Chưa chọn ảnh
+            </div>
+          )}
+
+          <button
+            type="button"
+            onClick={() => setOpen(true)}
+            className="flex w-full items-center justify-center gap-2 rounded-xl border px-4 py-3 text-sm font-semibold hover:bg-slate-50"
+          >
+            <ImagePlus className="h-4 w-4" />
+            {buttonText}
+          </button>
+        </>
+      )}
 
       {open && (
         <div className="fixed inset-0 z-50 bg-black/40 p-6">

@@ -39,70 +39,6 @@
   z-index: 3;
 }
 
-/* ========================= */
-/* ROWS (4 hàng) */
-/* ========================= */
-
-/* Top */
-.row-1 .content {
-  top: 10%;
-}
-
-/* Upper middle */
-.row-2 .content {
-  top: 35%;
-  transform: translateY(-50%);
-}
-
-/* Lower middle */
-.row-3 .content {
-  top: 65%;
-  transform: translateY(-50%);
-}
-
-/* Bottom */
-.row-4 .content {
-  bottom: 40px;
-}
-
-/* ========================= */
-/* COLS (6 cột) */
-/* ========================= */
-
-.col-1 .content {
-  left: 40px;
-  text-align: left;
-}
-
-.col-2 .content {
-  left: 20%;
-  text-align: left;
-}
-
-.col-3 .content {
-  left: 40%;
-  text-align: left;
-}
-
-.col-4 .content {
-  right: 40%;
-  text-align: right;
-}
-
-.col-5 .content {
-  right: 20%;
-  text-align: right;
-}
-
-.col-6 .content {
-  right: 40px;
-  text-align: right;
-}
-
-/* ========================= */
-/* TABLET */
-/* ========================= */
-
 @media (max-width: 992px) {
   .content h1 {
     font-size: clamp(24px, 4vw, 42px);
@@ -113,14 +49,72 @@
   }
 
   .row-2 .content {
-    top: 35%;
+    top: 30%;
   }
 
   .row-3 .content {
-    top: 65%;
+    top: 50%;
   }
 
   .row-4 .content {
+    top: 70%;
+  }
+
+  .row-5 .content {
+    bottom: 32px;
+  }
+
+  .col-1 .content {
+    left: 32px;
+  }
+
+  .col-2 .content {
+    left: 10%;
+  }
+
+  .col-3 .content {
+    left: 20%;
+  }
+
+  .col-4 .content {
+    right: 20%;
+  }
+
+  .col-5 .content {
+    right: 10%;
+  }
+
+  .col-6 .content {
+    right: 32px;
+  }
+
+  .bannerBody {
+    left: 32px;
+    bottom: 32px;
+  }
+}
+@media (max-width: 992px) {
+  .content h1 {
+    font-size: clamp(24px, 4vw, 42px);
+  }
+
+  .row-1 .content {
+    top: 32px;
+  }
+
+  .row-2 .content {
+    top: 30%;
+  }
+
+  .row-3 .content {
+    top: 50%;
+  }
+
+  .row-4 .content {
+    top: 70%;
+  }
+
+  .row-5 .content {
     bottom: 32px;
   }
 
@@ -154,10 +148,6 @@
   }
 }
 
-/* ========================= */
-/* MOBILE */
-/* ========================= */
-
 @media (max-width: 768px) {
   .content h1 {
     font-size: clamp(18px, 5vw, 28px);
@@ -170,14 +160,18 @@
   }
 
   .row-2 .content {
-    top: 35%;
+    top: 30%;
   }
 
   .row-3 .content {
-    top: 65%;
+    top: 50%;
   }
 
   .row-4 .content {
+    top: 70%;
+  }
+
+  .row-5 .content {
     bottom: 12px;
   }
 

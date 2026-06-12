@@ -3,7 +3,7 @@ import styles from "./Banner.module.css";
 interface BannerProps {
   title: string;
   backgroundImg: string;
-  row?: 1 | 2 | 3| 4;
+  row?: 1 | 2 | 3| 4 | 5;
   col?: 1 | 2 | 3 | 4 | 5 | 6;
   children?: React.ReactNode;
 }

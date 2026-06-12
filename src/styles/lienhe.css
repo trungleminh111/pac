@@ -426,18 +426,71 @@
   }
 
   .page-header .contact-call-wrapper {
-    left: 15px;
-    bottom: -45px;
-    transform: scale(0.42);
-    transform-origin: left bottom;
+    left: 12px;
+    bottom: -60px;
+    width: 200px;
+    height: 50px;
+    transform: none;
+  }
+
+  .contact-call {
+    left: 0;
+    bottom: 0;
+    width: 200px;
+    height: 50px;
+  }
+
+  .contact-call__icon {
+    width: 55px;
+    height: 55px;
+    font-size: 24px;
+  }
+
+  .contact-call__icon::before {
+    inset: 8px;
+    border-width: 2px;
+  }
+
+  .contact-call__content {
+    left: 35px;
+    width: 215px;
+    height: 60px;
+
+    -webkit-mask: radial-gradient(
+      circle 38px at 0 35px,
+      transparent 36px,
+      #000 37px
+    );
+    mask: radial-gradient(
+      circle 38px at 0 35px,
+      transparent 36px,
+      #000 37px
+    );
+  }
+
+  .contact-call__label {
+    width: 180px;
+    height: 35px;
+    padding: 0 12px 0 45px;
+    font-size: 14px;
+    letter-spacing: 1.5px;
+  }
+
+  .contact-call__phone-wrapper {
+    width: 215px;
+    height: 35px;
+  }
+
+  .contact-call__phone {
+    padding: 0 10px 0 45px;
+    font-size: 15px;
+    letter-spacing: 1px;
   }
 
   .contact-call__subtitle {
     display: none;
   }
-  
 }
-
 
 @keyframes iconBounceUpDown {
   0%, 100% {
@@ -523,9 +576,18 @@
 }
 
 .doc-a4-item {
-  cursor: pointer;
+  width: 100%;
+  aspect-ratio: 210 / 297;
+  overflow: hidden;
+  background: #fff;
 }
 
+.doc-a4-pdf {
+  width: 100%;
+  height: 100%;
+  border: none;
+  display: block;
+}
 .image-preview-modal {
   position: fixed;
   inset: 0;

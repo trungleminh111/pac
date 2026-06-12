@@ -204,6 +204,9 @@ export function ProductDetailPage2({
                           }}
                         />
                       </Link>
+                      <div className="product-image-overlay">
+
+                      </div>
                     </div>
 
                     <div className="product__item__content">

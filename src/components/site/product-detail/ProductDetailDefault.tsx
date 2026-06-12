@@ -227,10 +227,10 @@ export function ProductDetailDefault({
                             }}
                           />
 
-                          <div className="product-image-overlay">
-
-                          </div>
                         </Link>
+                        <div className="product-image-overlay">
+
+                        </div>
                       </div>
 
                       <div className="product__item__content">
@@ -293,10 +293,11 @@ export function ProductDetailDefault({
                               objectFit: "contain",
                             }}
                           />
-                          <div className="product-image-overlay">
-                            {/* {item.title} */}
-                          </div>
+
                         </Link>
+                        <div className="product-image-overlay">
+                          {/* {item.title} */}
+                        </div>
                       </div>
 
                       <div className="product__item__content">

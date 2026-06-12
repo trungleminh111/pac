@@ -5,6 +5,7 @@ import { Footer } from "@/components/site/Footer";
 import { PageHeader } from "@/components/site/PageHeader";
 import { getProjectListingData } from "@/server/project/project.query";
 import styles from "./Contruct.module.css";
+import Banner from "@/components/site/Banner/Banner";
 
 function pageHref(locale: Locale, categorySlug?: string, page?: number) {
   const base = locale === Locale.vi ? "/vi/cong-trinh" : "/en/projects";
@@ -65,11 +66,16 @@ export default async function WorksPage({
     <div className="page-wrapper">
       <Header locale={locale} />
 
-      <PageHeader
+      {/* <PageHeader
         title=""
         bgImage="/assets/images/backgrounds/PACSTONE-CONGTRINH-header.png"
+      /> */}
+       <Banner
+        title="CÔNG TRÌNH"
+        backgroundImg="/assets/images/backgrounds/contruct-banner.webp"
+        row={2}
+        col={1}
       />
-
       <section className="work-page work-page--grid section-space-bottom">
         <div className="container">
           <div className="row mb-4">

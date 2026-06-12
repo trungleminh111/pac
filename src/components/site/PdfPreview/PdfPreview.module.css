@@ -1,0 +1,117 @@
+.docItem {
+  cursor: pointer;
+  width: 100%;
+  aspect-ratio: 210 / 297;
+  overflow: hidden;
+  background: #fff;
+  border: 1px solid #ebdcd0;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
+  transition: transform 0.3s ease;
+}
+
+.docItem:hover {
+  transform: translateY(-4px);
+}
+
+.pdfThumb {
+  width: 100%;
+  height: 100%;
+  border: none;
+  display: block;
+  pointer-events: none;
+}
+
+.modal {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  padding: 24px;
+
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(4px);
+}
+
+.modalContent {
+  position: relative;
+
+  width: min(95vw, calc(90vh * 210 / 297));
+  height: auto;
+  aspect-ratio: 210 / 297;
+
+  max-height: 90vh;
+
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
+}
+
+.pdfFrame {
+  width: 100%;
+  height: 100%;
+  border: none;
+  display: block;
+}
+
+.closeBtn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+
+  width: 36px;
+  height: 36px;
+
+  border: none;
+  border-radius: 50%;
+
+  background: rgba(255, 255, 255, 0.95);
+  color: #000;
+
+  font-size: 24px;
+  line-height: 1;
+
+  cursor: pointer;
+  z-index: 10;
+
+  transition: all 0.2s ease;
+}
+
+.closeBtn:hover {
+  background: #ff3028;
+  color: #fff;
+}
+
+@media (max-width: 768px) {
+  .modal {
+    padding: 12px;
+  }
+
+  .modalContent {
+    width: min(96vw, calc(88vh * 210 / 297));
+    max-height: 88vh;
+    border-radius: 8px;
+  }
+
+  .closeBtn {
+    width: 32px;
+    height: 32px;
+    font-size: 22px;
+  }
+}
+
+@media (max-width: 480px) {
+  .modal {
+    padding: 8px;
+  }
+
+  .modalContent {
+    width: min(98vw, calc(86vh * 210 / 297));
+    max-height: 86vh;
+  }
+}

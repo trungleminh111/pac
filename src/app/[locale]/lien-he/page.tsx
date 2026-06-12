@@ -13,6 +13,7 @@ import { LuDownload } from "react-icons/lu";
 import { LuUpload } from "react-icons/lu";
 import ScrollReveal from "@/components/site/ScrollReveal";
 import Banner from "@/components/site/Banner/Banner";
+import PdfPreview from "@/components/site/PdfPreview/PdfPreview";
 export default function ContactPage({
   params,
 }: {
@@ -21,13 +22,14 @@ export default function ContactPage({
   };
 }) {
   const locale = params.locale === "en" ? "en" : "vi";
+  
   return (
     <div className="page-wrapper">
       <Header locale={locale} />
        <Banner
         title="LIÊN HỆ"
         backgroundImg="/assets/images/backgrounds/contact-banner.webp"
-        row={1}
+        row={2}
         col={2}
       > 
         {/* Khung bao bọc tổng thể theo chiều dọc */}
@@ -162,40 +164,27 @@ export default function ContactPage({
               <div className="doc-a4-grid">
 
                 {/* Ảnh A4 thứ nhất */}
-                <ScrollReveal animationClass="fade-in-up" delay="0.2">
-                  <div className="doc-a4-item">
+                <PdfPreview
+                  src="/assets/files/PAC_STONE_08-04-26_Certificate.pdf"
+                  title="Hồ sơ năng lực P.A.C Stone"
+                />
 
-                    <Image
-                      src="/assets/images/lienhe/Ho_So_Nang_Luc_PAC_STONE.jpg"
-                      alt="Hồ sơ năng lực P.A.C Stone"
-                      width={210}
-                      height={297}
-                      sizes="(max-width: 800px) 50vw, 25vw"
-                      className="doc-a4-img"
-                    />
-                  </div>
-                </ScrollReveal>
-                <ScrollReveal animationClass="fade-in-up" delay="0.4">
-                  <div className="doc-a4-item">
-
-                    <Image
-                      src="/assets/images/lienhe/Giay_phep_PAC_STONE.jpg"
-                      alt="Giấy phép kinh doanh"
-                      width={210}
-                      height={297}
-                      sizes="(max-width: 800px) 50vw, 25vw"
-                      className="doc-a4-img"
-                    />
-                  </div>
-                </ScrollReveal>
+                <PdfPreview
+                  src="/assets/files/PAC_CHI_NHANH_Certificate.pdf"
+                  title="Giấy phép kinh doanh"
+                />
 
               </div>
               <ScrollReveal animationClass="fade-in-up" delay="0.8">
                 <div className="download-box ">
 
-                  <button className="download-btn">
+                  <a
+                    href="/assets/files/PAC-certificates.rar"
+                    download
+                    className="download-btn"
+                  >
                     <LuDownload />
-                  </button>
+                  </a>
                   <div className="download-content">
                     Tải Hồ Sơ Năng Lực P.A.C STONE
                   </div>
@@ -219,7 +208,6 @@ export default function ContactPage({
           <LocationMap />
         </div>
       </section>
-
       <Footer />
     </div>
   );

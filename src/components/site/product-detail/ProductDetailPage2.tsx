@@ -58,7 +58,7 @@ export function ProductDetailPage2({
         <div className="container">
           <div className="row gutter-y-50 align-items-stretch circle-product">
             <div className="col-lg-6 col-xl-6">
-              <ProductGallery images={gallery} title={product.title} />
+              <ProductGallery images={gallery} title={product.title} product={product} />
             </div>
 
             <div className="col-lg-6 col-xl-6">

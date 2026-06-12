@@ -491,6 +491,7 @@
 .product-details__info{
     border-top: 1px solid var(--floens-border-color, #ded8d3);
 }
+ 
 
 
 @media (max-width: 575px) {
@@ -580,7 +581,7 @@ color: black !important
 }
 
 .product-details__gallery-top {
-  width: 570px;
+  /* width: 570px; */
   height: 520px;
 
   display: flex;
@@ -601,11 +602,11 @@ color: black !important
   object-fit: contain;
 }
 
-.product-details__gallery-top {
+/* .product-details__gallery-top {
   width: 100%;
   max-width: 570px;
   height: 520px;
-}
+} */
 
 @media (max-width: 768px) {
   .product-details__gallery-top {
@@ -616,7 +617,7 @@ color: black !important
 
 .product-details__gallery-top {
   width: 100%;
-  max-width: 570px;
+  /* max-width: 570px; */
   height: 520px;
   display: flex;
   justify-content: center;

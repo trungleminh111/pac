@@ -1066,3 +1066,16 @@ a {
 
   
 }
+
+@media (max-width:1200px){
+  .product-details__socials .details-social {
+    gap: 20px 20px !important;
+  }
+  .product-details__socials a{
+    font-size: 11px !important;
+  }
+  .product-details__socials__title{
+    font-size: 16px;
+  }
+
+}

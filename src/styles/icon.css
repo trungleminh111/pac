@@ -195,3 +195,16 @@
   justify-content: center;
   cursor: pointer;
 }
+.product-action-combo__cart button  {
+    position: relative; /* Bắt buộc để định vị đường kẻ bên trong */
+}
+
+.product-action-combo__cart button::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 25%; /* Đẩy xuống 25% để căn giữa */
+    width: 1px; /* Độ dày đường kẻ */
+    height: 50%; /* Chiều cao bằng một nửa phần tử cha */
+    background-color: rgba(var(--floens-white-rgb), 0.3); /* Mã màu của bạn */
+}

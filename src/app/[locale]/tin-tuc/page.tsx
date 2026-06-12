@@ -144,8 +144,9 @@ export default async function NewsPage({
       <Banner
         title="TIN TỨC & SỰ KIỆN"
         backgroundImg="/assets/images/backgrounds/news-banner.webp"
-        row={2}
-        col={2}
+        row={3}
+        col={3}
+        fontSize="clamp(22px, 3.5vw, 42px)"
       />
       <section className="blog-page blog-page--sidebar section-space">
         <div className="container">

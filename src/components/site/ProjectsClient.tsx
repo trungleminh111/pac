@@ -28,7 +28,7 @@ export function ProjectsClient({ projects }: { projects: ProjectItem[] }) {
             slidesPerView={1.33}
             spaceBetween={30}
             autoplay={{
-              delay: 500000,
+              delay: 3000,
               disableOnInteraction: false,
             }}
             breakpoints={{

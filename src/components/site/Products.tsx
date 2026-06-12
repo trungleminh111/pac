@@ -167,6 +167,7 @@ export async function Products({ locale }: { locale: Locale }) {
                           <Link href={contactHref(locale)} className="floens-btn">
                             <span>{locale === "vi" ? "Liên hệ" : "Contact"}</span>
                           </Link>
+                          <span>|</span>
 
                           <div className="product-action-combo__cart">
                             <AddToCartButton productId={product.id} />

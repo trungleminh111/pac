@@ -12,6 +12,7 @@ import { FaStar, FaCartShopping } from "react-icons/fa6";
 import { FaFacebookF, FaYoutube } from "react-icons/fa";
 import "@/styles/sanpham.css";
 import { AddToCartButton } from "@/components/site/AddToCartButton"; 
+import Banner from "@/components/site/Banner/Banner";
 function getGallery(product: ProductDetailItem) {
   const images: string[] = [];
 
@@ -49,11 +50,16 @@ export function ProductDetailPage2({
     <div className="page-wrapper">
       <Header locale={locale} />
 
-      <PageHeader
+      {/* <PageHeader
         title=""
         bgImage="/assets/images/backgrounds/PACSTONE-SANPHAM-header.png"
+      /> */}
+ <Banner
+        title="SẢN PHẨM"
+        backgroundImg="/assets/images/backgrounds/product-banner.webp"
+        row={2}
+        col={2}
       />
-
       <section className="product-details section-space">
         <div className="container">
           <div className="row gutter-y-50 align-items-stretch circle-product">
@@ -179,7 +185,7 @@ export function ProductDetailPage2({
 
         <div className="product-details__description-wrapper d-none d-md-block">
           <div className="container">
-            <div className="product-details__description">
+            <div className="product-details__description mb-2">
               <h3 className="product-details__description__title">
                 {locale === "vi" ? "SẢN PHẨM TƯƠNG TỰ" : "RELATED PRODUCTS"}
               </h3>
@@ -245,7 +251,7 @@ export function ProductDetailPage2({
 
         <div className="product-details__description-wrapper d-block d-md-none">
           <div className="container">
-            <div className="product-details__description">
+            <div className="product-details__description mb-2">
               <h3 className="product-details__description__title">
                 {locale === "vi" ? "SẢN PHẨM TƯƠNG TỰ" : "RELATED PRODUCTS"}
               </h3>

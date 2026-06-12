@@ -11,7 +11,7 @@ import type { Locale } from "@/server/services/service.type";
 import { FaCheck } from "react-icons/fa6";
 import { LuDownload } from "react-icons/lu";
 import { FiPhoneCall } from "react-icons/fi";
-
+import Banner from "@/components/site/Banner/Banner";
 function serviceHref(locale: Locale, slug: string) {
   return locale === "vi" ? `/vi/dich-vu/${slug}` : `/en/services/${slug}`;
 }
@@ -47,11 +47,16 @@ export default async function ServiceDetailPage({
     <div className="page-wrapper">
       <Header locale={locale} />
 
-      <PageHeader
+      {/* <PageHeader
         title=""
         bgImage="/assets/images/backgrounds/PACSTONE-DICHVU-header.png"
+      /> */}
+      <Banner
+        title="DỊCH VỤ"
+        backgroundImg="/assets/images/backgrounds/service-banner.webp"
+        row={2}
+        col={5}
       />
-
       <section className="service-details section-space">
         <div className="container">
           <div className="row gutter-y-30">
@@ -92,9 +97,9 @@ export default async function ServiceDetailPage({
                       <span className="icon-telephone">
                         <FiPhoneCall />
                       </span>
-                    </div>   
+                    </div>
                     <div className="service-sidebar__contact__inner " >
-                      
+
 
                       <div className="service-sidebar__contact__content">
                         <h4 className="service-sidebar__contact__time">

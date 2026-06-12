@@ -46,7 +46,7 @@ export default async function WorkDetailPage({
   const project = {
     title: translation.title,
     intro: translation.excerpt || "",
-    mainImage: projectData.thumbnail || block1.image || "",
+    mainImage: block1.image || "",
     content1: block1.textTop || "",
     subTitle: block1.title || "",
     content2: block1.textBottom || "",
@@ -73,7 +73,7 @@ export default async function WorkDetailPage({
       <Header locale={locale} />
 
       {/* <PageHeader title="" bgImage="/assets/images/backgrounds/PACSTONE-CONGTRINH-header.png" /> */}
-       <Banner
+      <Banner
         title="CÔNG TRÌNH"
         backgroundImg="/assets/images/backgrounds/contruct-banner.webp"
         row={2}
@@ -90,8 +90,8 @@ export default async function WorkDetailPage({
                 {project.title}
               </h2>
 
-              <p className="work-details__text text-justify">
-                {project.intro}
+               <p className="work-details__text text-justify">
+                {project.content1}
               </p>
 
               <img
@@ -99,9 +99,10 @@ export default async function WorkDetailPage({
                 alt={project.title}
               />
 
-              <p className="work-details__text text-justify">
-                {project.content1}
-              </p>
+             
+                 <p className="work-details__text work-details__text--two text-justify">
+                  {project.content2}
+                </p>
             </div>
 
             <div className="col-lg-4">
@@ -183,10 +184,6 @@ export default async function WorkDetailPage({
               </h3>
 
               <p className="work-details__text text-justify">
-                {project.content2}
-              </p>
-
-              <p className="work-details__text text-justify">
                 {project.content3}
               </p>
               <p className="work-details__text text-justify">
@@ -259,13 +256,16 @@ export default async function WorkDetailPage({
                     alt={project.title}
                   />
                 </div>
+                <p className="work-details__text work-details__text--two text-justify">
+                  {project.content2}
+                </p>
+
                 <h3 className="work-details__title text-justify mt-0">
                   {project.subTitle}
                 </h3>
 
-
-                <p className="work-details__text work-details__text--two text-justify">
-                  {project.content2}
+                <p className="work-details__text work-details__text--three text-justify">
+                  {project.content3}
                 </p>
 
                 <div className="work-details__inner">
@@ -278,9 +278,11 @@ export default async function WorkDetailPage({
                         />
                       </div>
                     </div>
-                    <p className="work-details__text work-details__text--three text-justify">
-                      {project.content3}
+
+                    <p className="work-details__text work-details__text--four text-justify" >
+                      {project.content4}
                     </p>
+
 
                     <div className="col-lg-6 my-0 work-details__inner work-details__inner__image">
                       <div className="col-lg-6" key={project.gallery[1]}>
@@ -292,10 +294,6 @@ export default async function WorkDetailPage({
                     </div>
                   </div>
                 </div>
-
-                <p className="work-details__text work-details__text--four text-justify" >
-                  {project.content4}
-                </p>
 
               </div>
             </div>

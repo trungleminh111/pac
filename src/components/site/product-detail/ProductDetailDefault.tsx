@@ -12,7 +12,7 @@ import type {
 import { FaStar, FaCartShopping } from "react-icons/fa6";
 import { FaFacebookF, FaYoutube } from "react-icons/fa";
 import "@/styles/sanpham.css";
-
+import Banner from "@/components/site/Banner/Banner";
 function getGallery(product: ProductDetailItem) {
   const images: string[] = [];
 
@@ -59,10 +59,17 @@ export function ProductDetailDefault({
   return (
     <div className="page-wrapper">
       <Header locale={locale} />
-
+{/* 
       <PageHeader
         title=""
         bgImage="/assets/images/backgrounds/PACSTONE-SANPHAM-header.png"
+      /> */}
+
+       <Banner
+        title="SẢN PHẨM"
+        backgroundImg="/assets/images/backgrounds/product-banner.webp"
+        row={2}
+        col={2}
       />
       <section className="product-details section-space">
         <div className="container">
@@ -190,7 +197,7 @@ export function ProductDetailDefault({
 
         <div className="product-details__description-wrapper">
           <div className="container">
-            <div className="product-details__description">
+            <div className="product-details__description mb-2">
               <h2 className="product-details__description__title">
                 {locale === "vi"
                   ? "CÁC DÒNG SẢN PHẨM CHÍNH"

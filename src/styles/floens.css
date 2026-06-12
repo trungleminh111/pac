@@ -11488,16 +11488,16 @@ li:hover .sidebar__comments__icon::after {
 }
 
 .product__item__content {
-  border-left: 1px solid var(--floens-border-color, #ded8d3);
+  /* border-left: 1px solid var(--floens-border-color, #ded8d3);
   border-right: 1px solid var(--floens-border-color, #ded8d3);
-  border-bottom: 1px solid var(--floens-border-color, #ded8d3);
+  border-bottom: 1px solid var(--floens-border-color, #ded8d3); */
   position: relative;
   text-align: center;
   padding: 30.24px 25px 29px;
   transition: all 500ms ease;
 }
 
-.product__item:hover .product__item__content {
+.product__item:hover .product__item__content , .product__item__content:hover{
   border-color: var(--floens-base, #c7844f);
 }
 
@@ -16237,6 +16237,8 @@ li:hover .sidebar__comments__icon::after {
   margin: 0;
   font-weight: normal;
   line-height: 1.875;
+  text-align: justify;
+  color: #7b756f;
 }
 
 .service-details__inner-two {
@@ -17143,7 +17145,7 @@ li:hover .sidebar__comments__icon::after {
   display: block;
   position: relative;
   overflow: hidden;
-  aspect-ratio: 4/6;
+  aspect-ratio: 1/1;
   width: 100%;
 }
 
@@ -17351,8 +17353,6 @@ li:hover .sidebar__comments__icon::after {
 .work-details__text {
   line-height: 1.875;
   font-weight: normal;
-
-  margin-bottom: 25px;
 }
 
 .work-details__text--two,
@@ -17362,11 +17362,13 @@ li:hover .sidebar__comments__icon::after {
 
 .work-details__text--four {
   margin-bottom: -10px;
+
 }
 
 @media (max-width: 991px) {
   .work-details__text--four {
     margin-bottom: 0;
+      margin-top: 0;
   }
 }
 
@@ -18546,6 +18548,7 @@ body.boxed-wrapper .projects-one__shape {
   margin-bottom: 24px;
   line-height: 1.8;
   color: #7b756f;
+  text-align: justify;
 
 }
 

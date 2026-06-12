@@ -43,7 +43,7 @@ export function ProductGallery({
               style={{
                 padding: margin || "0px",
                 width: product.styleConfig?.image?.width || "100%",
-                height: computedHeight || "180px",
+                height: "100%",
                 objectFit: product.styleConfig?.image?.objectFit || "cover",
               }}
             />

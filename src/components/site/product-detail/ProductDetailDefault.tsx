@@ -113,7 +113,7 @@ export function ProductDetailDefault({
                       {locale === "vi" ? "Thông Số Kỹ Thuật" : "Specifications"}
                     </h5>
 
-                    <ul className="list-unstyled d-flex flex-column ps-0 mb-0">
+                    <ul className="list-unstyled d-flex flex-column ps-0 mb-0" style={{ color: "#6c757d" }}>
                       <li>SKU: {product.sku?.trim() || ""}</li>
 
                       <li>{locale === "vi" ? "Chất liệu:" : "Material:"} {product.material?.trim() || ""}</li>

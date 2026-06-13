@@ -98,7 +98,7 @@ export function Header({
   const homeHref = locale === "vi" ? "/vi" : "/en";
   const viHref = "/vi";
   const enHref = "/en";
-
+  const [isSticky, setIsSticky] = useState(false);
   useEffect(() => {
     // Khóa cuộn trang khi mở bất kỳ popup/sidebar nào
     document.body.classList.toggle(
@@ -110,7 +110,17 @@ export function Header({
       document.body.classList.remove("locked");
     };
   }, [mobileOpen, sidebarOpen, searchOpen, isOpen]);
+  useEffect(() => {
+  const handleScroll = () => {
+    setIsSticky(window.scrollY > 60);
+  };
 
+  window.addEventListener("scroll", handleScroll);
+
+  return () => {
+    window.removeEventListener("scroll", handleScroll);
+  };
+}, []);
   return (
     <>
       {/* 1. TOPBAR */}
@@ -149,7 +159,11 @@ export function Header({
       </div>
 
       {/* 2. MAIN HEADER */}
-      <header className="main-header main-header--two sticky-header sticky-header--normal">
+      <header
+        className={`main-header main-header--two ${
+          isSticky ? "main-header--sticky" : ""
+        }`}
+      >
         <div className="container-fluid">
           <div className="main-header__inner">
             <div className="main-header__logo">

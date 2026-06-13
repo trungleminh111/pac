@@ -463,7 +463,15 @@
   border: 1px solid #ef3d3d;
   color: #ef3d3d;
 }
+.pagination__item {
+  text-decoration: none;
+}
 
+.pagination__arrow.disabled {
+  opacity: 0.4;
+  pointer-events: none;
+  cursor: not-allowed;
+}
 .pagination__arrow,
 .pagination__item {
   font-family: var(--floens-font2, "Plus Jakarta Sans", sans-serif);

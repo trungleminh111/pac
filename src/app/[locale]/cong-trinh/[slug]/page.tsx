@@ -1,14 +1,15 @@
 import { SiteHeader as Header } from "@/components/site/SiteHeader";
 import { Footer } from "@/components/site/Footer";
-import { PageHeader } from "@/components/site/PageHeader";
-import { FaStar, FaCartShopping } from "react-icons/fa6";
 import { FaFacebookF, FaYoutube } from "react-icons/fa";
 import Link from "next/link";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { Locale } from "@prisma/client";
-import { getProjectBySlug } from "@/server/project/project.query";
+import {
+  getProjectBySlug,
+  getProjectListingData,
+} from "@/server/project/project.query";
 import Banner from "@/components/site/Banner/Banner";
-
+import OtherProjectsGallery from "@/components/site/OtherProjectsGallery/OtherProjectsGallery";
 function getCategoryName(
   category:
     | {
@@ -42,16 +43,67 @@ export default async function WorkDetailPage({
   };
 }) {
   const locale = params.locale === "en" ? "en" : "vi";
+  const localeEnum = locale === "en" ? Locale.en : Locale.vi;
 
   const projectData = await getProjectBySlug({
     slug: params.slug,
-    locale: locale === "en" ? Locale.en : Locale.vi,
+    locale: localeEnum,
   });
 
   if (!projectData || !projectData.translations[0]) {
     return null;
   }
 
+  const { works } = await getProjectListingData(localeEnum);
+
+  const currentIndex = works.findIndex((item) => item.slug === params.slug);
+
+  const prevProject = currentIndex > 0 ? works[currentIndex - 1] : null;
+
+  const nextProject =
+    currentIndex >= 0 && currentIndex < works.length - 1
+      ? works[currentIndex + 1]
+      : null;
+
+  const detailHref = (slug: string) =>
+    locale === "vi" ? `/vi/cong-trinh/${slug}` : `/en/projects/${slug}`;
+
+  const ProjectPagination = () => (
+    <div className="pagination">
+      {prevProject ? (
+        <Link href={detailHref(prevProject.slug)} className="pagination__arrow">
+          <FaChevronLeft />
+        </Link>
+      ) : (
+        <span className="pagination__arrow disabled">
+          <FaChevronLeft />
+        </span>
+      )}
+
+      {works.map((item, index) => (
+        <Link
+          key={item.slug}
+          href={detailHref(item.slug)}
+          className={`pagination__item ${
+            index === currentIndex ? "active" : ""
+          }`}
+        >
+          {(index + 1).toString().padStart(2, "0")}
+        </Link>
+      ))}
+
+      {nextProject ? (
+        <Link href={detailHref(nextProject.slug)} className="pagination__arrow">
+          <FaChevronRight />
+        </Link>
+      ) : (
+        <span className="pagination__arrow disabled">
+          <FaChevronRight />
+        </span>
+      )}
+    </div>
+  );
+  
   const translation = projectData.translations[0];
   const structuredData: any =
     translation.structuredData || translation.content || {};
@@ -66,7 +118,14 @@ export default async function WorkDetailPage({
     blocks.find((item: any) => item.type === "twoImagesContent") ||
     blocks[1] ||
     {};
-
+  const otherProjects = works
+  .filter((item) => item.slug !== params.slug)
+  .map((item) => ({
+    slug: item.slug,
+    title: item.title,
+    image: item.image,
+    type: item.type,
+  }));
   const project = {
     title: translation.title,
     intro: translation.excerpt || "",
@@ -93,11 +152,10 @@ export default async function WorkDetailPage({
     <div className="page-wrapper">
       <Header locale={locale} />
 
-      {/* <PageHeader title="" bgImage="/assets/images/backgrounds/PACSTONE-CONGTRINH-header.png" /> */}
       <Banner
         title="CÔNG TRÌNH"
         backgroundImg="/assets/images/backgrounds/contruct-banner.webp"
-        row={2}
+        row={3}
         col={1}
       />
 
@@ -105,25 +163,19 @@ export default async function WorkDetailPage({
         <div className="container">
           <div className="row gutter-y-60">
             <div className="col-lg-8 work-details__inner work-details__inner__image">
-
-
               <h2 className="work-details__title text-justify">
                 {project.title}
               </h2>
 
-               <p className="work-details__text text-justify">
+              <p className="work-details__text text-justify">
                 {project.content1}
               </p>
 
-              <img
-                src={project.mainImage}
-                alt={project.title}
-              />
+              <img src={project.mainImage} alt={project.title} />
 
-             
-                 <p className="work-details__text work-details__text--two text-justify">
-                  {project.content2}
-                </p>
+              <p className="work-details__text work-details__text--two text-justify">
+                {project.content2}
+              </p>
             </div>
 
             <div className="col-lg-4">
@@ -185,20 +237,15 @@ export default async function WorkDetailPage({
             </div>
 
             <div className="col-lg-4 mt-0 work-details__inner work-details__inner__image">
-
-              <div className="work-details__inner d-flex gap-4 flex-column ">
+              <div className="work-details__inner d-flex gap-4 flex-column">
                 {project.gallery.map((image) => (
-                  <div className="" key={image}>
-                    <img
-                      src={image}
-                      alt={project.title}
-                    />
+                  <div key={image}>
+                    <img src={image} alt={project.title} />
                   </div>
                 ))}
-
               </div>
-
             </div>
+
             <div className="col-lg-8 mt-0 d-flex flex-column pb-4">
               <h3 className="work-details__title text-justify">
                 {project.subTitle}
@@ -207,31 +254,26 @@ export default async function WorkDetailPage({
               <p className="work-details__text text-justify">
                 {project.content3}
               </p>
+
               <p className="work-details__text text-justify">
                 {project.content4}
               </p>
-              {/* Đẩy xuống cuối */}
-              <div className="product-details__socials mt-auto bottom-bar" style={{ paddingBottom: 38 }}>
-                <a href="#" className="floens-btn  btn-consult">CẦN TƯ VẤN - BÁO GIÁ</a>
 
-                <div className="pagination">
-                  <button className="pagination__arrow">
-                    <FaChevronLeft />
-                  </button>
-                  <span className="pagination__item active">01</span>
-                  <span className="pagination__item">02</span>
-                  <span className="pagination__item">03</span>
+              <div
+                className="product-details__socials mt-auto bottom-bar"
+                style={{ paddingBottom: 38 }}
+              >
+                <a href="#" className="floens-btn btn-consult">
+                  CẦN TƯ VẤN - BÁO GIÁ
+                </a>
 
-                  <button className="pagination__arrow">
-                    <FaChevronRight />
-                  </button>
-                </div>
-
+                <ProjectPagination />
 
                 <div className="details-social">
                   <h3 className="product-details__socials__title">
                     {locale === "vi" ? "Chia sẻ:" : "Share:"}
                   </h3>
+
                   <Link href="https://facebook.com" target="_blank">
                     <i className="icon-facebook">
                       <FaFacebookF />
@@ -239,10 +281,7 @@ export default async function WorkDetailPage({
                   </Link>
 
                   <Link href="https://zalo.com" target="_blank">
-                    <img
-                      src="/assets/images/Icon_of_Zalo.svg.webp"
-                      alt="Zalo"
-                    />
+                    <img src="/assets/images/Icon_of_Zalo.svg.webp" alt="Zalo" />
                   </Link>
 
                   <Link href="https://youtube.com" target="_blank">
@@ -262,8 +301,6 @@ export default async function WorkDetailPage({
           <div className="row gutter-y-60">
             <div className="col-lg-8">
               <div className="work-details__content">
-
-
                 <h3 className="work-details__title text-justify">
                   {project.title}
                 </h3>
@@ -271,12 +308,11 @@ export default async function WorkDetailPage({
                 <p className="work-details__text work-details__text--one text-justify">
                   {project.content1}
                 </p>
+
                 <div className="work-details__image work-details__inner work-details__inner__image">
-                  <img
-                    src={project.mainImage}
-                    alt={project.title}
-                  />
+                  <img src={project.mainImage} alt={project.title} />
                 </div>
+
                 <p className="work-details__text work-details__text--two text-justify">
                   {project.content2}
                 </p>
@@ -291,31 +327,23 @@ export default async function WorkDetailPage({
 
                 <div className="work-details__inner">
                   <div className="row gutter-y-30">
-                    <div className="col-lg-6 work-details__inner work-details__inner__image">
-                      <div className="col-lg-6" key={project.gallery[0]}>
-                        <img
-                          src={project.gallery[0]}
-                          alt={project.title}
-                        />
+                    {project.gallery[0] && (
+                      <div className="col-lg-6 work-details__inner work-details__inner__image">
+                        <img src={project.gallery[0]} alt={project.title} />
                       </div>
-                    </div>
+                    )}
 
-                    <p className="work-details__text work-details__text--four text-justify" >
+                    <p className="work-details__text work-details__text--four text-justify">
                       {project.content4}
                     </p>
 
-
-                    <div className="col-lg-6 my-0 work-details__inner work-details__inner__image">
-                      <div className="col-lg-6" key={project.gallery[1]}>
-                        <img
-                          src={project.gallery[1]}
-                          alt={project.title}
-                        />
+                    {project.gallery[1] && (
+                      <div className="col-lg-6 my-0 work-details__inner work-details__inner__image">
+                        <img src={project.gallery[1]} alt={project.title} />
                       </div>
-                    </div>
+                    )}
                   </div>
                 </div>
-
               </div>
             </div>
 
@@ -375,13 +403,17 @@ export default async function WorkDetailPage({
                   </div>
                 </div>
               </aside>
-              <div className=" mt-auto bottom-bar-phone" >
-                <a href="#" className="floens-btn  btn-consult">CẦN TƯ VẤN - BÁO GIÁ</a>
+
+              <div className="mt-auto bottom-bar-phone">
+                <a href="#" className="floens-btn btn-consult">
+                  CẦN TƯ VẤN - BÁO GIÁ
+                </a>
 
                 <div className="details-social">
                   <h3 className="product-details__socials__title">
                     {locale === "vi" ? "Chia sẻ:" : "Share:"}
                   </h3>
+
                   <Link href="https://facebook.com" target="_blank">
                     <i className="icon-facebook">
                       <FaFacebookF />
@@ -389,10 +421,7 @@ export default async function WorkDetailPage({
                   </Link>
 
                   <Link href="https://zalo.com" target="_blank">
-                    <img
-                      src="/assets/images/Icon_of_Zalo.svg.webp"
-                      alt="Zalo"
-                    />
+                    <img src="/assets/images/Icon_of_Zalo.svg.webp" alt="Zalo" />
                   </Link>
 
                   <Link href="https://youtube.com" target="_blank">
@@ -402,43 +431,25 @@ export default async function WorkDetailPage({
                   </Link>
                 </div>
 
-                <div className="pagination">
-                  <button className="pagination__arrow">
-                    <FaChevronLeft />
-                  </button>
-                  <span className="pagination__item active">01</span>
-                  <span className="pagination__item">02</span>
-                  <span className="pagination__item">03</span>
-
-                  <button className="pagination__arrow">
-                    <FaChevronRight />
-                  </button>
-                </div>
-
+                <ProjectPagination />
               </div>
-              <div className="product-details__socials mt-auto bottom-bar-tablet" style={{ paddingBottom: 38 }}>
-                <a href="#" className="floens-btn  btn-consult">CẦN TƯ VẤN - BÁO GIÁ</a>
 
-                <div className="pagination">
-                  <button className="pagination__arrow">
-                    <FaChevronLeft />
-                  </button>
-                  <span className="pagination__item active">01</span>
-                  <span className="pagination__item">02</span>
-                  <span className="pagination__item">03</span>
+              <div
+                className="product-details__socials mt-auto bottom-bar-tablet"
+                style={{ paddingBottom: 38 }}
+              >
+                <a href="#" className="floens-btn btn-consult">
+                  CẦN TƯ VẤN - BÁO GIÁ
+                </a>
 
-                  <button className="pagination__arrow">
-                    <FaChevronRight />
-                  </button>
-                </div>
-
+                <ProjectPagination />
 
                 <div className="details-social">
                   <h3 className="product-details__socials__title">
                     {locale === "vi" ? "Chia sẻ:" : "Share:"}
                   </h3>
-                  <div>
 
+                  <div>
                     <Link href="https://facebook.com" target="_blank">
                       <i className="icon-facebook">
                         <FaFacebookF />
@@ -464,6 +475,11 @@ export default async function WorkDetailPage({
           </div>
         </div>
       </section>
+        <OtherProjectsGallery
+          title={locale === "vi" ? "CÔNG TRÌNH KHÁC" : "OTHER PROJECTS"}
+          projects={otherProjects}
+          locale={locale}
+        />        
       <Footer />
     </div>
   );

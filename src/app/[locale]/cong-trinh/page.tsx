@@ -73,7 +73,7 @@ export default async function WorksPage({
        <Banner
         title="CÔNG TRÌNH"
         backgroundImg="/assets/images/backgrounds/contruct-banner.webp"
-        row={2}
+        row={3}
         col={1}
       />
       <section className="work-page work-page--grid section-space-bottom">

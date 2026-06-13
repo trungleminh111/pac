@@ -11519,7 +11519,7 @@ li:hover .sidebar__comments__icon::after {
   margin-bottom: 9px;
   letter-spacing: 1px;
   color: #CD3527;
-  height: 43px;
+  height: 50px;
 }
 
 @media (max-width: 1199px) {
@@ -11536,6 +11536,7 @@ li:hover .sidebar__comments__icon::after {
   color: inherit;
   background: linear-gradient(to right, currentcolor 0%, currentcolor 100%) 0px 95%/0px 1px no-repeat;
   transition: all 500ms ease;
+  height: 100%;
 }
 
 .product__item__title a:hover {

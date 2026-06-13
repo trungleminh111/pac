@@ -4,7 +4,7 @@ interface BannerProps {
   title: string;
   backgroundImg: string;
   row?: 1 | 2 | 3 | 4 | 5;
-  col?: 1 | 2 | 3 | 4 | 5 | 6 | 7;
+  col?: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 ;
   fontSize?: string;
   children?: React.ReactNode;
 }

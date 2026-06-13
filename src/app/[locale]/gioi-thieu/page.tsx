@@ -20,7 +20,7 @@ export default function AboutPage({
             <Banner
                 title="GIỚI THIỆU"
                 backgroundImg="/assets/images/backgrounds/intro-banner.webp"
-                row={2}
+                row={3}
                 col={1}
             />
             <About backgroundImage="/assets/images/backgrounds/8.png" />

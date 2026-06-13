@@ -27,7 +27,7 @@
 .content h1 {
   margin: 0;
   color: #fff;
-  font-size: clamp(28px, 5vw, 54px);
+  font-size: var(--banner-font-size, clamp(24px, 4vw, 48px));
   text-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
 }
 
@@ -39,73 +39,71 @@
   z-index: 3;
 }
 
-/* ========================= */
-/* ROWS (4 hàng) */
-/* ========================= */
-
-/* Top */
+/* ROWS */
 .row-1 .content {
   top: 10%;
 }
 
-/* Upper middle */
 .row-2 .content {
-  top: 35%;
+  top: 30%;
   transform: translateY(-50%);
 }
 
-/* Lower middle */
 .row-3 .content {
-  top: 65%;
+  top: 50%;
   transform: translateY(-50%);
 }
 
-/* Bottom */
 .row-4 .content {
+  top: 70%;
+  transform: translateY(-50%);
+}
+
+.row-5 .content {
   bottom: 40px;
 }
 
-/* ========================= */
-/* COLS (6 cột) */
-/* ========================= */
-
+/* COLS */
 .col-1 .content {
   left: 40px;
   text-align: left;
 }
 
 .col-2 .content {
-  left: 20%;
+  left: 18%;
   text-align: left;
 }
 
 .col-3 .content {
-  left: 40%;
+  left: 32%;
   text-align: left;
 }
 
 .col-4 .content {
-  right: 40%;
-  text-align: right;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
 }
 
 .col-5 .content {
-  right: 20%;
+  right: 32%;
   text-align: right;
 }
 
 .col-6 .content {
+  right: 18%;
+  text-align: right;
+}
+
+.col-7 .content {
   right: 40px;
   text-align: right;
 }
 
-/* ========================= */
 /* TABLET */
-/* ========================= */
-
 @media (max-width: 992px) {
   .content h1 {
-    font-size: clamp(24px, 4vw, 42px);
+    font-size: clamp(22px, 4vw, 42px);
   }
 
   .row-1 .content {
@@ -113,14 +111,18 @@
   }
 
   .row-2 .content {
-    top: 35%;
+    top: 30%;
   }
 
   .row-3 .content {
-    top: 65%;
+    top: 50%;
   }
 
   .row-4 .content {
+    top: 70%;
+  }
+
+  .row-5 .content {
     bottom: 32px;
   }
 
@@ -129,22 +131,27 @@
   }
 
   .col-2 .content {
-    left: 10%;
+    left: 12%;
   }
 
   .col-3 .content {
-    left: 20%;
+    left: 24%;
   }
 
   .col-4 .content {
-    right: 20%;
+    left: 50%;
+    transform: translateX(-50%);
   }
 
   .col-5 .content {
-    right: 10%;
+    right: 24%;
   }
 
   .col-6 .content {
+    right: 12%;
+  }
+
+  .col-7 .content {
     right: 32px;
   }
 
@@ -154,13 +161,11 @@
   }
 }
 
-/* ========================= */
 /* MOBILE */
-/* ========================= */
-
 @media (max-width: 768px) {
+  
   .content h1 {
-    font-size: clamp(18px, 5vw, 28px);
+     font-size: clamp(16px, 4vw, 24px) !important;
     line-height: 1.2;
     font-weight: 600;
   }
@@ -170,14 +175,18 @@
   }
 
   .row-2 .content {
-    top: 35%;
+    top: 30%;
   }
 
   .row-3 .content {
-    top: 65%;
+    top: 50%;
   }
 
   .row-4 .content {
+    top: 70%;
+  }
+
+  .row-5 .content {
     bottom: 12px;
   }
 
@@ -194,14 +203,19 @@
   }
 
   .col-4 .content {
-    right: 16%;
+    left: 50%;
+    transform: translateX(-50%);
   }
 
   .col-5 .content {
-    right: 8%;
+    right: 16%;
   }
 
   .col-6 .content {
+    right: 8%;
+  }
+
+  .col-7 .content {
     right: 12px;
   }
 

@@ -103,7 +103,7 @@ export default async function ProductsPage({
         title="SẢN PHẨM"
         backgroundImg="/assets/images/backgrounds/product-banner.webp"
         row={2}
-        col={2}
+        col={3}
       />
 
       <section className="product-page product-page--left section-space-bottom">

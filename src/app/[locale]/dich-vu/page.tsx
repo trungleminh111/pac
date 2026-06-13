@@ -46,7 +46,7 @@ export default async function ServicesPage({
         title="DỊCH VỤ"
         backgroundImg="/assets/images/backgrounds/service-banner.webp"
         row={3}
-        col={6}
+        col={7}
       />
       <section className="services-page section-space">
         <div className="container">

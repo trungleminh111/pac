@@ -190,7 +190,7 @@ export default async function NewsPage({
         title="TIN TỨC & SỰ KIỆN"
         backgroundImg="/assets/images/backgrounds/news-banner.webp"
         row={3}
-        col={3}
+        col={4}
         fontSize="clamp(22px, 3.5vw, 42px)"
       />
       <section className="blog-page blog-page--sidebar section-space">

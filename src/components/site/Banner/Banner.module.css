@@ -39,7 +39,10 @@
   z-index: 3;
 }
 
+/* ========================= */
 /* ROWS */
+/* ========================= */
+
 .row-1 .content {
   top: 10%;
 }
@@ -63,44 +66,60 @@
   bottom: 40px;
 }
 
-/* COLS */
+/* ========================= */
+/* COLS (8 cột) */
+/* ========================= */
+
 .col-1 .content {
-  left: 40px;
+  left: 5%;
   text-align: left;
 }
 
 .col-2 .content {
-  left: 18%;
-  text-align: left;
+  left: 17.86%;
+  transform: translateX(-50%);
+  text-align: center;
 }
 
 .col-3 .content {
-  left: 32%;
-  text-align: left;
+  left: 30.72%;
+  transform: translateX(-50%);
+  text-align: center;
 }
 
 .col-4 .content {
-  left: 50%;
+  left: 43.58%;
   transform: translateX(-50%);
   text-align: center;
 }
 
 .col-5 .content {
-  right: 32%;
-  text-align: right;
+  left: 56.44%;
+  transform: translateX(-50%);
+  text-align: center;
 }
 
 .col-6 .content {
-  right: 18%;
-  text-align: right;
+  left: 69.30%;
+  transform: translateX(-50%);
+  text-align: center;
 }
 
 .col-7 .content {
-  right: 40px;
+  left: 82.16%;
+  transform: translateX(-50%);
+  text-align: center;
+}
+
+.col-8 .content {
+  right: 5%;
   text-align: right;
 }
 
+/* ========================= */
 /* TABLET */
+/* ========================= */
+
 @media (max-width: 992px) {
   .content h1 {
     font-size: clamp(22px, 4vw, 42px);
@@ -126,48 +145,21 @@
     bottom: 32px;
   }
 
-  .col-1 .content {
-    left: 32px;
-  }
-
-  .col-2 .content {
-    left: 12%;
-  }
-
-  .col-3 .content {
-    left: 24%;
-  }
-
-  .col-4 .content {
-    left: 50%;
-    transform: translateX(-50%);
-  }
-
-  .col-5 .content {
-    right: 24%;
-  }
-
-  .col-6 .content {
-    right: 12%;
-  }
-
-  .col-7 .content {
-    right: 32px;
-  }
-
   .bannerBody {
     left: 32px;
     bottom: 32px;
   }
 }
 
+/* ========================= */
 /* MOBILE */
+/* ========================= */
+
 @media (max-width: 768px) {
-  
   .content h1 {
-     font-size: clamp(16px, 4vw, 24px) !important;
+    font-size: clamp(14px, 3vw, 20px) !important;
     line-height: 1.2;
-    font-weight: 600;
+    font-weight: 400;
   }
 
   .row-1 .content {
@@ -190,37 +182,42 @@
     bottom: 12px;
   }
 
-  .col-1 .content {
-    left: 12px;
-  }
-
-  .col-2 .content {
-    left: 8%;
-  }
-
-  .col-3 .content {
-    left: 16%;
-  }
-
-  .col-4 .content {
-    left: 50%;
-    transform: translateX(-50%);
-  }
-
-  .col-5 .content {
-    right: 16%;
-  }
-
-  .col-6 .content {
-    right: 8%;
-  }
-
-  .col-7 .content {
-    right: 12px;
-  }
-
   .bannerBody {
     left: 10px;
     bottom: 10px;
+  }
+
+  /* Giữ nguyên tỷ lệ cột trên mobile */
+
+  .col-1 .content {
+    left: 5%;
+  }
+
+  .col-2 .content {
+    left: 17.86%;
+  }
+
+  .col-3 .content {
+    left: 30.72%;
+  }
+
+  .col-4 .content {
+    left: 43.58%;
+  }
+
+  .col-5 .content {
+    left: 56.44%;
+  }
+
+  .col-6 .content {
+    left: 69.30%;
+  }
+
+  .col-7 .content {
+    left: 82.16%;
+  }
+
+  .col-8 .content {
+    right: 5%;
   }
 }

@@ -212,7 +212,7 @@
   position: absolute;
   left: 0;
   bottom: 118px;
-  max-width: 250px;
+  min-width: 250px;
 
   background: #fff7f2;
   color: #000;
@@ -404,87 +404,73 @@
 }
 
 @media (max-width: 767px) {
-  .contact-layout {
-    grid-template-columns: 1fr;
-    gap: 16px;
-  }
-
-  .contact-right {
-    gap: 12px;
-    padding: 0 10px;
-    padding-bottom: 20px;
-  }
-
-  .contact-img-list,
-  .doc-a4-grid {
-    gap: 12px;
-  }
-
-  .download-content {
-    font-size: 12px;
-    padding: 0 8px;
-  }
-
   .page-header .contact-call-wrapper {
-    left: 12px;
-    bottom: -60px;
-    width: 200px;
-    height: 50px;
+    position: absolute;
+    left: 10px;
+    bottom: -28px;
+
+    width: 150px;
+    height: 42px;
+
     transform: none;
   }
 
   .contact-call {
+    position: relative;
     left: 0;
     bottom: 0;
-    width: 200px;
-    height: 50px;
+
+    width: 150px;
+    height: 42px;
   }
 
   .contact-call__icon {
-    width: 55px;
-    height: 55px;
-    font-size: 24px;
+    width: 42px;
+    height: 42px;
+    font-size: 18px;
   }
 
   .contact-call__icon::before {
-    inset: 8px;
-    border-width: 2px;
+    inset: 6px;
+    border-width: 1px;
   }
 
   .contact-call__content {
-    left: 35px;
-    width: 215px;
-    height: 60px;
+    left: 28px;
+    width: 150px;
+    height: 42px;
 
     -webkit-mask: radial-gradient(
-      circle 38px at 0 35px,
-      transparent 36px,
-      #000 37px
+      circle 28px at 0 25px,
+      transparent 26px,
+      #000 27px
     );
     mask: radial-gradient(
-      circle 38px at 0 35px,
-      transparent 36px,
-      #000 37px
+      circle 28px at 0 25px,
+      transparent 26px,
+      #000 27px
     );
   }
 
   .contact-call__label {
-    width: 180px;
-    height: 35px;
-    padding: 0 12px 0 45px;
-    font-size: 14px;
-    letter-spacing: 1.5px;
+    width: 130px;
+    height: 21px;
+    padding: 0 8px 0 32px;
+
+    font-size: 10px;
+    letter-spacing: 0.5px;
   }
 
   .contact-call__phone-wrapper {
-    width: 215px;
-    height: 35px;
+    width: 150px;
+    height: 21px;
   }
 
   .contact-call__phone {
-    padding: 0 10px 0 45px;
-    font-size: 15px;
-    letter-spacing: 1px;
+    padding: 0 8px 0 32px;
+
+    font-size: 11px;
+    letter-spacing: 0;
   }
 
   .contact-call__subtitle {

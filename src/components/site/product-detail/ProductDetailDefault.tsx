@@ -92,7 +92,7 @@ export function ProductDetailDefault({
         title="SẢN PHẨM"
         backgroundImg="/assets/images/backgrounds/product-banner.webp"
         row={2}
-        col={2}
+        col={3}
       />
       <section className="product-details section-space">
         <div className="container">

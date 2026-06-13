@@ -25,7 +25,7 @@ function getTranslationName<
 function getTranslationSlug<
   T extends {
     locale: Locale;
-    slug: string;
+    slug: string | null;
   },
 >(translations: T[], locale: Locale = Locale.vi, fallback = "") {
   return (

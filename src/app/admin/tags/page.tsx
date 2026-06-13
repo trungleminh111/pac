@@ -1,7 +1,7 @@
 import Link from "next/link";
-import { getAdminProjects } from "./project-query";
-import { ProjectsTable } from "./projects-table";
-import { ProjectToast } from "./project-toast";
+import { getAdminTags } from "./tag-query";
+import { TagsTable } from "./tags-table";
+import { TagToast } from "./tag-toast";
 
 type Props = {
   searchParams?: {
@@ -10,72 +10,65 @@ type Props = {
   };
 };
 
-export default async function AdminProjectsPage({ searchParams }: Props) {
-  const projects = await getAdminProjects();
+export default async function AdminTagsPage({ searchParams }: Props) {
+  const tags = await getAdminTags();
 
-  const total = projects.length;
-  const publishedCount = projects.filter(
-    (item) => item.status === "PUBLISHED"
-  ).length;
-  const draftCount = projects.filter((item) => item.status === "DRAFT").length;
-  const archivedCount = projects.filter(
-    (item) => item.status === "ARCHIVED"
-  ).length;
+  const total = tags.length;
+  const activeCount = tags.filter((item) => item.isActive).length;
+  const usedCount = tags.filter((item) => item.postsCount > 0).length;
+  const hiddenCount = total - activeCount;
 
   return (
     <div className="space-y-6">
-      <ProjectToast
-        success={searchParams?.success}
-        error={searchParams?.error}
-      />
+      <TagToast success={searchParams?.success} error={searchParams?.error} />
 
       <div className="flex flex-col justify-between gap-4 md:flex-row md:items-center">
         <div>
           <h1 className="text-2xl font-bold text-slate-900">
-            Quản lý công trình
+            Quản lý tag
           </h1>
           <p className="mt-1 text-sm text-slate-500">
-            Quản lý dự án/công trình, layout cố định và SEO song ngữ.
+            Quản lý tag cho bài viết/tin tức, hỗ trợ Tiếng Việt và English.
           </p>
         </div>
 
         <Link
-          href="/admin/projects/create"
+          href="/admin/tags/create"
           className="inline-flex rounded-lg bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-700"
         >
-          Thêm công trình
+          Thêm tag
         </Link>
       </div>
 
       <div className="grid gap-4 md:grid-cols-4">
         <div className="rounded-2xl border border-slate-200 bg-white p-5">
-          <div className="text-sm text-slate-500">Tổng công trình</div>
+          <div className="text-sm text-slate-500">Tổng tag</div>
           <div className="mt-2 text-2xl font-bold text-slate-900">{total}</div>
         </div>
 
         <div className="rounded-2xl border border-slate-200 bg-white p-5">
-          <div className="text-sm text-slate-500">Đã xuất bản</div>
+          <div className="text-sm text-slate-500">Đang hiện</div>
           <div className="mt-2 text-2xl font-bold text-slate-900">
-            {publishedCount}
+            {activeCount}
           </div>
         </div>
 
         <div className="rounded-2xl border border-slate-200 bg-white p-5">
-          <div className="text-sm text-slate-500">Bản nháp</div>
+          <div className="text-sm text-slate-500">Đang dùng</div>
           <div className="mt-2 text-2xl font-bold text-slate-900">
-            {draftCount}
+            {usedCount}
           </div>
         </div>
 
         <div className="rounded-2xl border border-slate-200 bg-white p-5">
-          <div className="text-sm text-slate-500">Lưu trữ</div>
+          <div className="text-sm text-slate-500">Tạm ẩn</div>
           <div className="mt-2 text-2xl font-bold text-slate-900">
-            {archivedCount}
+            {hiddenCount}
           </div>
         </div>
       </div>
 
-      <ProjectsTable projects={projects} />
+      <TagsTable tags={tags} />
     </div>
   );
 }

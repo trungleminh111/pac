@@ -7,6 +7,35 @@ type GetProjectBySlugParams = {
   includeDraft?: boolean;
 };
 
+type CategoryTranslationItem = {
+  locale: Locale;
+  name: string;
+};
+
+function getCategoryName(
+  translations: CategoryTranslationItem[],
+  locale: Locale = Locale.vi
+) {
+  return (
+    translations.find((item) => item.locale === locale)?.name ||
+    translations.find((item) => item.locale === Locale.vi)?.name ||
+    translations[0]?.name ||
+    ""
+  );
+}
+
+function isAllCategory(translations: CategoryTranslationItem[]) {
+  const viName =
+    translations.find((item) => item.locale === Locale.vi)?.name || "";
+  const enName =
+    translations.find((item) => item.locale === Locale.en)?.name || "";
+
+  return (
+    viName.trim().toLowerCase() === "tất cả" ||
+    enName.trim().toLowerCase() === "all"
+  );
+}
+
 export async function getProjectBySlug({
   slug,
   locale = Locale.vi,
@@ -23,7 +52,11 @@ export async function getProjectBySlug({
       },
     },
     include: {
-      category: true,
+      category: {
+        include: {
+          translations: true,
+        },
+      },
       translations: {
         where: { locale },
         take: 1,
@@ -38,7 +71,11 @@ export async function getPublishedProjects(locale: Locale = Locale.vi) {
       status: PublishStatus.PUBLISHED,
     },
     include: {
-      category: true,
+      category: {
+        include: {
+          translations: true,
+        },
+      },
       translations: {
         where: { locale },
         take: 1,
@@ -54,27 +91,30 @@ export async function getProjectFilters(locale: Locale = Locale.vi) {
   const categories = await prisma.category.findMany({
     where: {
       type: ContentType.PROJECT,
-      NOT: [
-        { slug: "all" },
-        { nameVi: "Tất cả" },
-        { nameEn: "All" },
-      ],
+      isActive: true,
+      slug: {
+        not: "all",
+      },
     },
     orderBy: {
       sortOrder: "asc",
     },
+    include: {
+      translations: true,
+    },
   });
+
+  const cleanCategories = categories.filter(
+    (category) => !isAllCategory(category.translations)
+  );
 
   return [
     {
       label: locale === Locale.en ? "All" : "Tất cả",
       slug: "all",
     },
-    ...categories.map((category) => ({
-      label:
-        locale === Locale.en && category.nameEn
-          ? category.nameEn
-          : category.nameVi,
+    ...cleanCategories.map((category) => ({
+      label: getCategoryName(category.translations, locale) || category.slug,
       slug: category.slug,
     })),
   ];
@@ -109,9 +149,6 @@ export async function getProjectListingData(locale: Locale = Locale.vi) {
     works,
   };
 }
-
-
-
 
 export async function getHomeProjectSlides(locale: Locale = Locale.vi) {
   const projects = await prisma.project.findMany({

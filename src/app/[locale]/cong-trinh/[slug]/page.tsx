@@ -9,6 +9,30 @@ import { Locale } from "@prisma/client";
 import { getProjectBySlug } from "@/server/project/project.query";
 import Banner from "@/components/site/Banner/Banner";
 
+function getCategoryName(
+  category:
+    | {
+        slug?: string | null;
+        translations?: {
+          locale: string;
+          name: string;
+        }[];
+      }
+    | null
+    | undefined,
+  locale: "vi" | "en"
+) {
+  const translations = category?.translations || [];
+
+  return (
+    translations.find((item) => item.locale === locale)?.name ||
+    translations.find((item) => item.locale === "vi")?.name ||
+    translations[0]?.name ||
+    category?.slug ||
+    ""
+  );
+}
+
 export default async function WorkDetailPage({
   params,
 }: {
@@ -55,10 +79,7 @@ export default async function WorkDetailPage({
     content4: block2.content2 || "",
     info: {
       customer: projectData.clientName || "",
-      category:
-        locale === "en" && projectData.category?.nameEn
-          ? projectData.category.nameEn
-          : projectData.category?.nameVi || "",
+      category: getCategoryName(projectData.category, locale),
       startDate: projectData.startedAt
         ? projectData.startedAt.toLocaleDateString("vi-VN")
         : "",

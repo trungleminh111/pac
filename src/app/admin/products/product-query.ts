@@ -25,7 +25,7 @@ function getProductTranslation<
     title: string;
     slug: string;
     excerpt: string | null;
-    content?: string | null;
+    content: unknown;
     seoTitle: string | null;
     seoDescription: string | null;
   },
@@ -38,6 +38,12 @@ function getProductTranslation<
 function moneyToString(value: unknown) {
   if (value === null || value === undefined) return "";
   return String(value);
+}
+
+function normalizeContent(value: unknown) {
+  if (value === null || value === undefined) return "";
+
+  return value as ProductEditData["translation"]["content"];
 }
 
 function mapProductAttributeValues(
@@ -337,7 +343,7 @@ export async function getAdminProductById(
       title: translation?.title || "",
       slug: translation?.slug || "",
       excerpt: translation?.excerpt || "",
-      content: translation?.content || "",
+      content: normalizeContent(translation?.content),
       seoTitle: translation?.seoTitle || "",
       seoDescription: translation?.seoDescription || "",
     },

@@ -532,12 +532,6 @@ export function AttributeForm({ locale, mode, initialData }: Props) {
               }
               required
             />
-            <p className="mt-1 text-xs text-slate-500">
-              Code dùng trong URL filter, ví dụ{" "}
-              <code className="rounded bg-slate-100 px-1">
-                ?color=white,gray
-              </code>
-            </p>
           </div>
 
           <div>
@@ -582,32 +576,12 @@ export function AttributeForm({ locale, mode, initialData }: Props) {
             />
           </div>
 
-          <div>
-            <label className={labelClass}>Thứ tự hiển thị</label>
-            <input
-              name="sortOrder"
-              type="number"
-              defaultValue={initialData?.sortOrder ?? 0}
-              className={inputClass}
-            />
-          </div>
-
           <div className="flex flex-wrap items-center gap-6 pt-6">
-            <label className="inline-flex items-center gap-2 text-sm font-medium text-slate-700">
-              <input
-                name="isFilter"
-                type="checkbox"
-                defaultChecked={initialData?.isFilter ?? true}
-                className="h-4 w-4 rounded border-slate-300"
-              />
-              Dùng làm bộ lọc
-            </label>
-
             <label className="inline-flex items-center gap-2 text-sm font-medium text-slate-700">
               <input
                 name="isVariantOption"
                 type="checkbox"
-                defaultChecked={initialData?.isVariantOption ?? false}
+                defaultChecked={initialData?.isVariantOption ?? true}
                 className="h-4 w-4 rounded border-slate-300"
               />
               Dùng làm biến thể

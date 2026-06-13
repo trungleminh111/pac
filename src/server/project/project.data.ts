@@ -1,5 +1,112 @@
 import { prisma } from "@/lib/prisma";
+import { Locale as PrismaLocale } from "@prisma/client";
 import type { Locale, ProjectCardItem, ProjectDetailItem } from "./project.type";
+
+const DEFAULT_PROJECT_IMAGE = "/assets/images/works/project-13.png";
+
+type CategoryWithTranslations = {
+  slug: string;
+  translations: {
+    locale: PrismaLocale;
+    name: string;
+    slug: string | null;
+  }[];
+} | null;
+
+function toPrismaLocale(locale: Locale): PrismaLocale {
+  return locale === "en" ? PrismaLocale.en : PrismaLocale.vi;
+}
+
+function getFallbackLocales(locale: Locale): PrismaLocale[] {
+  const currentLocale = toPrismaLocale(locale);
+
+  return Array.from(new Set([currentLocale, PrismaLocale.vi]));
+}
+
+function getCategoryName(locale: Locale, category?: CategoryWithTranslations) {
+  if (!category) return "";
+
+  const prismaLocale = toPrismaLocale(locale);
+
+  return (
+    category.translations.find((item) => item.locale === prismaLocale)?.name ||
+    category.translations.find((item) => item.locale === PrismaLocale.vi)
+      ?.name ||
+    category.translations[0]?.name ||
+    category.slug ||
+    ""
+  );
+}
+
+function projectCardSelect(locale: Locale) {
+  return {
+    id: true,
+    thumbnail: true,
+    clientName: true,
+    projectType: true,
+    completedAt: true,
+    category: {
+      select: {
+        slug: true,
+        translations: {
+          where: {
+            locale: {
+              in: getFallbackLocales(locale),
+            },
+          },
+          select: {
+            locale: true,
+            name: true,
+            slug: true,
+          },
+        },
+      },
+    },
+    translations: {
+      where: {
+        locale: toPrismaLocale(locale),
+      },
+      select: {
+        title: true,
+        slug: true,
+        excerpt: true,
+      },
+    },
+  };
+}
+
+function mapProjectCard(
+  locale: Locale,
+  project: {
+    id: string;
+    thumbnail: string | null;
+    clientName: string | null;
+    projectType: string | null;
+    completedAt: Date | null;
+    category: CategoryWithTranslations;
+    translations: {
+      title: string;
+      slug: string;
+      excerpt: string | null;
+    }[];
+  }
+): ProjectCardItem | null {
+  const translation = project.translations[0];
+
+  if (!translation) return null;
+
+  return {
+    id: project.id,
+    title: translation.title,
+    slug: translation.slug,
+    excerpt: translation.excerpt || "",
+    image: project.thumbnail || DEFAULT_PROJECT_IMAGE,
+    category: getCategoryName(locale, project.category),
+    clientName: project.clientName || "",
+    projectType: project.projectType || "",
+    completedAt: project.completedAt,
+  };
+}
 
 export async function getProjectsPage(
   locale: Locale = "vi"
@@ -9,59 +116,18 @@ export async function getProjectsPage(
       status: "PUBLISHED",
       translations: {
         some: {
-          locale,
+          locale: toPrismaLocale(locale),
         },
       },
     },
     orderBy: {
       publishedAt: "desc",
     },
-    select: {
-      id: true,
-      thumbnail: true,
-      clientName: true,
-      projectType: true,
-      completedAt: true,
-      category: {
-        select: {
-          nameVi: true,
-          nameEn: true,
-        },
-      },
-      translations: {
-        where: {
-          locale,
-        },
-        select: {
-          title: true,
-          slug: true,
-          excerpt: true,
-        },
-      },
-    },
+    select: projectCardSelect(locale),
   });
 
   return projects
-    .map((project) => {
-      const translation = project.translations[0];
-
-      if (!translation) return null;
-
-      return {
-        id: project.id,
-        title: translation.title,
-        slug: translation.slug,
-        excerpt: translation.excerpt || "",
-        image: project.thumbnail || "/assets/images/works/project-13.png",
-        category:
-          locale === "en"
-            ? project.category?.nameEn || project.category?.nameVi || ""
-            : project.category?.nameVi || "",
-        clientName: project.clientName || "",
-        projectType: project.projectType || "",
-        completedAt: project.completedAt,
-      };
-    })
+    .map((project) => mapProjectCard(locale, project))
     .filter((project): project is ProjectCardItem => project !== null);
 }
 
@@ -73,7 +139,7 @@ export async function getHomeProjects(
       status: "PUBLISHED",
       translations: {
         some: {
-          locale,
+          locale: toPrismaLocale(locale),
         },
       },
     },
@@ -81,52 +147,11 @@ export async function getHomeProjects(
       publishedAt: "desc",
     },
     take: 6,
-    select: {
-      id: true,
-      thumbnail: true,
-      clientName: true,
-      projectType: true,
-      completedAt: true,
-      category: {
-        select: {
-          nameVi: true,
-          nameEn: true,
-        },
-      },
-      translations: {
-        where: {
-          locale,
-        },
-        select: {
-          title: true,
-          slug: true,
-          excerpt: true,
-        },
-      },
-    },
+    select: projectCardSelect(locale),
   });
 
   return projects
-    .map((project) => {
-      const translation = project.translations[0];
-
-      if (!translation) return null;
-
-      return {
-        id: project.id,
-        title: translation.title,
-        slug: translation.slug,
-        excerpt: translation.excerpt || "",
-        image: project.thumbnail || "/assets/images/works/project-13.png",
-        category:
-          locale === "en"
-            ? project.category?.nameEn || project.category?.nameVi || ""
-            : project.category?.nameVi || "",
-        clientName: project.clientName || "",
-        projectType: project.projectType || "",
-        completedAt: project.completedAt,
-      };
-    })
+    .map((project) => mapProjectCard(locale, project))
     .filter((project): project is ProjectCardItem => project !== null);
 }
 
@@ -139,7 +164,7 @@ export async function getProjectBySlug(
       status: "PUBLISHED",
       translations: {
         some: {
-          locale,
+          locale: toPrismaLocale(locale),
           slug,
         },
       },
@@ -159,13 +184,24 @@ export async function getProjectBySlug(
       publishedAt: true,
       category: {
         select: {
-          nameVi: true,
-          nameEn: true,
+          slug: true,
+          translations: {
+            where: {
+              locale: {
+                in: getFallbackLocales(locale),
+              },
+            },
+            select: {
+              locale: true,
+              name: true,
+              slug: true,
+            },
+          },
         },
       },
       translations: {
         where: {
-          locale,
+          locale: toPrismaLocale(locale),
           slug,
         },
         select: {
@@ -207,9 +243,6 @@ export async function getProjectBySlug(
     seoTitle: translation.seoTitle || "",
     seoDescription: translation.seoDescription || "",
     structuredData: translation.structuredData,
-    categoryName:
-      locale === "en"
-        ? project.category?.nameEn || project.category?.nameVi || ""
-        : project.category?.nameVi || "",
+    categoryName: getCategoryName(locale, project.category),
   };
 }

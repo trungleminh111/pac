@@ -5,10 +5,18 @@ import { Footer } from "@/components/site/Footer";
 import { PageHeader } from "@/components/site/PageHeader";
 import { FaFacebookF, FaYoutube } from "react-icons/fa";
 import {
+  getAllPostTags,
   getFeaturedPosts,
   getPostBySlug,
   getPostsPage,
 } from "@/server/post/post.data";
+
+type NewsTagItem = {
+  id: string;
+  name: string;
+  slug: string;
+  postCount?: number;
+};
 
 function newsBaseHref(locale: "vi" | "en") {
   return locale === "vi" ? "/vi/tin-tuc" : "/en/news";
@@ -18,11 +26,19 @@ function newsDetailHref(locale: "vi" | "en", slug: string) {
   return `${newsBaseHref(locale)}/${slug}`;
 }
 
+function getAllLabel(locale: "vi" | "en") {
+  return locale === "vi" ? "Tất cả" : "All";
+}
+
+function isAllLabel(value: string) {
+  return value === "Tất cả" || value === "All";
+}
+
 function pageHref(locale: "vi" | "en", category?: string, keyword?: string) {
   const base = newsBaseHref(locale);
   const params = new URLSearchParams();
 
-  if (category && category !== "Tất cả") {
+  if (category && !isAllLabel(category)) {
     params.set("category", category);
   }
 
@@ -121,15 +137,17 @@ export default async function NewsDetailPage({
   };
 }) {
   const locale = params.locale === "en" ? "en" : "vi";
-  const slug = params.slug;
+  const slug = decodeURIComponent(params.slug);
 
-  const activeCategory = searchParams?.category || "Tất cả";
+  const allLabel = getAllLabel(locale);
+  const activeCategory = searchParams?.category || allLabel;
   const keyword = searchParams?.keyword || "";
 
-  const [post, latestPosts, posts] = await Promise.all([
+  const [post, latestPosts, posts, allTags] = await Promise.all([
     getPostBySlug(locale, slug),
     getFeaturedPosts(locale),
     getPostsPage(locale),
+    getAllPostTags(locale),
   ]);
 
   if (!post) {
@@ -139,7 +157,7 @@ export default async function NewsDetailPage({
   const date = formatPostDate(post.publishedAt);
 
   const categories = [
-    "Tất cả",
+    allLabel,
     ...Array.from(new Set(posts.map((post) => post.category).filter(Boolean))),
   ];
 
@@ -147,10 +165,15 @@ export default async function NewsDetailPage({
 
   categories.forEach((category) => {
     categoryCounts[category] =
-      category === "Tất cả"
+      category === allLabel
         ? posts.length
         : posts.filter((post) => post.category === category).length;
   });
+
+  const postTags =
+    "tags" in post && Array.isArray(post.tags)
+      ? (post.tags as NewsTagItem[])
+      : [];
 
   return (
     <div className="page-wrapper">
@@ -176,7 +199,7 @@ export default async function NewsDetailPage({
                       action={newsBaseHref(locale)}
                       className="sidebar__search"
                     >
-                      {activeCategory !== "Tất cả" && (
+                      {!isAllLabel(activeCategory) && (
                         <input
                           type="hidden"
                           name="category"
@@ -255,24 +278,14 @@ export default async function NewsDetailPage({
                     <h4 className="sidebar__title">Tags</h4>
 
                     <div className="sidebar__tags">
-                      <Link href={pageHref(locale, undefined, "Đá marble")}>
-                        Đá marble
-                      </Link>
-                      <Link href={pageHref(locale, undefined, "Đá phong thủy")}>
-                        Đá phong thủy
-                      </Link>
-                      <Link
-                        href={pageHref(
-                          locale,
-                          undefined,
-                          "Thiết kế hoa văn đá"
-                        )}
-                      >
-                        Thiết kế hoa văn đá
-                      </Link>
-                      <Link href={pageHref(locale, undefined, "Thị trường đá")}>
-                        Thị trường đá
-                      </Link>
+                      {allTags.map((tag) => (
+                        <Link
+                          key={tag.id}
+                          href={pageHref(locale, undefined, tag.name)}
+                        >
+                          {tag.name}
+                        </Link>
+                      ))}
                     </div>
                   </div>
                 </aside>
@@ -324,9 +337,14 @@ export default async function NewsDetailPage({
                         </Link>
                       )}
 
-                      <Link href={pageHref(locale, undefined, "Đá marble")}>
-                        Đá marble
-                      </Link>
+                      {postTags.map((tag) => (
+                        <Link
+                          key={tag.id}
+                          href={pageHref(locale, undefined, tag.name)}
+                        >
+                          {tag.name}
+                        </Link>
+                      ))}
                     </div>
                   </div>
 
@@ -379,4 +397,4 @@ export default async function NewsDetailPage({
       <Footer />
     </div>
   );
-}
+} 

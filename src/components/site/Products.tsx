@@ -109,7 +109,7 @@ export async function Products({ locale }: { locale: Locale }) {
                         <div className="product__item__price">
                           {product.price || (locale === "vi" ? "Liên hệ" : "Contact")}
                         </div>
-                        <div className="mt-5 text-center product-action-combo">
+                        <div className="text-center product-action-combo">
                           <Link href={contactHref(locale)} className="floens-btn">
                             <span>{locale === "vi" ? "Liên hệ" : "Contact"}</span>
                           </Link>
@@ -163,7 +163,7 @@ export async function Products({ locale }: { locale: Locale }) {
                         <div className="product__item__price">
                           {product.price || (locale === "vi" ? "Liên hệ" : "Contact")}
                         </div>
-                        <div className="mt-5 text-center product-action-combo">
+                        <div className="text-center product-action-combo">
                           <Link href={contactHref(locale)} className="floens-btn">
                             <span>{locale === "vi" ? "Liên hệ" : "Contact"}</span>
                           </Link>

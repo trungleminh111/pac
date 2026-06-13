@@ -2,8 +2,24 @@ import Link from "next/link";
 import { SiteHeader as Header } from "@/components/site/SiteHeader";
 import { Footer } from "@/components/site/Footer";
 import { PageHeader } from "@/components/site/PageHeader";
-import { getFeaturedPosts, getPostsPage } from "@/server/post/post.data";
+import {
+  getAllPostTags,
+  getFeaturedPosts,
+  getPostsPage,
+} from "@/server/post/post.data";
 import Banner from "@/components/site/Banner/Banner";
+
+function newsBaseHref(locale: "vi" | "en") {
+  return locale === "vi" ? "/vi/tin-tuc" : "/en/news";
+}
+
+function getAllLabel(locale: "vi" | "en") {
+  return locale === "vi" ? "Tất cả" : "All";
+}
+
+function isAllLabel(value: string) {
+  return value === "Tất cả" || value === "All";
+}
 
 function pageHref(
   locale: "vi" | "en",
@@ -11,10 +27,10 @@ function pageHref(
   keyword?: string,
   page?: number
 ) {
-  const base = locale === "vi" ? "/vi/tin-tuc" : "/en/news";
+  const base = newsBaseHref(locale);
   const params = new URLSearchParams();
 
-  if (category && category !== "Tất cả") {
+  if (category && !isAllLabel(category)) {
     params.set("category", category);
   }
 
@@ -54,22 +70,26 @@ function formatPostDate(date: Date | null) {
   };
 }
 
-function getCategories(posts: Awaited<ReturnType<typeof getPostsPage>>) {
+function getCategories(
+  posts: Awaited<ReturnType<typeof getPostsPage>>,
+  allLabel: string
+) {
   return [
-    "Tất cả",
+    allLabel,
     ...Array.from(new Set(posts.map((post) => post.category).filter(Boolean))),
   ];
 }
 
 function getCategoryCounts(
   posts: Awaited<ReturnType<typeof getPostsPage>>,
-  categories: string[]
+  categories: string[],
+  allLabel: string
 ) {
   const categoryCounts: Record<string, number> = {};
 
   categories.forEach((category) => {
     categoryCounts[category] =
-      category === "Tất cả"
+      category === allLabel
         ? posts.length
         : posts.filter((post) => post.category === category).length;
   });
@@ -77,21 +97,44 @@ function getCategoryCounts(
   return categoryCounts;
 }
 
+function getPostTags(post: Awaited<ReturnType<typeof getPostsPage>>[number]) {
+  if (!("tags" in post)) return [];
+
+  const tags = post.tags;
+
+  if (!Array.isArray(tags)) return [];
+
+  return tags
+    .map((tag) => {
+      if (typeof tag === "string") return tag;
+      if (tag && typeof tag === "object" && "name" in tag) {
+        return String(tag.name || "");
+      }
+
+      return "";
+    })
+    .filter(Boolean);
+}
+
 function filterPosts(
   posts: Awaited<ReturnType<typeof getPostsPage>>,
   activeCategory: string,
   keyword: string
 ) {
-  const search = keyword.toLowerCase();
+  const search = keyword.trim().toLowerCase();
 
   return posts.filter((post) => {
     const matchCategory =
-      activeCategory === "Tất cả" || post.category === activeCategory;
+      isAllLabel(activeCategory) || post.category === activeCategory;
+
+    const postTags = getPostTags(post);
 
     const matchKeyword =
+      !search ||
       post.title.toLowerCase().includes(search) ||
       post.excerpt.toLowerCase().includes(search) ||
-      post.category.toLowerCase().includes(search);
+      post.category.toLowerCase().includes(search) ||
+      postTags.some((tag) => tag.toLowerCase().includes(search));
 
     return matchCategory && matchKeyword;
   });
@@ -112,18 +155,20 @@ export default async function NewsPage({
 }) {
   const locale = params.locale === "en" ? "en" : "vi";
 
-  const activeCategory = searchParams?.category || "Tất cả";
+  const allLabel = getAllLabel(locale);
+  const activeCategory = searchParams?.category || allLabel;
   const keyword = searchParams?.keyword || "";
   const currentPage = Number(searchParams?.page || 1);
   const itemsPerPage = 4;
 
-  const [latestPosts, posts] = await Promise.all([
+  const [latestPosts, posts, allTags] = await Promise.all([
     getFeaturedPosts(locale),
     getPostsPage(locale),
+    getAllPostTags(locale),
   ]);
 
-  const categories = getCategories(posts);
-  const categoryCounts = getCategoryCounts(posts, categories);
+  const categories = getCategories(posts, allLabel);
+  const categoryCounts = getCategoryCounts(posts, categories, allLabel);
   const filteredPosts = filterPosts(posts, activeCategory, keyword);
 
   const totalPages = Math.ceil(filteredPosts.length / itemsPerPage);
@@ -159,10 +204,10 @@ export default async function NewsPage({
                     </h4>
 
                     <form
-                      action={`/${locale}/tin-tuc`}
+                      action={newsBaseHref(locale)}
                       className="sidebar__search"
                     >
-                      {activeCategory !== "Tất cả" && (
+                      {!isAllLabel(activeCategory) && (
                         <input
                           type="hidden"
                           name="category"
@@ -238,24 +283,14 @@ export default async function NewsPage({
                     <h4 className="sidebar__title">Tags</h4>
 
                     <div className="sidebar__tags">
-                      <Link href={pageHref(locale, undefined, "Đá marble")}>
-                        Đá marble
-                      </Link>
-                      <Link href={pageHref(locale, undefined, "Đá phong thủy")}>
-                        Đá phong thủy
-                      </Link>
-                      <Link
-                        href={pageHref(
-                          locale,
-                          undefined,
-                          "Thiết kế hoa văn đá"
-                        )}
-                      >
-                        Thiết kế hoa văn đá
-                      </Link>
-                      <Link href={pageHref(locale, undefined, "Thị trường đá")}>
-                        Thị trường đá
-                      </Link>
+                      {allTags.map((tag) => (
+                        <Link
+                          key={tag.id}
+                          href={pageHref(locale, undefined, tag.name)}
+                        >
+                          {tag.name}
+                        </Link>
+                      ))}
                     </div>
                   </div>
                 </aside>

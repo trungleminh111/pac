@@ -66,10 +66,7 @@ export function AttributesTable({ locale, attributes }: Props) {
               <th className="px-5 py-3">Tên</th>
               <th className="px-5 py-3">Code</th>
               <th className="px-5 py-3">Type</th>
-              <th className="px-5 py-3">Filter</th>
               <th className="px-5 py-3">Variant</th>
-              <th className="px-5 py-3">Values</th>
-              <th className="px-5 py-3">Sort</th>
               <th className="px-5 py-3 text-right">Hành động</th>
             </tr>
           </thead>
@@ -97,29 +94,12 @@ export function AttributesTable({ locale, attributes }: Props) {
                 </td>
 
                 <td className="px-5 py-4">
-                  {attribute.isFilter ? (
-                    <Badge tone="green">Filter</Badge>
-                  ) : (
-                    <Badge tone="gray">Off</Badge>
-                  )}
-                </td>
-
-                <td className="px-5 py-4">
                   {attribute.isVariantOption ? (
                     <Badge tone="green">Variant</Badge>
                   ) : (
                     <Badge tone="gray">Off</Badge>
                   )}
                 </td>
-
-                <td className="px-5 py-4 text-slate-700">
-                  {attribute.valuesCount}
-                </td>
-
-                <td className="px-5 py-4 text-slate-700">
-                  {attribute.sortOrder}
-                </td>
-
                 <td className="px-5 py-4">
                   <div className="flex justify-end gap-2">
                     <form action={toggleAttributeFilterAction}>

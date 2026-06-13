@@ -1,35 +1,19 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useMemo, useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { Eye, Save, X } from "lucide-react";
 import { MediaPicker } from "@/components/admin/media-picker";
-import type { ProjectCreateState } from "./page";
-
-type Category = {
-  id: string;
-  nameVi: string;
-  nameEn: string | null;
-};
-
-type TitleTextImageTextBlock = {
-  type: "titleTextImageText";
-  title: string;
-  textTop: string;
-  image: string;
-  textBottom: string;
-};
-
-type TwoImagesContentBlock = {
-  type: "twoImagesContent";
-  image1: string;
-  image2: string;
-  content1: string;
-  content2: string;
-};
-
-type ProjectContentBlock = TitleTextImageTextBlock | TwoImagesContentBlock;
+import { saveProjectAction } from "./project-actions";
+import type {
+  AdminLocale,
+  AdminProjectDetail,
+  AdminProjectStatus,
+  ProjectCategoryOption,
+  ProjectContentBlock,
+  TitleTextImageTextBlock,
+  TwoImagesContentBlock,
+} from "./project.type";
 
 function toSlug(value: string) {
   return value
@@ -41,38 +25,12 @@ function toSlug(value: string) {
     .trim()
     .replace(/[^a-z0-9\s-]/g, "")
     .replace(/\s+/g, "-")
-    .replace(/-+/g, "-");
+    .replace(/-+/g, "-")
+    .replace(/^-+|-+$/g, "");
 }
 
-export default function ProjectForm({
-  action,
-  categories,
-}: {
-  action: (
-    prevState: ProjectCreateState,
-    formData: FormData
-  ) => Promise<ProjectCreateState>;
-  categories: Category[];
-}) {
-  const router = useRouter();
-
-  const [state, setState] = useState<ProjectCreateState>({
-    ok: false,
-    message: "",
-  });
-
-  const [submitting, setSubmitting] = useState(false);
-
-  const [thumbnail, setThumbnail] = useState("");
-  const [title, setTitle] = useState("");
-  const [slug, setSlug] = useState("");
-
-  const [clientName, setClientName] = useState("");
-  const [projectType, setProjectType] = useState("");
-  const [startedAt, setStartedAt] = useState("");
-  const [completedAt, setCompletedAt] = useState("");
-
-  const [contentBlocks, setContentBlocks] = useState<ProjectContentBlock[]>([
+function defaultBlocks(): ProjectContentBlock[] {
+  return [
     {
       type: "titleTextImageText",
       title: "",
@@ -87,10 +45,54 @@ export default function ProjectForm({
       content1: "",
       content2: "",
     },
-  ]);
+  ];
+}
+
+export function ProjectForm({
+  mode,
+  activeLocale,
+  project,
+  categories,
+}: {
+  mode: "create" | "edit";
+  activeLocale: AdminLocale;
+  project: AdminProjectDetail | null;
+  categories: ProjectCategoryOption[];
+}) {
+  const [clientMessage, setClientMessage] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+
+  const [status, setStatus] = useState<AdminProjectStatus>(
+    project?.status || "DRAFT"
+  );
+
+  const [thumbnail, setThumbnail] = useState(project?.thumbnail || "");
+  const [title, setTitle] = useState(project?.title || "");
+  const [slug, setSlug] = useState(project?.slug || "");
+  const [slugTouched, setSlugTouched] = useState(Boolean(project?.slug));
+
+  const [clientName, setClientName] = useState(project?.clientName || "");
+  const [projectType, setProjectType] = useState(project?.projectType || "");
+  const [startedAt, setStartedAt] = useState(project?.startedAt || "");
+  const [completedAt, setCompletedAt] = useState(project?.completedAt || "");
+
+  const [contentBlocks, setContentBlocks] = useState<ProjectContentBlock[]>(
+    project?.structuredData?.blocks?.length
+      ? project.structuredData.blocks
+      : defaultBlocks()
+  );
+
+  const [previewOpen, setPreviewOpen] = useState(false);
 
   const block1 = contentBlocks[0] as TitleTextImageTextBlock;
   const block2 = contentBlocks[1] as TwoImagesContentBlock;
+
+  const structuredData = useMemo(
+    () => ({
+      blocks: contentBlocks,
+    }),
+    [contentBlocks]
+  );
 
   function updateContentBlock(
     index: number,
@@ -106,23 +108,10 @@ export default function ProjectForm({
     );
   }
 
-  const [previewOpen, setPreviewOpen] = useState(false);
-
-  useEffect(() => {
-    if (state.ok) {
-      router.push("/admin/projects");
-      router.refresh();
-    }
-
-    setSubmitting(false);
-  }, [state.ok, router]);
-
-  const structuredData = { blocks: contentBlocks };
-
-  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-
+  function validateForm() {
     const requiredFields = [
+      { label: "Tên công trình", value: title },
+      { label: "Slug công trình", value: slug },
       { label: "Tiêu đề khối 1", value: block1.title },
       { label: "Nội dung phía trên ảnh", value: block1.textTop },
       { label: "Ảnh khối 1", value: block1.image },
@@ -138,33 +127,35 @@ export default function ProjectForm({
     );
 
     if (missingField) {
-      setState({
-        ok: false,
-        message: `Vui lòng nhập đầy đủ: ${missingField.label}`,
-      });
+      return `Vui lòng nhập đầy đủ: ${missingField.label}`;
+    }
+
+    if (startedAt && completedAt && completedAt < startedAt) {
+      return "Ngày hoàn thành không được nhỏ hơn ngày khởi công.";
+    }
+
+    return "";
+  }
+
+  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    const error = validateForm();
+
+    if (error) {
+      event.preventDefault();
+      setClientMessage(error);
       setSubmitting(false);
       return;
     }
 
+    setClientMessage("");
     setSubmitting(true);
-
-    const formData = new FormData(e.currentTarget);
-
-    const submitter = (e.nativeEvent as SubmitEvent)
-      .submitter as HTMLButtonElement | null;
-
-    if (submitter?.name === "status") {
-      formData.set("status", submitter.value);
-    }
-
-    formData.set("structuredData", JSON.stringify(structuredData));
-
-    const result = await action(state, formData);
-    setState(result);
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
+    <form action={saveProjectAction} onSubmit={handleSubmit} className="space-y-6">
+      <input type="hidden" name="id" value={project?.id || ""} />
+      <input type="hidden" name="locale" value={activeLocale} />
+      <input type="hidden" name="thumbnail" value={thumbnail} />
       <input
         type="hidden"
         name="structuredData"
@@ -174,30 +165,56 @@ export default function ProjectForm({
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-slate-950">
-            Thêm công trình
+            {mode === "create" ? "Thêm công trình" : "Sửa công trình"}
           </h1>
           <p className="mt-1 text-sm text-slate-500">
             Nội dung công trình dùng layout cố định.
           </p>
         </div>
 
-        <Link
-          href="/admin/projects"
-          className="rounded-xl border px-4 py-2 text-sm"
-        >
-          Quay lại
-        </Link>
+        <div className="flex flex-wrap items-center gap-2">
+          {mode === "edit" && project?.id ? (
+            <>
+              <Link
+                href={`/admin/projects/${project.id}/edit?locale=vi`}
+                className={`rounded-xl border px-4 py-2 text-sm font-semibold ${
+                  activeLocale === "vi"
+                    ? "border-[#2271b1] bg-[#2271b1] text-white"
+                    : "bg-white text-slate-700"
+                }`}
+              >
+                Tiếng Việt
+              </Link>
+
+              <Link
+                href={`/admin/projects/${project.id}/edit?locale=en`}
+                className={`rounded-xl border px-4 py-2 text-sm font-semibold ${
+                  activeLocale === "en"
+                    ? "border-[#2271b1] bg-[#2271b1] text-white"
+                    : "bg-white text-slate-700"
+                }`}
+              >
+                English
+              </Link>
+            </>
+          ) : (
+            <span className="rounded-xl border border-[#2271b1] bg-[#2271b1] px-4 py-2 text-sm font-semibold text-white">
+              Tiếng Việt
+            </span>
+          )}
+
+          <Link
+            href="/admin/projects"
+            className="rounded-xl border px-4 py-2 text-sm"
+          >
+            Quay lại
+          </Link>
+        </div>
       </div>
 
-      {state.message && (
-        <div
-          className={`rounded-xl px-4 py-3 text-sm ${
-            state.ok
-              ? "border border-emerald-200 bg-emerald-50 text-emerald-700"
-              : "border border-red-200 bg-red-50 text-red-700"
-          }`}
-        >
-          {state.message}
+      {clientMessage && (
+        <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+          {clientMessage}
         </div>
       )}
 
@@ -208,14 +225,9 @@ export default function ProjectForm({
               <label className="mb-2 block text-sm font-semibold text-slate-700">
                 Ngôn ngữ công trình
               </label>
-              <select
-                name="locale"
-                defaultValue="vi"
-                className="w-full rounded-xl border px-4 py-3 text-sm"
-              >
-                <option value="vi">Tiếng Việt</option>
-                <option value="en">English</option>
-              </select>
+              <div className="rounded-xl border bg-slate-50 px-4 py-3 text-sm font-semibold text-slate-700">
+                {activeLocale === "vi" ? "Tiếng Việt" : "English"}
+              </div>
             </div>
 
             <div>
@@ -226,9 +238,13 @@ export default function ProjectForm({
                 name="title"
                 required
                 value={title}
-                onChange={(e) => {
-                  setTitle(e.target.value);
-                  setSlug(toSlug(e.target.value));
+                onChange={(event) => {
+                  const value = event.target.value;
+                  setTitle(value);
+
+                  if (!slugTouched) {
+                    setSlug(toSlug(value));
+                  }
                 }}
                 placeholder="Tên công trình"
                 className="w-full rounded-xl border px-4 py-4 text-2xl font-semibold"
@@ -243,10 +259,24 @@ export default function ProjectForm({
                 name="slug"
                 required
                 value={slug}
-                onChange={(e) => setSlug(toSlug(e.target.value))}
+                onChange={(event) => {
+                  setSlugTouched(true);
+                  setSlug(toSlug(event.target.value));
+                }}
                 placeholder="slug-cong-trinh"
                 className="w-full rounded-xl border px-4 py-3 text-sm"
               />
+
+              <button
+                type="button"
+                onClick={() => {
+                  setSlugTouched(false);
+                  setSlug(toSlug(title));
+                }}
+                className="mt-2 rounded-lg border px-3 py-1.5 text-xs font-semibold text-slate-700 hover:bg-slate-50"
+              >
+                Tạo slug theo tên công trình
+              </button>
             </div>
 
             <div>
@@ -255,6 +285,7 @@ export default function ProjectForm({
               </label>
               <textarea
                 name="excerpt"
+                defaultValue={project?.excerpt || ""}
                 rows={3}
                 placeholder="Mô tả ngắn SEO / listing"
                 className="w-full rounded-xl border px-4 py-3 text-sm"
@@ -273,8 +304,8 @@ export default function ProjectForm({
                   </label>
                   <input
                     value={block1.title}
-                    onChange={(e) =>
-                      updateContentBlock(0, "title", e.target.value)
+                    onChange={(event) =>
+                      updateContentBlock(0, "title", event.target.value)
                     }
                     placeholder="Tiêu đề khối 1"
                     className="w-full rounded-xl border px-4 py-3 text-sm"
@@ -287,8 +318,8 @@ export default function ProjectForm({
                   </label>
                   <textarea
                     value={block1.textTop}
-                    onChange={(e) =>
-                      updateContentBlock(0, "textTop", e.target.value)
+                    onChange={(event) =>
+                      updateContentBlock(0, "textTop", event.target.value)
                     }
                     rows={5}
                     placeholder="Nội dung phía trên ảnh"
@@ -312,8 +343,8 @@ export default function ProjectForm({
                   </label>
                   <textarea
                     value={block1.textBottom}
-                    onChange={(e) =>
-                      updateContentBlock(0, "textBottom", e.target.value)
+                    onChange={(event) =>
+                      updateContentBlock(0, "textBottom", event.target.value)
                     }
                     rows={5}
                     placeholder="Nội dung phía dưới ảnh"
@@ -356,8 +387,8 @@ export default function ProjectForm({
                 </label>
                 <textarea
                   value={block2.content1}
-                  onChange={(e) =>
-                    updateContentBlock(1, "content1", e.target.value)
+                  onChange={(event) =>
+                    updateContentBlock(1, "content1", event.target.value)
                   }
                   rows={5}
                   placeholder="Nội dung bên phải 1"
@@ -371,8 +402,8 @@ export default function ProjectForm({
                 </label>
                 <textarea
                   value={block2.content2}
-                  onChange={(e) =>
-                    updateContentBlock(1, "content2", e.target.value)
+                  onChange={(event) =>
+                    updateContentBlock(1, "content2", event.target.value)
                   }
                   rows={5}
                   placeholder="Nội dung bên phải 2"
@@ -390,6 +421,7 @@ export default function ProjectForm({
                 </label>
                 <input
                   name="seoTitle"
+                  defaultValue={project?.seoTitle || ""}
                   placeholder="Nhập tiêu đề SEO"
                   className="w-full rounded-xl border px-4 py-3 text-sm"
                 />
@@ -401,6 +433,7 @@ export default function ProjectForm({
                 </label>
                 <textarea
                   name="seoDescription"
+                  defaultValue={project?.seoDescription || ""}
                   rows={3}
                   placeholder="Nhập mô tả SEO"
                   className="w-full rounded-xl border px-4 py-3 text-sm"
@@ -421,7 +454,10 @@ export default function ProjectForm({
                 </label>
                 <select
                   name="status"
-                  defaultValue="DRAFT"
+                  value={status}
+                  onChange={(event) =>
+                    setStatus(event.target.value as AdminProjectStatus)
+                  }
                   className="w-full rounded-xl border px-4 py-3 text-sm"
                 >
                   <option value="DRAFT">Bản nháp</option>
@@ -439,14 +475,18 @@ export default function ProjectForm({
               </button>
 
               <label className="flex items-center gap-2 text-sm">
-                <input name="allowIndex" type="checkbox" defaultChecked />
+                <input
+                  name="allowIndex"
+                  type="checkbox"
+                  defaultChecked={project?.allowIndex ?? true}
+                />
                 Cho Google index
               </label>
 
               <div className="flex gap-2">
                 <button
                   type="submit"
-                  name="status"
+                  name="submitStatus"
                   value="DRAFT"
                   disabled={submitting}
                   className="flex flex-1 items-center justify-center gap-2 rounded-xl border px-4 py-3 text-sm font-semibold disabled:opacity-60"
@@ -457,7 +497,7 @@ export default function ProjectForm({
 
                 <button
                   type="submit"
-                  name="status"
+                  name="submitStatus"
                   value="PUBLISHED"
                   disabled={submitting}
                   className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-[#2271b1] px-4 py-3 text-sm font-semibold text-white disabled:opacity-60"
@@ -482,7 +522,7 @@ export default function ProjectForm({
                 <input
                   name="clientName"
                   value={clientName}
-                  onChange={(e) => setClientName(e.target.value)}
+                  onChange={(event) => setClientName(event.target.value)}
                   placeholder="Khách hàng"
                   className="w-full rounded-xl border px-4 py-3 text-sm"
                 />
@@ -495,7 +535,7 @@ export default function ProjectForm({
                 <input
                   name="projectType"
                   value={projectType}
-                  onChange={(e) => setProjectType(e.target.value)}
+                  onChange={(event) => setProjectType(event.target.value)}
                   placeholder="Hạng mục"
                   className="w-full rounded-xl border px-4 py-3 text-sm"
                 />
@@ -509,7 +549,7 @@ export default function ProjectForm({
                   name="startedAt"
                   type="date"
                   value={startedAt}
-                  onChange={(e) => setStartedAt(e.target.value)}
+                  onChange={(event) => setStartedAt(event.target.value)}
                   className="w-full rounded-xl border px-4 py-3 text-sm"
                 />
               </div>
@@ -522,7 +562,7 @@ export default function ProjectForm({
                   name="completedAt"
                   type="date"
                   value={completedAt}
-                  onChange={(e) => setCompletedAt(e.target.value)}
+                  onChange={(event) => setCompletedAt(event.target.value)}
                   className="w-full rounded-xl border px-4 py-3 text-sm"
                 />
               </div>
@@ -538,6 +578,7 @@ export default function ProjectForm({
               </label>
               <select
                 name="categoryId"
+                defaultValue={project?.categoryId || ""}
                 className="w-full rounded-xl border px-4 py-3 text-sm"
               >
                 <option value="">Không chọn</option>
@@ -558,7 +599,6 @@ export default function ProjectForm({
                 Chọn ảnh đại diện công trình
               </label>
               <MediaPicker value={thumbnail} onChange={setThumbnail} />
-              <input type="hidden" name="thumbnail" value={thumbnail} />
             </div>
           </div>
         </aside>

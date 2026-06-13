@@ -17,6 +17,7 @@ function statusLabel(status: OrderStatus) {
     SHIPPING: "Đang giao",
     COMPLETED: "Hoàn thành",
     CANCELLED: "Đã hủy",
+    RETURNED: "Đã trả hàng",
   };
 
   return labels[status];

@@ -27,7 +27,7 @@ type TranslationLike = {
   title?: string;
   slug?: string;
   excerpt?: string | null;
-  content?: string | null;
+  content?: unknown;
   seoTitle?: string | null;
   seoDescription?: string | null;
 };
@@ -62,6 +62,14 @@ function getLocalizedTranslation<T extends TranslationLike>(
     translations[0] ||
     null
   );
+}
+
+function normalizeContent(value: unknown): ProductDetailItem["content"] {
+  if (value === null || value === undefined) {
+    return "" as ProductDetailItem["content"];
+  }
+
+  return value as ProductDetailItem["content"];
 }
 
 function numberFromMoney(value: unknown): number | null {
@@ -539,7 +547,7 @@ export async function getProductBySlug(
     title: translation?.title || "",
     slug: translation?.slug || "",
     excerpt: translation?.excerpt || "",
-    content: translation?.content || "",
+    content: normalizeContent(translation?.content),
     seoTitle: translation?.seoTitle || translation?.title || "",
     seoDescription:
       translation?.seoDescription || translation?.excerpt || "",

@@ -1,249 +1,50 @@
-import { Prisma } from "@prisma/client";
 import { notFound } from "next/navigation";
-import { prisma } from "@/lib/prisma";
-import ProjectEditForm from "./project-form";
+import { ProjectForm } from "../../project-form";
+import { getAdminProjectById, getProjectFormOptions } from "../../project-query";
+import { ProjectToast } from "../../project-toast";
+import type { AdminLocale } from "../../project.type";
 
-export type ProjectEditState = {
-  ok: boolean;
-  message: string;
-};
-
-const emptyStructuredData = {
-  blocks: [
-    {
-      type: "titleTextImageText",
-      title: "",
-      textTop: "",
-      image: "",
-      textBottom: "",
-    },
-    {
-      type: "twoImagesContent",
-      image1: "",
-      image2: "",
-      content1: "",
-      content2: "",
-    },
-  ],
-};
-
-function parseStructuredData(value: string): Prisma.InputJsonValue {
-  if (!value) {
-    return emptyStructuredData;
-  }
-
-  try {
-    const data = JSON.parse(value);
-
-    if (Array.isArray(data?.blocks)) {
-      const block1 =
-        data.blocks.find((item: any) => item.type === "titleTextImageText") ||
-        data.blocks[0] ||
-        {};
-
-      const block2 =
-        data.blocks.find((item: any) => item.type === "twoImagesContent") ||
-        data.blocks[1] ||
-        {};
-
-      return {
-        blocks: [
-          {
-            type: "titleTextImageText",
-            title: block1.title || "",
-            textTop: block1.textTop || "",
-            image: block1.image || "",
-            textBottom: block1.textBottom || "",
-          },
-          {
-            type: "twoImagesContent",
-            image1: block2.image1 || "",
-            image2: block2.image2 || "",
-            content1: block2.content1 || block2.content || "",
-            content2: block2.content2 || "",
-          },
-        ],
-      };
-    }
-
-    return {
-      blocks: [
-        {
-          type: "titleTextImageText",
-          title: data?.block1?.title || "",
-          textTop: data?.block1?.textTop || "",
-          image: data?.block1?.image || "",
-          textBottom: data?.block1?.textBottom || "",
-        },
-        {
-          type: "twoImagesContent",
-          image1: data?.block2?.image1 || "",
-          image2: data?.block2?.image2 || "",
-          content1: data?.block2?.content1 || data?.block2?.content || "",
-          content2: data?.block2?.content2 || "",
-        },
-      ],
-    };
-  } catch {
-    return emptyStructuredData;
-  }
-}
-
-async function updateProject(
-  id: string,
-  _prevState: ProjectEditState,
-  formData: FormData
-): Promise<ProjectEditState> {
-  "use server";
-
-  const locale = String(formData.get("locale") || "vi") as "vi" | "en";
-  const status = String(formData.get("status") || "DRAFT");
-  const thumbnail = String(formData.get("thumbnail") || "");
-  const categoryId = String(formData.get("categoryId") || "");
-  const allowIndex = formData.get("allowIndex") === "on";
-
-  const clientName = String(formData.get("clientName") || "").trim();
-  const projectType = String(formData.get("projectType") || "").trim();
-  const budget = String(formData.get("budget") || "").trim();
-  const startedAt = String(formData.get("startedAt") || "");
-  const completedAt = String(formData.get("completedAt") || "");
-
-  const title = String(formData.get("title") || "").trim();
-  const slug = String(formData.get("slug") || "").trim();
-  const excerpt = String(formData.get("excerpt") || "").trim();
-  const structuredData = parseStructuredData(
-    String(formData.get("structuredData") || "")
-  );
-  const seoTitle = String(formData.get("seoTitle") || "").trim();
-  const seoDescription = String(formData.get("seoDescription") || "").trim();
-
-  if (!title || !slug) {
-    return { ok: false, message: "Vui lòng nhập tên công trình và slug." };
-  }
-
-  const existed = await prisma.projectTranslation.findFirst({
-    where: {
-      locale,
-      slug,
-      projectId: {
-        not: id,
-      },
-    },
-  });
-
-  if (existed) {
-    return {
-      ok: false,
-      message: "Slug đã tồn tại trong ngôn ngữ này. Vui lòng đổi slug khác.",
-    };
-  }
-
-  try {
-    await prisma.project.update({
-      where: { id },
-      data: {
-        status: status as "DRAFT" | "PUBLISHED" | "ARCHIVED",
-        thumbnail: thumbnail || null,
-        gallery: [],
-        clientName: clientName || null,
-        projectType: projectType || null,
-        budget: budget || null,
-        startedAt: startedAt ? new Date(startedAt) : null,
-        completedAt: completedAt ? new Date(completedAt) : null,
-        categoryId: categoryId || null,
-        allowIndex,
-        publishedAt: status === "PUBLISHED" ? new Date() : null,
-
-        translations: {
-          upsert: {
-            where: {
-              projectId_locale: {
-                projectId: id,
-                locale,
-              },
-            },
-            create: {
-              locale,
-              title,
-              slug,
-              excerpt: excerpt || null,
-              content: { html: "" },
-              structuredData,
-              seoTitle: seoTitle || null,
-              seoDescription: seoDescription || null,
-            },
-            update: {
-              title,
-              slug,
-              excerpt: excerpt || null,
-              content: { html: "" },
-              structuredData,
-              seoTitle: seoTitle || null,
-              seoDescription: seoDescription || null,
-            },
-          },
-        },
-      },
-    });
-
-    return { ok: true, message: "Cập nhật công trình thành công." };
-  } catch (error) {
-    console.error("Update project error:", error);
-
-    if (
-      error instanceof Prisma.PrismaClientKnownRequestError &&
-      error.code === "P2002"
-    ) {
-      return { ok: false, message: "Slug đã tồn tại. Vui lòng đổi slug khác." };
-    }
-
-    return { ok: false, message: "Có lỗi xảy ra khi cập nhật công trình." };
-  }
-}
-
-function toInputDate(value: Date | null) {
-  if (!value) return "";
-  return value.toISOString().slice(0, 10);
-}
-
-export default async function EditProjectPage({
-  params,
-}: {
-  params: Promise<{ id: string }>;
-}) {
-  const { id } = await params;
-
-  const project = await prisma.project.findUnique({
-    where: { id },
-    include: {
-      translations: true,
-      category: true,
-    },
-  });
-
-  if (!project) notFound();
-
-  const translation =
-    project.translations.find((item) => item.locale === "vi") ||
-    project.translations[0];
-
-  const categories = await prisma.category.findMany({
-    where: { type: "PROJECT" },
-    orderBy: { createdAt: "desc" },
-  });
-
-  const projectForForm = {
-    ...project,
-    startedAt: toInputDate(project.startedAt),
-    completedAt: toInputDate(project.completedAt),
+type Props = {
+  params: {
+    id: string;
   };
+  searchParams?: {
+    locale?: string;
+    success?: string;
+    error?: string;
+  };
+};
+
+function normalizeLocale(locale?: string): AdminLocale {
+  return locale === "en" ? "en" : "vi";
+}
+
+export default async function EditProjectPage({ params, searchParams }: Props) {
+  const activeLocale = normalizeLocale(searchParams?.locale);
+
+  const [project, options] = await Promise.all([
+    getAdminProjectById(params.id, activeLocale),
+    getProjectFormOptions(),
+  ]);
+
+  if (!project) {
+    notFound();
+  }
 
   return (
-    <ProjectEditForm
-      project={projectForForm}
-      categories={categories}
-      selectedLocale={translation?.locale || "vi"}
-      action={updateProject.bind(null, id)}
-    />
+    <div className="space-y-6">
+      <ProjectToast
+        success={searchParams?.success}
+        error={searchParams?.error}
+      />
+
+      <ProjectForm
+        key={`${params.id}-${activeLocale}`}
+        mode="edit"
+        activeLocale={activeLocale}
+        project={project}
+        categories={options.categories}
+      />
+    </div>
   );
 }

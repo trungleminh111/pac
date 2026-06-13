@@ -2,6 +2,13 @@ export type Locale = "vi" | "en";
 
 export type PublishStatus = "DRAFT" | "PUBLISHED" | "ARCHIVED";
 
+export type PostTagItem = {
+  id: string;
+  name: string;
+  slug: string;
+  postCount: number;
+};
+
 export type PostCardItem = {
   id: string;
   title: string;
@@ -11,6 +18,7 @@ export type PostCardItem = {
   category: string;
   publishedAt: Date | null;
   isFeatured: boolean;
+  tags?: PostTagItem[];
 };
 
 export type PostDetailItem = {
@@ -29,6 +37,7 @@ export type PostDetailItem = {
   seoTitle: string;
   seoDescription: string;
   categoryName: string;
+  tags: PostTagItem[];
 };
 
 export type PostFormState = {

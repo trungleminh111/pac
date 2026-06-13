@@ -1,6 +1,49 @@
 import { notFound, redirect } from "next/navigation";
+import { ContentType } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
 import EditMenuItemForm from "./menu-item-form";
+
+function getCategoryName(
+  category: {
+    slug: string;
+    translations?: {
+      locale: string;
+      name: string;
+    }[];
+  },
+  locale: "vi" | "en"
+) {
+  const translations = category.translations || [];
+
+  return (
+    translations.find((item) => item.locale === locale)?.name ||
+    translations.find((item) => item.locale === "vi")?.name ||
+    translations[0]?.name ||
+    category.slug
+  );
+}
+
+function getCategoryLinkOption(
+  item: {
+    slug: string;
+    translations?: {
+      locale: string;
+      name: string;
+    }[];
+  },
+  labelPrefix: string,
+  viBase: string,
+  enBase: string
+) {
+  const nameVi = getCategoryName(item, "vi");
+  const nameEn = getCategoryName(item, "en");
+
+  return {
+    label: `${labelPrefix} / ${nameVi}`,
+    vi: `${viBase}?category=${encodeURIComponent(nameVi)}`,
+    en: `${enBase}?category=${encodeURIComponent(nameEn || nameVi)}`,
+  };
+}
 
 async function updateMenuItem(id: string, formData: FormData) {
   "use server";
@@ -74,6 +117,17 @@ export default async function EditMenuItemPage({
     orderBy: {
       sortOrder: "asc",
     },
+    select: {
+      id: true,
+      type: true,
+      slug: true,
+      translations: {
+        select: {
+          locale: true,
+          name: true,
+        },
+      },
+    },
   });
 
   const linkOptions = {
@@ -87,33 +141,45 @@ export default async function EditMenuItemPage({
       { label: "Liên hệ", vi: "/vi/lien-he", en: "/en/contact" },
     ],
     postCategories: categories
-      .filter((item) => item.type === "POST")
-      .map((item) => ({
-        label: `Bài viết / ${item.nameVi}`,
-        vi: `/vi/tin-tuc?category=${encodeURIComponent(item.nameVi)}`,
-        en: `/en/news?category=${encodeURIComponent(item.nameEn || item.nameVi)}`,
-      })),
+      .filter((item) => item.type === ContentType.POST)
+      .map((item) =>
+        getCategoryLinkOption(
+          item,
+          "Bài viết",
+          "/vi/tin-tuc",
+          "/en/news"
+        )
+      ),
     productCategories: categories
-      .filter((item) => item.type === "PRODUCT")
-      .map((item) => ({
-        label: `Sản phẩm / ${item.nameVi}`,
-        vi: `/vi/san-pham?category=${encodeURIComponent(item.nameVi)}`,
-        en: `/en/products?category=${encodeURIComponent(item.nameEn || item.nameVi)}`,
-      })),
+      .filter((item) => item.type === ContentType.PRODUCT)
+      .map((item) =>
+        getCategoryLinkOption(
+          item,
+          "Sản phẩm",
+          "/vi/san-pham",
+          "/en/products"
+        )
+      ),
     serviceCategories: categories
-      .filter((item) => item.type === "SERVICE")
-      .map((item) => ({
-        label: `Dịch vụ / ${item.nameVi}`,
-        vi: `/vi/dich-vu?category=${encodeURIComponent(item.nameVi)}`,
-        en: `/en/services?category=${encodeURIComponent(item.nameEn || item.nameVi)}`,
-      })),
+      .filter((item) => item.type === ContentType.SERVICE)
+      .map((item) =>
+        getCategoryLinkOption(
+          item,
+          "Dịch vụ",
+          "/vi/dich-vu",
+          "/en/services"
+        )
+      ),
     projectCategories: categories
-      .filter((item) => item.type === "PROJECT")
-      .map((item) => ({
-        label: `Công trình / ${item.nameVi}`,
-        vi: `/vi/cong-trinh?category=${encodeURIComponent(item.nameVi)}`,
-        en: `/en/projects?category=${encodeURIComponent(item.nameEn || item.nameVi)}`,
-      })),
+      .filter((item) => item.type === ContentType.PROJECT)
+      .map((item) =>
+        getCategoryLinkOption(
+          item,
+          "Công trình",
+          "/vi/cong-trinh",
+          "/en/projects"
+        )
+      ),
   };
 
   return (

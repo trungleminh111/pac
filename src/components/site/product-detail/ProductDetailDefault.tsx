@@ -13,6 +13,7 @@ import { FaStar, FaCartShopping } from "react-icons/fa6";
 import { FaFacebookF, FaYoutube } from "react-icons/fa";
 import "@/styles/sanpham.css";
 import Banner from "@/components/site/Banner/Banner";
+
 function getGallery(product: ProductDetailItem) {
   const images: string[] = [];
 
@@ -43,6 +44,18 @@ function contactHref(locale: Locale) {
   return locale === "vi" ? "/vi/lien-he" : "/en/contact";
 }
 
+function getDynamicAttributes(product: ProductDetailItem) {
+  if (!Array.isArray(product.attributes)) return [];
+
+  return product.attributes
+    .map((attribute) => ({
+      key: attribute.id || attribute.code,
+      name: attribute.name || attribute.nameVi || attribute.nameEn || attribute.code,
+      value: attribute.value?.trim() || "",
+    }))
+    .filter((attribute) => attribute.name && attribute.value);
+}
+
 export function ProductDetailDefault({
   locale,
   product,
@@ -55,6 +68,16 @@ export function ProductDetailDefault({
 
   const gallery = getGallery(product);
   const contentHtml = getHtml(product.content);
+  const dynamicAttributes = getDynamicAttributes(product);
+  const hasDynamicAttributes = dynamicAttributes.length > 0;
+
+  const legacyOrigin = !hasDynamicAttributes ? product.origin?.trim() || "" : "";
+  const legacyMaterial = product.material?.trim() || "";
+  const legacySize = product.size?.trim() || "";
+  const legacyColor = product.color?.trim() || "";
+  const legacyThickness = product.thickness?.trim() || "";
+  const legacyDensity = product.density?.trim() || "";
+  const legacyHardness = product.hardness?.trim() || "";
 
   return (
     <div className="page-wrapper">
@@ -97,13 +120,13 @@ export function ProductDetailDefault({
                 </div>
 
                 <div className="detail-product-title d-flex gap-3 flex-column">
-                  {product.origin && (
+                  {legacyOrigin && (
                     <div className="product-details__meta-item ">
                       <span className="fw-bold text-dark">
                         {locale === "vi" ? "Xuất Xứ" : "Origin"}
                       </span>
                       <span className="ms-2 text-secondary">
-                        {product.origin}
+                        {legacyOrigin}
                       </span>
                     </div>
                   )}
@@ -114,19 +137,31 @@ export function ProductDetailDefault({
                     </h5>
 
                     <ul className="list-unstyled d-flex flex-column ps-0 mb-0" style={{ color: "#6c757d" }}>
-                      <li>SKU: {product.sku?.trim() || ""}</li>
+                      {product.sku?.trim() && (
+                        <li>SKU: {product.sku.trim()}</li>
+                      )}
 
-                      <li>{locale === "vi" ? "Chất liệu:" : "Material:"} {product.material?.trim() || ""}</li>
+                      {hasDynamicAttributes ? (
+                        dynamicAttributes.map((attribute) => (
+                          <li key={attribute.key}>
+                            {attribute.name}: {attribute.value}
+                          </li>
+                        ))
+                      ) : (
+                        <>
+                          <li>{locale === "vi" ? "Chất liệu:" : "Material:"} {legacyMaterial}</li>
 
-                      <li>{locale === "vi" ? "Kích thước:" : "Size:"} {product.size?.trim() || ""}</li>
+                          <li>{locale === "vi" ? "Kích thước:" : "Size:"} {legacySize}</li>
 
-                      <li>{locale === "vi" ? "Màu sắc:" : "Color:"} {product.color?.trim() || ""}</li>
+                          <li>{locale === "vi" ? "Màu sắc:" : "Color:"} {legacyColor}</li>
 
-                      <li>{locale === "vi" ? "Độ dày:" : "Thickness:"} {product.thickness?.trim() || ""}</li>
+                          <li>{locale === "vi" ? "Độ dày:" : "Thickness:"} {legacyThickness}</li>
 
-                      <li>{locale === "vi" ? "Khối lượng riêng:" : "Density:"} {product.density?.trim() || ""}</li>
+                          <li>{locale === "vi" ? "Khối lượng riêng:" : "Density:"} {legacyDensity}</li>
 
-                      <li>{locale === "vi" ? "Độ cứng:" : "Hardness:"} {product.hardness?.trim() || ""}</li>
+                          <li>{locale === "vi" ? "Độ cứng:" : "Hardness:"} {legacyHardness}</li>
+                        </>
+                      )}
                     </ul>
                   </div>
 
@@ -159,7 +194,7 @@ export function ProductDetailDefault({
 
                 <div className="product-details__info mt-auto pt-4">
                   <h4 className="product-details__price">
-                    {product.price || (locale === "vi" ? "Liên hệ" : "Contact")}
+                    {product.salePrice || product.price || (locale === "vi" ? "Liên hệ" : "Contact")}
                   </h4>
 
                   <div className="text-center product-action-combo">
@@ -256,17 +291,17 @@ export function ProductDetailDefault({
                         </h4>
 
                         <div className="product__item__price">
-                          {item.price}
+                          {item.salePrice || item.price}
                         </div>
 
                         <div>
-                          <div className="mt-5 text-center product-action-combo">
+                          <div className="text-center product-action-combo">
                             <Link href={contactHref(locale)} className="floens-btn">
                               <span>{locale === "vi" ? "Liên hệ" : "Contact"}</span>
                             </Link>
 
                             <div className="product-action-combo__cart">
-                              <AddToCartButton productId={product.id} />
+                              <AddToCartButton productId={item.id} />
                             </div>
                           </div>
                         </div>
@@ -323,17 +358,17 @@ export function ProductDetailDefault({
                         </h4>
 
                         <div className="product__item__price">
-                          {item.price}
+                          {item.salePrice || item.price}
                         </div>
 
                         <div>
-                          <div className="mt-5 text-center product-action-combo">
+                          <div className="text-center product-action-combo">
                             <Link href={contactHref(locale)} className="floens-btn">
                               <span>{locale === "vi" ? "Liên hệ" : "Contact"}</span>
                             </Link>
 
                             <div className="product-action-combo__cart">
-                              <AddToCartButton productId={product.id} />
+                              <AddToCartButton productId={item.id} />
                             </div>
                           </div>
                         </div>

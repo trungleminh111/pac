@@ -59,7 +59,12 @@ export default async function ProductsPage({
   };
 }) {
   const locale = params.locale;
-  const products = await getProductsPage(locale);
+  const productsPage = await getProductsPage({
+    locale,
+    page: 1,
+    pageSize: 999,
+  });
+  const products = productsPage.products;
   const categories = await getProductCategories(locale);
 
   const activeCategory = searchParams?.category || categories[0]?.slug || "";

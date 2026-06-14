@@ -139,7 +139,9 @@ export default function ContactPage({
                     {content.introStrong}
                   </strong>
                   <br />
-                  {content.introText}
+                  <p>
+                    {content.introText}
+                    </p>
                 </p>
 
                 <ScrollReveal animationClass="fade-in-up" delay="0">

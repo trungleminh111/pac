@@ -339,7 +339,7 @@ export function Header({
                 </Link>
               </li>
               <li>
-                <Link href="/assets/files/pPAC-certificates.rar" target="_blank" className="sidebar-util-link">
+                <Link href="/assets/files/PAC-certificates.rar" target="_blank" className="sidebar-util-link">
                   <div className="util-icon-box pdf-type"><FaFilePdf /></div>
                   <div className="util-text-box">
                     <span className="util-title">{locale === "vi" ? "Hồ sơ pháp lý P.A.C STONE" : "P.A.C STONE Legal Profile"}</span>

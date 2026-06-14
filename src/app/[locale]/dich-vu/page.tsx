@@ -20,6 +20,19 @@ const iconMap = {
   design: MdDesignServices,
 };
 
+const servicesPageContent = {
+  vi: {
+    bannerTitle: "DỊCH VỤ",
+    viewDetail: "Xem chi tiết",
+    emptyText: "Chưa có dịch vụ nào.",
+  },
+  en: {
+    bannerTitle: "SERVICES",
+    viewDetail: "View details",
+    emptyText: "No services found.",
+  },
+};
+
 function serviceHref(locale: Locale, slug: string) {
   return locale === "vi" ? `/vi/dich-vu/${slug}` : `/en/services/${slug}`;
 }
@@ -32,6 +45,7 @@ export default async function ServicesPage({
   };
 }) {
   const locale = params.locale;
+  const content = locale === "en" ? servicesPageContent.en : servicesPageContent.vi;
   const services = await getServicesPage(locale);
 
   return (
@@ -43,7 +57,7 @@ export default async function ServicesPage({
         bgImage="/assets/images/backgrounds/PACSTONE-DICHVU-header.png"
       /> */}
       <Banner
-        title="DỊCH VỤ"
+        title={content.bannerTitle}
         backgroundImg="/assets/images/backgrounds/service-banner.webp"
         row={3}
         col={7}
@@ -80,7 +94,7 @@ export default async function ServicesPage({
                       <div className="service-card-two__bottom">
                         <Link href={href} className="service-detail-link">
                           <span>
-                            {locale === "vi" ? "Xem chi tiết" : "View detail"}
+                            {content.viewDetail}
                           </span>
                           <LuArrowRight className="service-detail-arrow" />
                         </Link>
@@ -98,9 +112,7 @@ export default async function ServicesPage({
             {services.length === 0 && (
               <div className="col-12">
                 <p className="text-center">
-                  {locale === "vi"
-                    ? "Chưa có dịch vụ nào."
-                    : "No services found."}
+                  {content.emptyText}
                 </p>
               </div>
             )}
@@ -108,7 +120,7 @@ export default async function ServicesPage({
         </div>
       </section>
 
-      <Footer />
+      <Footer locale={locale} />
     </div>
   );
 }

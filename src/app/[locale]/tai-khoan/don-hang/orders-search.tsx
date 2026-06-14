@@ -5,17 +5,35 @@ import { useRouter } from "next/navigation";
 import { FiSearch } from "react-icons/fi";
 import styles from "../account.module.css";
 
+type Locale = "vi" | "en";
+
+const ordersSearchContent = {
+    vi: {
+        placeholder: "Bạn có thể tìm kiếm theo ID đơn hàng hoặc Tên Sản phẩm",
+        clear: "Xóa",
+        search: "Tìm",
+    },
+    en: {
+        placeholder: "You can search by order ID or product name",
+        clear: "Clear",
+        search: "Search",
+    },
+};
+
 export function OrdersSearch({
     base,
     activeStatus,
     defaultKeyword,
+    locale = "vi",
 }: {
     base: string;
     activeStatus: string;
     defaultKeyword: string;
+    locale?: Locale;
 }) {
     const router = useRouter();
     const [keyword, setKeyword] = useState(defaultKeyword);
+    const content = ordersSearchContent[locale];
 
     function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
@@ -45,13 +63,13 @@ export function OrdersSearch({
                 type="text"
                 value={keyword}
                 onChange={(e) => setKeyword(e.target.value)}
-                placeholder="Bạn có thể tìm kiếm theo ID đơn hàng hoặc Tên Sản phẩm"
+                placeholder={content.placeholder}
             />
             <button
                 type="submit"
                 className={defaultKeyword ? styles.clearSearchBtn : styles.searchBtn}
             >
-                {defaultKeyword ? "Xóa" : "Tìm"}
+                {defaultKeyword ? content.clear : content.search}
             </button>
         </form>
     );

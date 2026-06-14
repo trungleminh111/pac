@@ -5,8 +5,32 @@ import { updateProfile } from "@/server/account/account.action";
 import { useToast } from "@/components/ui/toast-provider";
 import styles from "../account.module.css";
 
+type Locale = "vi" | "en";
+
+const profileFormContent = {
+  vi: {
+    username: "Tên đăng nhập",
+    name: "Tên",
+    email: "Email",
+    joinedDate: "Ngày tham gia",
+    saving: "Đang lưu...",
+    save: "Lưu thay đổi",
+    dateLocale: "vi-VN",
+  },
+  en: {
+    username: "Username",
+    name: "Name",
+    email: "Email",
+    joinedDate: "Joined date",
+    saving: "Saving...",
+    save: "Save changes",
+    dateLocale: "en-US",
+  },
+};
+
 export function ProfileForm({
   account,
+  locale = "vi",
 }: {
   account: {
     name: string;
@@ -15,9 +39,11 @@ export function ProfileForm({
     role: string;
     createdAt: Date;
   };
+  locale?: Locale;
 }) {
   const { showToast } = useToast();
   const [pending, setPending] = useState(false);
+  const content = profileFormContent[locale];
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -35,28 +61,28 @@ export function ProfileForm({
     <form onSubmit={handleSubmit} className={styles.form}>
 
       <div className={styles.field}>
-        <label>Tên đăng nhập</label>
+        <label>{content.username}</label>
         <input value={account.email.split("@")[0]} readOnly />
       </div>
 
       <div className={styles.field}>
         <label>
-          Tên <span className="text-red-500">*</span>
+          {content.name} <span className="text-red-500">*</span>
         </label>
         <input name="name" defaultValue={account.name} />
       </div>
 
       <div className={styles.field}>
-        <label>Email</label>
+        <label>{content.email}</label>
         <input value={account.email} readOnly />
       </div>
       <div className={styles.field}>
-        <label>Ngày tham gia</label>
-        <input value={account.createdAt.toLocaleDateString("vi-VN")} readOnly />
+        <label>{content.joinedDate}</label>
+        <input value={account.createdAt.toLocaleDateString(content.dateLocale)} readOnly />
       </div>
 
       <button type="submit" className={styles.saveButton} disabled={pending}>
-        {pending ? "Đang lưu..." : "Lưu thay đổi"}
+        {pending ? content.saving : content.save}
       </button>
     </form>
   );

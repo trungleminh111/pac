@@ -4,19 +4,76 @@ import { getAccountOrders } from "@/server/account/account.query";
 import { OrdersSearch } from "./orders-search";
 import styles from "../account.module.css";
 
-function formatPrice(value: any) {
-  return Number(value || 0).toLocaleString("vi-VN") + "đ";
+type Locale = "vi" | "en";
+
+const ordersPageContent = {
+  vi: {
+    orderPrefix: "Đơn hàng #",
+    totalLabel: "Thành tiền:",
+    emptyText: "Không tìm thấy đơn hàng.",
+    tabs: {
+      all: "Tất cả",
+      pending: "Chờ xác nhận",
+      processing: "Đang xử lý",
+      shipping: "Đang giao",
+      completed: "Hoàn thành",
+      cancelled: "Đã hủy",
+      returned: "Đã trả hàng",
+    },
+    statuses: {
+      PENDING: "Chờ xác nhận",
+      CONFIRMED: "Đã xác nhận",
+      PROCESSING: "Đang xử lý",
+      SHIPPING: "Đang giao",
+      COMPLETED: "Hoàn thành",
+      CANCELLED: "Đã hủy",
+      RETURNED: "Đã trả hàng",
+    },
+  },
+  en: {
+    orderPrefix: "Order #",
+    totalLabel: "Total:",
+    emptyText: "No orders found.",
+    tabs: {
+      all: "All",
+      pending: "Pending",
+      processing: "Processing",
+      shipping: "Shipping",
+      completed: "Completed",
+      cancelled: "Cancelled",
+      returned: "Returned",
+    },
+    statuses: {
+      PENDING: "Pending",
+      CONFIRMED: "Confirmed",
+      PROCESSING: "Processing",
+      SHIPPING: "Shipping",
+      COMPLETED: "Completed",
+      CANCELLED: "Cancelled",
+      RETURNED: "Returned",
+    },
+  },
+};
+
+function formatPrice(value: any, locale: Locale = "vi") {
+  const number = Number(value || 0);
+
+  if (locale === "en") {
+    return number.toLocaleString("en-US") + " VND";
+  }
+
+  return number.toLocaleString("vi-VN") + "đ";
 }
 
-function statusLabel(status: OrderStatus) {
+function statusLabel(status: OrderStatus, locale: Locale = "vi") {
   const labels: Record<OrderStatus, string> = {
-    PENDING: "Chờ xác nhận",
-    CONFIRMED: "Đã xác nhận",
-    PROCESSING: "Đang xử lý",
-    SHIPPING: "Đang giao",
-    COMPLETED: "Hoàn thành",
-    CANCELLED: "Đã hủy",
-    RETURNED: "Đã trả hàng",
+    PENDING: ordersPageContent[locale].statuses.PENDING,
+    CONFIRMED: ordersPageContent[locale].statuses.CONFIRMED,
+    PROCESSING: ordersPageContent[locale].statuses.PROCESSING,
+    SHIPPING: ordersPageContent[locale].statuses.SHIPPING,
+    COMPLETED: ordersPageContent[locale].statuses.COMPLETED,
+    CANCELLED: ordersPageContent[locale].statuses.CANCELLED,
+    RETURNED: ordersPageContent[locale].statuses.RETURNED,
   };
 
   return labels[status];
@@ -29,13 +86,13 @@ function getOrderDetailHref(locale: "vi" | "en", orderId: string) {
 }
 
 const tabs = [
-  { label: "Tất cả", value: "" },
-  { label: "Chờ xác nhận", value: "PENDING" },
-  { label: "Đang xử lý", value: "PROCESSING" },
-  { label: "Đang giao", value: "SHIPPING" },
-  { label: "Hoàn thành", value: "COMPLETED" },
-  { label: "Đã hủy", value: "CANCELLED" },
-  { label: "Đã trả hàng", value: "RETURNED" },
+  { labelVi: "Tất cả", labelEn: "All", value: "" },
+  { labelVi: "Chờ xác nhận", labelEn: "Pending", value: "PENDING" },
+  { labelVi: "Đang xử lý", labelEn: "Processing", value: "PROCESSING" },
+  { labelVi: "Đang giao", labelEn: "Shipping", value: "SHIPPING" },
+  { labelVi: "Hoàn thành", labelEn: "Completed", value: "COMPLETED" },
+  { labelVi: "Đã hủy", labelEn: "Cancelled", value: "CANCELLED" },
+  { labelVi: "Đã trả hàng", labelEn: "Returned", value: "RETURNED" },
 ] as const;
 
 export default async function OrdersPage({
@@ -51,6 +108,8 @@ export default async function OrdersPage({
   };
 }) {
   const locale = params.locale === "en" ? "en" : "vi";
+  const content = ordersPageContent[locale];
+
   const activeStatus = searchParams?.status || "";
   const keyword = (searchParams?.q || "").trim().toLowerCase();
 
@@ -91,7 +150,7 @@ export default async function OrdersPage({
               href={href}
               className={activeStatus === tab.value ? styles.activeTab : ""}
             >
-              {tab.label}
+              {locale === "vi" ? tab.labelVi : tab.labelEn}
             </Link>
           );
         })}
@@ -101,6 +160,7 @@ export default async function OrdersPage({
         base={base}
         activeStatus={activeStatus}
         defaultKeyword={searchParams?.q || ""}
+        locale={locale}
       />
 
       <div className={styles.orderList}>
@@ -109,12 +169,12 @@ export default async function OrdersPage({
             <div className={styles.orderTop}>
               <div>
                 <Link href={getOrderDetailHref(locale, order.id)}>
-                  <strong>Đơn hàng #{order.code}</strong>
+                  <strong>{content.orderPrefix}{order.code}</strong>
                 </Link>
               </div>
 
               <div>
-                <em>{statusLabel(order.status)}</em>
+                <em>{statusLabel(order.status, locale)}</em>
               </div>
             </div>
 
@@ -130,20 +190,20 @@ export default async function OrdersPage({
                   <p>x{item.quantity}</p>
                 </div>
 
-                <strong>{formatPrice(item.price)}</strong>
+                <strong>{formatPrice(item.price, locale)}</strong>
               </div>
             ))}
 
             <div className={styles.orderBottom}>
               <p>
-                Thành tiền: <strong>{formatPrice(order.total)}</strong>
+                {content.totalLabel} <strong>{formatPrice(order.total, locale)}</strong>
               </p>
             </div>
           </div>
         ))}
 
         {filteredOrders.length === 0 && (
-          <div className={styles.card}>Không tìm thấy đơn hàng.</div>
+          <div className={styles.card}>{content.emptyText}</div>
         )}
       </div>
     </section>

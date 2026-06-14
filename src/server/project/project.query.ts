@@ -18,10 +18,34 @@ function getCategoryName(
 ) {
   return (
     translations.find((item) => item.locale === locale)?.name ||
-    translations.find((item) => item.locale === Locale.vi)?.name ||
     translations[0]?.name ||
     ""
   );
+}
+
+function getProjectTypeText(
+  project: {
+    projectType: string | null;
+    category?: {
+      slug: string;
+      translations: CategoryTranslationItem[];
+    } | null;
+  },
+  locale: Locale
+) {
+  const categoryName = project.category
+    ? getCategoryName(project.category.translations, locale)
+    : "";
+
+  if (categoryName) return categoryName;
+
+  if (locale === Locale.en) {
+    return project.projectType && project.projectType !== "Thi công ốp đá"
+      ? project.projectType
+      : "Stone Installation";
+  }
+
+  return project.projectType || "Thi công ốp đá";
 }
 
 function isAllCategory(translations: CategoryTranslationItem[]) {
@@ -69,6 +93,11 @@ export async function getPublishedProjects(locale: Locale = Locale.vi) {
   return prisma.project.findMany({
     where: {
       status: PublishStatus.PUBLISHED,
+      translations: {
+        some: {
+          locale,
+        },
+      },
     },
     include: {
       category: {
@@ -130,7 +159,7 @@ export async function getProjectWorks(locale: Locale = Locale.vi) {
 
       return {
         title: translation.title,
-        type: project.projectType || "Tile Care",
+        type: getProjectTypeText(project, locale),
         image: project.thumbnail || "",
         categorySlug: project.category?.slug || "",
         slug: translation.slug,
@@ -154,8 +183,18 @@ export async function getHomeProjectSlides(locale: Locale = Locale.vi) {
   const projects = await prisma.project.findMany({
     where: {
       status: PublishStatus.PUBLISHED,
+      translations: {
+        some: {
+          locale,
+        },
+      },
     },
     include: {
+      category: {
+        include: {
+          translations: true,
+        },
+      },
       translations: {
         where: { locale },
         take: 1,
@@ -175,7 +214,7 @@ export async function getHomeProjectSlides(locale: Locale = Locale.vi) {
       return {
         title: translation.title,
         image: project.thumbnail || "",
-        type: project.projectType || "Thi công ốp đá",
+        type: getProjectTypeText(project, locale),
         slug: translation.slug,
       };
     });

@@ -5,9 +5,29 @@ import { updatePassword } from "@/server/account/account.action";
 import { useToast } from "@/components/ui/toast-provider";
 import styles from "../account.module.css";
 
-export function PasswordForm() {
+type Locale = "vi" | "en";
+
+const passwordFormContent = {
+  vi: {
+    currentPassword: "Mật khẩu hiện tại",
+    newPassword: "Mật khẩu mới",
+    confirmPassword: "Nhập lại mật khẩu",
+    updating: "Đang cập nhật...",
+    submit: "Cập nhật",
+  },
+  en: {
+    currentPassword: "Current password",
+    newPassword: "New password",
+    confirmPassword: "Confirm password",
+    updating: "Updating...",
+    submit: "Update",
+  },
+};
+
+export function PasswordForm({ locale = "vi" }: { locale?: Locale }) {
   const { showToast } = useToast();
   const [pending, setPending] = useState(false);
+  const content = passwordFormContent[locale];
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -30,27 +50,27 @@ export function PasswordForm() {
     <form onSubmit={handleSubmit} className={styles.form}>
       <div className={styles.field}>
         <label>
-          Mật khẩu hiện tại <span className="text-red-500">*</span>
+          {content.currentPassword} <span className="text-red-500">*</span>
         </label>
         <input name="currentPassword" type="password" />
       </div>
 
       <div className={styles.field}>
         <label>
-          Mật khẩu mới <span className="text-red-500">*</span>
+          {content.newPassword} <span className="text-red-500">*</span>
         </label>
         <input name="newPassword" type="password" />
       </div>
 
       <div className={styles.field}>
         <label>
-          Nhập lại mật khẩu <span className="text-red-500">*</span>
+          {content.confirmPassword} <span className="text-red-500">*</span>
         </label>
         <input name="confirmPassword" type="password" />
       </div>
 
       <button type="submit" className={styles.saveButton} disabled={pending}>
-        {pending ? "Đang cập nhật..." : "Cập nhật"}
+        {pending ? content.updating : content.submit}
       </button>
     </form>
   );

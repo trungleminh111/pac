@@ -14,6 +14,52 @@ import { LuUpload } from "react-icons/lu";
 import ScrollReveal from "@/components/site/ScrollReveal";
 import Banner from "@/components/site/Banner/Banner";
 import PdfPreview from "@/components/site/PdfPreview/PdfPreview";
+
+const contactPageContent = {
+  vi: {
+    bannerTitle: "LIÊN HỆ",
+    callSubtitle: "Đừng ngại, hãy gọi cho chúng tôi!",
+    callLabel: "CALL US",
+    sectionTagline: "liên hệ",
+    sectionTitle: "Chúng Tôi Luôn Sẵn Sàng Lắng Nghe Bạn!",
+    introStrong: "Bạn đang tìm kiếm đơn vị thi công, thiết kế đá hoa cương?",
+    introText:
+      "Đừng ngần ngại, hãy liên hệ với chúng tôi ngay hôm nay để được tư vấn miễn phí từ đội ngũ chuyên gia hàng đầu.",
+    formTitle: "Gửi tin nhắn cho chúng tôi",
+    namePlaceholder: "Họ và tên",
+    emailPlaceholder: "Email",
+    phonePlaceholder: "Điện thoại",
+    messagePlaceholder: "Nội dung",
+    uploadText: "File thiết kế của bạn (Nếu có)",
+    submitText: "Gửi nội dung",
+    showroomAlt: "Hồ sơ năng lực P.A.C Stone",
+    profileTitle: "Hồ sơ năng lực P.A.C Stone",
+    licenseTitle: "Giấy phép kinh doanh",
+    downloadText: "Tải Hồ Sơ Năng Lực P.A.C STONE",
+  },
+  en: {
+    bannerTitle: "CONTACT",
+    callSubtitle: "Don’t hesitate, call us now!",
+    callLabel: "CALL US",
+    sectionTagline: "contact",
+    sectionTitle: "We Are Always Ready To Listen To You!",
+    introStrong: "Are you looking for a granite design and installation contractor?",
+    introText:
+      "Do not hesitate to contact us today for a free consultation from our experienced expert team.",
+    formTitle: "Send us a message",
+    namePlaceholder: "Full name",
+    emailPlaceholder: "Email",
+    phonePlaceholder: "Phone",
+    messagePlaceholder: "Message",
+    uploadText: "Your design file (If any)",
+    submitText: "Send message",
+    showroomAlt: "P.A.C Stone Company Profile",
+    profileTitle: "P.A.C Stone Company Profile",
+    licenseTitle: "Business License",
+    downloadText: "Download P.A.C STONE Company Profile",
+  },
+};
+
 export default function ContactPage({
   params,
 }: {
@@ -22,12 +68,13 @@ export default function ContactPage({
   };
 }) {
   const locale = params.locale === "en" ? "en" : "vi";
+  const content = contactPageContent[locale];
   
   return (
     <div className="page-wrapper">
       <Header locale={locale} />
        <Banner
-        title="LIÊN HỆ"
+        title={content.bannerTitle}
         backgroundImg="/assets/images/backgrounds/contact-banner.webp"
         row={2}
         col={2}
@@ -37,7 +84,7 @@ export default function ContactPage({
 
           {/* Phần Sub-title phía trên */}
           <div className="contact-call__subtitle">
-            Đừng ngại, hãy gọi cho chúng tôi!
+            {content.callSubtitle}
           </div>
 
           {/* Phần nút gọi phía dưới (Giữ nguyên cấu trúc cũ) */}
@@ -49,7 +96,7 @@ export default function ContactPage({
 
             {/* Khối nội dung bên phải */}
             <div className="contact-call__content">
-              <div className="contact-call__label">CALL US</div>
+              <div className="contact-call__label">{content.callLabel}</div>
               <div className="contact-call__phone-wrapper">
                 <a href="tel:0962757475" className="contact-call__phone">
                   0962.757.475
@@ -80,20 +127,19 @@ export default function ContactPage({
             <div className="col-lg-6 col-md-12 ">
               <div className="contact-one__content">
                 <div className="sec-title sec-title--border">
-                  <h6 className="sec-title__tagline">liên hệ</h6>
+                  <h6 className="sec-title__tagline">{content.sectionTagline}</h6>
                   <h3 className="sec-title__title">
-                    Chúng Tôi Luôn Sẵn Sàng Lắng Nghe Bạn!
+                    {content.sectionTitle}
                   </h3>
                 </div>
 
 
                 <p className="contact-one__text text-justify">
                   <strong>
-                    Bạn đang tìm kiếm đơn vị thi công, thiết kế đá hoa cương?
+                    {content.introStrong}
                   </strong>
                   <br />
-                  Đừng ngần ngại, hãy liên hệ với chúng tôi ngay hôm nay để được
-                  tư vấn miễn phí từ đội ngũ chuyên gia hàng đầu.
+                  {content.introText}
                 </p>
 
                 <ScrollReveal animationClass="fade-in-up" delay="0">
@@ -109,33 +155,33 @@ export default function ContactPage({
 
                     <div className="contact-one__form__top">
                       <h2 className="contact-one__form__title">
-                        Gửi tin nhắn cho chúng tôi
+                        {content.formTitle}
                       </h2>
                     </div>
 
                     <div className="form-one__group form-one__group--grid">
                       <div className="form-one__control form-one__control--input form-one__control--full">
-                        <input type="text" name="name" placeholder="Họ và tên" />
+                        <input type="text" name="name" placeholder={content.namePlaceholder} />
                       </div>
 
                       <div className="form-one__control form-one__control--full">
-                        <input type="email" name="email" placeholder="Email" />
+                        <input type="email" name="email" placeholder={content.emailPlaceholder} />
                       </div>
 
                       <div className="form-one__control form-one__control--full">
-                        <input type="text" name="phone" placeholder="Điện thoại" />
+                        <input type="text" name="phone" placeholder={content.phonePlaceholder} />
                       </div>
 
                       <div className="form-one__control form-one__control--mesgae form-one__control--full">
-                        <textarea name="message" placeholder="Nội dung" />
+                        <textarea name="message" placeholder={content.messagePlaceholder} />
                         <div className="button-upload">
 
-                          <button>File thiết kế của bạn (Nếu có) <LuUpload /></button>
+                          <button>{content.uploadText} <LuUpload /></button>
                         </div>
                       </div>
                       <div className="form-one__control form-one__control--full">
                         <button type="submit" className="floens-btn">
-                          <span>Gửi nội dung</span>
+                          <span>{content.submitText}</span>
                           <i className="icon-right-arrow sm-none" >→</i>
                         </button>
                       </div>
@@ -153,7 +199,7 @@ export default function ContactPage({
                 <div className="doc-card-item">
                   <Image
                     src="/assets/images/lienhe/ShowroomPAC.jpg"
-                    alt="Hồ sơ năng lực P.A.C Stone"
+                    alt={content.showroomAlt}
                     width={1448}
                     height={1086}
                     sizes="(max-width: 991px) 100vw, 50vw"
@@ -166,12 +212,12 @@ export default function ContactPage({
                 {/* Ảnh A4 thứ nhất */}
                 <PdfPreview
                   src="/assets/files/PAC_STONE_08-04-26_Certificate.pdf"
-                  title="Hồ sơ năng lực P.A.C Stone"
+                  title={content.profileTitle}
                 />
 
                 <PdfPreview
                   src="/assets/files/PAC_CHI_NHANH_Certificate.pdf"
-                  title="Giấy phép kinh doanh"
+                  title={content.licenseTitle}
                 />
 
               </div>
@@ -186,7 +232,7 @@ export default function ContactPage({
                     <LuDownload />
                   </a>
                   <div className="download-content">
-                    Tải Hồ Sơ Năng Lực P.A.C STONE
+                    {content.downloadText}
                   </div>
                 </div>
               </ScrollReveal>
@@ -208,7 +254,7 @@ export default function ContactPage({
           <LocationMap />
         </div>
       </section>
-      <Footer />
+      <Footer locale={locale} />
     </div>
   );
 }

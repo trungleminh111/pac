@@ -10,6 +10,36 @@ import {
 } from "@/server/project/project.query";
 import Banner from "@/components/site/Banner/Banner";
 import OtherProjectsGallery from "@/components/site/OtherProjectsGallery/OtherProjectsGallery";
+
+const workDetailContent = {
+  vi: {
+    bannerTitle: "CÔNG TRÌNH",
+    infoTitle: "Thông tin công trình",
+    customerLabel: "Khách hàng:",
+    categoryLabel: "Hạng mục:",
+    startDateLabel: "Ngày khởi công:",
+    endDateLabel: "Ngày hoàn thành:",
+    budgetLabel: "Ngân sách:",
+    consultButton: "CẦN TƯ VẤN - BÁO GIÁ",
+    shareLabel: "Chia sẻ:",
+    otherProjectsTitle: "CÔNG TRÌNH KHÁC",
+    dateLocale: "vi-VN",
+  },
+  en: {
+    bannerTitle: "PROJECTS",
+    infoTitle: "Project Information",
+    customerLabel: "Client:",
+    categoryLabel: "Category:",
+    startDateLabel: "Start date:",
+    endDateLabel: "Completion date:",
+    budgetLabel: "Budget:",
+    consultButton: "GET CONSULTATION - QUOTE",
+    shareLabel: "Share:",
+    otherProjectsTitle: "OTHER PROJECTS",
+    dateLocale: "en-US",
+  },
+};
+
 function getCategoryName(
   category:
     | {
@@ -44,6 +74,7 @@ export default async function WorkDetailPage({
 }) {
   const locale = params.locale === "en" ? "en" : "vi";
   const localeEnum = locale === "en" ? Locale.en : Locale.vi;
+  const content = workDetailContent[locale];
 
   const projectData = await getProjectBySlug({
     slug: params.slug,
@@ -140,10 +171,10 @@ export default async function WorkDetailPage({
       customer: projectData.clientName || "",
       category: getCategoryName(projectData.category, locale),
       startDate: projectData.startedAt
-        ? projectData.startedAt.toLocaleDateString("vi-VN")
+        ? projectData.startedAt.toLocaleDateString(content.dateLocale)
         : "",
       endDate: projectData.completedAt
-        ? projectData.completedAt.toLocaleDateString("vi-VN")
+        ? projectData.completedAt.toLocaleDateString(content.dateLocale)
         : "",
       budget: projectData.budget || "",
     },
@@ -153,7 +184,7 @@ export default async function WorkDetailPage({
       <Header locale={locale} />
 
       <Banner
-        title="CÔNG TRÌNH"
+        title={content.bannerTitle}
         backgroundImg="/assets/images/backgrounds/contruct-banner.webp"
         row={3}
         col={1}
@@ -181,13 +212,13 @@ export default async function WorkDetailPage({
             <div className="col-lg-4">
               <aside className="work-details__sidebar">
                 <h3 className="work-details__sidebar__title">
-                  Thông tin công trình
+                  {content.infoTitle}
                 </h3>
 
                 <div className="work-details__sidebar__inner">
                   <div className="work-details__sidebar__info work-details__sidebar__info--client">
                     <h4 className="work-details__sidebar__info__title work-details__sidebar__info__title--client">
-                      Khách hàng:
+                      {content.customerLabel}
                     </h4>
                     <a
                       href="#"
@@ -199,7 +230,7 @@ export default async function WorkDetailPage({
 
                   <div className="work-details__sidebar__info">
                     <h4 className="work-details__sidebar__info__title">
-                      Hạng mục:
+                      {content.categoryLabel}
                     </h4>
                     <p className="work-details__sidebar__info__text">
                       {project.info.category}
@@ -208,7 +239,7 @@ export default async function WorkDetailPage({
 
                   <div className="work-details__sidebar__info">
                     <h4 className="work-details__sidebar__info__title">
-                      Ngày khởi công:
+                      {content.startDateLabel}
                     </h4>
                     <p className="work-details__sidebar__info__text">
                       {project.info.startDate}
@@ -217,7 +248,7 @@ export default async function WorkDetailPage({
 
                   <div className="work-details__sidebar__info">
                     <h4 className="work-details__sidebar__info__title">
-                      Ngày hoàn thành:
+                      {content.endDateLabel}
                     </h4>
                     <p className="work-details__sidebar__info__text">
                       {project.info.endDate}
@@ -226,7 +257,7 @@ export default async function WorkDetailPage({
 
                   <div className="work-details__sidebar__info">
                     <h4 className="work-details__sidebar__info__title">
-                      Ngân sách:
+                      {content.budgetLabel}
                     </h4>
                     <p className="work-details__sidebar__info__text">
                       {project.info.budget}
@@ -264,14 +295,14 @@ export default async function WorkDetailPage({
                 style={{ paddingBottom: 38 }}
               >
                 <a href="#" className="floens-btn btn-consult">
-                  CẦN TƯ VẤN - BÁO GIÁ
+                  {content.consultButton}
                 </a>
 
                 <ProjectPagination />
 
                 <div className="details-social">
                   <h3 className="product-details__socials__title">
-                    {locale === "vi" ? "Chia sẻ:" : "Share:"}
+                    {content.shareLabel}
                   </h3>
 
                   <Link href="https://facebook.com" target="_blank">
@@ -350,13 +381,13 @@ export default async function WorkDetailPage({
             <div className="col-lg-4">
               <aside className="work-details__sidebar">
                 <h3 className="work-details__sidebar__title">
-                  Thông tin công trình
+                  {content.infoTitle}
                 </h3>
 
                 <div className="work-details__sidebar__inner">
                   <div className="work-details__sidebar__info work-details__sidebar__info--client">
                     <h4 className="work-details__sidebar__info__title work-details__sidebar__info__title--client">
-                      Khách hàng:
+                      {content.customerLabel}
                     </h4>
                     <a
                       href="#"
@@ -368,7 +399,7 @@ export default async function WorkDetailPage({
 
                   <div className="work-details__sidebar__info">
                     <h4 className="work-details__sidebar__info__title">
-                      Hạng mục:
+                      {content.categoryLabel}
                     </h4>
                     <p className="work-details__sidebar__info__text">
                       {project.info.category}
@@ -377,7 +408,7 @@ export default async function WorkDetailPage({
 
                   <div className="work-details__sidebar__info">
                     <h4 className="work-details__sidebar__info__title">
-                      Ngày khởi công:
+                      {content.startDateLabel}
                     </h4>
                     <p className="work-details__sidebar__info__text">
                       {project.info.startDate}
@@ -386,7 +417,7 @@ export default async function WorkDetailPage({
 
                   <div className="work-details__sidebar__info">
                     <h4 className="work-details__sidebar__info__title">
-                      Ngày hoàn thành:
+                      {content.endDateLabel}
                     </h4>
                     <p className="work-details__sidebar__info__text">
                       {project.info.endDate}
@@ -395,7 +426,7 @@ export default async function WorkDetailPage({
 
                   <div className="work-details__sidebar__info">
                     <h4 className="work-details__sidebar__info__title">
-                      Ngân sách:
+                      {content.budgetLabel}
                     </h4>
                     <p className="work-details__sidebar__info__text">
                       {project.info.budget}
@@ -406,12 +437,12 @@ export default async function WorkDetailPage({
 
               <div className="mt-auto bottom-bar-phone">
                 <a href="#" className="floens-btn btn-consult">
-                  CẦN TƯ VẤN - BÁO GIÁ
+                  {content.consultButton}
                 </a>
 
                 <div className="details-social">
                   <h3 className="product-details__socials__title">
-                    {locale === "vi" ? "Chia sẻ:" : "Share:"}
+                    {content.shareLabel}
                   </h3>
 
                   <Link href="https://facebook.com" target="_blank">
@@ -439,14 +470,14 @@ export default async function WorkDetailPage({
                 style={{ paddingBottom: 38 }}
               >
                 <a href="#" className="floens-btn btn-consult">
-                  CẦN TƯ VẤN - BÁO GIÁ
+                  {content.consultButton}
                 </a>
 
                 <ProjectPagination />
 
                 <div className="details-social">
                   <h3 className="product-details__socials__title">
-                    {locale === "vi" ? "Chia sẻ:" : "Share:"}
+                    {content.shareLabel}
                   </h3>
 
                   <div>
@@ -476,11 +507,11 @@ export default async function WorkDetailPage({
         </div>
       </section>
         <OtherProjectsGallery
-          title={locale === "vi" ? "CÔNG TRÌNH KHÁC" : "OTHER PROJECTS"}
+          title={content.otherProjectsTitle}
           projects={otherProjects}
           locale={locale}
         />        
-      <Footer />
+      <Footer locale={locale} />
     </div>
   );
 }

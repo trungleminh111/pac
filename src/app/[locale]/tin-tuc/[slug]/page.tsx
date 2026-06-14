@@ -11,11 +11,40 @@ import {
   getPostsPage,
 } from "@/server/post/post.data";
 
+type Locale = "vi" | "en";
+
 type NewsTagItem = {
   id: string;
   name: string;
   slug: string;
   postCount?: number;
+};
+
+const newsDetailContent = {
+  vi: {
+    searchTitle: "Tìm kiếm",
+    searchPlaceholder: "Từ khóa",
+    searchSubmit: "Gửi tìm kiếm",
+    categoriesTitle: "Danh mục",
+    featuredTitle: "Bài viết nổi bật",
+    tagsTitle: "Tags",
+    shareTitle: "Chia sẻ:",
+    allLabel: "Tất cả",
+    imageAlt: "chi tiết bài viết",
+    dateLocale: "vi-VN",
+  },
+  en: {
+    searchTitle: "Search",
+    searchPlaceholder: "Keyword",
+    searchSubmit: "Submit search",
+    categoriesTitle: "Categories",
+    featuredTitle: "Featured Posts",
+    tagsTitle: "Tags",
+    shareTitle: "Share:",
+    allLabel: "All",
+    imageAlt: "blog details",
+    dateLocale: "en-US",
+  },
 };
 
 function newsBaseHref(locale: "vi" | "en") {
@@ -27,7 +56,7 @@ function newsDetailHref(locale: "vi" | "en", slug: string) {
 }
 
 function getAllLabel(locale: "vi" | "en") {
-  return locale === "vi" ? "Tất cả" : "All";
+  return newsDetailContent[locale].allLabel;
 }
 
 function isAllLabel(value: string) {
@@ -51,7 +80,7 @@ function pageHref(locale: "vi" | "en", category?: string, keyword?: string) {
   return query ? `${base}?${query}` : base;
 }
 
-function formatPostDate(date: Date | null) {
+function formatPostDate(date: Date | null, locale: Locale) {
   if (!date) {
     return {
       full: "",
@@ -60,9 +89,11 @@ function formatPostDate(date: Date | null) {
     };
   }
 
+  const dateLocale = newsDetailContent[locale].dateLocale;
+
   return {
-    full: date.toLocaleDateString("vi-VN"),
-    day: date.toLocaleDateString("vi-VN", {
+    full: date.toLocaleDateString(dateLocale),
+    day: date.toLocaleDateString(dateLocale, {
       day: "2-digit",
       month: "2-digit",
     }),
@@ -70,7 +101,7 @@ function formatPostDate(date: Date | null) {
   };
 }
 
-function renderContent(content: any) {
+function renderContent(content: any, locale: Locale) {
   if (!content) return null;
 
   if (typeof content === "string") {
@@ -107,7 +138,7 @@ function renderContent(content: any) {
             style={{ marginBottom: 15 }}
             key={index}
           >
-            <img src={item.src} alt={item.alt || "blog details"} />
+            <img src={item.src} alt={item.alt || newsDetailContent[locale].imageAlt} />
           </div>
         );
       }
@@ -137,6 +168,7 @@ export default async function NewsDetailPage({
   };
 }) {
   const locale = params.locale === "en" ? "en" : "vi";
+  const content = newsDetailContent[locale];
   const slug = decodeURIComponent(params.slug);
 
   const allLabel = getAllLabel(locale);
@@ -154,7 +186,7 @@ export default async function NewsDetailPage({
     notFound();
   }
 
-  const date = formatPostDate(post.publishedAt);
+  const date = formatPostDate(post.publishedAt, locale);
 
   const categories = [
     allLabel,
@@ -192,7 +224,7 @@ export default async function NewsDetailPage({
                 <aside className="widget-area">
                   <div className="sidebar__form sidebar__single">
                     <h4 className="sidebar__title sidebar__form__title">
-                      Tìm kiếm
+                      {content.searchTitle}
                     </h4>
 
                     <form
@@ -210,18 +242,18 @@ export default async function NewsDetailPage({
                       <input
                         type="text"
                         name="keyword"
-                        placeholder="Từ khóa"
+                        placeholder={content.searchPlaceholder}
                         defaultValue={keyword}
                       />
 
-                      <button type="submit" aria-label="search submit">
+                      <button type="submit" aria-label={content.searchSubmit}>
                         <span className="icon-search" />
                       </button>
                     </form>
                   </div>
 
                   <div className="sidebar__categories-wrapper sidebar__single">
-                    <h4 className="sidebar__title">Danh mục</h4>
+                    <h4 className="sidebar__title">{content.categoriesTitle}</h4>
 
                     <ul className="sidebar__categories list-unstyled">
                       {categories.map((name) => (
@@ -242,12 +274,12 @@ export default async function NewsDetailPage({
 
                   <div className="sidebar__posts-wrapper sidebar__single">
                     <h4 className="sidebar__title sidebar__posts-title">
-                      Bài viết nổi bật
+                      {content.featuredTitle}
                     </h4>
 
                     <ul className="sidebar__posts list-unstyled">
                       {latestPosts.map((item) => {
-                        const itemDate = formatPostDate(item.publishedAt);
+                        const itemDate = formatPostDate(item.publishedAt, locale);
 
                         return (
                           <li className="sidebar__posts__item" key={item.id}>
@@ -275,7 +307,7 @@ export default async function NewsDetailPage({
                   </div>
 
                   <div className="sidebar__tags-wrapper sidebar__single">
-                    <h4 className="sidebar__title">Tags</h4>
+                    <h4 className="sidebar__title">{content.tagsTitle}</h4>
 
                     <div className="sidebar__tags">
                       {allTags.map((tag) => (
@@ -319,7 +351,7 @@ export default async function NewsDetailPage({
                     )}
 
                     <div className="w-100 overflow-hidden">
-                      {renderContent(post.content)}
+                      {renderContent(post.content, locale)}
                     </div>
                   </div>
                 </div>
@@ -349,7 +381,7 @@ export default async function NewsDetailPage({
                   </div>
 
                   <div className="blog-details__social">
-                    <h4 className="blog-details__meta__title">Chia sẻ:</h4>
+                    <h4 className="blog-details__meta__title">{content.shareTitle}</h4>
 
                     <div className="details-social">
                       <a
@@ -394,7 +426,7 @@ export default async function NewsDetailPage({
         </div>
       </section>
 
-      <Footer />
+      <Footer locale={locale} />
     </div>
   );
-} 
+}

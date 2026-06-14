@@ -7,6 +7,15 @@ import { getProjectListingData } from "@/server/project/project.query";
 import styles from "./Contruct.module.css";
 import Banner from "@/components/site/Banner/Banner";
 
+const worksPageContent = {
+  vi: {
+    bannerTitle: "CÔNG TRÌNH",
+  },
+  en: {
+    bannerTitle: "PROJECTS",
+  },
+};
+
 function pageHref(locale: Locale, categorySlug?: string, page?: number) {
   const base = locale === Locale.vi ? "/vi/cong-trinh" : "/en/projects";
   const params = new URLSearchParams();
@@ -43,6 +52,7 @@ export default async function WorksPage({
   };
 }) {
   const locale = params.locale === "en" ? Locale.en : Locale.vi;
+  const content = locale === Locale.en ? worksPageContent.en : worksPageContent.vi;
 
   const { filters, works } = await getProjectListingData(locale);
 
@@ -71,7 +81,7 @@ export default async function WorksPage({
         bgImage="/assets/images/backgrounds/PACSTONE-CONGTRINH-header.png"
       /> */}
        <Banner
-        title="CÔNG TRÌNH"
+        title={content.bannerTitle}
         backgroundImg="/assets/images/backgrounds/contruct-banner.webp"
         row={3}
         col={1}
@@ -178,7 +188,7 @@ export default async function WorksPage({
         </div>
       </section>
 
-      <Footer />
+      <Footer locale={locale} />
     </div>
   );
 }

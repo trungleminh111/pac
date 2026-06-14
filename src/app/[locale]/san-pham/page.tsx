@@ -12,6 +12,19 @@ import Banner from "@/components/site/Banner/Banner";
 import { AddToCartButton } from "@/components/site/AddToCartButton";
 import { ProductFilter } from "@/components/site/ProductFilter";
 
+const productsPageContent = {
+  vi: {
+    bannerTitle: "SẢN PHẨM",
+    contactText: "Liên hệ",
+    emptyText: "Không tìm thấy sản phẩm phù hợp.",
+  },
+  en: {
+    bannerTitle: "PRODUCTS",
+    contactText: "Contact",
+    emptyText: "No matching products found.",
+  },
+};
+
 function productListHref(locale: Locale) {
   return locale === "vi" ? "/vi/san-pham" : "/en/products";
 }
@@ -59,6 +72,7 @@ export default async function ProductsPage({
   };
 }) {
   const locale = params.locale;
+  const content = locale === "en" ? productsPageContent.en : productsPageContent.vi;
   const productsPage = await getProductsPage({
     locale,
     page: 1,
@@ -100,7 +114,7 @@ export default async function ProductsPage({
         bgImage="/assets/images/backgrounds/PACSTONE-SANPHAM-header.png"
       /> */}
       <Banner
-        title="SẢN PHẨM"
+        title={content.bannerTitle}
         backgroundImg="/assets/images/backgrounds/product-banner.webp"
         row={2}
         col={3}
@@ -166,12 +180,12 @@ export default async function ProductsPage({
 
                         <div className="product__item__price">
                           {product.price ||
-                            (locale === "vi" ? "Liên hệ" : "Contact")}
+                            content.contactText}
                         </div>
 
                         <div className="text-center product-action-combo">
                           <Link href={contactHref(locale)} className="floens-btn">
-                            <span>{locale === "vi" ? "Liên hệ" : "Contact"}</span>
+                            <span>{content.contactText}</span>
                           </Link>
 
                           <div className="product-action-combo__cart">
@@ -237,9 +251,7 @@ export default async function ProductsPage({
                 {filteredProducts.length === 0 && (
                   <div className="col-12">
                     <p className="text-center">
-                      {locale === "vi"
-                        ? "Không tìm thấy sản phẩm phù hợp."
-                        : "No matching products found."}
+                      {content.emptyText}
                     </p>
                   </div>
                 )}
@@ -294,12 +306,12 @@ export default async function ProductsPage({
 
                         <div className="product__item__price">
                           {product.price ||
-                            (locale === "vi" ? "Liên hệ" : "Contact")}
+                            content.contactText}
                         </div>
 
                         <div className="text-center product-action-combo">
                           <Link href={contactHref(locale)} className="floens-btn">
-                            <span>{locale === "vi" ? "Liên hệ" : "Contact"}</span>
+                            <span>{content.contactText}</span>
                           </Link>
 
                           <div className="product-action-combo__cart">
@@ -365,9 +377,7 @@ export default async function ProductsPage({
                 {filteredProducts.length === 0 && (
                   <div className="col-12">
                     <p className="text-center">
-                      {locale === "vi"
-                        ? "Không tìm thấy sản phẩm phù hợp."
-                        : "No matching products found."}
+                      {content.emptyText}
                     </p>
                   </div>
                 )}
@@ -377,7 +387,7 @@ export default async function ProductsPage({
         </div>
       </section>
 
-      <Footer />
+      <Footer locale={locale} />
     </div>
   );
 }

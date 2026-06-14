@@ -12,6 +12,72 @@ import { FaCheck } from "react-icons/fa6";
 import { LuDownload } from "react-icons/lu";
 import { FiPhoneCall } from "react-icons/fi";
 import Banner from "@/components/site/Banner/Banner";
+
+const serviceDetailContent = {
+  vi: {
+    bannerTitle: "DỊCH VỤ",
+    contactNow: "LIÊN HỆ NGAY",
+    companyProfile: "Hồ sơ năng lực",
+    productBrochure: "Brochure sản phẩm",
+    subTitle: "Dịch vụ của chúng tôi cung cấp cho Bạn những gì?",
+    features: [
+      {
+        title: "Tư Vấn Thiết Kế Độc Quyền:",
+        text: "Mỗi dự án đều được chúng tôi tiếp cận với tâm huyết, lắng nghe và hiểu rõ yêu cầu cụ thể của khách hàng để đưa ra giải pháp thiết kế ốp lát hoàn hảo nhất.",
+      },
+      {
+        title: "Chọn Lọc Đá Hoa Cương Tinh Anh:",
+        text: "Chúng tôi cung cấp một loạt các loại đá hoa cương nhập khẩu từ khắp nơi trên thế giới.",
+      },
+      {
+        title: "Thi Công Chuyên Nghiệp & Tận Tâm:",
+        text: "Với quy trình thi công chặt chẽ, chúng tôi đảm bảo mọi chi tiết đều được thực hiện tỉ mỉ và chính xác.",
+      },
+      {
+        title: "Bảo Hành Và Hậu Mãi Chu Đáo:",
+        text: "Chúng tôi tự tin về chất lượng sản phẩm và dịch vụ của mình.",
+      },
+    ],
+    checklist: [
+      "Tư vấn miễn phí",
+      "Thi công chuyên nghiệp",
+      "Sản phẩm đa dạng",
+      "Bảo hành chu đáo",
+    ],
+  },
+  en: {
+    bannerTitle: "SERVICES",
+    contactNow: "CONTACT NOW",
+    companyProfile: "Company Profile",
+    productBrochure: "Product Brochure",
+    subTitle: "What do our services provide for you?",
+    features: [
+      {
+        title: "Exclusive Design Consultation:",
+        text: "Every project is approached with dedication. We listen carefully and understand each client’s requirements to deliver the most suitable stone design and installation solution.",
+      },
+      {
+        title: "Selected Premium Granite:",
+        text: "We provide a wide range of carefully selected granite and natural stone materials imported from trusted sources around the world.",
+      },
+      {
+        title: "Professional & Dedicated Installation:",
+        text: "With a strict installation process, we ensure every detail is completed carefully, accurately, and in line with technical standards.",
+      },
+      {
+        title: "Dedicated Warranty & After-sales:",
+        text: "We are confident in the quality of our products and services, and we provide dedicated support after project completion.",
+      },
+    ],
+    checklist: [
+      "Free consultation",
+      "Professional installation",
+      "Diverse products",
+      "Dedicated warranty",
+    ],
+  },
+};
+
 function serviceHref(locale: Locale, slug: string) {
   return locale === "vi" ? `/vi/dich-vu/${slug}` : `/en/services/${slug}`;
 }
@@ -31,6 +97,7 @@ export default async function ServiceDetailPage({
   };
 }) {
   const { locale, slug } = params;
+  const content = locale === "en" ? serviceDetailContent.en : serviceDetailContent.vi;
 
   const [service, services] = await Promise.all([
     getServiceBySlug(locale, slug),
@@ -52,7 +119,7 @@ export default async function ServiceDetailPage({
         bgImage="/assets/images/backgrounds/PACSTONE-DICHVU-header.png"
       /> */}
       <Banner
-        title="DỊCH VỤ"
+        title={content.bannerTitle}
         backgroundImg="/assets/images/backgrounds/service-banner.webp"
         row={3}
         col={6}
@@ -103,7 +170,7 @@ export default async function ServiceDetailPage({
 
                       <div className="service-sidebar__contact__content">
                         <h4 className="service-sidebar__contact__time">
-                          {locale === "vi" ? "LIÊN HỆ NGAY" : "CONTACT NOW"}
+                          {content.contactNow}
                         </h4>
 
                         <h4 className="service-sidebar__contact__number">
@@ -123,7 +190,7 @@ export default async function ServiceDetailPage({
                     </a>
 
                     <h4 className="service-sidebar__company__title">
-                      {locale === "vi" ? "Hồ sơ năng lực" : "Company Profile"}
+                      {content.companyProfile}
                     </h4>
                   </div>
 
@@ -135,9 +202,7 @@ export default async function ServiceDetailPage({
                     </a>
 
                     <h4 className="service-sidebar__company__title">
-                      {locale === "vi"
-                        ? "Brochure sản phẩm"
-                        : "Product Brochure"}
+                      {content.productBrochure}
                     </h4>
                   </div>
                 </div>
@@ -175,38 +240,28 @@ export default async function ServiceDetailPage({
 
                 <div className="service-details__inner-two">
                   <h3 className="service-details__sub-title">
-                    {locale === "vi"
-                      ? "Dịch vụ của chúng tôi cung cấp cho Bạn những gì?"
-                      : "What do our services provide for you?"}
+                    {content.subTitle}
                   </h3>
 
                   <ul className="service-feature-list">
                     <li>
-                      <strong>{locale === "vi" ? "Tư Vấn Thiết Kế Độc Quyền:" : "Exclusive Design Consultation:"}</strong>{" "}
-                      {locale === "vi"
-                        ? "Mỗi dự án đều được chúng tôi tiếp cận với tâm huyết, lắng nghe và hiểu rõ yêu cầu cụ thể của khách hàng để đưa ra giải pháp thiết kế ốp lát hoàn hảo nhất."
-                        : "Each project is approached with dedication to deliver the best solution."}
+                      <strong>{content.features[0].title}</strong>{" "}
+                      {content.features[0].text}
                     </li>
 
                     <li>
-                      <strong>{locale === "vi" ? "Chọn Lọc Đá Hoa Cương Tinh Anh:" : "Selected Premium Granite:"}</strong>{" "}
-                      {locale === "vi"
-                        ? "Chúng tôi cung cấp một loạt các loại đá hoa cương nhập khẩu từ khắp nơi trên thế giới."
-                        : "We provide selected imported granite from around the world."}
+                      <strong>{content.features[1].title}</strong>{" "}
+                      {content.features[1].text}
                     </li>
 
                     <li>
-                      <strong>{locale === "vi" ? "Thi Công Chuyên Nghiệp & Tận Tâm:" : "Professional & Dedicated Installation:"}</strong>{" "}
-                      {locale === "vi"
-                        ? "Với quy trình thi công chặt chẽ, chúng tôi đảm bảo mọi chi tiết đều được thực hiện tỉ mỉ và chính xác."
-                        : "With a strict construction process, every detail is carefully completed."}
+                      <strong>{content.features[2].title}</strong>{" "}
+                      {content.features[2].text}
                     </li>
 
                     <li>
-                      <strong>{locale === "vi" ? "Bảo Hành Và Hậu Mãi Chu Đáo:" : "Dedicated Warranty & After-sales:"}</strong>{" "}
-                      {locale === "vi"
-                        ? "Chúng tôi tự tin về chất lượng sản phẩm và dịch vụ của mình."
-                        : "We are confident in our product and service quality."}
+                      <strong>{content.features[3].title}</strong>{" "}
+                      {content.features[3].text}
                     </li>
                   </ul>
                 </div>
@@ -217,32 +272,28 @@ export default async function ServiceDetailPage({
                       <span className="icon-check">
                         <FaCheck />
                       </span>
-                      {locale === "vi" ? "Tư vấn miễn phí" : "Free consultation"}
+                      {content.checklist[0]}
                     </li>
 
                     <li>
                       <span className="icon-check">
                         <FaCheck />
                       </span>
-                      {locale === "vi"
-                        ? "Thi công chuyên nghiệp"
-                        : "Professional installation"}
+                      {content.checklist[1]}
                     </li>
 
                     <li>
                       <span className="icon-check">
                         <FaCheck />
                       </span>
-                      {locale === "vi" ? "Sản phẩm đa dạng" : "Diverse products"}
+                      {content.checklist[2]}
                     </li>
 
                     <li>
                       <span className="icon-check">
                         <FaCheck />
                       </span>
-                      {locale === "vi"
-                        ? "Bảo hành chu đáo"
-                        : "Dedicated warranty"}
+                      {content.checklist[3]}
                     </li>
                   </ul>
 
@@ -264,7 +315,7 @@ export default async function ServiceDetailPage({
         </div>
       </section>
 
-      <Footer />
+      <Footer locale={locale} />
     </div>
   );
 }

@@ -10,6 +10,39 @@ type Account = {
   image: string;
 };
 
+const accountSidebarContent = {
+  vi: {
+    accountFallback: "Tài khoản",
+    editProfile: "✎ Sửa Hồ Sơ",
+    myAccount: "👤 Tài Khoản Của Tôi",
+    profile: "Hồ Sơ",
+    address: "Địa Chỉ",
+    changePassword: "Đổi Mật Khẩu",
+    orders: "🧾 Đơn Mua",
+    routes: {
+      profile: "ho-so",
+      address: "dia-chi",
+      changePassword: "doi-mat-khau",
+      orders: "don-hang",
+    },
+  },
+  en: {
+    accountFallback: "Account",
+    editProfile: "✎ Edit Profile",
+    myAccount: "👤 My Account",
+    profile: "Profile",
+    address: "Address",
+    changePassword: "Change Password",
+    orders: "🧾 Orders",
+    routes: {
+      profile: "profile",
+      address: "addresses",
+      changePassword: "change-password",
+      orders: "orders",
+    },
+  },
+};
+
 function isActive(pathname: string, href: string) {
   return pathname === href || pathname.startsWith(`${href}/`);
 }
@@ -23,6 +56,7 @@ export function AccountSidebar({
 }) {
   const pathname = usePathname();
   const base = locale === "vi" ? "/vi/tai-khoan" : "/en/account";
+  const content = accountSidebarContent[locale];
 
   return (
     <aside className={styles.sidebar}>
@@ -36,47 +70,47 @@ export function AccountSidebar({
         </div>
 
         <div>
-          <strong>{account.name || account.email || "Tài khoản"}</strong>
-          <p>✎ Sửa Hồ Sơ</p>
+          <strong>{account.name || account.email || content.accountFallback}</strong>
+          <p>{content.editProfile}</p>
         </div>
       </div>
 
       <nav className={styles.menu}>
         <div className={styles.menuGroup}>
-          <div className={styles.menuTitle}>👤 Tài Khoản Của Tôi</div>
+          <div className={styles.menuTitle}>{content.myAccount}</div>
 
           <Link
-            href={`${base}/ho-so`}
-            className={isActive(pathname, `${base}/ho-so`) ? styles.activeMenu : ""}
+            href={`${base}/${content.routes.profile}`}
+            className={isActive(pathname, `${base}/${content.routes.profile}`) ? styles.activeMenu : ""}
           >
-            Hồ Sơ
+            {content.profile}
           </Link>
 
           <Link
-            href={`${base}/dia-chi`}
-            className={isActive(pathname, `${base}/dia-chi`) ? styles.activeMenu : ""}
+            href={`${base}/${content.routes.address}`}
+            className={isActive(pathname, `${base}/${content.routes.address}`) ? styles.activeMenu : ""}
           >
-            Địa Chỉ
+            {content.address}
           </Link>
 
           <Link
-            href={`${base}/doi-mat-khau`}
+            href={`${base}/${content.routes.changePassword}`}
             className={
-              isActive(pathname, `${base}/doi-mat-khau`) ? styles.activeMenu : ""
+              isActive(pathname, `${base}/${content.routes.changePassword}`) ? styles.activeMenu : ""
             }
           >
-            Đổi Mật Khẩu
+            {content.changePassword}
           </Link>
         </div>
 
         <div className={styles.menuGroup}>
           <Link
-            href={`${base}/don-hang`}
+            href={`${base}/${content.routes.orders}`}
             className={`${styles.menuTitle} ${
-              isActive(pathname, `${base}/don-hang`) ? styles.activeMenu : ""
+              isActive(pathname, `${base}/${content.routes.orders}`) ? styles.activeMenu : ""
             }`}
           >
-            🧾 Đơn Mua
+            {content.orders}
           </Link>
         </div>
       </nav>

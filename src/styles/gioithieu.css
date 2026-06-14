@@ -194,7 +194,7 @@
   }
 
   .about-two__list {
-    justify-content: flex-start;
+    justify-content: flex-start !important;
   }
 }
 

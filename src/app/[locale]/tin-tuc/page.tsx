@@ -9,12 +9,37 @@ import {
 } from "@/server/post/post.data";
 import Banner from "@/components/site/Banner/Banner";
 
+const newsPageContent = {
+  vi: {
+    bannerTitle: "TIN TỨC & SỰ KIỆN",
+    searchTitle: "Tìm kiếm",
+    searchPlaceholder: "Từ khóa",
+    categoriesTitle: "Danh mục",
+    featuredTitle: "Bài viết nổi bật",
+    tagsTitle: "Tags",
+    emptyText: "Không tìm thấy bài viết phù hợp.",
+    allLabel: "Tất cả",
+    dateLocale: "vi-VN",
+  },
+  en: {
+    bannerTitle: "NEWS & EVENTS",
+    searchTitle: "Search",
+    searchPlaceholder: "Keyword",
+    categoriesTitle: "Categories",
+    featuredTitle: "Featured Posts",
+    tagsTitle: "Tags",
+    emptyText: "No matching posts found.",
+    allLabel: "All",
+    dateLocale: "en-US",
+  },
+};
+
 function newsBaseHref(locale: "vi" | "en") {
   return locale === "vi" ? "/vi/tin-tuc" : "/en/news";
 }
 
 function getAllLabel(locale: "vi" | "en") {
-  return locale === "vi" ? "Tất cả" : "All";
+  return newsPageContent[locale].allLabel;
 }
 
 function isAllLabel(value: string) {
@@ -51,7 +76,7 @@ function getPostHref(locale: "vi" | "en", slug: string) {
   return locale === "vi" ? `/vi/tin-tuc/${slug}` : `/en/news/${slug}`;
 }
 
-function formatPostDate(date: Date | null) {
+function formatPostDate(date: Date | null, locale: "vi" | "en") {
   if (!date) {
     return {
       full: "",
@@ -60,9 +85,11 @@ function formatPostDate(date: Date | null) {
     };
   }
 
+  const dateLocale = newsPageContent[locale].dateLocale;
+
   return {
-    full: date.toLocaleDateString("vi-VN"),
-    day: date.toLocaleDateString("vi-VN", {
+    full: date.toLocaleDateString(dateLocale),
+    day: date.toLocaleDateString(dateLocale, {
       day: "2-digit",
       month: "2-digit",
     }),
@@ -154,6 +181,7 @@ export default async function NewsPage({
   };
 }) {
   const locale = params.locale === "en" ? "en" : "vi";
+  const content = newsPageContent[locale];
 
   const allLabel = getAllLabel(locale);
   const activeCategory = searchParams?.category || allLabel;
@@ -187,7 +215,7 @@ export default async function NewsPage({
         bgImage="/assets/images/backgrounds/PACSTONE-TINTUCSUKIEN-header.png"
       /> */}
       <Banner
-        title="TIN TỨC & SỰ KIỆN"
+        title={content.bannerTitle}
         backgroundImg="/assets/images/backgrounds/news-banner.webp"
         row={3}
         col={4}
@@ -201,7 +229,7 @@ export default async function NewsPage({
                 <aside className="widget-area">
                   <div className="sidebar__form sidebar__single">
                     <h4 className="sidebar__title sidebar__form__title">
-                      Tìm kiếm
+                      {content.searchTitle}
                     </h4>
 
                     <form
@@ -219,7 +247,7 @@ export default async function NewsPage({
                       <input
                         type="text"
                         name="keyword"
-                        placeholder="Từ khóa"
+                        placeholder={content.searchPlaceholder}
                         defaultValue={keyword}
                       />
 
@@ -230,7 +258,7 @@ export default async function NewsPage({
                   </div>
 
                   <div className="sidebar__categories-wrapper sidebar__single">
-                    <h4 className="sidebar__title">Danh mục</h4>
+                    <h4 className="sidebar__title">{content.categoriesTitle}</h4>
 
                     <ul className="sidebar__categories list-unstyled">
                       {categories.map((name) => (
@@ -251,12 +279,12 @@ export default async function NewsPage({
 
                   <div className="sidebar__posts-wrapper sidebar__single">
                     <h4 className="sidebar__title sidebar__posts-title">
-                      Bài viết nổi bật
+                      {content.featuredTitle}
                     </h4>
 
                     <ul className="sidebar__posts list-unstyled">
                       {latestPosts.map((post) => {
-                        const date = formatPostDate(post.publishedAt);
+                        const date = formatPostDate(post.publishedAt, locale);
                         const href = getPostHref(locale, post.slug);
 
                         return (
@@ -281,7 +309,7 @@ export default async function NewsPage({
                   </div>
 
                   <div className="sidebar__tags-wrapper sidebar__single">
-                    <h4 className="sidebar__title">Tags</h4>
+                    <h4 className="sidebar__title">{content.tagsTitle}</h4>
 
                     <div className="sidebar__tags">
                       {allTags.map((tag) => (
@@ -301,7 +329,7 @@ export default async function NewsPage({
             <div className="col-lg-8">
               <div className="row gutter-y-30">
                 {paginatedPosts.map((post) => {
-                  const date = formatPostDate(post.publishedAt);
+                  const date = formatPostDate(post.publishedAt, locale);
                   const href = getPostHref(locale, post.slug);
 
                   return (
@@ -343,7 +371,7 @@ export default async function NewsPage({
 
                 {paginatedPosts.length === 0 && (
                   <div className="col-12">
-                    <p>Không tìm thấy bài viết phù hợp.</p>
+                    <p>{content.emptyText}</p>
                   </div>
                 )}
 
@@ -410,7 +438,7 @@ export default async function NewsPage({
         </div>
       </section>
 
-      <Footer />
+      <Footer locale={locale} />
     </div>
   );
 }

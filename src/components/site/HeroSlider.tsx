@@ -4,23 +4,51 @@ import { useState, useEffect } from "react";
 import { GrPrevious, GrNext } from "react-icons/gr";
 import "@/styles/heroslide.css";
 
-// 1. Khai báo danh sách 3 slide động (Có thể thay đổi nội dung tùy ý)
-const slides = [
-  {
-    image: "3.jpg",
-    subtitle: "Chào mừng đến với",
-    title: "P.A.C STONE",
-    desc: "Đẳng cấp Công Trình Việt",
-  },
-  {
-    image: "slider2.jpg",
-    subtitle: "Giải pháp kiến trúc",
-    title: "ĐÁ ỐP LÁT CAO CẤP",
-    desc: "Sang trọng - Tinh tế - Trường tồn",
-  }
-];
+type Locale = "vi" | "en";
 
-export function Hero() {
+// 1. Khai báo danh sách 3 slide động (Có thể thay đổi nội dung tùy ý)
+const heroContent = {
+  vi: {
+    button: "Tìm hiểu thêm",
+    href: "/vi/gioi-thieu",
+    slides: [
+      {
+        image: "3.jpg",
+        subtitle: "Chào mừng đến với",
+        title: "P.A.C STONE",
+        desc: "Đẳng cấp Công Trình Việt",
+      },
+      {
+        image: "slider2.jpg",
+        subtitle: "Giải pháp kiến trúc",
+        title: "ĐÁ ỐP LÁT CAO CẤP",
+        desc: "Sang trọng - Tinh tế - Trường tồn",
+      }
+    ],
+  },
+  en: {
+    button: "Learn more",
+    href: "/en/about",
+    slides: [
+      {
+        image: "3.jpg",
+        subtitle: "Welcome to",
+        title: "P.A.C STONE",
+        desc: "Premium Value for Vietnamese Projects",
+      },
+      {
+        image: "slider2.jpg",
+        subtitle: "Architectural solutions",
+        title: "PREMIUM STONE CLADDING",
+        desc: "Elegant - Refined - Timeless",
+      }
+    ],
+  },
+};
+
+export function Hero({ locale = "vi" }: { locale?: Locale }) {
+  const content = heroContent[locale] || heroContent.vi;
+  const slides = content.slides;
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const handlePrev = () => {
@@ -32,9 +60,16 @@ export function Hero() {
   };
 
   useEffect(() => {
-    const slideInterval = setInterval(handleNext, 10000);
+    setCurrentIndex(0);
+  }, [locale]);
+
+  useEffect(() => {
+    const slideInterval = setInterval(() => {
+      setCurrentIndex((prev) => (prev === slides.length - 1 ? 0 : prev + 1));
+    }, 10000);
+
     return () => clearInterval(slideInterval);
-  }, []);
+  }, [slides.length]);
 
   return (
     <section className="main-slider-two hero-slider">
@@ -61,8 +96,8 @@ export function Hero() {
                 <h2 className="hero-desc">{slide.desc}</h2>
               </div>
               <div className="conteiner-btn">
-                <a href="/gioi-thieu" className="hero-btn">
-                  <span>Tìm hiểu thêm</span>
+                <a href={content.href} className="hero-btn">
+                  <span>{content.button}</span>
                   <i className="icon-right-arrow">→</i>
                 </a>
               </div>

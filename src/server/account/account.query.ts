@@ -57,3 +57,26 @@ export async function getAccountOrders(status?: OrderStatus) {
     },
   });
 }
+
+export async function getAccountOrderDetail(orderIdOrCode: string) {
+  const user = await getCurrentAccount();
+
+  if (!user) return null;
+
+  return prisma.order.findFirst({
+    where: {
+      userId: user.id,
+      OR: [
+        {
+          id: orderIdOrCode,
+        },
+        {
+          code: orderIdOrCode,
+        },
+      ],
+    },
+    include: {
+      items: true,
+    },
+  });
+}

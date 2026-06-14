@@ -132,7 +132,7 @@ export function ProductDetailDefault({
                   )}
 
                   <div className="product-details__specs">
-                    <h5 className="fw-bold text-dark mb-0" style={{ fontSize: 16 }}>
+                    <h5 className="mt-2 fw-bold text-dark mb-0" style={{ fontSize: 16 }}>
                       {locale === "vi" ? "Thông Số Kỹ Thuật" : "Specifications"}
                     </h5>
 

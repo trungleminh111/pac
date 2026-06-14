@@ -17,6 +17,8 @@ export const defaultPermissionSettings = {
     categories: true,
     menus: true,
     pages: true,
+    attributes: true,
+    orders: true,
     settings: true,
   },
   EDITOR: {
@@ -30,6 +32,8 @@ export const defaultPermissionSettings = {
     categories: true,
     menus: false,
     pages: false,
+    attributes: true,
+    orders: true,
     settings: false,
   },
   AUTHOR: {
@@ -43,6 +47,8 @@ export const defaultPermissionSettings = {
     categories: false,
     menus: false,
     pages: false,
+    attributes: true,
+    orders: true,
     settings: false,
   },
 };
@@ -79,6 +85,8 @@ export async function getPermissionSettings() {
       categories: true,
       menus: true,
       pages: true,
+      attributes: true,
+      orders: true,
       settings: true,
     },
     EDITOR: {

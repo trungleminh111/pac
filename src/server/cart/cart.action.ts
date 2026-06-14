@@ -3,7 +3,8 @@
 import { getServerSession } from "next-auth/next";
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
-// import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { authOptions } from "@/lib/auth";
+import { Locale as PrismaLocale, OrderStatus } from "@prisma/client";
 
 type CartActionResult = {
   ok: boolean;
@@ -11,8 +12,10 @@ type CartActionResult = {
   redirectTo?: string;
 };
 
+type AppLocale = "vi" | "en";
+
 async function getCurrentUser() {
-  const session = await getServerSession(/* authOptions */);
+  const session = await getServerSession(authOptions);
 
   if (!session?.user?.email) {
     return null;
@@ -25,11 +28,15 @@ async function getCurrentUser() {
   });
 }
 
+function toPrismaLocale(locale: AppLocale) {
+  return locale === "en" ? PrismaLocale.en : PrismaLocale.vi;
+}
+
 function makeOrderCode() {
   return `PAC-${Date.now()}`;
 }
 
-function getLocalePaths(locale: "vi" | "en") {
+function getLocalePaths(locale: AppLocale) {
   return {
     loginPath: locale === "vi" ? "/vi/dang-nhap" : "/en/login",
     cartPath: locale === "vi" ? "/vi/gio-hang" : "/en/cart",
@@ -39,6 +46,18 @@ function getLocalePaths(locale: "vi" | "en") {
     orderPath:
       locale === "vi" ? "/vi/tai-khoan/don-hang" : "/en/account/orders",
   };
+}
+
+function revalidateCartAndCheckout() {
+  revalidatePath("/vi/gio-hang");
+  revalidatePath("/vi/thanh-toan");
+  revalidatePath("/en/cart");
+  revalidatePath("/en/checkout");
+}
+
+function revalidateOrders() {
+  revalidatePath("/vi/tai-khoan/don-hang");
+  revalidatePath("/en/account/orders");
 }
 
 export async function updateCartQuantity(
@@ -88,10 +107,7 @@ export async function updateCartQuantity(
       },
     });
 
-    revalidatePath("/vi/gio-hang");
-    revalidatePath("/vi/thanh-toan");
-    revalidatePath("/en/cart");
-    revalidatePath("/en/checkout");
+    revalidateCartAndCheckout();
 
     return {
       ok: true,
@@ -108,10 +124,7 @@ export async function updateCartQuantity(
     },
   });
 
-  revalidatePath("/vi/gio-hang");
-  revalidatePath("/vi/thanh-toan");
-  revalidatePath("/en/cart");
-  revalidatePath("/en/checkout");
+  revalidateCartAndCheckout();
 
   return {
     ok: true,
@@ -128,7 +141,7 @@ export async function removeCartItem(
     return {
       ok: false,
       message: "Vui lòng đăng nhập để xoá sản phẩm khỏi giỏ hàng.",
-      redirectTo: "/login",
+      redirectTo: "/vi/dang-nhap",
     };
   }
 
@@ -164,10 +177,7 @@ export async function removeCartItem(
     },
   });
 
-  revalidatePath("/vi/gio-hang");
-  revalidatePath("/vi/thanh-toan");
-  revalidatePath("/en/cart");
-  revalidatePath("/en/checkout");
+  revalidateCartAndCheckout();
 
   return {
     ok: true,
@@ -180,7 +190,8 @@ export async function createOrder(
 ): Promise<CartActionResult> {
   const user = await getCurrentUser();
 
-  const locale = String(formData.get("locale") || "vi") === "en" ? "en" : "vi";
+  const locale: AppLocale =
+    String(formData.get("locale") || "vi") === "en" ? "en" : "vi";
 
   const { loginPath, cartPath, addressPath, orderPath } =
     getLocalePaths(locale);
@@ -221,7 +232,7 @@ export async function createOrder(
             include: {
               translations: {
                 where: {
-                  locale,
+                  locale: toPrismaLocale(locale),
                 },
                 take: 1,
               },
@@ -272,61 +283,68 @@ export async function createOrder(
 
   const shippingFee = 0;
   const total = subtotal + shippingFee;
+  const orderCode = makeOrderCode();
 
-  await prisma.order.create({
-    data: {
-      userId: user.id,
-      code: makeOrderCode(),
-      status: "PENDING",
-      paymentStatus: "UNPAID",
-      paymentMethod,
-      shippingFee,
-      subtotal,
-      total,
-      note,
-      receiverName: address.fullName,
-      receiverPhone: address.phone,
-      city: address.city,
-      district: address.district,
-      ward: address.ward,
-      street: address.street,
-      items: {
-        create: selectedItems.map((item) => {
-          const translation = item.product.translations[0];
+  await prisma.$transaction(async (tx) => {
+    await tx.order.create({
+      data: {
+        userId: user.id,
+        code: orderCode,
+        status: "PENDING",
+        paymentStatus: "UNPAID",
+        paymentMethod,
+        shippingFee,
+        subtotal,
+        total,
+        note,
 
-          return {
-            productId: item.productId,
-            title: translation?.title || "Sản phẩm",
-            image: item.product.thumbnail,
-            quantity: item.quantity,
-            price: item.price,
-            subtotal: Number(item.price) * item.quantity,
-            snapshot: {
-              sku: item.product.sku,
-              title: translation?.title || "Sản phẩm",
-              image: item.product.thumbnail,
-            },
-          };
-        }),
+        receiverName: address.fullName,
+        receiverPhone: address.phone,
+        city: address.city,
+        district: address.district,
+        ward: address.ward,
+        street: address.street,
+
+        items: {
+          create: selectedItems.map((item) => {
+            const translation = item.product.translations[0];
+            const title = translation?.title || "Sản phẩm";
+            const image = item.product.thumbnail;
+
+            return {
+              productId: item.productId,
+              title,
+              image,
+              quantity: item.quantity,
+              price: item.price,
+              subtotal: Number(item.price) * item.quantity,
+              snapshot: {
+                productId: item.productId,
+                sku: item.product.sku,
+                title,
+                image,
+                quantity: item.quantity,
+                price: Number(item.price),
+                subtotal: Number(item.price) * item.quantity,
+              },
+            };
+          }),
+        },
       },
-    },
+    });
+
+    await tx.cartItem.deleteMany({
+      where: {
+        cartId: cart.id,
+        id: {
+          in: selectedItems.map((item) => item.id),
+        },
+      },
+    });
   });
 
-  await prisma.cartItem.deleteMany({
-    where: {
-      cartId: cart.id,
-      id: {
-        in: selectedItems.map((item) => item.id),
-      },
-    },
-  });
-
-  revalidatePath("/vi/gio-hang");
-  revalidatePath("/vi/thanh-toan");
-  revalidatePath("/vi/tai-khoan/don-hang");
-  revalidatePath("/en/cart");
-  revalidatePath("/en/checkout");
-  revalidatePath("/en/account/orders");
+  revalidateCartAndCheckout();
+  revalidateOrders();
 
   return {
     ok: true,

@@ -1,10 +1,73 @@
 import { FiCheckSquare } from "react-icons/fi";
 import ScrollReveal from "@/components/site/ScrollReveal";
+
+type Locale = "vi" | "en";
+
 type AboutProps = {
   backgroundImage?: string;
+  locale?: Locale;
 };
 
-export function About({ backgroundImage }: AboutProps) {
+const aboutContent = {
+  vi: {
+    yearLabel: "năm",
+    experience: "kinh nghiệm",
+    tagline: "Giới thiệu",
+    title: "công ty tnhh thương mại dịch vụ xây dựng p.a.c stone",
+    subtitle: "Chúng tôi mang đến đẳng cấp công trình Việt.",
+    description: (
+      <>
+        P.A.C STONE là một trong những nhà cung cấp hàng đầu Việt Nam về các sản
+        phẩm và giải pháp ốp lát đá cao cấp được nhập khẩu từ các quốc gia có
+        nền công nghiệp đá phát triển như Italy, Tây Ban Nha, Brazil, và Ấn Độ.
+        <br />
+        <br />
+        Đặc biệt với đội ngũ thiết kế và thi công chuyên nghiệp. P.A.C Stone cam
+        kết mang đến sự hoàn hảo và sang trọng cho mọi không gian sống, đáp ứng
+        mọi nhu cầu của khách hàng.
+      </>
+    ),
+    items: [
+      "Chất lượng vượt trội",
+      "Thiết kế độc đáo",
+      "Thi công chuyên nghiệp",
+      "Bảo hành tận tâm",
+    ],
+    button: "Xem thêm",
+    href: "/vi/gioi-thieu",
+  },
+  en: {
+    yearLabel: "years",
+    experience: "experience",
+    tagline: "About us",
+    title: "p.a.c stone trading service construction company limited",
+    subtitle: "We bring premium value to Vietnamese construction projects.",
+    description: (
+      <>
+        P.A.C STONE is one of Vietnam’s leading suppliers of premium stone
+        products and stone cladding solutions, imported from countries with
+        well-developed stone industries such as Italy, Spain, Brazil, and India.
+        <br />
+        <br />
+        With a professional design and construction team, P.A.C Stone is
+        committed to delivering perfection and elegance to every living space,
+        meeting the diverse needs of our customers.
+      </>
+    ),
+    items: [
+      "Outstanding quality",
+      "Unique design",
+      "Professional construction",
+      "Dedicated warranty",
+    ],
+    button: "Read more",
+    href: "/en/about",
+  },
+};
+
+export function About({ backgroundImage, locale = "vi" }: AboutProps) {
+  const content = aboutContent[locale] || aboutContent.vi;
+
   return (
     <section className="about-two section-space  pt-lg-5   pt-xl-5   pb-xxl-3 pb-sm-3  pb-md-3  pb-lg-5   pb-xl-5   pb-xxl-3">
       <div
@@ -49,9 +112,9 @@ export function About({ backgroundImage }: AboutProps) {
                       >
                         20
                         <br />
-                        <span style={{ fontSize: 22 }}>năm</span>
+                        <span style={{ fontSize: 22 }}>{content.yearLabel}</span>
                       </h3>
-                      <p className="experience__text">kinh nghiệm</p>
+                      <p className="experience__text">{content.experience}</p>
                     </div>
                   </div>
                 </div>
@@ -63,9 +126,9 @@ export function About({ backgroundImage }: AboutProps) {
             <div className="about-two__content">
               <ScrollReveal animationClass="fade-in-right">
                 <div className="sec-title sec-title--border">
-                  <h6 className="sec-title__tagline">Giới thiệu</h6>
+                  <h6 className="sec-title__tagline">{content.tagline}</h6>
                   <h3 className="sec-title__title">
-                    công ty tnhh thương mại dịch vụ xây dựng p.a.c stone
+                    {content.title}
                   </h3>
                 </div>
               </ScrollReveal>
@@ -74,22 +137,13 @@ export function About({ backgroundImage }: AboutProps) {
                 <ScrollReveal animationClass="fade-in-up" delay="0.2s">
 
                   <h5 className="about-two__text-title">
-                    Chúng tôi mang đến đẳng cấp công trình Việt.
+                    {content.subtitle}
                   </h5>
                 </ScrollReveal>
                 <ScrollReveal animationClass="fade-in-up" delay="0.4s">
 
                   <p className="about-two__text">
-                    P.A.C STONE là một trong những nhà cung cấp hàng đầu
-                    Việt Nam về các sản phẩm và giải pháp ốp lát đá cao cấp
-                    được nhập khẩu từ các quốc gia có nền công nghiệp đá phát
-                    triển như Italy, Tây Ban Nha, Brazil, và Ấn Độ.
-                    <br />
-                    <br />
-                    Đặc biệt với đội ngũ thiết kế và thi công chuyên nghiệp.
-                    P.A.C Stone cam kết mang đến sự hoàn hảo và sang trọng
-                    cho mọi không gian sống, đáp ứng mọi nhu cầu của khách
-                    hàng.
+                    {content.description}
                   </p>
                 </ScrollReveal>
               </div>
@@ -100,22 +154,22 @@ export function About({ backgroundImage }: AboutProps) {
                   <div className="about-two__list__left">
                     <div className="about-two__list__item">
                       <FiCheckSquare className="about-check-icon" />
-                      Chất lượng vượt trội
+                      {content.items[0]}
                     </div>
                     <div className="about-two__list__item">
                       <FiCheckSquare className="about-check-icon" />
-                      Thiết kế độc đáo
+                      {content.items[1]}
                     </div>
                   </div>
 
                   <div className="about-two__list__right">
                     <div className="about-two__list__item">
                       <FiCheckSquare className="about-check-icon" />
-                      Thi công chuyên nghiệp
+                      {content.items[2]}
                     </div>
                     <div className="about-two__list__item">
                       <FiCheckSquare className="about-check-icon" />
-                      Bảo hành tận tâm
+                      {content.items[3]}
                     </div>
                   </div>
                 </div>
@@ -125,8 +179,8 @@ export function About({ backgroundImage }: AboutProps) {
                 <div className="about-two__list">
 
                   <div className="about-two__button">
-                    <a href="/vi/gioi-thieu" className="floens-btn">
-                      <span>Xem thêm</span>
+                    <a href={content.href} className="floens-btn">
+                      <span>{content.button}</span>
                       <i className="icon-right-arrow" >→</i>
                     </a>
                   </div>

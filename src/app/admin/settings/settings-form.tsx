@@ -18,6 +18,9 @@ type ModuleKey =
   | "media"
   | "users"
   | "categories"
+  | "pages"
+  | "attributes"
+  | "orders"
   | "settings";
 
 type AdminSettings = {
@@ -50,6 +53,9 @@ const modules: { key: ModuleKey; label: string }[] = [
   { key: "media", label: "Media" },
   { key: "users", label: "Người dùng" },
   { key: "categories", label: "Danh mục" },
+  { key: "attributes", label: "Thuộc tính" },
+  { key: "pages", label: "Page" },
+  { key: "orders", label: "Đơn hàng" },
   { key: "settings", label: "Cài đặt" },
 ];
 

@@ -5,5 +5,5 @@ import { ProjectsClient } from "./ProjectsClient";
 export async function Projects({ locale }: { locale: Locale }) {
   const projects = await getHomeProjectSlides(locale);
 
-  return <ProjectsClient projects={projects} />;
+  return <ProjectsClient projects={projects} locale={locale}/>;
 }

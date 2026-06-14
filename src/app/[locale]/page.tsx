@@ -19,18 +19,18 @@ export default function HomePage({
   return (
     <div className="page-wrapper">
       <Header locale={params.locale} />
-      <Hero />
+      <Hero locale={params.locale}/>
       <ClientCarousel />
       <Services locale={params.locale} />
 
       <div className="home-shared-bg">
-        <About />
+        <About locale={params.locale}/>
         <Products locale={params.locale} />
         <Projects locale={params.locale} />
       </div>
 
       <News locale={params.locale} />
-      <Footer />
+      <Footer locale={params.locale}/>
     </div>
   );
 }

@@ -28,6 +28,7 @@ model User {
   orders         Order[]
   reviews        ProductReview[]
   stockMovements StockMovement[] @relation("StockMovementCreatedBy")
+  orderStatusHistories OrderStatusHistory[] @relation("OrderStatusHistoryActor")
 }
 
 // =====================
@@ -764,6 +765,7 @@ model Order {
   user           User            @relation(fields: [userId], references: [id], onDelete: Cascade)
   items          OrderItem[]
   stockMovements StockMovement[]
+  statusHistories OrderStatusHistory[]
 
   @@index([userId])
   @@index([status])
@@ -795,6 +797,32 @@ model OrderItem {
   @@index([orderId])
   @@index([productId])
   @@index([variantId])
+}
+
+model OrderStatusHistory {
+  id         String      @id @default(cuid())
+  orderId    String
+  fromStatus OrderStatus?
+  toStatus   OrderStatus
+
+  reasonType OrderStatusReasonType @default(NORMAL)
+  reason String
+  note   String?
+
+  actorId    String?
+  actorName  String?
+  actorEmail String?
+
+  createdAt DateTime @default(now())
+
+  order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  actor User? @relation("OrderStatusHistoryActor", fields: [actorId], references: [id], onDelete: SetNull)
+
+  @@index([orderId])
+  @@index([fromStatus])
+  @@index([toStatus])
+  @@index([actorId])
+  @@index([createdAt])
 }
 
 // =====================
@@ -893,4 +921,14 @@ enum CategoryAttributeLevel {
   REQUIRED
   RECOMMENDED
   OPTIONAL
+}
+enum OrderStatusReasonType {
+  NORMAL
+  CUSTOMER_REQUEST
+  STAFF_MISTAKE
+  OPERATION_FIX
+  PAYMENT_ISSUE
+  DELIVERY_ISSUE
+  PRODUCT_ISSUE
+  OTHER
 }

@@ -9,6 +9,8 @@ import {
   Users,
   Settings,
   FolderTree,
+  SlidersHorizontal,
+  ReceiptText,
 } from "lucide-react";
 import { getCurrentAdminRole } from "@/lib/admin-permissions";
 import { getPermissionSettings } from "@/lib/settings";
@@ -30,6 +32,8 @@ const menu: {
   { label: "Người dùng", href: "/admin/users", icon: Users, module: "users" },
   { label: "Menus", href: "/admin/menus", icon: FolderTree, module: "menus" },
   { label: "Trang", href: "/admin/pages", icon: FileText, module: "pages" },
+  { label: "Thuộc tính", href: "/admin/attributes", icon: SlidersHorizontal, module: "attributes" },
+  { label: "Đơn hàng", href: "/admin/orders", icon: ReceiptText, module: "orders" },
   { label: "Cài đặt", href: "/admin/settings", icon: Settings, module: "settings" },
 ];
 

@@ -1,12 +1,11 @@
 import Link from "next/link";
-import { FiSearch } from "react-icons/fi";
 import { OrderStatus } from "@prisma/client";
 import { getAccountOrders } from "@/server/account/account.query";
 import { OrdersSearch } from "./orders-search";
 import styles from "../account.module.css";
 
 function formatPrice(value: any) {
-  return Number(value).toLocaleString("vi-VN") + "đ";
+  return Number(value || 0).toLocaleString("vi-VN") + "đ";
 }
 
 function statusLabel(status: OrderStatus) {
@@ -23,6 +22,12 @@ function statusLabel(status: OrderStatus) {
   return labels[status];
 }
 
+function getOrderDetailHref(locale: "vi" | "en", orderId: string) {
+  return locale === "vi"
+    ? `/vi/tai-khoan/don-hang/${orderId}`
+    : `/en/account/orders/${orderId}`;
+}
+
 const tabs = [
   { label: "Tất cả", value: "" },
   { label: "Chờ xác nhận", value: "PENDING" },
@@ -30,6 +35,7 @@ const tabs = [
   { label: "Đang giao", value: "SHIPPING" },
   { label: "Hoàn thành", value: "COMPLETED" },
   { label: "Đã hủy", value: "CANCELLED" },
+  { label: "Đã trả hàng", value: "RETURNED" },
 ] as const;
 
 export default async function OrdersPage({
@@ -44,26 +50,32 @@ export default async function OrdersPage({
     q?: string;
   };
 }) {
+  const locale = params.locale === "en" ? "en" : "vi";
   const activeStatus = searchParams?.status || "";
   const keyword = (searchParams?.q || "").trim().toLowerCase();
 
-  const status = activeStatus ? (activeStatus as OrderStatus) : undefined;
+  const validStatuses = Object.values(OrderStatus) as string[];
+  const status =
+    activeStatus && validStatuses.includes(activeStatus)
+      ? (activeStatus as OrderStatus)
+      : undefined;
+
   const orders = await getAccountOrders(status);
 
   const filteredOrders = keyword
     ? orders.filter((order) => {
-      const matchCode = order.code.toLowerCase().includes(keyword);
+        const matchCode = order.code.toLowerCase().includes(keyword);
 
-      const matchProduct = order.items.some((item) =>
-        item.title.toLowerCase().includes(keyword)
-      );
+        const matchProduct = order.items.some((item) =>
+          item.title.toLowerCase().includes(keyword)
+        );
 
-      return matchCode || matchProduct;
-    })
+        return matchCode || matchProduct;
+      })
     : orders;
 
   const base =
-    params.locale === "vi" ? "/vi/tai-khoan/don-hang" : "/en/account/orders";
+    locale === "vi" ? "/vi/tai-khoan/don-hang" : "/en/account/orders";
 
   return (
     <section>
@@ -96,7 +108,9 @@ export default async function OrdersPage({
           <div className={styles.orderCard} key={order.id}>
             <div className={styles.orderTop}>
               <div>
-                <strong>Đơn hàng #{order.code}</strong>
+                <Link href={getOrderDetailHref(locale, order.id)}>
+                  <strong>Đơn hàng #{order.code}</strong>
+                </Link>
               </div>
 
               <div>

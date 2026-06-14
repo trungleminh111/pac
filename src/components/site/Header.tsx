@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { GoSearch } from "react-icons/go";
 import { FiUser, FiShoppingCart } from "react-icons/fi";
+import { MdMailOutline } from "react-icons/md";
 import { CartDrawer } from "@/components/site/cart/CartDrawer";
 import {
   FaPaperPlane,
@@ -129,7 +130,7 @@ export function Header({
           <div className="topbar-one__inner">
             <ul className="list-unstyled topbar-one__info">
               <li className="topbar-one__info__item">
-                <FaPaperPlane />
+                <MdMailOutline />
                 <a href="mailto:Pacstone.cskh@gmail.com">Pacstone.cskh@gmail.com</a>
               </li>
               <li className="topbar-one__info__item">
@@ -285,7 +286,7 @@ export function Header({
             </ul>
           </div>
           <ul className="mobile-nav__contact list-unstyled">
-            <li><span className="mobile-nav__contact-icon"><FaPaperPlane /></span><a href="mailto:Pacstone.cskh@gmail.com">Pacstone.cskh@gmail.com</a></li>
+            <li><span className="mobile-nav__contact-icon"><MdMailOutline /></span><a href="mailto:Pacstone.cskh@gmail.com">Pacstone.cskh@gmail.com</a></li>
             <li><span className="mobile-nav__contact-icon"><FaPhoneAlt /></span><a href="tel:0962757475">0962.757.475</a></li>
           </ul>
           <div className="main-footer__social floens-social">
@@ -346,25 +347,6 @@ export function Header({
                   </div>
                 </Link>
               </li>
-              <li>
-                <Link
-                  href={locale === "vi" ? "/vi/tai-khoan/ho-so" : "/en/account/profile"}
-                  className="sidebar-util-link"
-                  onClick={() => setSidebarOpen(false)}
-                >
-                  <div className="util-icon-box">
-                    <FiUser />
-                  </div>
-                  <div className="util-text-box">
-                    <span className="util-title">
-                      {locale === "vi" ? "Tài khoản của tôi" : "My Account"}
-                    </span>
-                    <span className="util-badge">
-                      {locale === "vi" ? "Quản lý hồ sơ" : "Manage profile"}
-                    </span>
-                  </div>
-                </Link>
-              </li>
               {isLoggedIn ? (
                 <li>
                   <Link
@@ -390,25 +372,7 @@ export function Header({
                   </Link>
                 </li>
               ) : (
-                <li>
-                  <Link
-                    href={locale === "vi" ? "/login" : "/login"}
-                    className="sidebar-util-link"
-                    onClick={() => setSidebarOpen(false)}
-                  >
-                    <div className="util-icon-box">
-                      <FiUser />
-                    </div>
-                    <div className="util-text-box">
-                      <span className="util-title">
-                        {locale === "vi" ? "Đăng nhập" : "Login"}
-                      </span>
-                      <span className="util-badge">
-                        {locale === "vi" ? "Truy cập tài khoản" : "Access account"}
-                      </span>
-                    </div>
-                  </Link>
-                </li>
+                <></>
               )}
               <li className="mt-3">
                 <button onClick={() => { setSidebarOpen(false); openModal(); }} className=" sidebar-util-zalo-btn w-100 open-popup-btn" style={{ padding: "12px 25px", backgroundColor: "var(--floens-base, #c7844f)" }}>
@@ -428,7 +392,7 @@ export function Header({
             <h4 className="sidebar-one__title">{locale === "vi" ? "Thông tin liên hệ" : "Contact Information"}</h4>
             <ul className="sidebar-one__info__list">
               <li><span className="sidebar-contact-icon"><FaMapMarkerAlt /></span><a href="#" className="location">114 C Hoàng Hoa Thám, Phường Bảy Hiền, TP. HCM</a></li>
-              <li><span className="sidebar-contact-icon"><FaPaperPlane /></span><a href="mailto:Pacstone.cskh@gmail.com" className="mail">Pacstone.cskh@gmail.com</a></li>
+              <li><span className="sidebar-contact-icon"><MdMailOutline /></span><a href="mailto:Pacstone.cskh@gmail.com" className="mail">Pacstone.cskh@gmail.com</a></li>
               <li><span className="sidebar-contact-icon"><FaPhoneAlt /></span><a href="tel:0962757475" className="phone">0962.757.475</a></li>
             </ul>
           </div>

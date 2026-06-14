@@ -15,6 +15,9 @@ const modules = [
   "media",
   "users",
   "categories",
+  "attributes",
+  "pages",
+  "orders",
   "settings",
 ] as const;
 

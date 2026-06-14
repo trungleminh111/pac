@@ -5,6 +5,44 @@ import { PageHeader } from "@/components/site/PageHeader";
 import ScrollReveal from "@/components/site/ScrollReveal";
 import Banner from "@/components/site/Banner/Banner";
 
+type Locale = "vi" | "en";
+
+const aboutPageContent = {
+    vi: {
+        bannerTitle: "GIỚI THIỆU",
+        reasonTagline: "Lý do",
+        reasonTitle: "LÝ DO VÌ SAO NÊN CHỌN CHÚNG TÔI?",
+        qualityTitle: "Chất Lượng Vượt Trội",
+        qualityText:
+            "Chúng tôi cam kết sử dụng những tấm đá hoa cương có chất lượng tốt nhất, được nhập khẩu từ các mỏ đá nổi tiếng trên thế giới.",
+        constructionTitle: "Thi công chuyên nghiệp",
+        constructionText:
+            "Đội ngũ thi công của P.A.C STONE là những thợ lành nghề, giàu kinh nghiệm, luôn đảm bảo quy trình thi công chính xác và hiệu quả.",
+        designTitle: "Thiết Kế Độc Đáo",
+        designText:
+            "Mỗi dự án đều được xem xét tỉ mỉ, đảm bảo thiết kế phản ánh phong cách riêng và tạo điểm nhấn ấn tượng.",
+        warrantyTitle: "Bảo Hành Tận Tâm",
+        warrantyText:
+            "Chúng tôi luôn đặt khách hàng làm trung tâm, hỗ trợ tận tâm trước, trong và sau khi dự án hoàn thành.",
+    },
+    en: {
+        bannerTitle: "ABOUT US",
+        reasonTagline: "Reasons",
+        reasonTitle: "WHY SHOULD YOU CHOOSE US?",
+        qualityTitle: "Outstanding Quality",
+        qualityText:
+            "We are committed to using premium granite and natural stone slabs, carefully sourced from renowned quarries around the world.",
+        constructionTitle: "Professional Construction",
+        constructionText:
+            "The construction team at P.A.C STONE consists of skilled and experienced craftsmen, ensuring accurate and efficient installation processes.",
+        designTitle: "Unique Design",
+        designText:
+            "Every project is carefully considered to ensure the design reflects a distinctive style and creates an impressive highlight.",
+        warrantyTitle: "Dedicated Warranty",
+        warrantyText:
+            "We always put customers at the center, providing dedicated support before, during, and after each project is completed.",
+    },
+};
 
 export default function AboutPage({
     params,
@@ -14,16 +52,18 @@ export default function AboutPage({
     };
 }) {
     const locale = params.locale === "en" ? "en" : "vi";
+    const content = aboutPageContent[locale];
+
     return (
         <div className="page-wrapper page-gioithieu">
             <Header locale={locale} />
             <Banner
-                title="GIỚI THIỆU"
+                title={content.bannerTitle}
                 backgroundImg="/assets/images/backgrounds/intro-banner.webp"
                 row={3}
                 col={1}
             />
-            <About backgroundImage="/assets/images/backgrounds/8.png" />
+            <About backgroundImage="/assets/images/backgrounds/8.png" locale={locale} />
             <section className="about-one section-space" id="about">
                 <div className="container">
                     <div className="row">
@@ -88,9 +128,9 @@ export default function AboutPage({
                             <div className="about-one__content">
                                 <ScrollReveal animationClass="fade-in-up" delay="0.4s">
                                     <div className="sec-title sec-title--border">
-                                        <h6 className="sec-title__tagline">Lý do</h6>
+                                        <h6 className="sec-title__tagline">{content.reasonTagline}</h6>
                                         <h3 className="sec-title__title">
-                                            LÝ DO VÌ SAO NÊN CHỌN CHÚNG TÔI?
+                                            {content.reasonTitle}
                                         </h3>
                                     </div>
                                 </ScrollReveal>
@@ -102,12 +142,10 @@ export default function AboutPage({
 
                                                 <div className="about-one__service__content">
                                                     <h4 className="about-one__service__title">
-                                                        Chất Lượng Vượt Trội
+                                                        {content.qualityTitle}
                                                     </h4>
                                                     <p className="about-one__service__text">
-                                                        Chúng tôi cam kết sử dụng những tấm đá hoa cương có
-                                                        chất lượng tốt nhất, được nhập khẩu từ các mỏ đá nổi
-                                                        tiếng trên thế giới.
+                                                        {content.qualityText}
                                                     </p>
                                                 </div>
                                             </ScrollReveal>
@@ -120,12 +158,10 @@ export default function AboutPage({
 
                                                 <div className="about-one__service__content">
                                                     <h4 className="about-one__service__title">
-                                                        Thi công chuyên nghiệp
+                                                        {content.constructionTitle}
                                                     </h4>
                                                     <p className="about-one__service__text">
-                                                        Đội ngũ thi công của P.A.C STONE là những thợ lành nghề,
-                                                        giàu kinh nghiệm, luôn đảm bảo quy trình thi công
-                                                        chính xác và hiệu quả.
+                                                        {content.constructionText}
                                                     </p>
                                                 </div>
                                             </ScrollReveal>
@@ -141,11 +177,10 @@ export default function AboutPage({
 
                                                 <div className="about-one__service__content">
                                                     <h4 className="about-one__service__title">
-                                                        Thiết Kế Độc Đáo
+                                                        {content.designTitle}
                                                     </h4>
                                                     <p className="about-one__service__text">
-                                                        Mỗi dự án đều được xem xét tỉ mỉ, đảm bảo thiết kế
-                                                        phản ánh phong cách riêng và tạo điểm nhấn ấn tượng.
+                                                        {content.designText}
                                                     </p>
                                                 </div>
                                             </ScrollReveal>
@@ -158,11 +193,10 @@ export default function AboutPage({
 
                                                 <div className="about-one__service__content">
                                                     <h4 className="about-one__service__title">
-                                                        Bảo Hành Tận Tâm
+                                                        {content.warrantyTitle}
                                                     </h4>
                                                     <p className="about-one__service__text">
-                                                        Chúng tôi luôn đặt khách hàng làm trung tâm, hỗ trợ
-                                                        tận tâm trước, trong và sau khi dự án hoàn thành.
+                                                        {content.warrantyText}
                                                     </p>
                                                 </div>
                                             </ScrollReveal>

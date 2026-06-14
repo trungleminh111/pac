@@ -321,19 +321,19 @@ export function Header({
               </li>
               <li>
                 <Link
-                  href={locale === "vi" ? "/vi/tai-khoan/don-hang" : "/en/account/orders"}
+                  href={locale === "vi" ? "/vi/tai-khoan/ho-so" : "/en/tai-khoan/ho-so"}
                   className="sidebar-util-link"
                   onClick={() => setSidebarOpen(false)}
                 >
                   <div className="util-icon-box">
-                    <FaBoxesPacking />
+                    <FiUser />
                   </div>
                   <div className="util-text-box">
                     <span className="util-title">
-                      {locale === "vi" ? "Quản lý đơn hàng" : "Order Management"}
+                      {locale === "vi" ? "Tài khoản của tôi" : "My Account"}
                     </span>
                     <span className="util-badge">
-                      {locale === "vi" ? "Xem đơn mua" : "View orders"}
+                      {locale === "vi" ? "Xem hồ sơ" : "View Account"}
                     </span>
                   </div>
                 </Link>

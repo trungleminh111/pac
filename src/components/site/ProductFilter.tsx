@@ -2,9 +2,9 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useTransition, useState } from "react";
+import { useTransition, useState, useEffect } from "react";
 import Link from "next/link";
-import { BsSearch } from "react-icons/bs";
+import { BsSearch, BsXLg } from "react-icons/bs";
 import type { Locale } from "@/server/products/product.type";
 
 function productListHref(locale: Locale) {
@@ -35,12 +35,28 @@ export function ProductFilter({
   const [isPending, startTransition] = useTransition();
   const [inputValue, setInputValue] = useState(q);
 
+  // Đồng bộ lại inputValue mỗi khi prop q thay đổi
+  // (vd: user submit search từ popup header -> q trên URL đổi
+  // nhưng component có thể không bị remount)
+  useEffect(() => {
+    setInputValue(q);
+  }, [q]);
+
   function handleSearch(e: React.FormEvent) {
     e.preventDefault();
     startTransition(() => {
       router.push(buildHref(locale, { category: activeCategory, q: inputValue }), { scroll: false });
     });
   }
+
+  function handleClear() {
+    setInputValue("");
+    startTransition(() => {
+      router.push(productListHref(locale), { scroll: false });
+    });
+  }
+
+  const hasFilter = Boolean(inputValue || activeCategory);
 
   return (
     <div className="row align-items-stretch gy-4 mb-5" style={{ opacity: isPending ? 0.6 : 1, transition: "opacity 0.2s" }}>
@@ -65,6 +81,27 @@ export function ProductFilter({
               placeholder={locale === "vi" ? "Tìm sản phẩm" : "Search products"}
               style={{ width: "100%", height: "100%", minHeight: "50px" }}
             />
+
+            {hasFilter && (
+              <button
+                type="button"
+                aria-label="clear search"
+                onClick={handleClear}
+                style={{
+                  position: "absolute",
+                  right: "45px",
+                  top: "50%",
+                  transform: "translateY(-50%)",
+                  background: "none",
+                  border: "none",
+                }}
+              >
+                <span className="icon-clear">
+                  <BsXLg />
+                </span>
+              </button>
+            )}
+
             <button
               type="submit"
               aria-label="search submit"
@@ -88,26 +125,28 @@ export function ProductFilter({
       <div className="col-xl-8 col-md-12 col-12">
         <div className="product__categories" style={{ margin: 0, height: "100%" }}>
           <ul className="list-unstyled" style={{ width: "100%" }}>
-            {categories.map((category) => (
-              <li
-                key={category.id}
-                className={activeCategory === category.slug ? "active" : ""}
-              >
-                <Link
-                  href={buildHref(locale, { category: category.slug, q })}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    startTransition(() => {
-                      router.push(buildHref(locale, { category: category.slug, q }), { scroll: false });
-                    });
-                  }}
-                >
-                  <button type="button" data-text={category.name}>
-                    <span>{category.name}</span>
-                  </button>
-                </Link>
-              </li>
-            ))}
+            {categories.map((category) => {
+              const isActive = activeCategory === category.slug;
+              const nextCategory = isActive ? "" : category.slug;
+
+              return (
+                <li key={category.id} className={isActive ? "active" : ""}>
+                  <Link
+                    href={buildHref(locale, { category: nextCategory, q })}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      startTransition(() => {
+                        router.push(buildHref(locale, { category: nextCategory, q }), { scroll: false });
+                      });
+                    }}
+                  >
+                    <button type="button" data-text={category.name}>
+                      <span>{category.name}</span>
+                    </button>
+                  </Link>
+                </li>
+              );
+            })}
           </ul>
         </div>
       </div>

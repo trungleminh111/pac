@@ -58,6 +58,17 @@ function buildHref(
     : productListHref(locale);
 }
 
+// Chuẩn hóa chuỗi để so sánh tìm kiếm: đưa về NFC, lowercase,
+// và gộp khoảng trắng thừa -> tránh lệch do Unicode normalization
+// khác nhau (gõ trực tiếp vs gõ qua popup search ở header)
+function normalizeText(str: string) {
+  return str
+    .normalize("NFC")
+    .toLowerCase()
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
 export default async function ProductsPage({
   params,
   searchParams,
@@ -81,7 +92,8 @@ export default async function ProductsPage({
   const products = productsPage.products;
   const categories = await getProductCategories(locale);
 
-  const activeCategory = searchParams?.category || categories[0]?.slug || "";
+  // Không tự chọn category đầu tiên -> vào trang mặc định lấy ALL sản phẩm
+  const activeCategory = searchParams?.category || "";
   const q = searchParams?.q?.trim() || "";
   const currentPage = Number(searchParams?.page || 1);
   const itemsPerPage = 12;
@@ -92,7 +104,7 @@ export default async function ProductsPage({
       : true;
 
     const matchSearch = q
-      ? product.title.toLowerCase().includes(q.toLowerCase())
+      ? normalizeText(product.title).includes(normalizeText(q))
       : true;
 
     return matchCategory && matchSearch;

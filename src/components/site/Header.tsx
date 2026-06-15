@@ -76,6 +76,9 @@ function isMenuActive(pathname: string, item: DynamicMenuItem) {
     return currentPath === childPath || currentPath.startsWith(`${childPath}/`);
   });
 }
+function productListHref(locale: Locale) {
+  return locale === "vi" ? "/vi/san-pham" : "/en/products";
+}
 
 export function Header({
   locale = "vi",
@@ -112,16 +115,16 @@ export function Header({
     };
   }, [mobileOpen, sidebarOpen, searchOpen, isOpen]);
   useEffect(() => {
-  const handleScroll = () => {
-    setIsSticky(window.scrollY > 60);
-  };
+    const handleScroll = () => {
+      setIsSticky(window.scrollY > 60);
+    };
 
-  window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll);
 
-  return () => {
-    window.removeEventListener("scroll", handleScroll);
-  };
-}, []);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
   return (
     <>
       {/* 1. TOPBAR */}
@@ -161,9 +164,8 @@ export function Header({
 
       {/* 2. MAIN HEADER */}
       <header
-        className={`main-header main-header--two ${
-          isSticky ? "main-header--sticky" : ""
-        }`}
+        className={`main-header main-header--two ${isSticky ? "main-header--sticky" : ""
+          }`}
       >
         <div className="container-fluid">
           <div className="main-header__inner">
@@ -409,7 +411,7 @@ export function Header({
       <div className={`search-popup ${searchOpen ? "active" : ""}`}>
         <div className="search-popup__overlay search-toggler" onClick={() => setSearchOpen(false)} />
         <div className="search-popup__content">
-          <form role="search" method="get" className="search-popup__form" action={locale === "vi" ? "/vi/tim-kiem" : "/en/search"}>
+          <form role="search" method="get" className="search-popup__form" action={productListHref(locale)}>
             <input type="text" name="q" id="search" placeholder={locale === "vi" ? "Tìm kiếm..." : "Search here..."} />
             <button type="submit" aria-label="search submit" className="floens-btn"><GoSearch /></button>
           </form>

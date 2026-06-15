@@ -91,11 +91,12 @@ export default function MediaClient({
 }: {
   media: Media[];
   q: string;
-  deleteAction: (formData: FormData) => void;
+  deleteAction: (formData: FormData) => void | Promise<void>;
 }) {
   const [items, setItems] = useState(media);
   const [selected, setSelected] = useState<string[]>([]);
   const [uploading, setUploading] = useState(false);
+  const [deleting, setDeleting] = useState(false);
   const [message, setMessage] = useState("");
 
   const allIds = useMemo(() => items.map((item) => item.id), [items]);
@@ -114,9 +115,38 @@ export default function MediaClient({
   }
 
   async function reloadMedia() {
-    const res = await fetch("/api/admin/media");
+    const res = await fetch("/api/admin/media", {
+      cache: "no-store",
+    });
+
     const data = await res.json();
     setItems(data.media || []);
+  }
+
+  async function handleDelete(formData: FormData) {
+    const ids = formData.getAll("ids").map(String);
+
+    if (!ids.length || deleting) return;
+
+    const ok = confirm(`Xóa ${ids.length} media đã chọn?`);
+    if (!ok) return;
+
+    try {
+      setDeleting(true);
+      setMessage(`Đang xóa ${ids.length} media...`);
+
+      await deleteAction(formData);
+
+      setSelected([]);
+      await reloadMedia();
+
+      setMessage(`Đã xóa ${ids.length} media thành công.`);
+    } catch (error) {
+      console.error("DELETE_MEDIA_ERROR", error);
+      setMessage(error instanceof Error ? error.message : "Xóa media thất bại.");
+    } finally {
+      setDeleting(false);
+    }
   }
 
   async function uploadFiles(files: FileList | null) {
@@ -153,7 +183,9 @@ export default function MediaClient({
 
       if (data.failed?.length) {
         setMessage(
-          `${data.message}\n${data.failed.map((x: any) => x.error).join("\n")}`
+          `${data.message}\n${data.failed
+            .map((x: { error: string }) => x.error)
+            .join("\n")}`
         );
       } else {
         setMessage(data.message || "Upload thành công.");
@@ -215,29 +247,28 @@ export default function MediaClient({
         </form>
       </div>
 
-      <form action={deleteAction}>
+      <form action={handleDelete}>
         {selected.map((id) => (
           <input key={id} type="hidden" name="ids" value={id} />
         ))}
 
         <div className="mb-3 flex items-center justify-between">
           <label className="flex items-center gap-2 text-sm text-slate-500">
-            <input type="checkbox" checked={checkedAll} onChange={toggleAll} />
+            <input
+              type="checkbox"
+              checked={checkedAll}
+              onChange={toggleAll}
+            />
             Chọn tất cả
           </label>
 
           <button
             type="submit"
-            disabled={selected.length === 0}
-            onClick={(e) => {
-              if (!confirm(`Xóa ${selected.length} media đã chọn?`)) {
-                e.preventDefault();
-              }
-            }}
+            disabled={selected.length === 0 || deleting}
             className="inline-flex items-center gap-2 rounded-xl border border-red-200 px-4 py-2 text-sm font-semibold text-red-600 disabled:opacity-40"
           >
             <Trash2 className="h-4 w-4" />
-            Xóa đã chọn
+            {deleting ? "Đang xóa..." : "Xóa đã chọn"}
           </button>
         </div>
 

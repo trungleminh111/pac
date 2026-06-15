@@ -9,8 +9,11 @@ type Locale = "vi" | "en";
 const ordersPageContent = {
   vi: {
     orderPrefix: "Đơn hàng #",
-    totalLabel: "Thành tiền:",
+    totalLabel: "Tổng số tiền",
     emptyText: "Không tìm thấy đơn hàng.",
+    viewMore: "Xem thêm",
+    collapse: "Thu gọn",
+    productUnit: "sản phẩm",
     tabs: {
       all: "Tất cả",
       pending: "Chờ xác nhận",
@@ -32,8 +35,11 @@ const ordersPageContent = {
   },
   en: {
     orderPrefix: "Order #",
-    totalLabel: "Total:",
+    totalLabel: "Total",
     emptyText: "No orders found.",
+    viewMore: "View more",
+    collapse: "Collapse",
+    productUnit: "products",
     tabs: {
       all: "All",
       pending: "Pending",
@@ -79,10 +85,40 @@ function statusLabel(status: OrderStatus, locale: Locale = "vi") {
   return labels[status];
 }
 
-function getOrderDetailHref(locale: "vi" | "en", orderId: string) {
+function getOrderDetailHref(locale: Locale, orderId: string) {
   return locale === "vi"
     ? `/vi/tai-khoan/don-hang/${orderId}`
     : `/en/account/orders/${orderId}`;
+}
+
+function OrderProduct({
+  item,
+  locale,
+}: {
+  item: {
+    id: string;
+    title: string;
+    image: string | null;
+    quantity: number;
+    price: any;
+  };
+  locale: Locale;
+}) {
+  return (
+    <div className={styles.orderProduct}>
+      <img
+        src={item.image || "/assets/images/products/product-1-1.png"}
+        alt={item.title}
+      />
+
+      <div className={styles.orderProductInfo}>
+        <h3>{item.title}</h3>
+        <p>x{item.quantity}</p>
+      </div>
+
+      <strong>{formatPrice(item.price, locale)}</strong>
+    </div>
+  );
 }
 
 const tabs = [
@@ -164,43 +200,58 @@ export default async function OrdersPage({
       />
 
       <div className={styles.orderList}>
-        {filteredOrders.map((order) => (
-          <div className={styles.orderCard} key={order.id}>
-            <div className={styles.orderTop}>
-              <div>
-                <Link href={getOrderDetailHref(locale, order.id)}>
-                  <strong>{content.orderPrefix}{order.code}</strong>
-                </Link>
-              </div>
+        {filteredOrders.map((order) => {
+          const firstItem = order.items[0];
+          const hiddenItems = order.items.slice(1);
 
-              <div>
+          const productCount = order.items.reduce(
+            (total, item) => total + Number(item.quantity || 0),
+            0
+          );
+
+          return (
+            <div className={styles.orderCard} key={order.id}>
+              <div className={styles.orderTop}>
+                <Link href={getOrderDetailHref(locale, order.id)}>
+                  <strong>
+                    {content.orderPrefix}
+                    {order.code}
+                  </strong>
+                </Link>
+
                 <em>{statusLabel(order.status, locale)}</em>
               </div>
-            </div>
 
-            {order.items.map((item) => (
-              <div className={styles.orderProduct} key={item.id}>
-                <img
-                  src={item.image || "/assets/images/products/product-1-1.png"}
-                  alt={item.title}
-                />
+              {firstItem && <OrderProduct item={firstItem} locale={locale} />}
 
-                <div>
-                  <h3>{item.title}</h3>
-                  <p>x{item.quantity}</p>
-                </div>
+              {hiddenItems.length > 0 && (
+                <details className={styles.orderMoreProducts}>
+                  <summary>
+                    <span className={styles.moreText}>{content.viewMore}</span>
+                    <span className={styles.lessText}>{content.collapse}</span>
+                  </summary>
 
-                <strong>{formatPrice(item.price, locale)}</strong>
+                  <div className={styles.orderMoreProductsList}>
+                    {hiddenItems.map((item) => (
+                      <OrderProduct
+                        key={item.id}
+                        item={item}
+                        locale={locale}
+                      />
+                    ))}
+                  </div>
+                </details>
+              )}
+
+              <div className={styles.orderBottom}>
+                <p>
+                  {content.totalLabel} ({productCount} {content.productUnit}):{" "}
+                  <strong>{formatPrice(order.total, locale)}</strong>
+                </p>
               </div>
-            ))}
-
-            <div className={styles.orderBottom}>
-              <p>
-                {content.totalLabel} <strong>{formatPrice(order.total, locale)}</strong>
-              </p>
             </div>
-          </div>
-        ))}
+          );
+        })}
 
         {filteredOrders.length === 0 && (
           <div className={styles.card}>{content.emptyText}</div>

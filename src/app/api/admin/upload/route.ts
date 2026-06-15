@@ -1,10 +1,11 @@
 import crypto from "crypto";
-import sharp from "sharp";
 import { PutObjectCommand } from "@aws-sdk/client-s3";
 import { NextResponse } from "next/server";
 import { r2 } from "@/lib/r2";
 import { prisma } from "@/lib/prisma";
 import { getAdminSettings } from "@/lib/settings";
+
+// 👈 Bỏ "import sharp from 'sharp'" ở đầu file đi
 
 function cleanFileName(name: string) {
   return name
@@ -70,6 +71,9 @@ async function handleUploadFile(
   let ext = file.name.split(".").pop() || "file";
 
   if (file.type !== "image/gif" && file.type !== "image/svg+xml") {
+    // 👇 Dynamic import thay vì static import
+    const sharp = (await import("sharp")).default;
+
     uploadBuffer = (await sharp(originalBuffer)
       .rotate()
       .resize({

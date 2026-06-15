@@ -16,6 +16,70 @@ type MediaPickerProps = {
   buttonText?: string;
 };
 
+function loadImage(file: File) {
+  return new Promise<HTMLImageElement>((resolve, reject) => {
+    const url = URL.createObjectURL(file);
+    const img = new Image();
+
+    img.onload = () => {
+      URL.revokeObjectURL(url);
+      resolve(img);
+    };
+
+    img.onerror = () => {
+      URL.revokeObjectURL(url);
+      reject(new Error("Không đọc được ảnh."));
+    };
+
+    img.src = url;
+  });
+}
+
+async function convertToWebp(file: File) {
+  const shouldConvert =
+    file.type === "image/jpeg" ||
+    file.type === "image/jpg" ||
+    file.type === "image/png";
+
+  if (!shouldConvert) return file;
+
+  try {
+    const img = await loadImage(file);
+
+    const maxWidth = 1920;
+    const quality = 0.75;
+
+    const scale = img.width > maxWidth ? maxWidth / img.width : 1;
+    const width = Math.round(img.width * scale);
+    const height = Math.round(img.height * scale);
+
+    const canvas = document.createElement("canvas");
+    canvas.width = width;
+    canvas.height = height;
+
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return file;
+
+    ctx.drawImage(img, 0, 0, width, height);
+
+    const blob = await new Promise<Blob | null>((resolve) => {
+      canvas.toBlob(resolve, "image/webp", quality);
+    });
+
+    if (!blob) return file;
+
+    const name = file.name.replace(/\.[^/.]+$/, "");
+
+    return new File([blob], `${name}.webp`, {
+      type: "image/webp",
+      lastModified: Date.now(),
+    });
+  } catch (error) {
+    console.error("CONVERT_WEBP_ERROR", file.name, error);
+    return file;
+  }
+}
+
 export function MediaPicker({
   value,
   onChange,
@@ -36,46 +100,56 @@ export function MediaPicker({
   }
 
   async function uploadFiles(files: FileList | null) {
-    if (!files?.length) return;
+    if (!files?.length || uploading) return;
 
-    setUploading(true);
-    setMessage("");
+    try {
+      setUploading(true);
+      setMessage("Đang nén ảnh sang WebP...");
 
-    const formData = new FormData();
+      const formData = new FormData();
 
-    Array.from(files).forEach((file) => {
-      formData.append("upload", file);
-    });
+      for (const file of Array.from(files)) {
+        const optimizedFile = await convertToWebp(file);
+        formData.append("upload", optimizedFile);
+      }
 
-    const res = await fetch("/api/admin/upload", {
-      method: "POST",
-      body: formData,
-    });
+      setMessage("Đang upload ảnh...");
 
-    const data = await res.json();
+      const res = await fetch("/api/admin/upload", {
+        method: "POST",
+        body: formData,
+      });
 
-    if (!res.ok) {
-      setMessage(data.error || data.failed?.[0]?.error || "Upload thất bại.");
+      const data = await res.json();
+
+      if (!res.ok) {
+        setMessage(
+          data.error || data.failed?.[0]?.error || "Upload thất bại."
+        );
+        return;
+      }
+
+      if (data.url) {
+        onChange(data.url);
+      }
+
+      if (data.failed?.length) {
+        setMessage(
+          `${data.message}\n${data.failed
+            .map((x: { error: string }) => x.error)
+            .join("\n")}`
+        );
+      } else {
+        setMessage(data.message || "Upload thành công.");
+      }
+
+      await loadMedia();
+    } catch (error) {
+      console.error("UPLOAD_ERROR", error);
+      setMessage(error instanceof Error ? error.message : "Upload thất bại.");
+    } finally {
       setUploading(false);
-      return;
     }
-
-    if (data.url) {
-      onChange(data.url);
-    }
-
-    if (data.failed?.length) {
-      setMessage(
-        `${data.message}\n${data.failed
-          .map((x: { error: string }) => x.error)
-          .join("\n")}`
-      );
-    } else {
-      setMessage(data.message || "Upload thành công.");
-    }
-
-    await loadMedia();
-    setUploading(false);
   }
 
   useEffect(() => {
@@ -88,11 +162,7 @@ export function MediaPicker({
         <div className="flex items-center gap-3">
           {value ? (
             <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-xl border border-slate-200 bg-white">
-              <img
-                src={value}
-                alt=""
-                className="h-full w-full object-cover"
-              />
+              <img src={value} alt="" className="h-full w-full object-cover" />
 
               <button
                 type="button"
@@ -120,11 +190,7 @@ export function MediaPicker({
         <>
           {value ? (
             <div className="relative overflow-hidden rounded-xl border">
-              <img
-                src={value}
-                alt=""
-                className="aspect-video w-full object-cover"
-              />
+              <img src={value} alt="" className="aspect-video w-full object-cover" />
 
               <button
                 type="button"
@@ -167,11 +233,14 @@ export function MediaPicker({
                 {uploading ? "Đang upload..." : "Upload nhiều ảnh"}
                 <input
                   type="file"
-                  accept="image/*"
+                  accept="image/jpeg,image/png,image/webp,image/gif,image/svg+xml"
                   multiple
                   hidden
                   disabled={uploading}
-                  onChange={(e) => uploadFiles(e.target.files)}
+                  onChange={async (e) => {
+                    await uploadFiles(e.target.files);
+                    e.target.value = "";
+                  }}
                 />
               </label>
 

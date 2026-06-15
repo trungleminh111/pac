@@ -9,6 +9,70 @@ type Media = {
   url: string;
 };
 
+function loadImage(file: File) {
+  return new Promise<HTMLImageElement>((resolve, reject) => {
+    const url = URL.createObjectURL(file);
+    const img = new Image();
+
+    img.onload = () => {
+      URL.revokeObjectURL(url);
+      resolve(img);
+    };
+
+    img.onerror = () => {
+      URL.revokeObjectURL(url);
+      reject(new Error("Không đọc được ảnh."));
+    };
+
+    img.src = url;
+  });
+}
+
+async function convertToWebp(file: File) {
+  const shouldConvert =
+    file.type === "image/jpeg" ||
+    file.type === "image/jpg" ||
+    file.type === "image/png";
+
+  if (!shouldConvert) return file;
+
+  try {
+    const img = await loadImage(file);
+
+    const maxWidth = 1920;
+    const quality = 0.75;
+
+    const scale = img.width > maxWidth ? maxWidth / img.width : 1;
+    const width = Math.round(img.width * scale);
+    const height = Math.round(img.height * scale);
+
+    const canvas = document.createElement("canvas");
+    canvas.width = width;
+    canvas.height = height;
+
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return file;
+
+    ctx.drawImage(img, 0, 0, width, height);
+
+    const blob = await new Promise<Blob | null>((resolve) => {
+      canvas.toBlob(resolve, "image/webp", quality);
+    });
+
+    if (!blob) return file;
+
+    const name = file.name.replace(/\.[^/.]+$/, "");
+
+    return new File([blob], `${name}.webp`, {
+      type: "image/webp",
+      lastModified: Date.now(),
+    });
+  } catch (error) {
+    console.error("CONVERT_WEBP_ERROR", file.name, error);
+    return file;
+  }
+}
+
 export function MediaGalleryPicker({
   value,
   onChange,
@@ -19,6 +83,7 @@ export function MediaGalleryPicker({
   const [open, setOpen] = useState(false);
   const [items, setItems] = useState<Media[]>([]);
   const [uploading, setUploading] = useState(false);
+  const [message, setMessage] = useState("");
 
   async function loadMedia() {
     const res = await fetch("/api/admin/media");
@@ -26,25 +91,65 @@ export function MediaGalleryPicker({
     setItems(data.media || []);
   }
 
-  async function upload(file: File) {
-    setUploading(true);
+  async function upload(files: FileList | null) {
+    if (!files?.length || uploading) return;
 
-    const formData = new FormData();
-    formData.append("upload", file);
+    try {
+      setUploading(true);
+      setMessage("Đang nén ảnh sang WebP...");
 
-    const res = await fetch("/api/admin/upload", {
-      method: "POST",
-      body: formData,
-    });
+      const formData = new FormData();
 
-    const data = await res.json();
+      for (const file of Array.from(files)) {
+        const optimizedFile = await convertToWebp(file);
+        formData.append("upload", optimizedFile);
+      }
 
-    if (data.url) {
-      onChange([...value, data.url]);
+      setMessage("Đang upload ảnh...");
+
+      const res = await fetch("/api/admin/upload", {
+        method: "POST",
+        body: formData,
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        setMessage(
+          data.error || data.failed?.[0]?.error || "Upload thất bại."
+        );
+        return;
+      }
+
+      const uploadedUrls = Array.isArray(data.success)
+        ? data.success
+            .map((item: { url?: string }) => item.url)
+            .filter((url: string | undefined): url is string => Boolean(url))
+        : data.url
+          ? [data.url]
+          : [];
+
+      if (uploadedUrls.length) {
+        onChange(Array.from(new Set([...value, ...uploadedUrls])));
+      }
+
+      if (data.failed?.length) {
+        setMessage(
+          `${data.message}\n${data.failed
+            .map((x: { error: string }) => x.error)
+            .join("\n")}`
+        );
+      } else {
+        setMessage(data.message || "Upload thành công.");
+      }
+
       await loadMedia();
+    } catch (error) {
+      console.error("UPLOAD_ERROR", error);
+      setMessage(error instanceof Error ? error.message : "Upload thất bại.");
+    } finally {
+      setUploading(false);
     }
-
-    setUploading(false);
   }
 
   function toggleImage(url: string) {
@@ -68,8 +173,15 @@ export function MediaGalleryPicker({
       {value.length > 0 ? (
         <div className="grid grid-cols-3 gap-3">
           {value.map((url) => (
-            <div key={url} className="group relative overflow-hidden rounded-xl border">
-              <img src={url} alt="" className="aspect-square w-full object-cover" />
+            <div
+              key={url}
+              className="group relative overflow-hidden rounded-xl border"
+            >
+              <img
+                src={url}
+                alt=""
+                className="aspect-square w-full object-cover"
+              />
 
               <button
                 type="button"
@@ -112,12 +224,13 @@ export function MediaGalleryPicker({
                 {uploading ? "Đang upload..." : "Upload ảnh mới"}
                 <input
                   type="file"
-                  accept="image/*"
+                  accept="image/jpeg,image/png,image/webp,image/gif,image/svg+xml"
+                  multiple
                   hidden
                   disabled={uploading}
-                  onChange={(e) => {
-                    const file = e.target.files?.[0];
-                    if (file) upload(file);
+                  onChange={async (e) => {
+                    await upload(e.target.files);
+                    e.target.value = "";
                   }}
                 />
               </label>
@@ -130,6 +243,12 @@ export function MediaGalleryPicker({
                 Xong
               </button>
             </div>
+
+            {message && (
+              <div className="m-5 whitespace-pre-line rounded-xl border border-blue-200 bg-blue-50 px-4 py-3 text-sm text-blue-700">
+                {message}
+              </div>
+            )}
 
             <div className="grid max-h-[60vh] grid-cols-2 gap-4 overflow-y-auto p-5 md:grid-cols-4 lg:grid-cols-6">
               {items.map((item) => {

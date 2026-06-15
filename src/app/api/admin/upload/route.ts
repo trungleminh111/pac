@@ -1,11 +1,13 @@
 import crypto from "crypto";
 import { PutObjectCommand } from "@aws-sdk/client-s3";
 import { NextResponse } from "next/server";
+
 import { r2 } from "@/lib/r2";
 import { prisma } from "@/lib/prisma";
 import { getAdminSettings } from "@/lib/settings";
 
-// 👈 Bỏ "import sharp from 'sharp'" ở đầu file đi
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
 
 function cleanFileName(name: string) {
   return name
@@ -17,7 +19,16 @@ function cleanFileName(name: string) {
     .toLowerCase()
     .trim()
     .replace(/[^a-z0-9-_]+/g, "-")
-    .replace(/-+/g, "-");
+    .replace(/-+/g, "-")
+    .replace(/^-|-$/g, "");
+}
+
+function getExt(name: string) {
+  return name.split(".").pop()?.toLowerCase() || "file";
+}
+
+function getErrorMessage(error: unknown) {
+  return error instanceof Error ? error.message : String(error);
 }
 
 async function handleUploadFile(
@@ -42,11 +53,11 @@ async function handleUploadFile(
   }
 
   const arrayBuffer = await file.arrayBuffer();
-  const originalBuffer = Buffer.from(arrayBuffer) as Buffer<ArrayBuffer>;
+  const uploadBuffer = Buffer.from(arrayBuffer);
 
   const hash = crypto
     .createHash("sha256")
-    .update(originalBuffer)
+    .update(uploadBuffer)
     .digest("hex");
 
   const existed = await prisma.media.findFirst({
@@ -57,36 +68,15 @@ async function handleUploadFile(
     return {
       ok: true,
       reused: true,
-      filename: file.name,
+      filename: existed.filename,
       url: existed.url,
       media: existed,
     };
   }
 
+  const ext = getExt(file.name);
   const baseName = cleanFileName(file.name) || "image";
-
-  let uploadBuffer: Buffer<ArrayBuffer> = originalBuffer;
-  let contentType = file.type;
-  let filename = file.name;
-  let ext = file.name.split(".").pop() || "file";
-
-  if (file.type !== "image/gif" && file.type !== "image/svg+xml") {
-    // 👇 Dynamic import thay vì static import
-    const sharp = (await import("sharp")).default;
-
-    uploadBuffer = (await sharp(originalBuffer)
-      .rotate()
-      .resize({
-        width: 1920,
-        withoutEnlargement: true,
-      })
-      .webp({ quality: 82 })
-      .toBuffer()) as Buffer<ArrayBuffer>;
-
-    contentType = "image/webp";
-    filename = `${baseName}.webp`;
-    ext = "webp";
-  }
+  const filename = `${baseName}.${ext}`;
 
   const key = `media/${new Date().getFullYear()}/${Date.now()}-${crypto.randomUUID()}.${ext}`;
 
@@ -95,7 +85,8 @@ async function handleUploadFile(
       Bucket: process.env.CF_R2_BUCKET_NAME!,
       Key: key,
       Body: uploadBuffer,
-      ContentType: contentType,
+      ContentType: file.type,
+      CacheControl: "public, max-age=31536000, immutable",
     })
   );
 
@@ -106,7 +97,7 @@ async function handleUploadFile(
       filename,
       key,
       url,
-      mimeType: contentType,
+      mimeType: file.type,
       size: uploadBuffer.length,
       hash,
     },
@@ -151,7 +142,7 @@ export async function POST(req: Request) {
       );
     }
 
-    const results = [];
+    const results: Awaited<ReturnType<typeof handleUploadFile>>[] = [];
 
     for (const file of files) {
       try {
@@ -162,7 +153,9 @@ export async function POST(req: Request) {
         results.push({
           ok: false,
           filename: file.name,
-          error: `Upload file "${file.name}" thất bại.`,
+          error: `Upload file "${file.name}" thất bại: ${getErrorMessage(
+            error
+          )}`,
         });
       }
     }

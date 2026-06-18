@@ -54,7 +54,7 @@ export async function generateMetadata({
     path,
     title: `${translation.title} | P.A.C STONE`,
     description: translation.excerpt || translation.title,
-    image: block1.image || "https://pacstone.vn/URL-hinh-share-1200x630.jpg",
+    image: block1.image || "",
     type: "website",
     alternatePaths: {
       vi: `/vi/cong-trinh/${params.slug}`,

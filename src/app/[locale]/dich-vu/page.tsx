@@ -49,7 +49,7 @@ export async function generateMetadata({
     path,
     title: "Dịch Vụ Thi Công Đá | P.A.C STONE",
     description: "Mô tả dịch vụ",
-    image: "https://pacstone.vn/URL-hinh-share-1200x630.jpg",
+    image: "",
     type: "website",
     alternatePaths: {
       vi: "/vi/dich-vu",

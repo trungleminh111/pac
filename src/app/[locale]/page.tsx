@@ -23,7 +23,7 @@ export async function generateMetadata({
     path: `/${params.locale}`,
     title: "P.A.C STONE - Đá Ốp Lát Cao Cấp Nhập Khẩu TP.HCM",
     description: "Giới thiệu công ty, địa chỉ, hotline",
-    image: "https://pacstone.vn/URL-hinh-share-1200x630.jpg",
+    image: "",
     type: "website",
   });
 }

@@ -45,7 +45,7 @@ export async function generateMetadata({
 
   const firstProductImage =
     productsPage.products[0]?.image ||
-    "https://pacstone.vn/URL-hinh-share-1200x630.jpg";
+    "";
 
   return buildMetadata({
     locale,

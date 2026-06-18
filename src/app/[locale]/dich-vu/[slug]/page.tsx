@@ -115,7 +115,7 @@ export async function generateMetadata({
     description: service.excerpt || service.title,
     image:
       service.thumbnail ||
-      "https://pacstone.vn/URL-hinh-share-1200x630.jpg",
+      "",
     type: "website",
     alternatePaths: {
       vi: `/vi/dich-vu/${slug}`,

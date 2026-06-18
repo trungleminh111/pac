@@ -22,7 +22,9 @@ type SeoParams = {
 };
 
 export function absoluteUrl(url?: string | null) {
-  const safeUrl = url?.trim() || DEFAULT_OG_IMAGE;
+  const value = typeof url === "string" ? url.trim() : "";
+
+  const safeUrl = value.length > 0 ? value : DEFAULT_OG_IMAGE;
 
   if (safeUrl.startsWith("http://") || safeUrl.startsWith("https://")) {
     return safeUrl;

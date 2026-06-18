@@ -77,7 +77,7 @@ export async function generateMetadata({
     path,
     title: "Liên Hệ P.A.C STONE - Tư Vấn Miễn Phí",
     description: "Địa chỉ + hotline",
-    image: "https://pacstone.vn/URL-hinh-share-1200x630.jpg",
+    image: "",
     type: "website",
     alternatePaths: {
       vi: "/vi/lien-he",

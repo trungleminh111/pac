@@ -177,7 +177,7 @@ export async function generateMetadata({
     path: newsDetailHref(locale, slug),
     title: `${post.title} | P.A.C STONE`,
     description: post.excerpt,
-    image: post.thumbnail || "https://pacstone.vn/URL-hinh-share-1200x630.jpg",
+    image: post.thumbnail || "",
     type: "website",
     alternatePaths: {
       vi: `/vi/tin-tuc/${slug}`,

@@ -182,7 +182,7 @@ export async function generateMetadata({
   const posts = await getPostsPage(locale);
 
   const firstPostImage =
-    posts[0]?.image || "https://pacstone.vn/URL-hinh-share-1200x630.jpg";
+    posts[0]?.image || "";
 
   return buildMetadata({
     locale,

@@ -25,7 +25,7 @@ export async function generateMetadata({
       params.locale === "vi"
         ? "Giỏ hàng của bạn tại P.A.C STONE."
         : "Your shopping cart at P.A.C STONE.",
-    image: "https://pacstone.vn/URL-hinh-share-1200x630.jpg",
+    image: "",
     type: "website",
     alternatePaths: {
       vi: "/vi/gio-hang",

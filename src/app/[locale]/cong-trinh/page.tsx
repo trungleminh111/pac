@@ -32,7 +32,7 @@ export async function generateMetadata({
     path,
     title: "Công Trình Tiêu Biểu | P.A.C STONE",
     description: "Mô tả portfolio",
-    image: "https://pacstone.vn/URL-hinh-share-1200x630.jpg",
+    image: "",
     type: "website",
     alternatePaths: {
       vi: "/vi/cong-trinh",

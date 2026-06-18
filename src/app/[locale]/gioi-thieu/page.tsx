@@ -61,7 +61,7 @@ export async function generateMetadata({
         path,
         title: "Giới Thiệu P.A.C STONE - Nhà Cung Cấp Đá Nhập Khẩu",
         description: "Về công ty",
-        image: "https://pacstone.vn/URL-hinh-share-1200x630.jpg",
+        image: "",
         type: "website",
         alternatePaths: {
             vi: "/vi/gioi-thieu",

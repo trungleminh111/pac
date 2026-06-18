@@ -38,7 +38,7 @@ function getProductImage(product: any) {
     product.images?.[0]?.url ||
     product.image ||
     product.thumbnail ||
-    "https://pacstone.vn/URL-hinh-share-1200x630.jpg"
+    ""
   );
 }
 

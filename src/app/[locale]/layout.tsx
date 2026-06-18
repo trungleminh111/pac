@@ -1,5 +1,3 @@
-import type { Metadata } from "next";
-
 import "bootstrap/dist/css/bootstrap.min.css";
 import Preloader from "@/components/site/Preloader";
 import { ToastProvider } from "@/components/ui/Toast provider"; // thêm dòng này
@@ -19,16 +17,6 @@ import "@/globals.css";
 import "@/styles/lienhe.css";
 
 import ScrollTopProgress from "@/components/site/ScrollTopProgress";
-
-export const metadata: Metadata = {
-  title: "P.A.C STONE",
-  description: "Nhà cung cấp giải pháp thiết kế, thi công đá ốp lát cao cấp",
-  icons: {
-    icon: "/assets/images/logo-PACSTONE.webp",
-    shortcut: "/assets/images/logo-PACSTONE.webp",
-    apple: "/assets/images/logo-PACSTONE.webp",
-  },
-};
 
 export default function RootLayout({
   children,

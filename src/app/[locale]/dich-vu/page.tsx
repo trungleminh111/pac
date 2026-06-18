@@ -1,4 +1,6 @@
+import type { Metadata } from "next";
 import Link from "next/link";
+import { buildMetadata } from "@/lib/seo";
 import { SiteHeader as Header } from "@/components/site/SiteHeader";
 import { Footer } from "@/components/site/Footer";
 import { PageHeader } from "@/components/site/PageHeader";
@@ -32,6 +34,30 @@ const servicesPageContent = {
     emptyText: "No services found.",
   },
 };
+
+export async function generateMetadata({
+  params,
+}: {
+  params: {
+    locale: Locale;
+  };
+}): Promise<Metadata> {
+  const path = params.locale === "en" ? "/en/services" : "/vi/dich-vu";
+
+  return buildMetadata({
+    locale: params.locale,
+    path,
+    title: "Dịch Vụ Thi Công Đá | P.A.C STONE",
+    description: "Mô tả dịch vụ",
+    image: "https://pacstone.vn/URL-hinh-share-1200x630.jpg",
+    type: "website",
+    alternatePaths: {
+      vi: "/vi/dich-vu",
+      en: "/en/services",
+      xDefault: "/vi/dich-vu",
+    },
+  });
+}
 
 function serviceHref(locale: Locale, slug: string) {
   return locale === "vi" ? `/vi/dich-vu/${slug}` : `/en/services/${slug}`;

@@ -1,4 +1,6 @@
 import "leaflet/dist/leaflet.css";
+import type { Metadata } from "next";
+import { buildMetadata } from "@/lib/seo";
 import { SiteHeader as Header } from "@/components/site/SiteHeader";
 import { Footer } from "@/components/site/Footer";
 import { PageHeader } from "@/components/site/PageHeader";
@@ -59,6 +61,31 @@ const contactPageContent = {
     downloadText: "Download P.A.C STONE Company Profile",
   },
 };
+
+export async function generateMetadata({
+  params,
+}: {
+  params: {
+    locale: "vi" | "en";
+  };
+}): Promise<Metadata> {
+  const locale = params.locale === "en" ? "en" : "vi";
+  const path = locale === "en" ? "/en/contact" : "/vi/lien-he";
+
+  return buildMetadata({
+    locale,
+    path,
+    title: "Liên Hệ P.A.C STONE - Tư Vấn Miễn Phí",
+    description: "Địa chỉ + hotline",
+    image: "https://pacstone.vn/URL-hinh-share-1200x630.jpg",
+    type: "website",
+    alternatePaths: {
+      vi: "/vi/lien-he",
+      en: "/en/contact",
+      xDefault: "/vi/lien-he",
+    },
+  });
+}
 
 export default function ContactPage({
   params,

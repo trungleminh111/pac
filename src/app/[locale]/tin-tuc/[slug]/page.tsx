@@ -1,3 +1,5 @@
+import type { Metadata } from "next";
+import { buildMetadata } from "@/lib/seo";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { SiteHeader as Header } from "@/components/site/SiteHeader";
@@ -152,6 +154,37 @@ function renderContent(content: any, locale: Locale) {
   }
 
   return null;
+}
+export async function generateMetadata({
+  params,
+}: {
+  params: {
+    locale: "vi" | "en";
+    slug: string;
+  };
+}): Promise<Metadata> {
+  const locale = params.locale === "en" ? "en" : "vi";
+  const slug = decodeURIComponent(params.slug);
+
+  const post = await getPostBySlug(locale, slug);
+
+  if (!post) {
+    return {};
+  }
+
+  return buildMetadata({
+    locale,
+    path: newsDetailHref(locale, slug),
+    title: `${post.title} | P.A.C STONE`,
+    description: post.excerpt,
+    image: post.thumbnail || "https://pacstone.vn/URL-hinh-share-1200x630.jpg",
+    type: "website",
+    alternatePaths: {
+      vi: `/vi/tin-tuc/${slug}`,
+      en: `/en/news/${slug}`,
+      xDefault: `/vi/tin-tuc/${slug}`,
+    },
+  });
 }
 
 export default async function NewsDetailPage({

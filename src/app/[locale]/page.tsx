@@ -1,3 +1,5 @@
+import type { Metadata } from "next";
+import { buildMetadata, SITE_URL } from "@/lib/seo";
 import { SiteHeader as Header } from "@/components/site/SiteHeader";
 import { Hero } from "@/components/site/HeroSlider";
 import { ClientCarousel } from "@/components/site/ClientCarousel";
@@ -9,6 +11,23 @@ import { News } from "@/components/site/News";
 import { Footer } from "@/components/site/Footer";
 import type { Locale } from "@/server/services/service.type";
 
+export async function generateMetadata({
+  params,
+}: {
+  params: {
+    locale: Locale;
+  };
+}): Promise<Metadata> {
+  return buildMetadata({
+    locale: params.locale,
+    path: `/${params.locale}`,
+    title: "P.A.C STONE - Đá Ốp Lát Cao Cấp Nhập Khẩu TP.HCM",
+    description: "Giới thiệu công ty, địa chỉ, hotline",
+    image: "https://pacstone.vn/URL-hinh-share-1200x630.jpg",
+    type: "website",
+  });
+}
+
 export default function HomePage({
   params,
 }: {
@@ -16,8 +35,26 @@ export default function HomePage({
     locale: Locale;
   };
 }) {
+  const organizationJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    name: "P.A.C STONE",
+    url: SITE_URL,
+    logo: "URL logo",
+    telephone: "0962757475",
+    address: "114C Hoàng Hoa Thám, Bảy Hiền, TP.HCM",
+    sameAs: ["Facebook URL", "Zalo URL"],
+  };
+
   return (
     <div className="page-wrapper">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(organizationJsonLd),
+        }}
+      />
+
       <Header locale={params.locale} />
       <Hero locale={params.locale}/>
       <ClientCarousel />

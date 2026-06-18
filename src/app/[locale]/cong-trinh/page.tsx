@@ -1,5 +1,7 @@
-import Link from "next/link";
+import type { Metadata } from "next";
+import Link from "next/link"; 
 import { Locale } from "@prisma/client";
+import { buildMetadata } from "@/lib/seo";
 import { SiteHeader as Header } from "@/components/site/SiteHeader";
 import { Footer } from "@/components/site/Footer";
 import { PageHeader } from "@/components/site/PageHeader";
@@ -15,6 +17,30 @@ const worksPageContent = {
     bannerTitle: "PROJECTS",
   },
 };
+
+export async function generateMetadata({
+  params,
+}: {
+  params: {
+    locale: "vi" | "en";
+  };
+}): Promise<Metadata> {
+  const path = params.locale === "en" ? "/en/projects" : "/vi/cong-trinh";
+
+  return buildMetadata({
+    locale: params.locale,
+    path,
+    title: "Công Trình Tiêu Biểu | P.A.C STONE",
+    description: "Mô tả portfolio",
+    image: "https://pacstone.vn/URL-hinh-share-1200x630.jpg",
+    type: "website",
+    alternatePaths: {
+      vi: "/vi/cong-trinh",
+      en: "/en/projects",
+      xDefault: "/vi/cong-trinh",
+    },
+  });
+}
 
 function pageHref(locale: Locale, categorySlug?: string, page?: number) {
   const base = locale === Locale.vi ? "/vi/cong-trinh" : "/en/projects";

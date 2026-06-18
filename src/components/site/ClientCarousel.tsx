@@ -45,7 +45,7 @@ export function ClientCarousel() {
         {colors.map((image) => (
           <SwiperSlide key={image}>
             <div className="client-carousel__one__item">
-              <a href="/san-pham/color-1">
+              <a href="#">
                 <img
                   src={`/assets/images/resources/${image}`}
                   alt="marble color"

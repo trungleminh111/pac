@@ -1,5 +1,7 @@
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import { buildMetadata } from "@/lib/seo";
 import { SiteHeader as Header } from "@/components/site/SiteHeader";
 import { Footer } from "@/components/site/Footer";
 import { PageHeader } from "@/components/site/PageHeader";
@@ -86,6 +88,41 @@ function getHtml(content: any) {
   if (!content) return "";
   if (typeof content === "string") return content;
   return content.html || "";
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: {
+    locale: Locale;
+    slug: string;
+  };
+}): Promise<Metadata> {
+  const { locale, slug } = params;
+
+  const service = await getServiceBySlug(locale, slug);
+
+  if (!service) {
+    return {};
+  }
+
+  const path = locale === "vi" ? `/vi/dich-vu/${slug}` : `/en/services/${slug}`;
+
+  return buildMetadata({
+    locale,
+    path,
+    title: `${service.title} | P.A.C STONE`,
+    description: service.excerpt || service.title,
+    image:
+      service.thumbnail ||
+      "https://pacstone.vn/URL-hinh-share-1200x630.jpg",
+    type: "website",
+    alternatePaths: {
+      vi: `/vi/dich-vu/${slug}`,
+      en: `/en/services/${slug}`,
+      xDefault: `/vi/dich-vu/${slug}`,
+    },
+  });
 }
 
 export default async function ServiceDetailPage({

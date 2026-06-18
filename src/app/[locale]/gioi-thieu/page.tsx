@@ -1,3 +1,5 @@
+import type { Metadata } from "next";
+import { buildMetadata } from "@/lib/seo";
 import { SiteHeader as Header } from "@/components/site/SiteHeader";
 import { Footer } from "@/components/site/Footer";
 import { About } from "@/components/site/About";
@@ -43,6 +45,31 @@ const aboutPageContent = {
             "We always put customers at the center, providing dedicated support before, during, and after each project is completed.",
     },
 };
+
+export async function generateMetadata({
+    params,
+}: {
+    params: {
+        locale: "vi" | "en";
+    };
+}): Promise<Metadata> {
+    const locale = params.locale === "en" ? "en" : "vi";
+    const path = locale === "en" ? "/en/about" : "/vi/gioi-thieu";
+
+    return buildMetadata({
+        locale,
+        path,
+        title: "Giới Thiệu P.A.C STONE - Nhà Cung Cấp Đá Nhập Khẩu",
+        description: "Về công ty",
+        image: "https://pacstone.vn/URL-hinh-share-1200x630.jpg",
+        type: "website",
+        alternatePaths: {
+            vi: "/vi/gioi-thieu",
+            en: "/en/about",
+            xDefault: "/vi/gioi-thieu",
+        },
+    });
+}
 
 export default function AboutPage({
     params,
@@ -93,7 +120,7 @@ export default function AboutPage({
                                     </div>
                                     <div className="about-one__circle-text">
                                         <img
-                                            src="/assets/images/about/P.A.C STONE (2).gif"
+                                            src="/assets/images/about/ezgif-5517c6791d4a6c1f.gif"
                                             alt="P.A.C STONE Animation"
                                             className="about-one__circle-text__image"
                                             style={{

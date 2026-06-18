@@ -1,3 +1,5 @@
+import type { Metadata } from "next";
+import { buildMetadata } from "@/lib/seo";
 import { SiteHeader as Header } from "@/components/site/SiteHeader";
 import { Footer } from "@/components/site/Footer";
 import { FaFacebookF, FaYoutube } from "react-icons/fa";
@@ -10,6 +12,58 @@ import {
 } from "@/server/project/project.query";
 import Banner from "@/components/site/Banner/Banner";
 import OtherProjectsGallery from "@/components/site/OtherProjectsGallery/OtherProjectsGallery";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: {
+    locale: "vi" | "en";
+    slug: string;
+  };
+}): Promise<Metadata> {
+  const locale = params.locale === "en" ? "en" : "vi";
+  const localeEnum = locale === "en" ? Locale.en : Locale.vi;
+
+  const projectData = await getProjectBySlug({
+    slug: params.slug,
+    locale: localeEnum,
+  });
+
+  if (!projectData || !projectData.translations[0]) {
+    return {};
+  }
+
+  const translation = projectData.translations[0];
+
+  const structuredData: any =
+    translation.structuredData || translation.content || {};
+  const blocks = structuredData.blocks || [];
+
+  const block1 =
+    blocks.find((item: any) => item.type === "titleTextImageText") ||
+    blocks[0] ||
+    {};
+
+  const path =
+    locale === "vi"
+      ? `/vi/cong-trinh/${params.slug}`
+      : `/en/projects/${params.slug}`;
+
+  return buildMetadata({
+    locale,
+    path,
+    title: `${translation.title} | P.A.C STONE`,
+    description: translation.excerpt || translation.title,
+    image: block1.image || "https://pacstone.vn/URL-hinh-share-1200x630.jpg",
+    type: "website",
+    alternatePaths: {
+      vi: `/vi/cong-trinh/${params.slug}`,
+      en: `/en/projects/${params.slug}`,
+      xDefault: `/vi/cong-trinh/${params.slug}`,
+    },
+  });
+}
+
 
 const workDetailContent = {
   vi: {

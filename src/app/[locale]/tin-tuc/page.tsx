@@ -1,4 +1,6 @@
+import type { Metadata } from "next";
 import Link from "next/link";
+import { buildMetadata } from "@/lib/seo";
 import { SiteHeader as Header } from "@/components/site/SiteHeader";
 import { Footer } from "@/components/site/Footer";
 import { PageHeader } from "@/components/site/PageHeader";
@@ -164,6 +166,36 @@ function filterPosts(
       postTags.some((tag) => tag.toLowerCase().includes(search));
 
     return matchCategory && matchKeyword;
+  });
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: {
+    locale: "vi" | "en";
+  };
+}): Promise<Metadata> {
+  const locale = params.locale === "en" ? "en" : "vi";
+  const path = locale === "en" ? "/en/news" : "/vi/tin-tuc";
+
+  const posts = await getPostsPage(locale);
+
+  const firstPostImage =
+    posts[0]?.image || "https://pacstone.vn/URL-hinh-share-1200x630.jpg";
+
+  return buildMetadata({
+    locale,
+    path,
+    title: "Tin Tức Ngành Đá | P.A.C STONE",
+    description: "Mô tả blog",
+    image: firstPostImage,
+    type: "website",
+    alternatePaths: {
+      vi: "/vi/tin-tuc",
+      en: "/en/news",
+      xDefault: "/vi/tin-tuc",
+    },
   });
 }
 

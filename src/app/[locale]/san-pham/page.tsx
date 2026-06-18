@@ -1,4 +1,6 @@
+import type { Metadata } from "next";
 import Link from "next/link";
+import { buildMetadata } from "@/lib/seo";
 import { SiteHeader as Header } from "@/components/site/SiteHeader";
 import { Footer } from "@/components/site/Footer";
 import { PageHeader } from "@/components/site/PageHeader";
@@ -24,6 +26,41 @@ const productsPageContent = {
     emptyText: "No matching products found.",
   },
 };
+
+export async function generateMetadata({
+  params,
+}: {
+  params: {
+    locale: Locale;
+  };
+}): Promise<Metadata> {
+  const locale = params.locale;
+  const path = locale === "vi" ? "/vi/san-pham" : "/en/products";
+
+  const productsPage = await getProductsPage({
+    locale,
+    page: 1,
+    pageSize: 1,
+  });
+
+  const firstProductImage =
+    productsPage.products[0]?.image ||
+    "https://pacstone.vn/URL-hinh-share-1200x630.jpg";
+
+  return buildMetadata({
+    locale,
+    path,
+    title: "Sản Phẩm Đá Marble & Granite | P.A.C STONE",
+    description: "Mô tả danh mục",
+    image: firstProductImage,
+    type: "website",
+    alternatePaths: {
+      vi: "/vi/san-pham",
+      en: "/en/products",
+      xDefault: "/vi/san-pham",
+    },
+  });
+}
 
 function productListHref(locale: Locale) {
   return locale === "vi" ? "/vi/san-pham" : "/en/products";

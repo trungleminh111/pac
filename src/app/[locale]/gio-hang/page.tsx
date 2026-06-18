@@ -1,10 +1,39 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { Locale } from "@prisma/client";
+import { buildMetadata } from "@/lib/seo";
 import { getActiveCart } from "@/server/cart/cart.query";
 import { Footer } from "@/components/site/Footer";
 import { SiteHeader as Header } from "@/components/site/SiteHeader";
 import styles from "./cart.module.css";
 import { CartClient } from "./cart-client";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: {
+    locale: "vi" | "en";
+  };
+}): Promise<Metadata> {
+  const path = `/${params.locale}/gio-hang`;
+
+  return buildMetadata({
+    locale: params.locale,
+    path,
+    title: params.locale === "vi" ? "Giỏ hàng | P.A.C STONE" : "Cart | P.A.C STONE",
+    description:
+      params.locale === "vi"
+        ? "Giỏ hàng của bạn tại P.A.C STONE."
+        : "Your shopping cart at P.A.C STONE.",
+    image: "https://pacstone.vn/URL-hinh-share-1200x630.jpg",
+    type: "website",
+    alternatePaths: {
+      vi: "/vi/gio-hang",
+      en: "/en/gio-hang",
+      xDefault: "/vi/gio-hang",
+    },
+  });
+}
 
 export default async function CartPage({
   params,

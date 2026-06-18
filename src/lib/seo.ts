@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 
 export const SITE_URL = "https://pacstone.vn";
 export const SITE_NAME = "P.A.C STONE";
+export const DEFAULT_OG_IMAGE =
+  "https://pub-cbcc93445b0c42eda9fea9d3440439a2.r2.dev/media/2026/1781778876754-e420fdca-b15e-430f-bfc5-ca4c78539be3.webp";
 
 type Locale = "vi" | "en";
 
@@ -10,7 +12,7 @@ type SeoParams = {
   path: string;
   title: string;
   description: string;
-  image: string;
+  image?: string | null;
   type?: "website" | "product";
   alternatePaths?: {
     vi: string;
@@ -19,12 +21,14 @@ type SeoParams = {
   };
 };
 
-export function absoluteUrl(url: string) {
-  if (url.startsWith("http://") || url.startsWith("https://")) {
-    return url;
+export function absoluteUrl(url?: string | null) {
+  const safeUrl = url?.trim() || DEFAULT_OG_IMAGE;
+
+  if (safeUrl.startsWith("http://") || safeUrl.startsWith("https://")) {
+    return safeUrl;
   }
 
-  return `${SITE_URL}${url.startsWith("/") ? url : `/${url}`}`;
+  return `${SITE_URL}${safeUrl.startsWith("/") ? safeUrl : `/${safeUrl}`}`;
 }
 
 export function buildMetadata({

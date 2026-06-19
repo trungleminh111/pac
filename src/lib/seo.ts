@@ -77,7 +77,7 @@ export function buildMetadata({
       description,
       images: [imageUrl],
       url,
-      type: type as any,
+      type: type === "product" ? "website" : type,
       siteName: SITE_NAME,
       locale: locale === "vi" ? "vi_VN" : "en_US",
     },

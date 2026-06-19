@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import Script from "next/script";
 import { buildMetadata, absoluteUrl } from "@/lib/seo";
 import {
   getProductBySlug,
@@ -93,6 +94,7 @@ export async function generateMetadata({
       en: `/en/products/${slug}`,
       xDefault: `/vi/san-pham/${slug}`,
     },
+    extraMeta: { "og:type": "product" },
   });
 }
 
@@ -140,7 +142,8 @@ export default async function ProductDetailPage({ params }: Props) {
   if (template === "page2") {
     return (
       <>
-        <script
+        <Script
+          id="product-jsonld"
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify(productJsonLd),
@@ -158,7 +161,8 @@ export default async function ProductDetailPage({ params }: Props) {
 
   return (
     <>
-      <script
+      <Script
+        id="product-jsonld"
         type="application/ld+json"
         dangerouslySetInnerHTML={{
           __html: JSON.stringify(productJsonLd),

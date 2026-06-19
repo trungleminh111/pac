@@ -19,6 +19,7 @@ type SeoParams = {
     en: string;
     xDefault?: string;
   };
+  extraMeta?: Record<string, string>;
 };
 
 export function absoluteUrl(url?: string | null) {
@@ -41,6 +42,7 @@ export function buildMetadata({
   image,
   type = "website",
   alternatePaths,
+  extraMeta,
 }: SeoParams): Metadata {
   const url = absoluteUrl(path);
   const imageUrl = absoluteUrl(image);
@@ -88,5 +90,7 @@ export function buildMetadata({
       description,
       images: [imageUrl],
     },
+
+    ...(extraMeta && { other: extraMeta }),
   };
 }

@@ -40,8 +40,24 @@ function productHref(locale: Locale, slug: string) {
   return locale === "vi" ? `/vi/san-pham/${slug}` : `/en/products/${slug}`;
 }
 
-function contactHref(locale: Locale) {
-  return locale === "vi" ? "/vi/lien-he" : "/en/contact";
+function contactHref(
+  locale: Locale,
+  product: {
+    id: string;
+    title: string;
+    slug: string;
+  }
+) {
+  const basePath = locale === "vi" ? "/vi/lien-he" : "/en/contact";
+  const productUrl = productHref(locale, product.slug);
+
+  const params = new URLSearchParams({
+    productId: product.id,
+    productTitle: product.title,
+    productUrl,
+  });
+
+  return `${basePath}?${params.toString()}`;
 }
 
 function getDynamicAttributes(product: ProductDetailItem) {
@@ -54,6 +70,23 @@ function getDynamicAttributes(product: ProductDetailItem) {
       value: attribute.value?.trim() || "",
     }))
     .filter((attribute) => attribute.name && attribute.value);
+}
+function isValidCrop(crop: any, src: string) {
+  return (
+    crop &&
+    src &&
+    crop.url === src &&
+    typeof crop.imageLeftPct === "number" &&
+    typeof crop.imageTopPct === "number" &&
+    typeof crop.imageWidthPct === "number" &&
+    typeof crop.imageHeightPct === "number" &&
+    Number.isFinite(crop.imageLeftPct) &&
+    Number.isFinite(crop.imageTopPct) &&
+    Number.isFinite(crop.imageWidthPct) &&
+    Number.isFinite(crop.imageHeightPct) &&
+    crop.imageWidthPct > 0 &&
+    crop.imageHeightPct > 0
+  );
 }
 
 export function ProductDetailDefault({
@@ -82,13 +115,13 @@ export function ProductDetailDefault({
   return (
     <div className="page-wrapper">
       <Header locale={locale} />
-{/* 
+      {/* 
       <PageHeader
         title=""
         bgImage="/assets/images/backgrounds/PACSTONE-SANPHAM-header.png"
       /> */}
 
-       <Banner
+      <Banner
         title="SẢN PHẨM"
         backgroundImg="/assets/images/backgrounds/product-banner.webp"
         row={2}
@@ -198,7 +231,7 @@ export function ProductDetailDefault({
                   </h4>
 
                   <div className="text-center product-action-combo">
-                    <Link href={contactHref(locale)} className="floens-btn">
+                    <Link href={contactHref(locale, product)} className="floens-btn">
                       <span>{locale === "vi" ? "Liên hệ" : "Contact"}</span>
                     </Link>
 
@@ -245,137 +278,101 @@ export function ProductDetailDefault({
               </p>
             </div>
 
-            <div className="product-details__description d-none d-md-block ">
+
+            <div className="product-details__description">
               <div className="row gutter-y-30">
-                {relatedProducts.map((item) => (
+                {relatedProducts.map((item) => {
+                  const crop = item.styleConfig?.thumbnailCrop;
+                  const hasCrop = isValidCrop(crop, item.image);
 
-                  <div
-                    className="col-xl-3 col-lg-3 col-md-6"
-                    key={item.id}
-                  >
-                    <div className="product__item">
-                      <div className="product__item__image">
-                        <Link href={productHref(locale, item.slug)}
-                          style={{
-                            margin: item.styleConfig?.card?.margin
-                          }}>
-                          <img
-                            src={item.image}
-                            alt={item.title}
-                            style={{
-                              width: item.styleConfig?.image?.width || "100%",
-                              height: item.styleConfig?.image?.height || "180px",
-                              objectFit: item.styleConfig?.image?.objectFit || "cover",
-                            }}
-                          />
+                  return (
+                    <div className="col-xl-3 col-lg-3 col-md-6" key={item.id}>
+                      <div className="product__item">
+                        <div className="product__item__image">
+                          <Link href={productHref(locale, item.slug)}>
+                            <img
+                              src={item.image}
+                              alt={item.title}
+                              draggable={false}
+                              style={{
+                                display: "block",
+                                userSelect: "none",
+                                transform: "none",
 
-                        </Link>
-                        <div className="product-image-overlay">
+                                ...(hasCrop
+                                  ? {
+                                    position: "absolute",
+                                    left: `${crop!.imageLeftPct * 100}%`,
+                                    top: `${crop!.imageTopPct * 100}%`,
+                                    width: `${crop!.imageWidthPct * 100}%`,
+                                    height: `${crop!.imageHeightPct * 100}%`,
+                                    objectFit: "fill",
+                                    maxWidth: "none",
+                                    maxHeight: "none",
+                                  }
+                                  : {
+                                    position: "absolute",
+                                    left: "0",
+                                    top: "0",
+                                    width: "100%",
+                                    height: "100%",
+                                    objectFit: item.styleConfig?.image?.objectFit || "cover",
+                                    objectPosition: "center",
+                                    maxWidth: "100%",
+                                    maxHeight: "none",
+                                  }),
+                              }}
+                            />
+                          </Link>
 
-                        </div>
-                      </div>
-
-                      <div className="product__item__content">
-                        <div className="floens-ratings product__item__ratings">
-                          <div className="rating-stars">
-                            {Array.from({ length: 5 }).map((_, index) => (
-                              <FaStar key={index} />
-                            ))}
+                          <div className="product-image-overlay">
+                            {/* {item.title} */}
                           </div>
                         </div>
 
-                        <h4 className="product__item__title">
-                          <Link href={productHref(locale, item.slug)}>
-                            {item.title}
-                          </Link>
-                        </h4>
+                        <div className="product__item__content">
+                          <div className="floens-ratings product__item__ratings">
+                            <div className="rating-stars">
+                              {Array.from({ length: 5 }).map((_, index) => (
+                                <FaStar key={index} />
+                              ))}
+                            </div>
+                          </div>
 
-                        <div className="product__item__price">
-                          {item.salePrice || item.price}
-                        </div>
-
-                        <div>
-                          <div className="text-center product-action-combo">
-                            <Link href={contactHref(locale)} className="floens-btn">
-                              <span>{locale === "vi" ? "Liên hệ" : "Contact"}</span>
+                          <h4
+                            className="product__item__title"
+                            style={{
+                              display: "-webkit-box",
+                              WebkitLineClamp: 2,
+                              WebkitBoxOrient: "vertical",
+                              overflow: "hidden",
+                            }}
+                          >
+                            <Link href={productHref(locale, item.slug)}>
+                              {item.title}
                             </Link>
+                          </h4>
 
-                            <div className="product-action-combo__cart">
-                              <AddToCartButton productId={item.id} />
+                          <div className="product__item__price">
+                            {item.salePrice || item.price || (locale === "vi" ? "Liên hệ" : "Contact")}
+                          </div>
+
+                          <div>
+                            <div className="text-center product-action-combo">
+                              <Link href={contactHref(locale, product)} className="floens-btn">
+                                <span>{locale === "vi" ? "Liên hệ" : "Contact"}</span>
+                              </Link>
+
+                              <div className="product-action-combo__cart">
+                                <AddToCartButton productId={item.id} />
+                              </div>
                             </div>
                           </div>
                         </div>
                       </div>
                     </div>
-
-
-                  </div>
-                ))}
-              </div>
-            </div>
-            <div className="product-details__description d-block d-md-none">
-              <div className="row gutter-y-30">
-                {relatedProducts.map((item) => (
-
-                  <div
-                    className="col-xl-3 col-lg-3 col-md-6"
-                    key={item.id}
-                  >
-                    <div className="product__item">
-                      <div className="product__item__image">
-                        <Link href={productHref(locale, item.slug)}>
-                          <img
-                            src={item.image}
-                            alt={item.title}
-                            style={{
-                              maxWidth: "100%",
-                              maxHeight: "100%",
-                              width: "auto",
-                              height: "auto",
-                              objectFit: "contain",
-                            }}
-                          />
-
-                        </Link>
-                        <div className="product-image-overlay">
-                          {/* {item.title} */}
-                        </div>
-                      </div>
-
-                      <div className="product__item__content">
-                        <div className="floens-ratings product__item__ratings">
-                          <div className="rating-stars">
-                            {Array.from({ length: 5 }).map((_, index) => (
-                              <FaStar key={index} />
-                            ))}
-                          </div>
-                        </div>
-
-                        <h4 className="product__item__title">
-                          <Link href={productHref(locale, item.slug)}>
-                            {item.title}
-                          </Link>
-                        </h4>
-
-                        <div className="product__item__price">
-                          {item.salePrice || item.price}
-                        </div>
-
-                        <div>
-                          <div className="text-center product-action-combo">
-                            <Link href={contactHref(locale)} className="floens-btn">
-                              <span>{locale === "vi" ? "Liên hệ" : "Contact"}</span>
-                            </Link>
-
-                            <div className="product-action-combo__cart">
-                              <AddToCartButton productId={item.id} />
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </div>
           </div>

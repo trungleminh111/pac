@@ -15,6 +15,7 @@ import "@/styles/title.css";
 import "@/styles/scroll-reveal.css";
 import "@/globals.css";
 import "@/styles/lienhe.css";
+import "@/styles/sanpham.css";
 
 import ScrollTopProgress from "@/components/site/ScrollTopProgress";
 

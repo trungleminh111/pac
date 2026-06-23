@@ -63,7 +63,11 @@ function relValue(target?: string | null) {
 function cleanPath(url: string) {
   return url.split("?")[0].replace(/\/$/, "");
 }
+function contactHref(locale: Locale) {
+  return locale === "vi" ? "/vi/lien-he" : "/en/contact";
 
+
+}
 function isMenuActive(pathname: string, item: DynamicMenuItem) {
   const currentPath = cleanPath(pathname);
   const itemPath = cleanPath(item.href || "#");
@@ -79,6 +83,7 @@ function isMenuActive(pathname: string, item: DynamicMenuItem) {
 function productListHref(locale: Locale) {
   return locale === "vi" ? "/vi/san-pham" : "/en/products";
 }
+
 
 export function Header({
   locale = "vi",
@@ -377,9 +382,9 @@ export function Header({
                 <></>
               )}
               <li className="mt-3">
-                <button onClick={() => { setSidebarOpen(false); openModal(); }} className=" sidebar-util-zalo-btn w-100 open-popup-btn" style={{ padding: "12px 25px", backgroundColor: "var(--floens-base, #c7844f)" }}>
+                <Link href={contactHref(locale)} className=" sidebar-util-zalo-btn w-100 open-popup-btn" style={{ padding: "12px 25px", backgroundColor: "var(--floens-base, #c7844f)" }}>
                   <span>{locale === "vi" ? "LIÊN HỆ NGAY" : "CONTACT NOW"}</span>
-                </button>
+                </Link>
               </li>
               {/* <li className="mt-2">
                 <Link href="https://zalo.me/YOUR_ZALO_OA_ID" target="_blank" className="sidebar-util-zalo-btn">

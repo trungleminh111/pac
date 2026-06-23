@@ -36,7 +36,9 @@ function parseLocale(value: string): Locale {
 
 function parseMoney(value: string) {
   const clean = value.replace(/\D/g, "");
+
   if (!clean) return null;
+
   return new Prisma.Decimal(clean);
 }
 
@@ -48,6 +50,22 @@ function parseJsonArray(value: string): any[] {
     return Array.isArray(parsed) ? parsed : [];
   } catch {
     return [];
+  }
+}
+
+function parseJsonObject(value: string): Prisma.InputJsonValue | typeof Prisma.JsonNull {
+  if (!value) return Prisma.JsonNull;
+
+  try {
+    const parsed = JSON.parse(value);
+
+    if (!parsed || Array.isArray(parsed) || typeof parsed !== "object") {
+      return Prisma.JsonNull;
+    }
+
+    return parsed as Prisma.InputJsonValue;
+  } catch {
+    return Prisma.JsonNull;
   }
 }
 
@@ -86,6 +104,7 @@ function isEmptyAttributeValue(value: unknown) {
   if (typeof value === "boolean") return false;
   if (value === 0) return false;
   if (value === null || value === undefined) return true;
+
   return String(value).trim() === "";
 }
 
@@ -242,6 +261,7 @@ async function saveProductAttributes({
 
     if (attribute.type === "NUMBER") {
       const numberValue = Number(attribute.value);
+
       if (!Number.isFinite(numberValue)) continue;
 
       await tx.productAttributeValue.create({
@@ -300,6 +320,8 @@ export async function createProductAction(
       getString(formData, "attributeScopeJson")
     );
 
+    const styleConfig = parseJsonObject(getString(formData, "styleConfig"));
+
     await prisma.$transaction(async (tx) => {
       const product = await tx.product.create({
         data: {
@@ -311,9 +333,7 @@ export async function createProductAction(
           categoryId: getString(formData, "categoryId") || null,
           isFeatured: getBoolean(formData, "isFeatured"),
           allowIndex: getBoolean(formData, "allowIndex"),
-          styleConfig: getString(formData, "styleConfig")
-            ? JSON.parse(getString(formData, "styleConfig"))
-            : Prisma.JsonNull,
+          styleConfig,
         },
       });
 
@@ -405,6 +425,8 @@ export async function updateProductAction(
       getString(formData, "attributeScopeJson")
     );
 
+    const styleConfig = parseJsonObject(getString(formData, "styleConfig"));
+
     await prisma.$transaction(async (tx) => {
       await tx.product.update({
         where: {
@@ -419,9 +441,7 @@ export async function updateProductAction(
           categoryId: getString(formData, "categoryId") || null,
           isFeatured: getBoolean(formData, "isFeatured"),
           allowIndex: getBoolean(formData, "allowIndex"),
-          styleConfig: getString(formData, "styleConfig")
-            ? JSON.parse(getString(formData, "styleConfig"))
-            : Prisma.JsonNull,
+          styleConfig,
         },
       });
 

@@ -1,10 +1,9 @@
 import Link from "next/link";
-import { FaStar, FaCartShopping } from "react-icons/fa6";
+import { FaStar } from "react-icons/fa6";
 import { getHomeProducts } from "@/server/products/product.query";
 import type { Locale } from "@/server/products/product.type";
 import ScrollReveal from "@/components/site/ScrollReveal";
-import { AddToCartButton } from "@/components/site/AddToCartButton"; 
-
+import { AddToCartButton } from "@/components/site/AddToCartButton";
 
 function productHref(locale: Locale, slug: string) {
   return locale === "vi" ? `/vi/san-pham/${slug}` : `/en/products/${slug}`;
@@ -14,18 +13,42 @@ function productListHref(locale: Locale) {
   return locale === "vi" ? "/vi/san-pham" : "/en/products";
 }
 
-function contactHref(locale: Locale) {
-  return locale === "vi" ? "/vi/lien-he" : "/en/contact";
+function contactHref(
+  locale: Locale,
+  product: {
+    id: string;
+    title: string;
+    slug: string;
+  }
+) {
+  const basePath = locale === "vi" ? "/vi/lien-he" : "/en/contact";
+  const productUrl = productHref(locale, product.slug);
+
+  const params = new URLSearchParams({
+    productId: product.id,
+    productTitle: product.title,
+    productUrl,
+  });
+
+  return `${basePath}?${params.toString()}`;
 }
 
-// Parse marginTop từ chuỗi margin "top right bottom left"
-function getMarginTop(margin?: string): string {
-  if (!margin) return "0px";
-  return margin.trim().split(/\s+/)[0];
-}
-function getMarginBottom(margin?: string): string {
-  if (!margin) return "0px";
-  return margin.trim().split(/\s+/)[2] || "0px";
+function isValidCrop(crop: any, src: string) {
+  return (
+    crop &&
+    src &&
+    crop.url === src &&
+    typeof crop.imageLeftPct === "number" &&
+    typeof crop.imageTopPct === "number" &&
+    typeof crop.imageWidthPct === "number" &&
+    typeof crop.imageHeightPct === "number" &&
+    Number.isFinite(crop.imageLeftPct) &&
+    Number.isFinite(crop.imageTopPct) &&
+    Number.isFinite(crop.imageWidthPct) &&
+    Number.isFinite(crop.imageHeightPct) &&
+    crop.imageWidthPct > 0 &&
+    crop.imageHeightPct > 0
+  );
 }
 
 export async function Products({ locale }: { locale: Locale }) {
@@ -51,140 +74,103 @@ export async function Products({ locale }: { locale: Locale }) {
 
         <div className="row gutter-y-30">
           {products.map((product) => {
-            const margin = product.styleConfig?.card?.margin;
-            const marginTop = getMarginTop(margin);
-             const marginBottom = getMarginBottom(margin);
-            const imageHeight = product.styleConfig?.image?.height || "180px";
-            const computedHeight = margin
-          ? `calc(${imageHeight} + ${marginTop} + ${marginBottom})`
-              : imageHeight;
+            const crop = product.styleConfig?.thumbnailCrop;
+            const hasCrop = isValidCrop(crop, product.image);
 
             return (
-              <>
-                {/* Desktop */}
-                <div
-                  className="col-xl-3 col-lg-3 col-md-6 d-none d-md-block"
-                  key={`desktop-${product.id}`}
-                >
-                  <ScrollReveal animationClass="fade-in-up" delay="0.2s">
-                    <div className="product__item">
-                      <div className="product__item__image">
-                        <Link
-                          href={productHref(locale, product.slug)}
-                        // style={{ margin }}
-                        >
-                          <img
-                            src={product.image}
-                            alt={product.title}
-                            style={{
-                              padding: margin || "0px",
-                              width: product.styleConfig?.image?.width || "100%",
-                              height: computedHeight || "180px",
-                              objectFit: product.styleConfig?.image?.objectFit || "cover",
-                            }}
-                          />
-                        </Link>
+              <div
+                className="col-xl-3 col-lg-3 col-md-6"
+                key={`desktop-${product.id}`}
+              >
+                <ScrollReveal animationClass="fade-in-up" delay="0.2s">
+                  <div className="product__item">
+                    <div className="product__item__image">
+                      <Link href={productHref(locale, product.slug)}>
+                        <img
+                          src={product.image}
+                          alt={product.title}
+                          draggable={false}
+                          style={{
+                            display: "block",
+                            userSelect: "none",
+
+                            ...(hasCrop
+                              ? {
+                                  position: "absolute",
+                                  left: `${crop!.imageLeftPct * 100}%`,
+                                  top: `${crop!.imageTopPct * 100}%`,
+                                  width: `${crop!.imageWidthPct * 100}%`,
+                                  height: `${crop!.imageHeightPct * 100}%`,
+                                  objectFit: "fill",
+                                  maxWidth: "none",
+                                  maxHeight: "none",
+                                }
+                              : {
+                                  position: "static",
+                                  width: "100%",
+                                  height: "100%",
+                                  objectFit:
+                                    product.styleConfig?.image?.objectFit ||
+                                    "cover",
+                                  objectPosition: "center",
+                                  maxWidth: "100%",
+                                  maxHeight: "none",
+                                }),
+                          }}
+                        />
+                      </Link>
+                    </div>
+
+                    <div className="product__item__content">
+                      <div className="floens-ratings product__item__ratings">
+                        <div className="rating-stars">
+                          {Array.from({ length: 5 }).map((_, index) => (
+                            <FaStar key={index} />
+                          ))}
+                        </div>
                       </div>
 
-                      <div className="product__item__content">
-                        <div className="floens-ratings product__item__ratings">
-                          <div className="rating-stars">
-                            {Array.from({ length: 5 }).map((_, index) => (
-                              <FaStar key={index} />
-                            ))}
-                          </div>
-                        </div>
-
-                        <h4 className="product__item__title" style={{
+                      <h4
+                        className="product__item__title"
+                        style={{
                           display: "-webkit-box",
                           WebkitLineClamp: 2,
                           WebkitBoxOrient: "vertical",
                           overflow: "hidden",
-                        }}>
-                          <Link href={productHref(locale, product.slug)}>
-                            {product.title}
-                          </Link>
-                        </h4>
-
-                        <div className="product__item__price">
-                          {product.price || (locale === "vi" ? "Liên hệ" : "Contact")}
-                        </div>
-                        <div className="text-center product-action-combo">
-                          <Link href={contactHref(locale)} className="floens-btn">
-                            <span>{locale === "vi" ? "Liên hệ" : "Contact"}</span>
-                          </Link>
-
-                          <div className="product-action-combo__cart">
-                            <AddToCartButton productId={product.id} />
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </ScrollReveal>
-                </div>
-
-                {/* Mobile */}
-                <div
-                  className="col-xl-3 col-lg-3 col-md-6 d-block d-md-none"
-                  key={`mobile-${product.id}`}
-                >
-                  <ScrollReveal animationClass="fade-in-up" delay="0.2s">
-                    <div className="product__item">
-                      <div className="product__item__image">
+                        }}
+                      >
                         <Link href={productHref(locale, product.slug)}>
-                          <img
-                            src={product.image}
-                            alt={product.title}
-                            style={{
-                              padding: margin || "0px",
-                              aspectRatio: "4/3",
-                              width: "100%",
-                              objectFit: product.styleConfig?.image?.objectFit || "cover",
-                            }}
-                          />
+                          {product.title}
                         </Link>
+                      </h4>
+
+                      <div className="product__item__price">
+                        {product.price ||
+                          (locale === "vi" ? "Liên hệ" : "Contact")}
                       </div>
 
-                      <div className="product__item__content">
-                        <div className="floens-ratings product__item__ratings">
-                          <div className="rating-stars">
-                            {Array.from({ length: 5 }).map((_, index) => (
-                              <FaStar key={index} />
-                            ))}
-                          </div>
-                        </div>
+                      <div className="text-center product-action-combo">
+                       <Link href={contactHref(locale, product)} className="floens-btn">
+                          <span>{locale === "vi" ? "Liên hệ" : "Contact"}</span>
+                        </Link>
 
-                        <h4 className="product__item__title">
-                          <Link href={productHref(locale, product.slug)}>
-                            {product.title}
-                          </Link>
-                        </h4>
-
-                        <div className="product__item__price">
-                          {product.price || (locale === "vi" ? "Liên hệ" : "Contact")}
-                        </div>
-                        <div className="text-center product-action-combo">
-                          <Link href={contactHref(locale)} className="floens-btn">
-                            <span>{locale === "vi" ? "Liên hệ" : "Contact"}</span>
-                          </Link>
-                          
-
-                          <div className="product-action-combo__cart">
-                            <AddToCartButton productId={product.id} />
-                          </div>
+                        <div className="product-action-combo__cart">
+                          <AddToCartButton productId={product.id} />
                         </div>
                       </div>
                     </div>
-                  </ScrollReveal>
-                </div>
-              </>
+                  </div>
+                </ScrollReveal>
+              </div>
             );
           })}
 
           {products.length === 0 && (
             <div className="col-12">
               <p className="text-center">
-                {locale === "vi" ? "Chưa có sản phẩm nào." : "No products found."}
+                {locale === "vi"
+                  ? "Chưa có sản phẩm nào."
+                  : "No products found."}
               </p>
             </div>
           )}

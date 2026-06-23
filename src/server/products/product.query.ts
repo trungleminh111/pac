@@ -42,10 +42,7 @@ function getLocalizedName(
 ) {
   const prismaLocale = toPrismaLocale(locale);
 
-  return (
-    translations.find((item) => item.locale === prismaLocale)?.name ||
-    ""
-  );
+  return translations.find((item) => item.locale === prismaLocale)?.name || "";
 }
 
 function getLocalizedTranslation<T extends TranslationLike>(
@@ -54,10 +51,7 @@ function getLocalizedTranslation<T extends TranslationLike>(
 ) {
   const prismaLocale = toPrismaLocale(locale);
 
-  return (
-    translations.find((item) => item.locale === prismaLocale) ||
-    null
-  );
+  return translations.find((item) => item.locale === prismaLocale) || null;
 }
 
 function normalizeContent(value: unknown): ProductDetailItem["content"] {
@@ -97,9 +91,104 @@ function formatMoney(value: unknown, locale: Locale = "vi") {
   return `${new Intl.NumberFormat("vi-VN").format(number)} ₫`;
 }
 
+type ProductImageCropConfig = {
+  url: string;
+  imageLeftPct: number;
+  imageTopPct: number;
+  imageWidthPct: number;
+  imageHeightPct: number;
+};
+
+type ProductStyleConfigWithCrop = ProductStyleConfig & {
+  thumbnailCrop?: ProductImageCropConfig | null;
+};
+
+function toRecord(value: unknown): Record<string, unknown> | null {
+  if (!value || typeof value !== "object" || Array.isArray(value)) {
+    return null;
+  }
+
+  return value as Record<string, unknown>;
+}
+
+function parseJsonObject(value: unknown): Record<string, unknown> | null {
+  if (!value) return null;
+
+  if (typeof value === "string") {
+    try {
+      return toRecord(JSON.parse(value));
+    } catch {
+      return null;
+    }
+  }
+
+  return toRecord(value);
+}
+
+function toFiniteNumber(value: unknown): number | null {
+  if (typeof value === "number" && Number.isFinite(value)) {
+    return value;
+  }
+
+  if (typeof value === "string" && value.trim()) {
+    const number = Number(value);
+
+    return Number.isFinite(number) ? number : null;
+  }
+
+  return null;
+}
+
+function normalizeThumbnailCrop(value: unknown): ProductImageCropConfig | null {
+  const crop = toRecord(value);
+
+  if (!crop) return null;
+
+  const url = typeof crop.url === "string" ? crop.url : "";
+  const imageLeftPct = toFiniteNumber(crop.imageLeftPct);
+  const imageTopPct = toFiniteNumber(crop.imageTopPct);
+  const imageWidthPct = toFiniteNumber(crop.imageWidthPct);
+  const imageHeightPct = toFiniteNumber(crop.imageHeightPct);
+
+  if (
+    !url ||
+    imageLeftPct === null ||
+    imageTopPct === null ||
+    imageWidthPct === null ||
+    imageHeightPct === null ||
+    imageWidthPct <= 0 ||
+    imageHeightPct <= 0
+  ) {
+    return null;
+  }
+
+  return {
+    url,
+    imageLeftPct,
+    imageTopPct,
+    imageWidthPct,
+    imageHeightPct,
+  };
+}
+
 function safeStyleConfig(value: unknown): ProductStyleConfig | null {
-  if (!value || typeof value !== "object") return null;
-  return value as ProductStyleConfig;
+  const config = parseJsonObject(value);
+
+  if (!config) return null;
+
+  const styleConfig: ProductStyleConfigWithCrop = {
+    ...(config as ProductStyleConfig),
+  };
+
+  const thumbnailCrop = normalizeThumbnailCrop(config.thumbnailCrop);
+
+  if (thumbnailCrop) {
+    styleConfig.thumbnailCrop = thumbnailCrop;
+  } else if ("thumbnailCrop" in styleConfig) {
+    delete styleConfig.thumbnailCrop;
+  }
+
+  return styleConfig as ProductStyleConfig;
 }
 
 function getGallery(product: {
@@ -651,8 +740,7 @@ export async function getProductBySlug(
     excerpt: translation.excerpt || "",
     content: normalizeContent(translation.content),
     seoTitle: translation.seoTitle || translation.title || "",
-    seoDescription:
-      translation.seoDescription || translation.excerpt || "",
+    seoDescription: translation.seoDescription || translation.excerpt || "",
   };
 }
 

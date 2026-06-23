@@ -712,3 +712,34 @@
   justify-content: center;
   cursor: pointer;
 }
+
+
+/* FIX PRODUCT IMAGE CROP - MATCH ADMIN 270/180 */
+.product__item__image {
+  background-color: var(--floens-white, #ffffff);
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  aspect-ratio: 270 / 180;
+  height: auto;
+}
+
+.product__item__image a {
+  display: block;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.product__item__image img {
+  transition: none !important;
+  transform: none !important;
+}
+
+.product__item:hover .product__item__image img {
+  transform: none !important;
+}
+.product__item{
+  width: 100%;
+}

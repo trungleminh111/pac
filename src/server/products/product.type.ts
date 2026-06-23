@@ -13,16 +13,27 @@ export type ProductCategoryItem = {
   detailTemplate: string;
 };
 
+export type ProductImageCrop = {
+  url: string;
+  imageLeftPct: number;
+  imageTopPct: number;
+  imageWidthPct: number;
+  imageHeightPct: number;
+};
+
 export type ProductStyleConfig = {
   image?: {
     width?: string;
     height?: string;
+    aspectRatio?: string;
+    aspect_ratio?: string;
     objectFit?: CSSProperties["objectFit"];
   };
   card?: {
     margin?: string;
     borderRadius?: string;
   };
+  thumbnailCrop?: ProductImageCrop | null;
 };
 
 export type ProductAttributeItem = {

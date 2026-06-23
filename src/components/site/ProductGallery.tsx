@@ -44,7 +44,7 @@ export function ProductGallery({
                 padding: margin || "0px",
                 width: product.styleConfig?.image?.width || "100%",
                 height: "100%",
-                objectFit: product.styleConfig?.image?.objectFit || "cover",
+                objectFit: "cover",
               }}
             />
           </div>
